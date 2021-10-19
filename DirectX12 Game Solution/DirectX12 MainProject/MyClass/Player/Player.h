@@ -8,11 +8,3 @@ public:
 private:
 
 };
-
-Player::Player()
-{
-}
-
-Player::~Player()
-{
-}

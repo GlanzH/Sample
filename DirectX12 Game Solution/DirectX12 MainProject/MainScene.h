@@ -10,6 +10,7 @@ using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
 using std::make_unique;
 using namespace DirectX;
+using namespace DX9;
 
 class MainScene final : public Scene {
 public:
@@ -35,7 +36,7 @@ public:
 	void Render() override;
 
 private:
-
-
+	MODEL Ground;
+	CAMERA camera;
 
 };
