@@ -9,7 +9,7 @@
 // Initialize member variables.
 MainScene::MainScene()
 {
-
+	//cdvfghjkl;
 }
 
 // Initialize a variable and audio resources.
