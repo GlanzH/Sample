@@ -35,12 +35,9 @@ public:
 	void Render() override;
 
 private:
-<<<<<<< HEAD
 	MODEL Ground ,mikoto;
 	CAMERA camera;
-=======
 	MODEL	Ground;
 	CAMERA  camera;
->>>>>>> d783658a8477640ccb3a9b0b2f6b328529f9ace0
 
 };
