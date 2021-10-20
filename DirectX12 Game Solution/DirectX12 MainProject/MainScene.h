@@ -11,7 +11,6 @@ using std::unique_ptr;
 using std::make_unique;
 using namespace DirectX;
 using namespace DX9;
-
 class MainScene final : public Scene {
 public:
 	MainScene();
@@ -36,7 +35,7 @@ public:
 	void Render() override;
 
 private:
-	MODEL Ground;
-	CAMERA camera;
+	MODEL	Ground;
+	CAMERA  camera;
 
 };
