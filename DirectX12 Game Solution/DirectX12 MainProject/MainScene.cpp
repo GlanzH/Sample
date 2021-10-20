@@ -65,6 +65,10 @@ void MainScene::Render()
 	// TODO: Add your rendering code here.
 	DXTK->ResetCommand();
 	DXTK->ClearRenderTarget(DirectX::Colors::CornflowerBlue);
+<<<<<<< HEAD
+=======
+
+>>>>>>> d783658a8477640ccb3a9b0b2f6b328529f9ace0
 
 
 	DXTK->ExecuteCommandList();
