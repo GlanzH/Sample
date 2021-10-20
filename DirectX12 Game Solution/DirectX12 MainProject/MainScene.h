@@ -11,6 +11,7 @@ using std::unique_ptr;
 using std::make_unique;
 using namespace DirectX;
 using namespace DX9;
+using namespace DX12;
 
 class MainScene final : public Scene {
 public:
@@ -36,7 +37,17 @@ public:
 	void Render() override;
 
 private:
-	MODEL Ground ,mikoto;
-	CAMERA camera;
 
+	DESCRIPTORHEAP descriptorHeap;
+	SPRITEBATCH    spriteBatch;
+	HGPUDESCRIPTOR dx9GpuDescriptor;
+
+	SKINNEDMODEL mikoto;
+	CAMERA       mainCamera;
+
+
+	//ƒ‰ƒCƒg
+	D3DLIGHT9 light{};
+
+	SimpleMath::Vector3 pos;
 };

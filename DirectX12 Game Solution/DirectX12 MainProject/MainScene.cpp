@@ -15,13 +15,50 @@ MainScene::MainScene()
 // Initialize a variable and audio resources.
 void MainScene::Initialize()
 {
+	pos = SimpleMath::Vector3(0.0f, 0.0f, 0.0f);
 
+	//カメラの位置
+	mainCamera->SetView(SimpleMath::Vector3(0.0f, 0.0f, -10.0f),
+		SimpleMath::Vector3(0.0f, 0.0f, 0.0f)
+	);
+	//カメラの向き・映す距離
+	mainCamera->SetPerspectiveFieldOfView(
+		XMConvertToRadians(60.0f), 16.0f / 9.0f, 1.0f, 10000.0f
+	);
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
 void MainScene::LoadAssets()
 {
+	
+	descriptorHeap = DX12::CreateDescriptorHeap(DXTK->Device, 1);
 
+	ResourceUploadBatch resourceUploadBatch(DXTK->Device);
+	resourceUploadBatch.Begin();
+
+	RenderTargetState rtState(DXGI_FORMAT_B8G8R8A8_UNORM, DXGI_FORMAT_D32_FLOAT);
+	SpriteBatchPipelineStateDescription pd(rtState, &CommonStates::NonPremultiplied);
+	D3D12_VIEWPORT viewport = {
+	0.0f, 0.0f, 1280.0f, 720.0f,
+	D3D12_MIN_DEPTH, D3D12_MAX_DEPTH
+	};
+
+	spriteBatch = DX12::CreateSpriteBatch(DXTK->Device, resourceUploadBatch, pd, &viewport);
+
+	dx9GpuDescriptor = DXTK->Direct3D9->CreateShaderResourceView(descriptorHeap.get(), 0);
+
+	auto uploadResourcesFinished = resourceUploadBatch.End(DXTK->CommandQueue);
+	uploadResourcesFinished.wait();
+
+	mikoto = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Mikoto//mikoto.x");
+
+	light.Type = D3DLIGHT_DIRECTIONAL;
+	light.Direction = DX9::VectorSet(0.0f, -1.0f, 1.0f);
+	light.Diffuse = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 1.0f);
+	light.Ambient = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 1.0f);
+	light.Specular = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 1.0f);
+	DXTK->Direct3D9->SetLight(0, light);
+	DXTK->Direct3D9->LightEnable(0, true);
 }
 
 // Releasing resources required for termination.
@@ -51,10 +88,17 @@ NextScene MainScene::Update(const float deltaTime)
 {
 	// If you use 'deltaTime', remove it.
 	UNREFERENCED_PARAMETER(deltaTime);
-
 	// TODO: Add your game logic here.
+	if (DXTK->KeyState->Up || DXTK->GamePadState->IsLeftThumbStickUp())
+		pos.y -= 3.0f;
+	if (DXTK->KeyState->Down || DXTK->GamePadState->IsLeftThumbStickDown())
+		pos.y += 3.0f;
+	if (DXTK->KeyState->Left || DXTK->GamePadState->IsLeftThumbStickLeft())
+		pos.x -= 3.0f;
+	if (DXTK->KeyState->Right || DXTK->GamePadState->IsLeftThumbStickRight())
+		pos.x += 3.0f;
 
-
+	mikoto->AdvanceTime(deltaTime / 100.0f);
 
 	return NextScene::Continue;
 }
@@ -62,10 +106,34 @@ NextScene MainScene::Update(const float deltaTime)
 // Draws the scene.
 void MainScene::Render()
 {
-	// TODO: Add your rendering code here.
+	DXTK->Direct3D9->Clear(DX9::Colors::RGBA(0, 0, 0, 255));
+
+	DXTK->Direct3D9->BeginScene();
+
+	DXTK->Direct3D9->SetCamera(mainCamera);
+
+	DX9::SpriteBatch->Begin();
+
+	mikoto->Draw();
+
+	DX9::SpriteBatch->End();
+	DXTK->Direct3D9->EndScene();
+
+
+	DXTK->Direct3D9->UpdateResource();
+
 	DXTK->ResetCommand();
 	DXTK->ClearRenderTarget(DirectX::Colors::CornflowerBlue);
 
+	const auto heapes = descriptorHeap->Heap();
+	DXTK->CommandList->SetDescriptorHeaps(1, &heapes);
 
+	spriteBatch->Begin(DXTK->CommandList);
+	spriteBatch->Draw(dx9GpuDescriptor,XMUINT2(1280, 720),SimpleMath::Vector3(400.0f,0.0f, 0.0f));
+
+	spriteBatch->End();
+
+	DXTK->Direct3D9->WaitUpdate();
 	DXTK->ExecuteCommandList();
+	// TODO: Add your rendering code here.
 }
