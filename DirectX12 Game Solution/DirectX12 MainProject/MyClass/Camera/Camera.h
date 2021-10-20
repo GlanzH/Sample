@@ -10,5 +10,5 @@ public:
 
 private:
 	//Camera camera;
-
+	
 };
