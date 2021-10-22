@@ -18,6 +18,7 @@ void MainScene::Initialize()
 	//•Ï”‚âŠÖ”‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 	text.Initialize();
 	text.LoadText();
+	camera.Initialize();
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -51,6 +52,7 @@ void MainScene::LoadAssets()
 	DXTK->Direct3D9->LightEnable(0, true);
 
 	//‰æ‘œ‚âƒ‚ƒfƒ‹‚Ì‰Šú‰»‚Í‚±‚¿‚ç
+	ground.LoadAsset();
 }
 
 // Releasing resources required for termination.
@@ -97,6 +99,8 @@ void MainScene::Render()
 	DXTK->Direct3D9->BeginScene();
 
 	//3D•`‰æ
+	camera.Render();
+	ground.Render();
 
 	DX9::SpriteBatch->Begin();
 

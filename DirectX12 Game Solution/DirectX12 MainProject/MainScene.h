@@ -5,6 +5,8 @@
 #pragma once
 
 #include "Scene.h"
+#include "MyClass/GroundManager/GroundManager.h"
+#include "MyClass/CameraManager/CameraManager.h"
 #include "MyClass/TextManager/TextManager.h"
 
 using Microsoft::WRL::ComPtr;
@@ -42,5 +44,7 @@ private:
 
 	D3DLIGHT9 light{};
 
-	TextManager text;
+	GroundManager ground;
+	CameraManager camera;
+	TextManager   text;
 };
