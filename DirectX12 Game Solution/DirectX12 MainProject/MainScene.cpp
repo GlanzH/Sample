@@ -16,7 +16,8 @@ MainScene::MainScene() : dx9GpuDescriptor{}
 void MainScene::Initialize()
 {
 	//•Ï”‚âŠÖ”‚Ì‰Šú‰»‚Í‚±‚¿‚ç
-
+	text.Initialize();
+	text.LoadText();
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -42,7 +43,6 @@ void MainScene::LoadAssets()
 	uploadResourcesFinished.wait();
 
 	//‰æ‘œ‚âƒ‚ƒfƒ‹‚Ì‰Šú‰»‚Í‚±‚¿‚ç
-
 }
 
 // Releasing resources required for termination.
@@ -75,7 +75,7 @@ NextScene MainScene::Update(const float deltaTime)
 
 	// TODO: Add your game logic here.
 
-
+	text.Update(deltaTime);
 
 	return NextScene::Continue;
 }
@@ -93,6 +93,7 @@ void MainScene::Render()
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ
+	text.Render2D();
 
 	DX9::SpriteBatch->End();
 	DXTK->Direct3D9->EndScene();

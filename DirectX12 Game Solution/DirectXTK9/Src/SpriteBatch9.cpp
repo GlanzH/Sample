@@ -89,3 +89,14 @@ void DX9::SpriteBatch9::DrawString(
 	font->DrawText(m_sprite.Get(), text, -1, &dest, DT_NOCLIP | DT_SINGLELINE, color);
 }
 
+void DX9::SpriteBatch9::DrawText(
+	ID3DXFont* font,
+	const wchar_t* text,
+	const  int count,
+	RECT& destRect,
+	const D3DCOLOR color
+) 
+{
+	ResetTransform();
+	font->DrawText(m_sprite.Get(), text, count, &destRect, DT_LEFT | DT_WORDBREAK, color);
+}
