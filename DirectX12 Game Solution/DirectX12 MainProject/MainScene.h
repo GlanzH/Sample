@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Scene.h"
+#include "MyClass/TextManager/TextManager.h"
 
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
@@ -40,4 +41,6 @@ private:
 	DX12::HGPUDESCRIPTOR dx9GpuDescriptor;
 
 	D3DLIGHT9 light{};
+
+	TextManager text;
 };
