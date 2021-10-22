@@ -38,4 +38,6 @@ private:
 	DX12::DESCRIPTORHEAP descriptorHeap;
 	DX12::SPRITEBATCH    spriteBatch;
 	DX12::HGPUDESCRIPTOR dx9GpuDescriptor;
+
+	D3DLIGHT9 light{};
 };

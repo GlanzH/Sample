@@ -191,6 +191,7 @@
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="MyClass\CameraManager\CameraManager.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyManager.h" />
+    <ClInclude Include="MyClass\GroundManager\GroundManager.h" />
     <ClInclude Include="MyClass\PlayerManager\PlayerManager.h" />
     <ClInclude Include="MyClass\TextManager\TextManager.h" />
     <ClInclude Include="Scene.h" />
@@ -215,6 +216,7 @@
     </ClCompile>
     <ClCompile Include="MyClass\CameraManager\CameraManager.cpp" />
     <ClCompile Include="MyClass\EnemyManager\EnemyManager.cpp" />
+    <ClCompile Include="MyClass\GroundManager\GroundManager.cpp" />
     <ClCompile Include="MyClass\PlayerManager\PlayerManager.cpp" />
     <ClCompile Include="MyClass\TextManager\TextManager.cpp" />
   </ItemGroup>
