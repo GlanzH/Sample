@@ -7,20 +7,41 @@
 #include "SceneFactory.h"
 
 // Initialize member variables.
-MainScene::MainScene()
+MainScene::MainScene() : dx9GpuDescriptor{}
 {
-	//cdvfghjkl;
+
 }
 
 // Initialize a variable and audio resources.
 void MainScene::Initialize()
 {
+	//•Ï”‚âŠÖ”‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
 void MainScene::LoadAssets()
 {
+	descriptorHeap = DX12::CreateDescriptorHeap(DXTK->Device, 1);
+
+	ResourceUploadBatch resourceUploadBatch(DXTK->Device);
+	resourceUploadBatch.Begin();
+
+	RenderTargetState rtState(DXGI_FORMAT_B8G8R8A8_UNORM, DXGI_FORMAT_D32_FLOAT);
+	SpriteBatchPipelineStateDescription pd(rtState, &CommonStates::NonPremultiplied);
+	D3D12_VIEWPORT viewport = {
+	0.0f, 0.0f, 1280.0f, 720.0f,
+	D3D12_MIN_DEPTH, D3D12_MAX_DEPTH
+	};
+
+	spriteBatch = DX12::CreateSpriteBatch(DXTK->Device, resourceUploadBatch, pd, &viewport);
+
+	dx9GpuDescriptor = DXTK->Direct3D9->CreateShaderResourceView(descriptorHeap.get(), 0);
+
+	auto uploadResourcesFinished = resourceUploadBatch.End(DXTK->CommandQueue);
+	uploadResourcesFinished.wait();
+
+	//‰æ‘œ‚âƒ‚ƒfƒ‹‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 
 }
 
@@ -63,10 +84,37 @@ NextScene MainScene::Update(const float deltaTime)
 void MainScene::Render()
 {
 	// TODO: Add your rendering code here.
+	DXTK->Direct3D9->Clear(DX9::Colors::CornflowerBlue);
+
+	DXTK->Direct3D9->BeginScene();
+
+	//3D•`‰æ
+
+	DX9::SpriteBatch->Begin();
+
+	//2D•`‰æ
+
+	DX9::SpriteBatch->End();
+	DXTK->Direct3D9->EndScene();
+
+
+	DXTK->Direct3D9->UpdateResource();
+
 	DXTK->ResetCommand();
 	DXTK->ClearRenderTarget(DirectX::Colors::CornflowerBlue);
 
+	const auto heapes = descriptorHeap->Heap();
+	DXTK->CommandList->SetDescriptorHeaps(1, &heapes);
 
+	spriteBatch->Begin(DXTK->CommandList);
+	spriteBatch->Draw(
+		dx9GpuDescriptor,
+		XMUINT2(1280, 720),
+		SimpleMath::Vector2(0.0f, 0.0f)
+	);
+
+	spriteBatch->End();
 
 	DXTK->ExecuteCommandList();
+	DXTK->Direct3D9->WaitUpdate();
 }

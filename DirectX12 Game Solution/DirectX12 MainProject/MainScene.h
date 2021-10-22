@@ -35,7 +35,7 @@ public:
 	void Render() override;
 
 private:
-	MODEL	Ground;
-	CAMERA  camera;
-
+	DX12::DESCRIPTORHEAP descriptorHeap;
+	DX12::SPRITEBATCH    spriteBatch;
+	DX12::HGPUDESCRIPTOR dx9GpuDescriptor;
 };
