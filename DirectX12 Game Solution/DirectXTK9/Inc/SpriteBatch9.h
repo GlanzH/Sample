@@ -181,6 +181,14 @@ namespace DX9
             DrawString(font, format.data(), position, color, transform);
         }
 
+        void DrawText(
+            ID3DXFont* font,
+            const wchar_t* text,
+            const int count,
+            RECT& destRect,
+            const D3DCOLOR color
+        );
+
         SpriteBatch9(SpriteBatch9&& moveFrom) noexcept { UNREFERENCED_PARAMETER(moveFrom); }
         SpriteBatch9& operator= (SpriteBatch9&& moveFrom) noexcept { UNREFERENCED_PARAMETER(moveFrom); }
 
