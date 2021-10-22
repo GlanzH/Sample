@@ -9,7 +9,7 @@ public:
 	bool Initialize();
 	int  Update();
 	void Render();
-	DX9::MODEL GetCollision() { return collision };
+	//DX9::MODEL GetCollision() { return collision };
 
 private:
 	DX9::MODEL model;
