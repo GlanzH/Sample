@@ -103,7 +103,7 @@ void MainScene::Render()
 	DXTK->Direct3D9->BeginScene();
 
 	//3D•`‰æ
-	camera.Render();
+	camera.Render(player.GetModel()->GetPosition());
 	ground.Render();
 
 	player.Render();
