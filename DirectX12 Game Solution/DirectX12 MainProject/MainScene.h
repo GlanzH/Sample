@@ -5,6 +5,9 @@
 #pragma once
 
 #include "Scene.h"
+#include "MyClass/GroundManager/GroundManager.h"
+#include "MyClass/CameraManager/CameraManager.h"
+#include "MyClass/TextManager/TextManager.h"
 
 #include "MyClass/PlayerManager/PlayerManager.h"
 #include "MyClass/CameraManager/CameraManager.h"
@@ -42,6 +45,10 @@ private:
 	DX12::SPRITEBATCH    spriteBatch;
 	DX12::HGPUDESCRIPTOR dx9GpuDescriptor;
 
+	D3DLIGHT9 light{};
+
+	GroundManager ground;
+	CameraManager camera;
+	TextManager   text;
 	PlayerManager player;
-	CameraManager camera_manager;
 };

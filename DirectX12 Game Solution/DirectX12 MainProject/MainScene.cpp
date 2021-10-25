@@ -16,7 +16,9 @@ MainScene::MainScene() : dx9GpuDescriptor{}
 void MainScene::Initialize()
 {
 	//•Ï”‚âŠÖ”‚Ì‰Šú‰»‚Í‚±‚¿‚ç
-	camera_manager.Initialize();
+	text.Initialize();
+	text.LoadText();
+	camera.Initialize();
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -41,8 +43,16 @@ void MainScene::LoadAssets()
 	auto uploadResourcesFinished = resourceUploadBatch.End(DXTK->CommandQueue);
 	uploadResourcesFinished.wait();
 
-	//‰æ‘œ‚âƒ‚ƒfƒ‹‚Ì‰Šú‰»‚Í‚±‚¿‚ç
+	light.Type = D3DLIGHT_DIRECTIONAL;
+	light.Direction = DX9::VectorSet(0.0f, -1.0f, 1.0f);
+	light.Diffuse = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 1.0f);
+	light.Ambient = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 1.0f);
+	light.Specular = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 1.0f);
+	DXTK->Direct3D9->SetLight(0, light);
+	DXTK->Direct3D9->LightEnable(0, true);
 
+	//‰æ‘œ‚âƒ‚ƒfƒ‹‚Ì‰Šú‰»‚Í‚±‚¿‚ç
+	ground.LoadAsset();
 	player.LoadAssets();
 }
 
@@ -76,8 +86,10 @@ NextScene MainScene::Update(const float deltaTime)
 
 	// TODO: Add your game logic here.
 
+	text.Update(deltaTime);
 	player.Update(deltaTime);
-	camera_manager.Update();
+
+	
 
 	return NextScene::Continue;
 }
@@ -91,12 +103,16 @@ void MainScene::Render()
 	DXTK->Direct3D9->BeginScene();
 
 	//3D•`‰æ
+	camera.Render();
+	ground.Render();
 
 	player.Render();
 
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ
+	text.Render2D();
+
 
 	DX9::SpriteBatch->End();
 	DXTK->Direct3D9->EndScene();

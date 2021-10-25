@@ -28,6 +28,9 @@
     <Filter Include="MyClass\TextManager">
       <UniqueIdentifier>{5ea0d9d5-4529-4a6f-a920-7a8ef8778487}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\GroundManager">
+      <UniqueIdentifier>{3484e38c-733b-4580-a58d-5fa05c40e4b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -72,6 +75,9 @@
     <ClInclude Include="MyClass\TextManager\TextManager.h">
       <Filter>MyClass\TextManager</Filter>
     </ClInclude>
+    <ClInclude Include="MyClass\GroundManager\GroundManager.h">
+      <Filter>MyClass\GroundManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -97,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="MyClass\TextManager\TextManager.cpp">
       <Filter>MyClass\TextManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\GroundManager\GroundManager.cpp">
+      <Filter>MyClass\GroundManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
