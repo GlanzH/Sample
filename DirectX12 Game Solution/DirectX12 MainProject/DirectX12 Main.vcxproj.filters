@@ -13,17 +13,20 @@
     <Filter Include="MyClass">
       <UniqueIdentifier>{5d0d5dae-649a-4afc-925d-e708a033d453}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\Camera">
-      <UniqueIdentifier>{b5c7ebcc-3e32-4ac7-be02-6d789d7dfd13}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyClass\Player">
-      <UniqueIdentifier>{8b994392-6c90-4f5c-a765-c1f205668d6a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyClass\Enemy">
-      <UniqueIdentifier>{d877da3f-f73b-4b65-83c9-8dfdf5ca6b7d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MyClass\GameSceneManager">
       <UniqueIdentifier>{16da01d1-9308-4dfd-9897-44235304e396}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\EnemyManager">
+      <UniqueIdentifier>{d877da3f-f73b-4b65-83c9-8dfdf5ca6b7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\PlayerManager">
+      <UniqueIdentifier>{8b994392-6c90-4f5c-a765-c1f205668d6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\CameraManager">
+      <UniqueIdentifier>{b5c7ebcc-3e32-4ac7-be02-6d789d7dfd13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\TextManager">
+      <UniqueIdentifier>{5ea0d9d5-4529-4a6f-a920-7a8ef8778487}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -57,14 +60,17 @@
     <ClInclude Include="DontDestroyOnLoad.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\Enemy\Enemy.h">
-      <Filter>MyClass\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="MyClass\Player\Player.h">
-      <Filter>MyClass\Player</Filter>
-    </ClInclude>
     <ClInclude Include="MyClass\CameraManager\CameraManager.h">
-      <Filter>MyClass\Camera</Filter>
+      <Filter>MyClass\CameraManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyManager.h">
+      <Filter>MyClass\EnemyManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\PlayerManager\PlayerManager.h">
+      <Filter>MyClass\PlayerManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\TextManager\TextManager.h">
+      <Filter>MyClass\TextManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -80,14 +86,17 @@
     <ClCompile Include="MainScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\Enemy\Enemy.cpp">
-      <Filter>MyClass\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="MyClass\Player\Player.cpp">
-      <Filter>MyClass\Player</Filter>
-    </ClCompile>
     <ClCompile Include="MyClass\CameraManager\CameraManager.cpp">
-      <Filter>MyClass\Camera</Filter>
+      <Filter>MyClass\CameraManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyManager.cpp">
+      <Filter>MyClass\EnemyManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\PlayerManager\PlayerManager.cpp">
+      <Filter>MyClass\PlayerManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\TextManager\TextManager.cpp">
+      <Filter>MyClass\TextManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

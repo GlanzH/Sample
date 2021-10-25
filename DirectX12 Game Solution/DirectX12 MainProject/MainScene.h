@@ -6,6 +6,9 @@
 
 #include "Scene.h"
 
+#include "MyClass/PlayerManager/PlayerManager.h"
+#include "MyClass/CameraManager/CameraManager.h"
+
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
 using std::make_unique;
@@ -35,9 +38,10 @@ public:
 	void Render() override;
 
 private:
-	MODEL Ground ,mikoto;
-	CAMERA camera;
-	MODEL	Ground;
-	CAMERA  camera;
+	DX12::DESCRIPTORHEAP descriptorHeap;
+	DX12::SPRITEBATCH    spriteBatch;
+	DX12::HGPUDESCRIPTOR dx9GpuDescriptor;
 
+	PlayerManager player;
+	CameraManager camera_manager;
 };
