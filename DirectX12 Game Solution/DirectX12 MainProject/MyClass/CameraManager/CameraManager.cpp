@@ -18,9 +18,9 @@ int CameraManager::Update() {
 	return 0;
 }
 
-void CameraManager::Render() {
-	//camera->SetViewLookAt(mikoto->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, -1.0f) * 30
-	//	+ SimpleMath::Vector3(0.0f, 6.0f, 2.0f), mikoto->GetPosition(), vector_up);
+void CameraManager::Render(Vector3 player_position) {
+	camera->SetViewLookAt(player_position + SimpleMath::Vector3(0.0f, 0.0f, -1.0f) * 40
+		+ SimpleMath::Vector3(0.0f, 10.0f, 0.0f), player_position, vector_up);
 
 	DXTK->Direct3D9->SetCamera(camera);
 }

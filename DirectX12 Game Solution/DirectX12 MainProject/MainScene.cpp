@@ -53,6 +53,7 @@ void MainScene::LoadAssets()
 
 	//‰æ‘œ‚âƒ‚ƒfƒ‹‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 	ground.LoadAsset();
+	player.LoadAssets();
 }
 
 // Releasing resources required for termination.
@@ -86,6 +87,9 @@ NextScene MainScene::Update(const float deltaTime)
 	// TODO: Add your game logic here.
 
 	text.Update(deltaTime);
+	player.Update(deltaTime);
+
+	
 
 	return NextScene::Continue;
 }
@@ -99,13 +103,16 @@ void MainScene::Render()
 	DXTK->Direct3D9->BeginScene();
 
 	//3D•`‰æ
-	camera.Render();
+	camera.Render(player.GetModel()->GetPosition());
 	ground.Render();
+
+	player.Render();
 
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ
 	text.Render2D();
+
 
 	DX9::SpriteBatch->End();
 	DXTK->Direct3D9->EndScene();

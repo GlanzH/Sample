@@ -9,6 +9,9 @@
 #include "MyClass/CameraManager/CameraManager.h"
 #include "MyClass/TextManager/TextManager.h"
 
+#include "MyClass/PlayerManager/PlayerManager.h"
+#include "MyClass/CameraManager/CameraManager.h"
+
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
 using std::make_unique;
@@ -47,4 +50,5 @@ private:
 	GroundManager ground;
 	CameraManager camera;
 	TextManager   text;
+	PlayerManager player;
 };
