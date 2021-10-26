@@ -121,7 +121,7 @@ NextScene MainScene::Update(const float deltaTime)
 
 	text.Update(deltaTime);
 	player.Update(deltaTime);
-
+	enemy.Update(deltaTime,ground.GetModel());
 	return NextScene::Continue;
 }
 

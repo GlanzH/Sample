@@ -11,6 +11,7 @@
 
 #include "MyClass/PlayerManager/PlayerManager.h"
 #include "MyClass/CameraManager/CameraManager.h"
+#include "MyClass/EnemyManager/EnemyManager.h"
 
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
@@ -59,4 +60,5 @@ private:
 	CameraManager camera;
 	TextManager   text;
 	PlayerManager player;
+	EnemyManager enemy;
 };
