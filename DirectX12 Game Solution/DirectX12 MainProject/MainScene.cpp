@@ -7,14 +7,15 @@
 #include "SceneFactory.h"
 
 // Initialize member variables.
-MainScene::MainScene()
+MainScene::MainScene() : dx9GpuDescriptor{}
 {
-	//cdvfghjkl;
+
 }
 
 // Initialize a variable and audio resources.
 void MainScene::Initialize()
 {
+<<<<<<< HEAD
 	pos = SimpleMath::Vector3(0.0f, 0.0f, 0.0f);
 
 	//ƒJƒƒ‰‚ÌˆÊ’u
@@ -25,12 +26,21 @@ void MainScene::Initialize()
 	mainCamera->SetPerspectiveFieldOfView(
 		XMConvertToRadians(60.0f), 16.0f / 9.0f, 1.0f, 10000.0f
 	);
+=======
+	//•Ï”‚âŠÖ”‚Ì‰Šú‰»‚Í‚±‚¿‚ç
+	text.Initialize();
+	text.LoadText();
+	camera.Initialize();
+>>>>>>> fbeab0414f7e967f69825aa93bb7b3a245311682
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
 void MainScene::LoadAssets()
 {
+<<<<<<< HEAD
 	
+=======
+>>>>>>> fbeab0414f7e967f69825aa93bb7b3a245311682
 	descriptorHeap = DX12::CreateDescriptorHeap(DXTK->Device, 1);
 
 	ResourceUploadBatch resourceUploadBatch(DXTK->Device);
@@ -46,11 +56,17 @@ void MainScene::LoadAssets()
 	spriteBatch = DX12::CreateSpriteBatch(DXTK->Device, resourceUploadBatch, pd, &viewport);
 
 	dx9GpuDescriptor = DXTK->Direct3D9->CreateShaderResourceView(descriptorHeap.get(), 0);
+<<<<<<< HEAD
 
 	auto uploadResourcesFinished = resourceUploadBatch.End(DXTK->CommandQueue);
 	uploadResourcesFinished.wait();
 
 	mikoto = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Mikoto//mikoto.x");
+=======
+
+	auto uploadResourcesFinished = resourceUploadBatch.End(DXTK->CommandQueue);
+	uploadResourcesFinished.wait();
+>>>>>>> fbeab0414f7e967f69825aa93bb7b3a245311682
 
 	light.Type = D3DLIGHT_DIRECTIONAL;
 	light.Direction = DX9::VectorSet(0.0f, -1.0f, 1.0f);
@@ -59,6 +75,13 @@ void MainScene::LoadAssets()
 	light.Specular = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 1.0f);
 	DXTK->Direct3D9->SetLight(0, light);
 	DXTK->Direct3D9->LightEnable(0, true);
+<<<<<<< HEAD
+=======
+
+	//‰æ‘œ‚âƒ‚ƒfƒ‹‚Ì‰Šú‰»‚Í‚±‚¿‚ç
+	ground.LoadAsset();
+	player.LoadAssets();
+>>>>>>> fbeab0414f7e967f69825aa93bb7b3a245311682
 }
 
 // Releasing resources required for termination.
@@ -89,6 +112,7 @@ NextScene MainScene::Update(const float deltaTime)
 	// If you use 'deltaTime', remove it.
 	UNREFERENCED_PARAMETER(deltaTime);
 	// TODO: Add your game logic here.
+<<<<<<< HEAD
 	if (DXTK->KeyState->Up || DXTK->GamePadState->IsLeftThumbStickUp())
 		pos.y -= 3.0f;
 	if (DXTK->KeyState->Down || DXTK->GamePadState->IsLeftThumbStickDown())
@@ -99,6 +123,13 @@ NextScene MainScene::Update(const float deltaTime)
 		pos.x += 3.0f;
 	
 	mikoto->AdvanceTime(deltaTime / 100.0f);
+=======
+
+	text.Update(deltaTime);
+	player.Update(deltaTime);
+
+	
+>>>>>>> fbeab0414f7e967f69825aa93bb7b3a245311682
 
 	return NextScene::Continue;
 }
@@ -106,6 +137,7 @@ NextScene MainScene::Update(const float deltaTime)
 // Draws the scene.
 void MainScene::Render()
 {
+<<<<<<< HEAD
 	DXTK->Direct3D9->Clear(DX9::Colors::RGBA(0, 0, 0, 255));
 
 	DXTK->Direct3D9->BeginScene();
@@ -115,6 +147,24 @@ void MainScene::Render()
 	DX9::SpriteBatch->Begin();
 
 	mikoto->Draw();
+=======
+	// TODO: Add your rendering code here.
+	DXTK->Direct3D9->Clear(DX9::Colors::CornflowerBlue);
+
+	DXTK->Direct3D9->BeginScene();
+
+	//3D•`‰æ
+	camera.Render(player.GetModel()->GetPosition());
+	ground.Render();
+
+	player.Render();
+
+	DX9::SpriteBatch->Begin();
+
+	//2D•`‰æ
+	text.Render2D();
+
+>>>>>>> fbeab0414f7e967f69825aa93bb7b3a245311682
 
 	DX9::SpriteBatch->End();
 	DXTK->Direct3D9->EndScene();
@@ -129,11 +179,26 @@ void MainScene::Render()
 	DXTK->CommandList->SetDescriptorHeaps(1, &heapes);
 
 	spriteBatch->Begin(DXTK->CommandList);
+<<<<<<< HEAD
 	spriteBatch->Draw(dx9GpuDescriptor,XMUINT2(1280, 720),SimpleMath::Vector3(400.0f,0.0f, 0.0f));
+=======
+	spriteBatch->Draw(
+		dx9GpuDescriptor,
+		XMUINT2(1280, 720),
+		SimpleMath::Vector2(0.0f, 0.0f)
+	);
+
+	spriteBatch->End();
+>>>>>>> fbeab0414f7e967f69825aa93bb7b3a245311682
 
 	spriteBatch->End();
 
 	DXTK->Direct3D9->WaitUpdate();
 	DXTK->ExecuteCommandList();
+<<<<<<< HEAD
 	// TODO: Add your rendering code here.
 }
+=======
+	DXTK->Direct3D9->WaitUpdate();
+}
+>>>>>>> fbeab0414f7e967f69825aa93bb7b3a245311682
