@@ -97,7 +97,7 @@ NextScene MainScene::Update(const float deltaTime)
 		pos.x -= 3.0f;
 	if (DXTK->KeyState->Right || DXTK->GamePadState->IsLeftThumbStickRight())
 		pos.x += 3.0f;
-
+	
 	mikoto->AdvanceTime(deltaTime / 100.0f);
 
 	return NextScene::Continue;
