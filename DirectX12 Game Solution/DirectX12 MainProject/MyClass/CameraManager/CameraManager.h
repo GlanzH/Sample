@@ -10,7 +10,7 @@ class CameraManager
 public:
 	bool Initialize();
 	int  Update();
-	void Render();
+	void Render(Vector3 player_position);
 
 private:
 	CAMERA  camera;

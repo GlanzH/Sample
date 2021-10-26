@@ -15,8 +15,8 @@ public:
 	int Update(const float deltaTime);
 	void Render();
 
-
-	DX9::MODEL & GetCollision() { return collision; };
+	DX9::SKINNEDMODEL& GetModel() { return model; }
+	DX9::MODEL& GetCollision()	  { return collision; };
 
 private:
 	//ÉvÉåÉCÉÑÅ[
