@@ -19,6 +19,8 @@ void MainScene::Initialize()
 	text.Initialize();
 	text.LoadText();
 	camera.Initialize();
+	player.Initialize();
+	enemy.Initialize();
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -54,6 +56,7 @@ void MainScene::LoadAssets()
 	//‰æ‘œ‚âƒ‚ƒfƒ‹‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 	ground.LoadAsset();
 	player.LoadAssets();
+	enemy.LoadAsset();
 }
 
 // Releasing resources required for termination.
@@ -88,7 +91,7 @@ NextScene MainScene::Update(const float deltaTime)
 
 	text.Update(deltaTime);
 	player.Update(ground.GetModel(), deltaTime);
-
+	enemy.Update(ground.GetModel(), deltaTime);
 	
 
 	return NextScene::Continue;
@@ -105,8 +108,8 @@ void MainScene::Render()
 	//3D•`‰æ
 	camera.Render(player.GetModel()->GetPosition());
 	ground.Render();
-
 	player.Render();
+	enemy.Render();
 
 	DX9::SpriteBatch->Begin();
 
