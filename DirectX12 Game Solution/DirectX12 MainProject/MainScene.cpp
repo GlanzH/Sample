@@ -113,7 +113,6 @@ void MainScene::Render()
 	//2D•`‰æ
 	text.Render2D();
 
-	player._2DRender();
 
 
 	DX9::SpriteBatch->End();
