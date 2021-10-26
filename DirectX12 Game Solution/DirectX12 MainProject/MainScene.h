@@ -8,8 +8,8 @@
 #include "MyClass/GroundManager/GroundManager.h"
 #include "MyClass/CameraManager/CameraManager.h"
 #include "MyClass/TextManager/TextManager.h"
-
 #include "MyClass/PlayerManager/PlayerManager.h"
+#include "MyClass/EnemyManager/EnemyManager.h"
 #include "MyClass/CameraManager/CameraManager.h"
 
 using Microsoft::WRL::ComPtr;
@@ -51,4 +51,5 @@ private:
 	CameraManager camera;
 	TextManager   text;
 	PlayerManager player;
+	EnemyManager  enemy;
 };
