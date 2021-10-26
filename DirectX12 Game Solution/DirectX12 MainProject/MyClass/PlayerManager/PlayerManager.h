@@ -10,10 +10,12 @@ public:
 	PlayerManager() {};
 	~PlayerManager() {};
 
-	bool Initialize();
+	void Initialize();
 	void LoadAssets();
-	int Update(const float deltaTime);
+	int Update(DX9::MODEL& ground, const float deltaTime);
 	void Render();
+
+	void _2DRender();
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
 	DX9::MODEL& GetCollision()	  { return collision; };
@@ -38,12 +40,21 @@ private:
 		MOTION_MAX
 	};
 
+	void SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack);
+
 
 	//ジャンプしてるかのフラグ。
-	bool jump_flag = false;
-	float time = 1.0f;
-	float gravity = 9.81f;
+	bool jump_flag_ = false;
+	float jump_time_ = 0.0f;
+	float jump_start_v_;
 
+	//重力加速度
+	float gravity_ = 9.81f;
+	//落下時
+	float V1;
+	//初速
+	float V0 = 10.0f;
 
+	DX9::SPRITEFONT font;
 
 };

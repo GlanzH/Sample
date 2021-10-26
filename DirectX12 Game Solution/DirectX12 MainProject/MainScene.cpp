@@ -87,7 +87,7 @@ NextScene MainScene::Update(const float deltaTime)
 	// TODO: Add your game logic here.
 
 	text.Update(deltaTime);
-	player.Update(deltaTime);
+	player.Update(ground.GetModel(), deltaTime);
 
 	
 
@@ -112,6 +112,8 @@ void MainScene::Render()
 
 	//2D•`‰æ
 	text.Render2D();
+
+	player._2DRender();
 
 
 	DX9::SpriteBatch->End();
