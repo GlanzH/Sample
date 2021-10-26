@@ -14,10 +14,6 @@ bool CameraManager::Initialize() {
 	return true;
 }
 
-int CameraManager::Update() {
-	return 0;
-}
-
 void CameraManager::Render(Vector3 player_position) {
 	camera->SetViewLookAt(player_position + SimpleMath::Vector3(0.0f, 0.0f, -1.0f) * 40
 		+ SimpleMath::Vector3(0.0f, 10.0f, 0.0f), player_position, vector_up);
