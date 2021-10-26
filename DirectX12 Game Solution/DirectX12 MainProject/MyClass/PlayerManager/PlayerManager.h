@@ -20,8 +20,11 @@ public:
 private:
 	//プレイヤー
 	DX9::SKINNEDMODEL model;
+	SimpleMath::Vector3 pos = SimpleMath::Vector3(0.0f, 0.0f, 50.0f);
 
-	SimpleMath::Vector3 player_pos = SimpleMath::Vector3(0.0f, 0.0f, 50.0f);
+	BoundingBox box;
+
+	D3DMATERIAL9 material;
 
 	//プレイヤーのスピード
 	float player_speed_ = 30.0f;
@@ -41,7 +44,6 @@ private:
 
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack);
 
-	BoundingBox model_attack_;
 
 
 
@@ -54,6 +56,7 @@ private:
 	float gravity_ = 9.81f;
 	//初速
 	float V0 = 10.0f;
+
 
 
 };

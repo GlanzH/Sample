@@ -4,10 +4,10 @@
 
 bool PlayerManager::Initialize() 
 {
-
 	jump_flag_ = false;
 	jump_time_ = 0.0f;
 	jump_start_v_ = 0.0f;
+
 
 	return 0;
 }
@@ -16,8 +16,30 @@ void PlayerManager::LoadAssets()
 {
 	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Mikoto//mikoto.x");
 	model->SetScale(0.04f);
-	model->SetPosition(player_pos);
+	model->SetPosition(pos);
 	model->SetRotation(0.0f, XMConvertToRadians(-90.0f), 0.0f);
+
+	box = model->GetBoundingBox();
+
+	collision = DX9::Model::CreateBox(
+		DXTK->Device9,
+		box.Extents.x * 2,
+		box.Extents.y * 2,
+		box.Extents.z * 2
+	);
+	collision->SetRotation(0.0f, XMConvertToRadians(-90.0f), 0.0f);
+
+
+
+	material.Diffuse = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.75f);
+	material.Ambient = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
+	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
+	collision->SetMaterial(material);
+
+	box.Center = pos;
+	//box.Center.y -= box.;
+	collision->SetScale(1.5);
+
 
 }
 
@@ -34,6 +56,7 @@ int PlayerManager::Update(DX9::MODEL& ground, const float deltaTime)
 	SetAnimation(model, Wait);
 
 
+
 	//プレイヤー:移動
 	if (DXTK->KeyState->Right||DXTK->KeyState->D) {
 		model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
@@ -45,6 +68,10 @@ int PlayerManager::Update(DX9::MODEL& ground, const float deltaTime)
 		SetAnimation(model, Walk);
 	}
 
+
+
+
+
 	//プレイヤー:ジャンプ
 	//ジャンプ
 	if (!jump_flag_) {
@@ -54,7 +81,6 @@ int PlayerManager::Update(DX9::MODEL& ground, const float deltaTime)
 			jump_start_v_ = model->Position.y;
 			SetAnimation(model, Jump);
 		}
-
 	}
 
 	if (jump_flag_) {
@@ -74,7 +100,6 @@ int PlayerManager::Update(DX9::MODEL& ground, const float deltaTime)
 				model->Move(0.0f, dist, 0.0f);
 				jump_flag_ = false;
 			}
-
 		}
 	}
 
@@ -83,11 +108,13 @@ int PlayerManager::Update(DX9::MODEL& ground, const float deltaTime)
 
 	}
 
+
+
 	//ランバージャック(移動制限)
 	auto p_pos = model->GetPosition();
 	p_pos = SimpleMath::Vector3(
 		std::clamp(p_pos.x,  -99.0f,  99.0f),
-		std::clamp(p_pos.y,   -5.0f, 100.0f),
+		std::clamp(p_pos.y,   -5.0f, 1000.0f),
 		std::clamp(p_pos.z, -100.0f, 100.0f)
 	);
 	model->SetPosition(p_pos);
@@ -100,6 +127,8 @@ void PlayerManager::Render()
 {
 	//プレイヤーの描画
 	model->Draw();
+
+	collision->Draw();
 }
 
 
