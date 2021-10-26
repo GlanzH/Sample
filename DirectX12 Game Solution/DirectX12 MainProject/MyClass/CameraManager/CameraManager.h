@@ -9,7 +9,6 @@ class CameraManager
 {
 public:
 	bool Initialize();
-	int  Update();
 	void Render(Vector3 player_position);
 
 private:
