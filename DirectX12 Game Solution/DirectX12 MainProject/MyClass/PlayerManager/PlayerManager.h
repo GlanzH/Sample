@@ -45,6 +45,5 @@ private:
 	float gravity = 9.81f;
 
 
-	void SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack);
 
 };
