@@ -57,6 +57,11 @@ private:
 	//‰‘¬
 	float V0 = 10.0f;
 
+public:
+	bool GetHitFlag() { return hit_flag; }
+private:
+	bool hit_flag = false;
+
 
 
 };

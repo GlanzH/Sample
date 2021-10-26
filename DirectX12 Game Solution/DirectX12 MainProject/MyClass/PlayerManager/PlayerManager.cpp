@@ -9,16 +9,7 @@ bool PlayerManager::Initialize()
 	jump_start_v_ = 0.0f;
 
 
-	return 0;
-}
-
-void PlayerManager::LoadAssets() 
-{
-	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Mikoto//mikoto.x");
-	model->SetScale(0.04f);
-	model->SetPosition(pos);
-	model->SetRotation(0.0f, XMConvertToRadians(-90.0f), 0.0f);
-
+	//ƒvƒŒƒCƒ„[‚Ì“–‚½‚è”»’è
 	box = model->GetBoundingBox();
 
 	collision = DX9::Model::CreateBox(
@@ -39,6 +30,17 @@ void PlayerManager::LoadAssets()
 	box.Center = pos;
 	//box.Center.y -= box.;
 	collision->SetScale(1.5);
+
+	return 0;
+}
+
+void PlayerManager::LoadAssets() 
+{
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Mikoto//mikoto.x");
+	model->SetScale(0.04f);
+	model->SetPosition(pos);
+	model->SetRotation(0.0f, XMConvertToRadians(-90.0f), 0.0f);
+
 
 
 }
