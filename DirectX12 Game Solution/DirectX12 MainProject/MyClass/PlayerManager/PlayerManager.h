@@ -11,12 +11,11 @@ public:
 
 	bool Initialize();
 	void LoadAssets();
-	int Update(DX9::MODEL& ground, DX9::MODEL& enemy, const float deltaTime);
+	int Update(DX9::MODEL& ground, BoundingBox& enemy, const float deltaTime);
 	void Render();
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
-	DX9::MODEL& GetCollision()	  { return collision; };
-
+	BoundingBox  GetBox() { return  box; }
 private:
 	//ÉvÉåÉCÉÑÅ[
 	DX9::SKINNEDMODEL model;

@@ -45,7 +45,7 @@ void PlayerManager::LoadAssets()
 
 }
 
-int PlayerManager::Update(DX9::MODEL& ground, DX9::MODEL& enemy, const float deltaTime)
+int PlayerManager::Update(DX9::MODEL& ground, BoundingBox& enemy, const float deltaTime)
 {
 	//地形の当たり判定
 	float dist = FLT_MAX;
@@ -113,7 +113,7 @@ int PlayerManager::Update(DX9::MODEL& ground, DX9::MODEL& enemy, const float del
 	//当たり判定はIntersertsを使う
 	//当たり判定をさせたいモデルのコリジョン.Interserts(相手モデルのコリジョン)
 	//今回の場合
-	if (collision.Intersects(enemy)) {
+	if (collision.Intersects(box)) {
 		//プレイヤーが的にあたったときのの処理
 		//今回は、hit_flagをtrueにする
 		hit_flag = true;
