@@ -26,7 +26,5 @@ private:
 	BoundingBox  box;
 	D3DMATERIAL9 material;
 
-	PlayerManager player;
-
 	const Vector3 init_pos = Vector3(50.0f, 0.0f, 50.0f);
 };

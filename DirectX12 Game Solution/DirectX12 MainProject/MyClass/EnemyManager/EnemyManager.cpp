@@ -30,7 +30,7 @@ void EnemyManager::LoadAsset() {
 }
 
 int EnemyManager::Update(DX9::MODEL& ground, const float deltaTime) {
-	if (!player.GetHitFlag())
+	if (!PlayerManager::Instance().GetHitFlag())
 		Move(ground, deltaTime);
 	return 0;
 }
@@ -52,7 +52,7 @@ void EnemyManager::Move(DX9::MODEL& ground, const float deltaTime) {
 }
 
 void EnemyManager::Render() {
-	if(!player.GetHitFlag())
+	if(!PlayerManager::Instance().GetHitFlag())
 	model->Draw();
 	
 	//collision->Draw();

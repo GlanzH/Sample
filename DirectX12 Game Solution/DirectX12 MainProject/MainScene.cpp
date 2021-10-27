@@ -19,7 +19,7 @@ void MainScene::Initialize()
 	text.Initialize();
 	text.LoadText();
 	camera.Initialize();
-	player.Initialize();
+	PlayerManager::Instance().Initialize();
 	enemy.Initialize();
 }
 
@@ -55,7 +55,7 @@ void MainScene::LoadAssets()
 
 	//‰æ‘œ‚âƒ‚ƒfƒ‹‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 	ground.LoadAsset();
-	player.LoadAssets();
+	PlayerManager::Instance().LoadAssets();
 	enemy.LoadAsset();
 }
 
@@ -90,7 +90,7 @@ NextScene MainScene::Update(const float deltaTime)
 	// TODO: Add your game logic here.
 
 	text.Update(deltaTime);
-	player.Update(ground.GetModel(), enemy.GetBox(), deltaTime);
+	PlayerManager::Instance().Update(ground.GetModel(), enemy.GetBox(), deltaTime);
 	enemy.Update(ground.GetModel(), deltaTime);
 	
 
@@ -106,9 +106,9 @@ void MainScene::Render()
 	DXTK->Direct3D9->BeginScene();
 
 	//3D•`‰æ
-	camera.Render(player.GetModel()->GetPosition());
+	camera.Render(PlayerManager::Instance().GetModel()->GetPosition());
 	ground.Render();
-	player.Render();
+	PlayerManager::Instance().Render();
 	enemy.Render();
 
 	DX9::SpriteBatch->Begin();

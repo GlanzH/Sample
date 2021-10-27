@@ -17,6 +17,11 @@ public:
 	DX9::SKINNEDMODEL& GetModel() { return model; }
 	BoundingBox  GetBox()		  { return  box; }
 	bool GetHitFlag()			  { return hit_flag; }
+
+	static PlayerManager& Instance() {
+		static PlayerManager instance;
+		return instance;
+	}
 private:
 	//ÉvÉåÉCÉÑÅ[
 	DX9::SKINNEDMODEL model;

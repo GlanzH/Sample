@@ -8,7 +8,7 @@ bool PlayerManager::Initialize()
 	jump_time_ = 0.0f;
 	jump_start_v_ = 0.0f;
 
-
+	hit_flag = false;
 
 	return 0;
 }
@@ -104,17 +104,14 @@ int PlayerManager::Update(DX9::MODEL& ground, BoundingBox enemy, const float del
 
 	//プレイヤー:攻撃
 	if (DXTK->KeyEvent->pressed.J||DXTK->KeyEvent->pressed.F) {
-
-	}
-
-	//当たり判定はIntersertsを使う
-	//当たり判定をさせたいモデルのコリジョン.Interserts(相手モデルのコリジョン)
-	//今回の場合
-
-	if (box.Intersects(enemy)) {
-		//プレイヤーが的にあたったときのの処理
-		//今回は、hit_flagをtrueにする
-		hit_flag = true;
+		//当たり判定はIntersertsを使う
+		//当たり判定をさせたいモデルのコリジョン.Interserts(相手モデルのコリジョン)
+		//今回の場合
+		if (box.Intersects(enemy)) {
+			//プレイヤーが的にあたったときのの処理
+			//今回は、hit_flagをtrueにする
+			hit_flag = true;
+		}
 	}
 
 
@@ -138,7 +135,7 @@ void PlayerManager::Render()
 	//プレイヤーの描画
 	model->Draw();
 
-	collision->Draw();
+	//collision->Draw();
 }
 
 

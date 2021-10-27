@@ -50,6 +50,5 @@ private:
 	GroundManager ground;
 	CameraManager camera;
 	TextManager   text;
-	PlayerManager player;
 	EnemyManager  enemy;
 };
