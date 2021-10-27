@@ -17,7 +17,7 @@ void PlayerManager::LoadAssets()
 {
 	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Mikoto//mikoto.x");
 	model->SetScale(0.04f);
-	model->SetPosition(pos);
+	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, XMConvertToRadians(-90.0f), 0.0f);
 
 	//ƒvƒŒƒCƒ„[‚Ì“–‚½‚è”»’è
@@ -38,7 +38,7 @@ void PlayerManager::LoadAssets()
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	collision->SetMaterial(material);
 
-	box.Center = pos;
+	box.Center = player_pos;
 	//box.Center.y -= box.;
 	collision->SetScale(1.5);
 
@@ -121,6 +121,8 @@ int PlayerManager::Update(DX9::MODEL& ground, const float deltaTime)
 	);
 	model->SetPosition(p_pos);
 
+
+	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0,4,0));
 
 	return 0;
 }
