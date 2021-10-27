@@ -30,10 +30,16 @@ void EnemyManager::LoadAsset() {
 }
 
 int EnemyManager::Update(DX9::MODEL& ground, const float deltaTime) {
+	if (!player.GetHitFlag())
+		Move(ground, deltaTime);
+	return 0;
+}
+
+void EnemyManager::Move(DX9::MODEL& ground, const float deltaTime) {
 	model->Move(0.0f, 0.0f, -15.0f * deltaTime);
 
 	float dist = FLT_MAX;
-	if (ground->IntersectRay(model->GetPosition() + SimpleMath::Vector3(0, 100, 0), SimpleMath::Vector3::Down, &dist))
+	if (ground->IntersectRay(model->GetPosition() + Vector3(0, 100, 0), Vector3::Down, &dist))
 		model->Move(0.0f, 100.0f - dist, 0.0f);
 
 	if (model->GetPosition().x > -95.0f)
@@ -41,11 +47,11 @@ int EnemyManager::Update(DX9::MODEL& ground, const float deltaTime) {
 	else
 		model->SetPosition(init_pos);
 
-	collision->SetPosition(model->GetPosition() + Vector3(0,4,0));
-	return 0;
+	collision->SetPosition(model->GetPosition() + Vector3(0, 4, 0));
 }
 
 void EnemyManager::Render() {
+	if(!player.GetHitFlag())
 	model->Draw();
 	//collision->Draw();
 }
