@@ -47,11 +47,13 @@ void EnemyManager::Move(DX9::MODEL& ground, const float deltaTime) {
 	else
 		model->SetPosition(init_pos);
 
+	box.Center = model->GetPosition();
 	collision->SetPosition(model->GetPosition() + Vector3(0, 4, 0));
 }
 
 void EnemyManager::Render() {
 	if(!player.GetHitFlag())
 	model->Draw();
+	
 	//collision->Draw();
 }

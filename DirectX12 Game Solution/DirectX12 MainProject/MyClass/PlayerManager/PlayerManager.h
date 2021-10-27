@@ -11,11 +11,12 @@ public:
 
 	bool Initialize();
 	void LoadAssets();
-	int Update(DX9::MODEL& ground, BoundingBox& enemy, const float deltaTime);
+	int Update(DX9::MODEL& ground, BoundingBox enemy, const float deltaTime);
 	void Render();
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
-	BoundingBox  GetBox() { return  box; }
+	BoundingBox  GetBox()		  { return  box; }
+	bool GetHitFlag()			  { return hit_flag; }
 private:
 	//ÉvÉåÉCÉÑÅ[
 	DX9::SKINNEDMODEL model;
@@ -56,11 +57,5 @@ private:
 	//èâë¨
 	float V0 = 10.0f;
 
-public:
-	bool GetHitFlag() { return hit_flag; }
-private:
 	bool hit_flag = false;
-
-
-
 };

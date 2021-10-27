@@ -39,13 +39,10 @@ void PlayerManager::LoadAssets()
 	collision->SetMaterial(material);
 
 	box.Center = player_pos;
-	//box.Center.y -= box.;
-	collision->SetScale(1.5);
-
 
 }
 
-int PlayerManager::Update(DX9::MODEL& ground, BoundingBox& enemy, const float deltaTime)
+int PlayerManager::Update(DX9::MODEL& ground, BoundingBox enemy, const float deltaTime)
 {
 	//地形の当たり判定
 	float dist = FLT_MAX;
@@ -113,7 +110,8 @@ int PlayerManager::Update(DX9::MODEL& ground, BoundingBox& enemy, const float de
 	//当たり判定はIntersertsを使う
 	//当たり判定をさせたいモデルのコリジョン.Interserts(相手モデルのコリジョン)
 	//今回の場合
-	if (collision.Intersects(box)) {
+
+	if (box.Intersects(enemy)) {
 		//プレイヤーが的にあたったときのの処理
 		//今回は、hit_flagをtrueにする
 		hit_flag = true;
@@ -129,7 +127,7 @@ int PlayerManager::Update(DX9::MODEL& ground, BoundingBox& enemy, const float de
 	);
 	model->SetPosition(p_pos);
 
-
+	box.Center = model->GetPosition();
 	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0,4,0));
 
 	return 0;
