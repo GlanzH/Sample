@@ -90,7 +90,7 @@ NextScene MainScene::Update(const float deltaTime)
 	// TODO: Add your game logic here.
 
 	text.Update(deltaTime);
-	player.Update(ground.GetModel(), deltaTime);
+	player.Update(ground.GetModel(), enemy.GetCollision(), deltaTime);
 	enemy.Update(ground.GetModel(), deltaTime);
 	
 
