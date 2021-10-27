@@ -15,7 +15,7 @@ public:
 	void LoadAsset();
 	int  Update(DX9::MODEL& ground, const float deltaTime);
 	void Render();
-	DX9::MODEL& GetCollision() { return collision; }
+	BoundingBox GetBox() { return box; }
 
 private:
 	void Move(DX9::MODEL& ground, const float deltaTime);
