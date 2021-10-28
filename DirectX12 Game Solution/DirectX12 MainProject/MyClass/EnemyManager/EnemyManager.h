@@ -1,6 +1,7 @@
 #pragma once
 
 using namespace DirectX;
+#include "EnemyBase/EnemyBase.h"
 #include "../PlayerManager/PlayerManager.h"
 
 typedef SimpleMath::Vector3 Vector3;
@@ -8,23 +9,18 @@ typedef SimpleMath::Vector3 Vector3;
 class EnemyManager
 {
 public:
-	EnemyManager() {};
+	EnemyManager();
 	~EnemyManager() {};
 
 	bool Initialize();
 	void LoadAsset();
 	int  Update(DX9::MODEL& ground, const float deltaTime);
 	void Render();
-	BoundingBox GetBox() { return box; }
 
 private:
-	void Move(DX9::MODEL& ground, const float deltaTime);
+	std::list<EnemyBase*> enemy;
 
-	DX9::SKINNEDMODEL model;
-	DX9::MODEL		  collision;
-	
-	BoundingBox  box;
-	D3DMATERIAL9 material;
 
-	const Vector3 init_pos = Vector3(50.0f, 0.0f, 50.0f);
+	//	void Move(DX9::MODEL& ground, const float deltaTime);
+	//const Vector3 init_pos = Vector3(50.0f, 0.0f, 50.0f);
 };

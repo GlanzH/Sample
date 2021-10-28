@@ -42,7 +42,7 @@ void PlayerManager::LoadAssets()
 
 }
 
-int PlayerManager::Update(DX9::MODEL& ground, BoundingBox enemy, const float deltaTime)
+int PlayerManager::Update(DX9::MODEL& ground, const float deltaTime)
 {
 	//地形の当たり判定
 	float dist = FLT_MAX;
@@ -113,17 +113,17 @@ int PlayerManager::Update(DX9::MODEL& ground, BoundingBox enemy, const float del
 		}
 	}
 
-	//プレイヤー:攻撃
-	if (DXTK->KeyEvent->pressed.J||DXTK->KeyEvent->pressed.F) {
-		//当たり判定はIntersertsを使う
-		//当たり判定をさせたいモデルのコリジョン.Interserts(相手モデルのコリジョン)
-		//今回の場合
-		if (box.Intersects(enemy)) {
-			//プレイヤーが的にあたったときのの処理
-			//今回は、hit_flagをtrueにする
-			hit_flag = true;
-		}
-	}
+	////プレイヤー:攻撃
+	//if (DXTK->KeyEvent->pressed.J||DXTK->KeyEvent->pressed.F) {
+	//	//当たり判定はIntersertsを使う
+	//	//当たり判定をさせたいモデルのコリジョン.Interserts(相手モデルのコリジョン)
+	//	//今回の場合
+	//	if (box.Intersects(enemy)) {
+	//		//プレイヤーが的にあたったときのの処理
+	//		//今回は、hit_flagをtrueにする
+	//		hit_flag = true;
+	//	}
+	//}
 
 
 	//ランバージャック(移動制限)

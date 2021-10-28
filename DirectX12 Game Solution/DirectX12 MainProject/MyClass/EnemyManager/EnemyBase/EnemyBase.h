@@ -1,5 +1,6 @@
 #pragma once
 #include "MyClass/EnumManager/EnumManager.h"
+#include "MyClass/PlayerManager/PlayerManager.h"
 #include "MyClass/GroundManager/GroundManager.h"
 
 using namespace DirectX;
@@ -13,7 +14,7 @@ public:
 	~EnemyBase() {}
 
 	bool Initialize();
-	void LoadAsset();
+	void LoadAsset(Vector3 initial_position);
 	virtual int Update(const float deltaTime);
 	void Render();
 

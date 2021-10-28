@@ -11,7 +11,7 @@ public:
 
 	bool Initialize();
 	void LoadAssets();
-	int Update(DX9::MODEL& ground, BoundingBox enemy, const float deltaTime);
+	int Update(DX9::MODEL& ground, const float deltaTime);
 	void Render();
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
