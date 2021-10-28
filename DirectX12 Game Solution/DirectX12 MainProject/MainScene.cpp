@@ -76,6 +76,7 @@ void MainScene::LoadAssets()
 	//‰æ‘œ‚âƒ‚ƒfƒ‹‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 	ground.LoadAsset();
 	player.LoadAssets();
+	enemy.LoadAsset();
 }
 
 // Releasing resources required for termination.

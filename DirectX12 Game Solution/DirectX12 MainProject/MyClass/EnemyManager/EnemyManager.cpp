@@ -10,7 +10,7 @@ bool EnemyManager::Initialize()
 
 void EnemyManager::LoadAsset()
 {
-	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Mikoto//mikoto.x");
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Mikoto\\mikoto.x");
 	model->SetScale(0.04f);
 	model->SetPosition(enemy_pos);
 	model->SetRotation(0.0f, XMConvertToRadians(-90.0f), 0.0f);
@@ -18,7 +18,7 @@ void EnemyManager::LoadAsset()
 
 int EnemyManager::Update(const float deltaTime, DX9::MODEL& ground)
 {
-	model->Move(0.0f, 0.0f, 5.0f);
+	//model->Move(0.0f, 0.0f, 5.0f);
 	//// ’nŒ`‚Ì‚‚³‚ð’²‚×‚é
 	//	//FLT_MAX‚ÍfloatŒ^‚ÌÅ‘å”
      float dist = FLT_MAX;
@@ -26,6 +26,8 @@ int EnemyManager::Update(const float deltaTime, DX9::MODEL& ground)
 	{
 		model->Move(0.0f, 100.0f - dist, 0.0f);
 	}
+
+	enemy_pos=model->GetPosition();
 	return 0;
 }
 
