@@ -63,6 +63,7 @@ void TextManager::Update(const float deltaTime) {
 		if (DXTK->KeyEvent->pressed.Space) {
 			write[1] = 3.0f;
 			changeFlag = true;
+			writeFlag = false;
 		}
 	}
 
