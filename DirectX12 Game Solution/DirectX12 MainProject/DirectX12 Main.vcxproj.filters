@@ -66,9 +66,6 @@
     <ClInclude Include="MyClass\CameraManager\CameraManager.h">
       <Filter>MyClass\CameraManager</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyManager.h">
-      <Filter>MyClass\EnemyManager</Filter>
-    </ClInclude>
     <ClInclude Include="MyClass\PlayerManager\PlayerManager.h">
       <Filter>MyClass\PlayerManager</Filter>
     </ClInclude>
@@ -77,6 +74,9 @@
     </ClInclude>
     <ClInclude Include="MyClass\GroundManager\GroundManager.h">
       <Filter>MyClass\GroundManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyManager.h">
+      <Filter>MyClass\EnemyManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

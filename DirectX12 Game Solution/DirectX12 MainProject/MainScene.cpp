@@ -15,32 +15,17 @@ MainScene::MainScene() : dx9GpuDescriptor{}
 // Initialize a variable and audio resources.
 void MainScene::Initialize()
 {
-
-	pos = SimpleMath::Vector3(0.0f, 0.0f, 0.0f);
-
-	//ƒJƒƒ‰‚ÌˆÊ’u
-	mainCamera->SetView(SimpleMath::Vector3(0.0f, 0.0f, -10.0f),
-		SimpleMath::Vector3(0.0f, 0.0f, 0.0f)
-	);
-	//ƒJƒƒ‰‚ÌŒü‚«E‰f‚·‹——£
-	mainCamera->SetPerspectiveFieldOfView(
-		XMConvertToRadians(60.0f), 16.0f / 9.0f, 1.0f, 10000.0f
-	);
-
-//•Ï”‚âŠÖ”‚Ì‰Šú‰»‚Í‚±‚¿‚ç
+	//•Ï”‚âŠÖ”‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 	text.Initialize();
 	text.LoadText();
 	camera.Initialize();
-
+	PlayerManager::Instance().Initialize();
+	enemy.Initialize();
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
 void MainScene::LoadAssets()
 {
-
-	
-
-
 	descriptorHeap = DX12::CreateDescriptorHeap(DXTK->Device, 1);
 
 	ResourceUploadBatch resourceUploadBatch(DXTK->Device);
@@ -57,12 +42,8 @@ void MainScene::LoadAssets()
 
 	dx9GpuDescriptor = DXTK->Direct3D9->CreateShaderResourceView(descriptorHeap.get(), 0);
 
-
 	auto uploadResourcesFinished = resourceUploadBatch.End(DXTK->CommandQueue);
 	uploadResourcesFinished.wait();
-
-	mikoto = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Mikoto//mikoto.x");
-
 
 	light.Type = D3DLIGHT_DIRECTIONAL;
 	light.Direction = DX9::VectorSet(0.0f, -1.0f, 1.0f);
@@ -72,10 +53,9 @@ void MainScene::LoadAssets()
 	DXTK->Direct3D9->SetLight(0, light);
 	DXTK->Direct3D9->LightEnable(0, true);
 
-
 	//‰æ‘œ‚âƒ‚ƒfƒ‹‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 	ground.LoadAsset();
-	player.LoadAssets();
+	PlayerManager::Instance().LoadAssets();
 	enemy.LoadAsset();
 }
 
@@ -106,55 +86,36 @@ NextScene MainScene::Update(const float deltaTime)
 {
 	// If you use 'deltaTime', remove it.
 	UNREFERENCED_PARAMETER(deltaTime);
+
 	// TODO: Add your game logic here.
 
-	if (DXTK->KeyState->Up || DXTK->GamePadState->IsLeftThumbStickUp())
-		pos.y -= 3.0f;
-	if (DXTK->KeyState->Down || DXTK->GamePadState->IsLeftThumbStickDown())
-		pos.y += 3.0f;
-	if (DXTK->KeyState->Left || DXTK->GamePadState->IsLeftThumbStickLeft())
-		pos.x -= 3.0f;
-	if (DXTK->KeyState->Right || DXTK->GamePadState->IsLeftThumbStickRight())
-		pos.x += 3.0f;
-	
-	mikoto->AdvanceTime(deltaTime / 100.0f);
-
-
 	text.Update(deltaTime);
-	player.Update(deltaTime);
-	enemy.Update(deltaTime,ground.GetModel());
+	PlayerManager::Instance().Update(ground.GetModel(), enemy.GetBox(), deltaTime);
+	enemy.Update(ground.GetModel(), deltaTime);
+	
+
 	return NextScene::Continue;
 }
 
 // Draws the scene.
 void MainScene::Render()
 {
-
-	DXTK->Direct3D9->Clear(DX9::Colors::RGBA(0, 0, 0, 255));
-
-	DXTK->Direct3D9->BeginScene();
-
-	DXTK->Direct3D9->SetCamera(mainCamera);
-
-	DX9::SpriteBatch->Begin();
-
-	mikoto->Draw();
-
 	// TODO: Add your rendering code here.
 	DXTK->Direct3D9->Clear(DX9::Colors::CornflowerBlue);
 
 	DXTK->Direct3D9->BeginScene();
 
 	//3D•`‰æ
-	camera.Render(player.GetModel()->GetPosition());
+	camera.Render(PlayerManager::Instance().GetModel()->GetPosition());
 	ground.Render();
-
-	player.Render();
+	PlayerManager::Instance().Render();
+	enemy.Render();
 
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ
 	text.Render2D();
+
 
 	DX9::SpriteBatch->End();
 	DXTK->Direct3D9->EndScene();
@@ -169,9 +130,6 @@ void MainScene::Render()
 	DXTK->CommandList->SetDescriptorHeaps(1, &heapes);
 
 	spriteBatch->Begin(DXTK->CommandList);
-
-	spriteBatch->Draw(dx9GpuDescriptor,XMUINT2(1280, 720),SimpleMath::Vector3(400.0f,0.0f, 0.0f));
-
 	spriteBatch->Draw(
 		dx9GpuDescriptor,
 		XMUINT2(1280, 720),
@@ -180,13 +138,6 @@ void MainScene::Render()
 
 	spriteBatch->End();
 
-
-	spriteBatch->End();
-
-	DXTK->Direct3D9->WaitUpdate();
 	DXTK->ExecuteCommandList();
-	// TODO: Add your rendering code here.
+	DXTK->Direct3D9->WaitUpdate();
 }
-//	DXTK->Direct3D9->WaitUpdate();
-//}
-

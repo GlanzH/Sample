@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Windows.h>
 using namespace DirectX;
 
 class PlayerManager
@@ -12,18 +11,28 @@ public:
 
 	bool Initialize();
 	void LoadAssets();
-	int Update(const float deltaTime);
+	int Update(DX9::MODEL& ground, BoundingBox enemy, const float deltaTime);
 	void Render();
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
-	DX9::MODEL& GetCollision()	  { return collision; };
+	BoundingBox  GetBox()		  { return  box; }
+	bool GetHitFlag()			  { return hit_flag; }
 
+	static PlayerManager& Instance() {
+		static PlayerManager instance;
+		return instance;
+	}
 private:
 	//プレイヤー
 	DX9::SKINNEDMODEL model;
-
 	SimpleMath::Vector3 player_pos = SimpleMath::Vector3(0.0f, 0.0f, 50.0f);
 
+	BoundingBox box;
+
+	D3DMATERIAL9 material;
+
+	//プレイヤーのスピード
+	float player_speed_ = 30.0f;
 
 	DX9::MODEL collision;
 
@@ -38,13 +47,20 @@ private:
 		MOTION_MAX
 	};
 
-
-	//ジャンプしてるかのフラグ。
-	bool jump_flag = false;
-	float time = 1.0f;
-	float gravity = 9.81f;
-
-
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack);
 
+
+
+
+	//ジャンプしてるかのフラグ。
+	bool jump_flag_ = false;
+	float jump_time_ = 0.0f;
+	float jump_start_v_;
+
+	//重力加速度
+	float gravity_ = 9.81f;
+	//初速
+	float V0 = 10.0f;
+
+	bool hit_flag = false;
 };
