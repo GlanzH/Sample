@@ -58,9 +58,9 @@ private:
 	float jump_start_v_;
 
 	//d—Í‰Á‘¬“x
-	float gravity_ = 9.81f;
+	float gravity_ = 100.0f;
 	//‰‘¬
-	float V0 = 10.0f;
+	float V0 = 28.0f;
 
 	bool hit_flag = false;
 };
