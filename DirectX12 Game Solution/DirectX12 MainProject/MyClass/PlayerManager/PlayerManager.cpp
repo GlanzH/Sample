@@ -60,7 +60,7 @@ int PlayerManager::Update(DX9::MODEL& ground, BoundingBox enemy, const float del
 	if (DXTK->KeyState->Right||DXTK->KeyState->D) {
 		model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
 		SetAnimation(model, Walk);
-
+		
 	}
 	if (DXTK->KeyState->Left||DXTK->KeyState->A) {
 		model->Move(0.0f, 0.0f, player_speed_ * deltaTime);
@@ -88,11 +88,22 @@ int PlayerManager::Update(DX9::MODEL& ground, BoundingBox enemy, const float del
 		pos.y = jump_start_v_ + V0 * jump_time_ - 0.5f * gravity_ * jump_time_ * jump_time_;
 		model->SetPosition(pos);
 
+		float dist = 0;
+		if (ground->IntersectRay(
+			model->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
+			SimpleMath::Vector3::Up,
+			&dist
+		)) {
+			model->Move(0.0f, dist, 0.0f);
+			jump_flag_ = false;
+		}
+
+
 		//ƒWƒƒƒ“ƒv‚ÌI—¹”»’è
 		if (V0 * jump_time_ < gravity_ * jump_time_ * jump_time_) {
 			float dist = 0;
 			if (ground->IntersectRay(
-				model->GetPosition(),
+				model->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
 				SimpleMath::Vector3::Up,
 				&dist
 			)) {
