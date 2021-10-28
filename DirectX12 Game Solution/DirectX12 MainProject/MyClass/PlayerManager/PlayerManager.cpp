@@ -103,7 +103,7 @@ int PlayerManager::Update(DX9::MODEL& ground, BoundingBox enemy, const float del
 	}
 
 	//プレイヤー:攻撃
-	if (DXTK->KeyEvent->pressed.J||DXTK->KeyEvent->pressed.F) {
+	if (DXTK->KeyEvent->pressed.K||DXTK->KeyEvent->pressed.S) {
 		//当たり判定はIntersertsを使う
 		//当たり判定をさせたいモデルのコリジョン.Interserts(相手モデルのコリジョン)
 		//今回の場合
