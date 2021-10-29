@@ -17,13 +17,11 @@ bool CameraManager::Initialize() {
 }
 
 int CameraManager::Update() {
-	//camera->SetPosition();
+	auto pos = PlayerManager::Instance().GetModel()->GetPosition();
+	camera->SetPosition(pos.x,10.0f,-10.0f);
 	return 0;
 }
 
 void CameraManager::Render(Vector3 player_position) {
-	camera->SetViewLookAt(player_position + Vector3::Forward * 60
-		+ SimpleMath::Vector3(0.0f, 10.0f, 0.0f), player_position, Vector3::Up);
-
 	DXTK->Direct3D9->SetCamera(camera);
 }
