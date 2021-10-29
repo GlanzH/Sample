@@ -40,6 +40,9 @@
     <Filter Include="MyClass\EnumManager">
       <UniqueIdentifier>{9b28ac42-a149-4556-9f5b-83757bd94399}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory">
+      <UniqueIdentifier>{e110343c-e1ac-4e86-a7ab-b11f37bcd27e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -90,11 +93,14 @@
     <ClInclude Include="MyClass\EnemyManager\EnemyBase\EnemyBase.h">
       <Filter>MyClass\EnemyManager\EnemyBase</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyBase\Enemy\Enemy.h">
-      <Filter>MyClass\EnemyManager\EnemyBase\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="MyClass\EnumManager\EnumManager.h">
       <Filter>MyClass\EnumManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnumManager\EnemyFactory\EnemyFactory.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyBase\Enemy\Enemy.h">
+      <Filter>MyClass\EnemyManager\EnemyBase\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +136,9 @@
     </ClCompile>
     <ClCompile Include="MyClass\EnemyManager\EnemyBase\Enemy\Enemy.cpp">
       <Filter>MyClass\EnemyManager\EnemyBase\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnumManager\EnemyFactory\EnemyFactory.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

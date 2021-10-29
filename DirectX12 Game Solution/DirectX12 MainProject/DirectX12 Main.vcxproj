@@ -193,6 +193,7 @@
     <ClInclude Include="MyClass\EnemyManager\EnemyBase\EnemyBase.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyBase\Enemy\Enemy.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyManager.h" />
+    <ClInclude Include="MyClass\EnumManager\EnemyFactory\EnemyFactory.h" />
     <ClInclude Include="MyClass\EnumManager\EnumManager.h" />
     <ClInclude Include="MyClass\GroundManager\GroundManager.h" />
     <ClInclude Include="MyClass\PlayerManager\PlayerManager.h" />
@@ -225,6 +226,7 @@
     <ClCompile Include="MyClass\EnemyManager\EnemyManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="MyClass\EnumManager\EnemyFactory\EnemyFactory.cpp" />
     <ClCompile Include="MyClass\GroundManager\GroundManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
