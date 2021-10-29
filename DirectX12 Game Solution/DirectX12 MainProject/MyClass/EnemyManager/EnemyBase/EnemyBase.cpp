@@ -1,14 +1,17 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
+
 #include "EnemyBase.h"
+#include"MyClass/PlayerManager/PlayerManager.h"
 
-bool EnemyBase::Initialize() {
-
+bool EnemyBase::Initialize(SimpleMath::Vector3 Speed, int hp)
+{
+	
 	return false;
 }
 
-void EnemyBase::LoadAsset(Vector3 initial_position) {
-	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Mikoto//mikoto.x");
+void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
 	model->SetScale(0.04f);
 	model->SetPosition(initial_position);
 	model->SetRotation(0.0f, XMConvertToRadians(90.0f), 0.0f);
@@ -32,7 +35,7 @@ void EnemyBase::LoadAsset(Vector3 initial_position) {
 
 int EnemyBase::Update(const float deltaTime) {
 	box.Center = model->GetPosition();
-	collision->SetPosition(model->GetPosition() + Vector3(0, 4, 0));
+	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
 	return LIVE;
 }
 

@@ -1,20 +1,22 @@
 #pragma once
+
+#include "Base/pch.h"
+#include "Base/dxtk.h"
+
 #include "MyClass/EnumManager/EnumManager.h"
-#include "MyClass/PlayerManager/PlayerManager.h"
 #include "MyClass/GroundManager/GroundManager.h"
 
 using namespace DirectX;
 
-typedef SimpleMath::Vector3 Vector3;
 
 class EnemyBase
 {
 public:
-	EnemyBase()  {}
-	~EnemyBase() {}
+	EnemyBase() {};
+	~EnemyBase() {};
 
-	bool Initialize();
-	void LoadAsset(Vector3 initial_position);
+	bool Initialize(SimpleMath::Vector3 Speed,int hp);
+	void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 	virtual int Update(const float deltaTime);
 	void Render();
 
@@ -30,7 +32,7 @@ private:
 protected:
 	BoundingBox  box;
 	DX9::MODEL	 collision;
-	Vector3      position;
+	SimpleMath::Vector3  position;
 	
 	int hp = 1;
 };
