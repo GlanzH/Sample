@@ -190,7 +190,10 @@
     <ClInclude Include="DontDestroyOnLoad.h" />
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="MyClass\CameraManager\CameraManager.h" />
+    <ClInclude Include="MyClass\EnemyManager\EnemyBase\EnemyBase.h" />
+    <ClInclude Include="MyClass\EnemyManager\EnemyBase\Enemy\Enemy.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyManager.h" />
+    <ClInclude Include="MyClass\EnumManager\EnumManager.h" />
     <ClInclude Include="MyClass\GroundManager\GroundManager.h" />
     <ClInclude Include="MyClass\PlayerManager\PlayerManager.h" />
     <ClInclude Include="MyClass\TextManager\TextManager.h" />
@@ -217,6 +220,8 @@
     <ClCompile Include="MyClass\CameraManager\CameraManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyBase\EnemyBase.cpp" />
+    <ClCompile Include="MyClass\EnemyManager\EnemyBase\Enemy\Enemy.cpp" />
     <ClCompile Include="MyClass\EnemyManager\EnemyManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>

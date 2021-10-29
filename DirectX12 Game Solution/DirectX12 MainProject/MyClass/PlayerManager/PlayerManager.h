@@ -11,7 +11,7 @@ public:
 
 	bool Initialize();
 	void LoadAssets();
-	int Update(DX9::MODEL& ground, BoundingBox enemy, const float deltaTime);
+	int Update(DX9::MODEL& ground, const float deltaTime);
 	void Render();
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
@@ -58,9 +58,9 @@ private:
 	float jump_start_v_;
 
 	//èdóÕâ¡ë¨ìx
-	float gravity_ = 9.81f;
+	float gravity_ = 100.0f;
 	//èâë¨
-	float V0 = 10.0f;
+	float V0 = 28.0f;
 
 	bool hit_flag = false;
 };
