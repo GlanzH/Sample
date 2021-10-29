@@ -1,4 +1,5 @@
 #pragma once
+#include "MyClass/PlayerManager/PlayerManager.h"
 
 using namespace DirectX;
 using namespace DX9;
@@ -9,6 +10,7 @@ class CameraManager
 {
 public:
 	bool Initialize();
+	int  Update();
 	void Render(Vector3 player_position);
 
 private:

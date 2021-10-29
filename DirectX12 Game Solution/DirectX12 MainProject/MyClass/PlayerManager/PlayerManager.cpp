@@ -42,7 +42,7 @@ void PlayerManager::LoadAssets()
 
 }
 
-int PlayerManager::Update(DX9::MODEL& ground, BoundingBox enemy, const float deltaTime)
+int PlayerManager::Update(DX9::MODEL& ground, const float deltaTime)
 {
 	//地形の当たり判定
 	float dist = FLT_MAX;
@@ -60,7 +60,7 @@ int PlayerManager::Update(DX9::MODEL& ground, BoundingBox enemy, const float del
 	if (DXTK->KeyState->Right||DXTK->KeyState->D) {
 		model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
 		SetAnimation(model, Walk);
-
+		
 	}
 	if (DXTK->KeyState->Left||DXTK->KeyState->A) {
 		model->Move(0.0f, 0.0f, player_speed_ * deltaTime);
@@ -88,11 +88,22 @@ int PlayerManager::Update(DX9::MODEL& ground, BoundingBox enemy, const float del
 		pos.y = jump_start_v_ + V0 * jump_time_ - 0.5f * gravity_ * jump_time_ * jump_time_;
 		model->SetPosition(pos);
 
+		float dist = 0;
+		if (ground->IntersectRay(
+			model->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
+			SimpleMath::Vector3::Up,
+			&dist
+		)) {
+			model->Move(0.0f, dist, 0.0f);
+			jump_flag_ = false;
+		}
+
+
 		//ジャンプの終了判定
 		if (V0 * jump_time_ < gravity_ * jump_time_ * jump_time_) {
 			float dist = 0;
 			if (ground->IntersectRay(
-				model->GetPosition(),
+				model->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
 				SimpleMath::Vector3::Up,
 				&dist
 			)) {
@@ -102,17 +113,17 @@ int PlayerManager::Update(DX9::MODEL& ground, BoundingBox enemy, const float del
 		}
 	}
 
-	//プレイヤー:攻撃
-	if (DXTK->KeyEvent->pressed.J||DXTK->KeyEvent->pressed.F) {
-		//当たり判定はIntersertsを使う
-		//当たり判定をさせたいモデルのコリジョン.Interserts(相手モデルのコリジョン)
-		//今回の場合
-		if (box.Intersects(enemy)) {
-			//プレイヤーが的にあたったときのの処理
-			//今回は、hit_flagをtrueにする
-			hit_flag = true;
-		}
-	}
+	////プレイヤー:攻撃
+	//if (DXTK->KeyEvent->pressed.J||DXTK->KeyEvent->pressed.F) {
+	//	//当たり判定はIntersertsを使う
+	//	//当たり判定をさせたいモデルのコリジョン.Interserts(相手モデルのコリジョン)
+	//	//今回の場合
+	//	if (box.Intersects(enemy)) {
+	//		//プレイヤーが的にあたったときのの処理
+	//		//今回は、hit_flagをtrueにする
+	//		hit_flag = true;
+	//	}
+	//}
 
 
 	//ランバージャック(移動制限)

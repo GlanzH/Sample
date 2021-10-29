@@ -31,6 +31,15 @@
     <Filter Include="MyClass\GroundManager">
       <UniqueIdentifier>{3484e38c-733b-4580-a58d-5fa05c40e4b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyBase">
+      <UniqueIdentifier>{936ec52a-008d-4dc3-89ea-f50e09f99149}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyBase\Enemy">
+      <UniqueIdentifier>{040a1c7d-45fe-4185-bdcb-889b7306e236}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\EnumManager">
+      <UniqueIdentifier>{9b28ac42-a149-4556-9f5b-83757bd94399}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -78,6 +87,15 @@
     <ClInclude Include="MyClass\EnemyManager\EnemyManager.h">
       <Filter>MyClass\EnemyManager</Filter>
     </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyBase\EnemyBase.h">
+      <Filter>MyClass\EnemyManager\EnemyBase</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyBase\Enemy\Enemy.h">
+      <Filter>MyClass\EnemyManager\EnemyBase\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnumManager\EnumManager.h">
+      <Filter>MyClass\EnumManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -106,6 +124,12 @@
     </ClCompile>
     <ClCompile Include="MyClass\GroundManager\GroundManager.cpp">
       <Filter>MyClass\GroundManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyBase\EnemyBase.cpp">
+      <Filter>MyClass\EnemyManager\EnemyBase</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyBase\Enemy\Enemy.cpp">
+      <Filter>MyClass\EnemyManager\EnemyBase\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
