@@ -113,9 +113,6 @@
     <ClCompile Include="MyClass\CameraManager\CameraManager.cpp">
       <Filter>MyClass\CameraManager</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyManager.cpp">
-      <Filter>MyClass\EnemyManager</Filter>
-    </ClCompile>
     <ClCompile Include="MyClass\PlayerManager\PlayerManager.cpp">
       <Filter>MyClass\PlayerManager</Filter>
     </ClCompile>
@@ -130,6 +127,9 @@
     </ClCompile>
     <ClCompile Include="MyClass\EnemyManager\EnemyBase\Enemy\Enemy.cpp">
       <Filter>MyClass\EnemyManager\EnemyBase\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyManager.cpp">
+      <Filter>MyClass\EnemyManager\EnemyBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

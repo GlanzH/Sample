@@ -4,7 +4,7 @@
 
 bool CameraManager::Initialize() {
 	//カメラの位置
-	camera->SetView(Vector3(0.0f, 15.0f, 0.0f),Vector3(0.0f, 0.0f, 0.0f));
+	camera->SetView(SimpleMath::Vector3(0.0f, 15.0f, 0.0f), SimpleMath::Vector3(0.0f, 0.0f, 0.0f));
 
 	//カメラの向き・映す距離
 	camera->SetPerspectiveFieldOfView(
@@ -22,6 +22,6 @@ int CameraManager::Update() {
 	return 0;
 }
 
-void CameraManager::Render(Vector3 player_position) {
+void CameraManager::Render(SimpleMath::Vector3 player_position) {
 	DXTK->Direct3D9->SetCamera(camera);
 }
