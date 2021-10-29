@@ -10,5 +10,4 @@ void GroundManager::LoadAsset() {
 
 void GroundManager::Render() {
 	model->Draw();
-	LPCWSTR
 }
