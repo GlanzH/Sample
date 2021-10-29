@@ -92,6 +92,7 @@ NextScene MainScene::Update(const float deltaTime)
 	text.Update(deltaTime);
 	PlayerManager::Instance().Update(ground.GetModel(), deltaTime);
 	enemy.Update(ground.GetModel(), deltaTime);
+	camera.Update();
 
 	return NextScene::Continue;
 }
