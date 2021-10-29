@@ -12,8 +12,8 @@ using namespace DirectX;
 class EnemyBase
 {
 public:
-	EnemyBase()  {}
-	~EnemyBase() {}
+	EnemyBase() {};
+	~EnemyBase() {};
 
 	bool Initialize(SimpleMath::Vector3 Speed,int hp);
 	void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
