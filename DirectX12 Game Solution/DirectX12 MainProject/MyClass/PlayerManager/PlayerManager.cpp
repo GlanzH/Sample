@@ -40,6 +40,8 @@ void PlayerManager::LoadAssets()
 
 	box.Center = player_pos;
 
+	font = DX9::SpriteFont::CreateDefaultFont(DXTK->Device9);
+
 }
 
 int PlayerManager::Update(DX9::MODEL& ground, const float deltaTime)
@@ -129,7 +131,7 @@ int PlayerManager::Update(DX9::MODEL& ground, const float deltaTime)
 	//ランバージャック(移動制限)
 	auto p_pos = model->GetPosition();
 	p_pos = SimpleMath::Vector3(
-		std::clamp(p_pos.x,  -99.0f,  99.0f),
+		std::clamp(p_pos.x,  -495.0f,  495.0f),
 		std::clamp(p_pos.y,   -5.0f, 1000.0f),
 		std::clamp(p_pos.z, -100.0f, 100.0f)
 	);
@@ -157,4 +159,13 @@ void PlayerManager::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack
 		model->SetTrackEnable(i, FALSE);
 	}
 	model->SetTrackEnable(enableTrack, TRUE);
+}
+
+void PlayerManager::_2DRender()
+{
+	DX9::SpriteBatch->DrawString(font.Get(),
+		SimpleMath::Vector2(0.0f, 0.0f),
+		DX9::Colors::DarkBlue,
+		L"%f", model->Position.x
+	);
 }

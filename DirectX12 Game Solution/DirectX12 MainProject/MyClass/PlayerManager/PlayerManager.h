@@ -14,6 +14,8 @@ public:
 	int Update(DX9::MODEL& ground, const float deltaTime);
 	void Render();
 
+	void _2DRender();
+
 	DX9::SKINNEDMODEL& GetModel() { return model; }
 	BoundingBox  GetBox()		  { return  box; }
 	bool GetHitFlag()			  { return hit_flag; }
@@ -32,7 +34,7 @@ private:
 	D3DMATERIAL9 material;
 
 	//プレイヤーのスピード
-	float player_speed_ = 30.0f;
+	float player_speed_ = 70.0f;
 
 	DX9::MODEL collision;
 
@@ -63,4 +65,6 @@ private:
 	float V0 = 28.0f;
 
 	bool hit_flag = false;
+
+	DX9::SPRITEFONT font;
 };
