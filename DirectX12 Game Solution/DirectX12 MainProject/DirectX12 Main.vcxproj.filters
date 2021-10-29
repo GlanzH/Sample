@@ -43,6 +43,9 @@
     <Filter Include="MyClass\EnemyManager\EnemyFactory">
       <UniqueIdentifier>{e110343c-e1ac-4e86-a7ab-b11f37bcd27e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\Effekseer">
+      <UniqueIdentifier>{06a908bf-6f5a-42a5-86d7-51acc9fe576a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -102,6 +105,9 @@
     <ClInclude Include="MyClass\EnemyManager\EnemyBase\Enemy\Enemy.h">
       <Filter>MyClass\EnemyManager\EnemyBase\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Base\DX12Effekseer.h">
+      <Filter>MyClass\Effekseer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -139,6 +145,9 @@
     </ClCompile>
     <ClCompile Include="MyClass\EnumManager\EnemyFactory\EnemyFactory.cpp">
       <Filter>MyClass\EnemyManager\EnemyFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\DX12Effekseer.cpp">
+      <Filter>MyClass\Effekseer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
