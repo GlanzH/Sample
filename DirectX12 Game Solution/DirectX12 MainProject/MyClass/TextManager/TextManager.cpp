@@ -4,13 +4,19 @@
 
 bool TextManager::Initialize() {
 	font = DX9::SpriteFont::CreateFromFontName(DXTK->Device9, L"ＭＳ ゴシック", 22);
-	for (int i = 0; i < 5; ++i)
-		write[i] = 0.0f;
 
-	writeFlag = false;
+	write = 0.0f;
+
+	writeFlag  = false;
 	changeFlag = false;
 	
 	read = 0.0f;
+
+	timedelta = 0.0f;
+
+	enemy_death_count = 0;
+	co_routine = CharaMove();        // コルーチンの生成
+	co_routine_it = co_routine.begin(); // コルーチンの実行開始
 
 	return true;
 }
@@ -25,7 +31,7 @@ void TextManager::LoadText() {
 
 	wchar_t read_line[256];
 
-	for (int i = 0; i < 5; ++i) {
+	for (int i = 0; i < TEXT_MAX; ++i) {
 		fgetws(read_line, 255, fp);
 		const int LEN = lstrlenW(read_line);
 		if (LEN <= 1)
@@ -44,38 +50,14 @@ void TextManager::LoadText() {
 }
 
 void TextManager::Update(const float deltaTime) {
-	if (DXTK->KeyEvent->pressed.Enter)
-		writeFlag = true;
-	
-	
-	read = text[0] + text[1] + text[3];
+	timedelta = deltaTime;
 
-	if (writeFlag == true) {
-		for (int i = 1; i < 2; ++i) {
-			if(write[i] < read.length()) {
-				write[i] += WRITE_SPEED * deltaTime;
-			}
+	enemy_death_count = enemy.GetDeathEnemyCount();
 
-			//if (write > text[i].length())
-			//	write = text[i].length();
-		}
-	
-		if (DXTK->KeyEvent->pressed.Space) {
-			write[1] = 3.0f;
-			changeFlag = true;
-			writeFlag = false;
-		}
-	}
+	//co_rutineの最後じゃなければco_routine_it(コルーチンのイテレータ)を１つ進める
+	if (co_routine_it != co_routine.end())
+		co_routine_it++;
 
-	
-	if (changeFlag == true) {
-		read = text[0] + text[2] + text[3];
-		write[1] += WRITE_SPEED * deltaTime;
-
-		if (write[1] > read.length()) {
-			write[1] = read.length();
-		}
-	}
 	return;
 }
 
@@ -85,7 +67,7 @@ void TextManager::Render() {
 
 void TextManager::Render2D() {
 	Rect dest = RectWH(0, 0, 1000, 1000);
-	DX9::SpriteBatch->DrawText(font.Get(), read.c_str(), (int)write[1], dest, DX9::Colors::Black);
+	DX9::SpriteBatch->DrawText(font.Get(), read.c_str(), (int)write, dest, DX9::Colors::Black);
 
 	//dest = RectWH(426, 0, 1000, 1000);
 	//DX9::SpriteBatch->DrawText(font.Get(), text[2].c_str(), (int)write[2], dest, DX9::Colors::Black);
@@ -96,4 +78,32 @@ void TextManager::Render2D() {
 	//dest = RectWH(116, 0, 1000, 1000);
 	//DX9::SpriteBatch->DrawText(font.Get(), text[4].c_str(), (int)write[4], dest, DX9::Colors::Blue);
 
+}
+
+// コルーチンのプロトタイプ宣言
+cppcoro::generator<int> TextManager::CharaMove() {
+	co_yield 0;
+	if (enemy_death_count > 0) {	//敵を倒した場合
+
+		write = 0.0f;
+		read = text[0] + text[2];
+
+		while (write < read.length()) {
+			write += WRITE_SPEED * timedelta;
+			co_yield 1;
+		}
+		write = read.length();
+	}
+	else {		//敵を倒さなかった場合
+		co_yield 0;
+		write = 0.0f;
+		read = text[0] + text[1];
+
+		while (write < read.length()) {
+			write += WRITE_SPEED * timedelta;
+			co_yield 1;
+		}
+		write = read.length();
+	}
+	co_return;
 }
