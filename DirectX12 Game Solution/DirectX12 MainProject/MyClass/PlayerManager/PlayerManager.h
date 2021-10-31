@@ -2,6 +2,8 @@
 
 using namespace DirectX;
 
+#include "MyClass/EnemyManager/EnemyBase/EnemyBase.h"
+
 class PlayerManager
 {
 public:
@@ -11,7 +13,7 @@ public:
 
 	bool Initialize();
 	void LoadAssets();
-	int Update(DX9::MODEL& ground, const float deltaTime);
+	int Update(DX9::MODEL& ground, DX9::MODEL& enemy, const float deltaTime);
 	void Render();
 
 	void _2DRender();
