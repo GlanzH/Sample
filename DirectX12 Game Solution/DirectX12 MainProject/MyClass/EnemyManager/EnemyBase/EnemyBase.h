@@ -24,11 +24,6 @@ public:
 
 	BoundingBox GetBox() { return box; }
 
-	static EnemyBase& Instance() {
-		static EnemyBase instance;
-		return instance;
-	}
-
 private:
 	D3DMATERIAL9      material;
 
