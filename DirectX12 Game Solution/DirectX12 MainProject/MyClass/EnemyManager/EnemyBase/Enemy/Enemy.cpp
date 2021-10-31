@@ -1,12 +1,17 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 #include "Enemy.h"
+#include"MyClass/EnumManager/EnumManager.h"
 
 int Enemy::Update(DX9::MODEL& ground, const float deltaTime) {
 	Move(ground, deltaTime);
-
+	
 	if (enemy_hp < 0)
+	{
+	
 		return DEAD;
+	}
+		
 
 	return LIVE;
 }

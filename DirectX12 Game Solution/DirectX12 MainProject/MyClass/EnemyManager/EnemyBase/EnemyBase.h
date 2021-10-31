@@ -34,6 +34,6 @@ protected:
 	DX9::MODEL	 collision;
 	SimpleMath::Vector3  position;
 	SimpleMath::Vector3  enemy_speed;
-	
+	int count = 0;
 	int enemy_hp;
 };

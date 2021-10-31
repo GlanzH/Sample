@@ -19,6 +19,7 @@ public:
 	int GetDeathEnemyCount() { return dead_enemy_count; }
 
 private:
+	
 	void Generator();
 	void Iterator(DX9::MODEL& ground, const float deltaTime);
 
