@@ -9,8 +9,8 @@ public:
 	Enemy()  {}
 	~Enemy() {}
 
-	int  Update(const float deltaTime) override;
-	void Move(const float deltaTime);
+	int  Update(DX9::MODEL& ground, const float deltaTime) override;
 
 private:
+	void Move(DX9::MODEL& ground, const float deltaTime);
 };

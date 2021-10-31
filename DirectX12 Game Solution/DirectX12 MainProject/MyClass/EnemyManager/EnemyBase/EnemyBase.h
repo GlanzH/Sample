@@ -15,24 +15,30 @@ public:
 	EnemyBase() {};
 	~EnemyBase() {};
 
-	bool Initialize(SimpleMath::Vector3 Speed,int hp);
+	bool Initialize(SimpleMath::Vector3 speed,int hp);
 	void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
-	virtual int Update(const float deltaTime);
+	virtual int Update(DX9::MODEL& ground, const float deltaTime);
 	void Render();
 
 	void Damage();
 
 	BoundingBox GetBox() { return box; }
 
+	static EnemyBase& Instance() {
+		static EnemyBase instance;
+		return instance;
+	}
+
 private:
-	DX9::SKINNEDMODEL model;
 	D3DMATERIAL9      material;
 
 	GroundManager ground;
 protected:
+	DX9::SKINNEDMODEL model;
 	BoundingBox  box;
 	DX9::MODEL	 collision;
 	SimpleMath::Vector3  position;
+	SimpleMath::Vector3  enemy_speed;
 	
-	int hp = 1;
+	int enemy_hp;
 };

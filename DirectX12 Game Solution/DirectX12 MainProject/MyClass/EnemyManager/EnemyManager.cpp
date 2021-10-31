@@ -5,42 +5,72 @@
 
 EnemyManager::EnemyManager()
 {
-	std::unique_ptr<EnemyBase*> base = std::make_unique<EnemyBase*>();
-	
+	enemy = {};
+	Generator();
+}
+
+EnemyManager::~EnemyManager() {
+	for (auto& enemies : enemy) {
+		delete enemies;
+	}
 }
 
 bool EnemyManager::Initialize()
 {
+	
 	return true;
 }
 
 void EnemyManager::LoadAsset()
 {
-	
+	DX12Effect.Initialize();
 }
 
 int EnemyManager::Update(DX9::MODEL& ground, const float deltaTime) 
 {
-	/*if (!PlayerManager::Instance().GetHitFlag())
-		Move(ground, deltaTime);*/
+
+	for (auto& enemies : enemy) {
+		enemies->Update(ground,deltaTime);
+	}
+
+	DX12Effect.Update();
+	Iterator(ground,deltaTime);
+
 	return 0;
 }
 
-//void EnemyManager::Move(DX9::MODEL& ground, const float deltaTime)
-//  {
-//	model->Move(0.0f, 0.0f, -15.0f * deltaTime);
-//
-//	float dist = FLT_MAX;
-//	if (ground->IntersectRay(model->GetPosition() + Vector3(0, 100, 0), Vector3::Down, &dist))
-//		model->Move(0.0f, 100.0f - dist, 0.0f);
-//
-//	if (model->GetPosition().x > -95.0f)
-//		model->SetPosition(model->GetPosition());
-//	else
-//		model->SetPosition(init_pos);
-//}
+void EnemyManager::Iterator(DX9::MODEL& ground, const float deltaTime) {
+	auto itr = enemy.begin();
+
+	while (itr != enemy.end())
+	{
+		if ((*itr)->Update(ground,deltaTime) == LIVE)
+			itr++;
+		else {
+			//“G‚ª€–S‚µ‚½‚Æ‚«‚Ìˆ—
+			dead_enemy_count++;
+			itr = enemy.erase(itr);
+		}
+	}
+}
+
+void EnemyManager::Generator() {
+	std::unique_ptr<EnemyFactory> factory = std::make_unique<EnemyFactory>();
+
+	enemy.push_back(factory->Create("normal", SimpleMath::Vector3(30, 0, 50)));
+	enemy.push_back(factory->Create("normal", SimpleMath::Vector3(100, 0, 50)));
+	enemy.push_back(factory->Create("normal", SimpleMath::Vector3(170, 0, 50)));
+}
+
+void EnemyManager::OnDeviceLost() {
+	DX12Effect.Reset();
+}
 
 void EnemyManager::Render()
 {
-	
+	for (auto& enemies : enemy) {
+		enemies->Render();
+	}
+
+	DX12Effect.Renderer();
 }
