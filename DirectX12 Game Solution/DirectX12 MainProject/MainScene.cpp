@@ -72,7 +72,7 @@ void MainScene::Terminate()
 // Direct3D resource cleanup.
 void MainScene::OnDeviceLost()
 {
-
+	enemy.OnDeviceLost();
 }
 
 // Restart any looped sounds here
