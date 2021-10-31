@@ -3,7 +3,7 @@
 
 #include "EnemyBase.h"
 #include"MyClass/PlayerManager/PlayerManager.h"
-
+#include "MyClass/EnumManager/EnumManager.h"
 bool EnemyBase::Initialize(SimpleMath::Vector3 Speed, int hp)
 {
 	
@@ -45,7 +45,11 @@ void EnemyBase::Damage() {
 
 void EnemyBase::Render() {
 	if (!PlayerManager::Instance().GetHitFlag())
-		model->Draw();
+		for (int i = 0; i < 4; i++)
+		{
+			model->Draw();
+		}
+		
 
 	//collision->Draw();
 }

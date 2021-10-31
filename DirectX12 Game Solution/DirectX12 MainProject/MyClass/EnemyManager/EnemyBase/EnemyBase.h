@@ -3,7 +3,7 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 
-#include "MyClass/EnumManager/EnumManager.h"
+
 #include "MyClass/GroundManager/GroundManager.h"
 
 using namespace DirectX;
