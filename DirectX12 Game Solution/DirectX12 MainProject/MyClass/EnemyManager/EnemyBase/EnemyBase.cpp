@@ -3,17 +3,20 @@
 
 #include "EnemyBase.h"
 #include"MyClass/PlayerManager/PlayerManager.h"
-#include "MyClass/EnumManager/EnumManager.h"
-bool EnemyBase::Initialize(SimpleMath::Vector3 Speed, int hp)
+
+bool EnemyBase::Initialize(SimpleMath::Vector3 speed, int hp)
 {
-	
-	return false;
+	enemy_speed = speed;
+	enemy_hp    = hp;
+	return true;
 }
 
 void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
+	position = initial_position;
+
 	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
 	model->SetScale(0.04f);
-	model->SetPosition(initial_position);
+	model->SetPosition(position);
 	model->SetRotation(0.0f, XMConvertToRadians(90.0f), 0.0f);
 
 	box = model->GetBoundingBox();
@@ -30,26 +33,21 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	collision->SetMaterial(material);
 
-	box.Center = initial_position;
+	box.Center = position;
 }
 
-int EnemyBase::Update(const float deltaTime) {
-	box.Center = model->GetPosition();
-	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
-	return LIVE;
+int EnemyBase::Update(DX9::MODEL& ground, const float deltaTime) {
+
+	return 0;
 }
 
 void EnemyBase::Damage() {
-	hp--;
+	enemy_hp--;
 }
 
 void EnemyBase::Render() {
 	if (!PlayerManager::Instance().GetHitFlag())
-		for (int i = 0; i < 4; i++)
-		{
-			model->Draw();
-		}
-		
+		model->Draw();
 
 	//collision->Draw();
 }

@@ -99,14 +99,14 @@
     <ClInclude Include="MyClass\EnumManager\EnumManager.h">
       <Filter>MyClass\EnumManager</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\EnumManager\EnemyFactory\EnemyFactory.h">
-      <Filter>MyClass\EnemyManager\EnemyFactory</Filter>
-    </ClInclude>
     <ClInclude Include="MyClass\EnemyManager\EnemyBase\Enemy\Enemy.h">
       <Filter>MyClass\EnemyManager\EnemyBase\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Base\DX12Effekseer.h">
       <Filter>MyClass\Effekseer</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyFactory.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -143,11 +143,11 @@
     <ClCompile Include="MyClass\EnemyManager\EnemyBase\Enemy\Enemy.cpp">
       <Filter>MyClass\EnemyManager\EnemyBase\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\EnumManager\EnemyFactory\EnemyFactory.cpp">
-      <Filter>MyClass\EnemyManager\EnemyFactory</Filter>
-    </ClCompile>
     <ClCompile Include="Base\DX12Effekseer.cpp">
       <Filter>MyClass\Effekseer</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyFactory.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
