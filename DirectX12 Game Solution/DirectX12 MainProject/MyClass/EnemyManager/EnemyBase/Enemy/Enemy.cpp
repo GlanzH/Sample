@@ -35,7 +35,6 @@ void Enemy::Move(DX9::MODEL& ground, const float deltaTime) {
 			count++;
 	}
 
-	box.Center = model->GetPosition();
 	model->SetPosition(position);
 	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 }

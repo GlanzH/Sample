@@ -75,3 +75,7 @@ void EnemyManager::Render()
 
 	DX12Effect.Renderer();
 }
+
+void EnemyManager::OnCollisionEnter(EnemyBase* base) {
+	base->Damage();
+}

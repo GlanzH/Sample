@@ -2,8 +2,6 @@
 
 using namespace DirectX;
 
-class EnemyBase;
-
 class PlayerManager
 {
 public:
@@ -13,7 +11,7 @@ public:
 
 	bool Initialize();
 	void LoadAssets();
-	int Update(DX9::MODEL& ground,  const float deltaTime);
+	int Update(DX9::MODEL& ground, const float deltaTime);
 	void Render();
 
 	void _2DRender();
@@ -61,9 +59,6 @@ private:
 		MOTION_MAX
 	};
 
-	//エフェクト
-
-
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack);
 
 
@@ -92,7 +87,5 @@ private:
 	void Player_limit();
 	//ジャンプ
 	void Player_jump(DX9::MODEL& ground, const float deltaTime);
-
-	EnemyBase* enemy;
 
 };

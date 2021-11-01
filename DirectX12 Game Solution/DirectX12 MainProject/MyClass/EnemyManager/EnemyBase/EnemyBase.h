@@ -23,12 +23,13 @@ public:
 	BoundingBox GetBox() { return box; }
 
 private:
+	BoundingBox  box;
 	D3DMATERIAL9      material;
 
 	GroundManager ground;
 protected:
 	DX9::SKINNEDMODEL model;
-	BoundingBox  box;
+
 	DX9::MODEL	 collision;
 	SimpleMath::Vector3  position;
 	SimpleMath::Vector3  enemy_speed;

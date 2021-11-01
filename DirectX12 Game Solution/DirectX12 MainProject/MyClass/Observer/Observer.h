@@ -1,0 +1,10 @@
+#pragma once
+#include "Base/pch.h"
+#include "MyClass/PlayerManager/PlayerManager.h"
+#include "MyClass/EnemyManager/EnemyManager.h"
+
+class Observer {
+public:
+	int  Update(PlayerManager* player, EnemyManager* enemy);
+	void CollisionDetection(PlayerManager* player, EnemyManager* enemy);
+};

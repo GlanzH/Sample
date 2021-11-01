@@ -51,4 +51,5 @@ private:
 	CameraManager camera;
 	TextManager   text;
 	EnemyManager  enemy;
+	EnemyBase* base;
 };

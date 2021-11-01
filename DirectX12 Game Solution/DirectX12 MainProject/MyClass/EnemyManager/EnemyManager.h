@@ -16,7 +16,8 @@ public:
 	void OnDeviceLost();
 	void Render();
 
-	int GetDeathEnemyCount() { return dead_enemy_count; }
+	std::list<EnemyBase*> GetEnemy() { return enemy; }
+	int  GetDeathEnemyCount()		 { return dead_enemy_count; }
 
 private:
 	
