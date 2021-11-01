@@ -2,6 +2,10 @@
 
 using namespace DirectX;
 
+#include "Base/DX12Effekseer.h"
+
+class EnemyBase;
+
 class PlayerManager
 {
 public:
@@ -11,10 +15,11 @@ public:
 
 	bool Initialize();
 	void LoadAssets();
-	int Update(DX9::MODEL& ground, const float deltaTime);
+	int Update(DX9::MODEL& ground,  const float deltaTime);
 	void Render();
 
 	void _2DRender();
+
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
 	BoundingBox  GetBox()		  { return  box; }
@@ -44,7 +49,7 @@ private:
 	int box_size = 2;
 
 	//プレイヤーのスピード
-	float player_speed_ = 70.0f;
+	float player_speed_ = 50.0f;
 
 	DX9::MODEL collision;
 
@@ -58,6 +63,10 @@ private:
 		Walk,
 		MOTION_MAX
 	};
+
+	//エフェクト
+	EFFECT Sword_Effect_;
+	EFFECTHANDLE handle;
 
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack);
 
@@ -87,5 +96,4 @@ private:
 	void Player_limit();
 	//ジャンプ
 	void Player_jump(DX9::MODEL& ground, const float deltaTime);
-
 };

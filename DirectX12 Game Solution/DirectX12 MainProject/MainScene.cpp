@@ -19,8 +19,8 @@ void MainScene::Initialize()
 	text.Initialize();
 	text.LoadText();
 	camera.Initialize();
-	player->Initialize();
-	enemy->Initialize();
+	PlayerManager::Instance().Initialize();
+	enemy.Initialize();
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -55,8 +55,10 @@ void MainScene::LoadAssets()
 
 	//‰æ‘œ‚âƒ‚ƒfƒ‹‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 	ground.LoadAsset();
-	player->LoadAssets();
-	enemy->LoadAsset();
+	PlayerManager::Instance().LoadAssets();
+	enemy.LoadAsset();
+
+	DX12Effect.Initialize();
 }
 
 // Releasing resources required for termination.
@@ -72,7 +74,8 @@ void MainScene::Terminate()
 // Direct3D resource cleanup.
 void MainScene::OnDeviceLost()
 {
-	enemy->OnDeviceLost();
+	enemy.OnDeviceLost();
+	DX12Effect.Reset();
 }
 
 // Restart any looped sounds here
@@ -89,11 +92,12 @@ NextScene MainScene::Update(const float deltaTime)
 
 	// TODO: Add your game logic here.
 
-	player->Update(ground.GetModel(), deltaTime);
-	enemy->Update(ground.GetModel(), deltaTime);
-	observer->Update(player, enemy);
 	text.Update(deltaTime);
+	enemy.Update(ground.GetModel(), deltaTime);
 	camera.Update();
+
+	DX12Effect.Update();
+	PlayerManager::Instance().Update(ground.GetModel(), deltaTime);
 
 	return NextScene::Continue;
 }
@@ -107,10 +111,10 @@ void MainScene::Render()
 	DXTK->Direct3D9->BeginScene();
 
 	//3D•`‰æ
-	camera.Render(player->GetModel()->GetPosition());
+	camera.Render(PlayerManager::Instance().GetModel()->GetPosition());
 	ground.Render();
-	player->Render();
-	enemy->Render();
+	PlayerManager::Instance().Render();
+	enemy.Render();
 
 	DX9::SpriteBatch->Begin();
 
@@ -137,6 +141,8 @@ void MainScene::Render()
 	);
 
 	spriteBatch->End();
+
+	DX12Effect.Renderer();
 
 	DXTK->ExecuteCommandList();
 	DXTK->Direct3D9->WaitUpdate();
