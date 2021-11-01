@@ -20,6 +20,7 @@ public:
 	virtual int Update(DX9::MODEL& ground, PlayerManager* player, const float deltaTime);
 	void Render();
 
+	void Retreat();
 	void Damage();
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
