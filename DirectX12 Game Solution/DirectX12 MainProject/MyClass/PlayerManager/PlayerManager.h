@@ -17,18 +17,13 @@ public:
 	void LoadAssets();
 	int Update(DX9::MODEL& ground,  const float deltaTime);
 	void Render();
-
 	void _2DRender();
 
+	void OnCollisionEnter(PlayerManager* player);
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
 	BoundingBox  GetBox()		  { return  box; }
-	bool GetHitFlag()			  { return hit_flag; }
 
-	static PlayerManager& Instance() {
-		static PlayerManager instance;
-		return instance;
-	}
 private:
 	//ÉvÉåÉCÉÑÅ[
 	DX9::SKINNEDMODEL model;

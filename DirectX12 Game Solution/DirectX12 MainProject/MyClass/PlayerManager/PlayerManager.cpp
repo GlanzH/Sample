@@ -92,6 +92,10 @@ void PlayerManager::Render()
 	//collision->Draw();
 }
 
+void PlayerManager::OnCollisionEnter(PlayerManager* player) {
+
+}
+
 
 //指定されたモーションはTRUE,それ以外はFALSE
 void PlayerManager::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack)

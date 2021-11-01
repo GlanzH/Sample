@@ -10,6 +10,7 @@
 #include "MyClass/TextManager/TextManager.h"
 #include "MyClass/PlayerManager/PlayerManager.h"
 #include "MyClass/EnemyManager/EnemyManager.h"
+#include "MyClass/Observer/Observer.h"
 #include "MyClass/CameraManager/CameraManager.h"
 
 using Microsoft::WRL::ComPtr;
@@ -47,9 +48,10 @@ private:
 
 	D3DLIGHT9 light{};
 
-	GroundManager ground;
-	CameraManager camera;
-	TextManager   text;
-	EnemyManager  enemy;
-	EnemyBase* base;
+	GroundManager  ground;
+	CameraManager  camera;
+	TextManager	   text;
+	PlayerManager* player;
+	EnemyManager*  enemy;
+	Observer*      observer;
 };

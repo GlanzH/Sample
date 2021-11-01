@@ -21,11 +21,6 @@ bool EnemyManager::Initialize()
 	return true;
 }
 
-void EnemyManager::LoadAsset()
-{
-	DX12Effect.Initialize();
-}
-
 int EnemyManager::Update(DX9::MODEL& ground, const float deltaTime) 
 {
 	
@@ -33,7 +28,6 @@ int EnemyManager::Update(DX9::MODEL& ground, const float deltaTime)
 		enemies->Update(ground,deltaTime);
 	}
 
-	DX12Effect.Update();
 	Iterator(ground,deltaTime);
 
 	return 0;
@@ -63,17 +57,11 @@ void EnemyManager::Generator() {
 			enemy.push_back(factory->Create("normal", SimpleMath::Vector3(170, 0, 50)));
 }
 
-void EnemyManager::OnDeviceLost() {
-	DX12Effect.Reset();
-}
-
 void EnemyManager::Render()
 {
 	for (auto& enemies : enemy) {
 		enemies->Render();
 	}
-
-	DX12Effect.Renderer();
 }
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
