@@ -1,10 +1,6 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
-
 #include "Enemy.h"
-
-#include"MyClass/EnumManager/EnumManager.h"
-#include"MyClass/PlayerManager/PlayerManager.h"
 
 int Enemy::Update(DX9::MODEL& ground, const float deltaTime) {
 	Move(ground, deltaTime);
@@ -12,6 +8,7 @@ int Enemy::Update(DX9::MODEL& ground, const float deltaTime) {
 	float dist = FLT_MAX;
 	if (ground->IntersectRay(model->GetPosition() + SimpleMath::Vector3(0, ground_collision_y, 0), SimpleMath::Vector3::Down, &dist)) {
 		model->Move(0.0f, ground_collision_y - dist, 0.0f);
+		collision->Move(0.0f, ground_collision_y - dist, 0.0f);
 	}
 
 	if (enemy_hp < 0)

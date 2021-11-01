@@ -56,7 +56,6 @@ void MainScene::LoadAssets()
 	//‰æ‘œ‚âƒ‚ƒfƒ‹‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 	ground.LoadAsset();
 	PlayerManager::Instance().LoadAssets();
-	enemy.LoadAsset();
 
 	DX12Effect.Initialize();
 	//DX12Effect.SetCamera(camera);
@@ -75,7 +74,6 @@ void MainScene::Terminate()
 // Direct3D resource cleanup.
 void MainScene::OnDeviceLost()
 {
-	enemy.OnDeviceLost();
 	DX12Effect.Reset();
 }
 
@@ -94,12 +92,12 @@ NextScene MainScene::Update(const float deltaTime)
 	// TODO: Add your game logic here.
 
 	text.Update(deltaTime);
-	enemy.Update(ground.GetModel(), deltaTime);
 	camera.Update();
 
 	DX12Effect.Update();
 	PlayerManager::Instance().Update(ground.GetModel(), deltaTime);
-
+	enemy.Update(ground.GetModel(), deltaTime);
+	//observer.Update(player, enemy);
 	return NextScene::Continue;
 }
 

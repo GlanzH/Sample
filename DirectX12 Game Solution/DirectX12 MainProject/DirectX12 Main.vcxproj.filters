@@ -46,6 +46,9 @@
     <Filter Include="MyClass\Effekseer">
       <UniqueIdentifier>{06a908bf-6f5a-42a5-86d7-51acc9fe576a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\Observer">
+      <UniqueIdentifier>{35f39bf1-15c0-4ecd-93f6-5b782226a252}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -108,6 +111,9 @@
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyFactory.h">
       <Filter>MyClass\EnemyManager\EnemyFactory</Filter>
     </ClInclude>
+    <ClInclude Include="MyClass\Observer\Observer.h">
+      <Filter>MyClass\Observer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -148,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyFactory.cpp">
       <Filter>MyClass\EnemyManager\EnemyFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\Observer\Observer.cpp">
+      <Filter>MyClass\Observer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

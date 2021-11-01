@@ -8,12 +8,11 @@ bool PlayerManager::Initialize()
 	jump_time_ = 0.0f;
 	jump_start_v_ = 0.0f;
 
-	hit_flag = false;
 
 	return 0;
 }
 
-void PlayerManager::LoadAssets()
+void PlayerManager::LoadAssets() 
 {
 	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Mikoto//mikoto.x");
 	model->SetScale(model_scsle);
@@ -69,13 +68,10 @@ int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
 		
 		//ŽaŒ‚
 		handle = DX12Effect.Play(Sword_Effect_);
-		DX12Effect.SetPosition(handle, Vector3(2, -8, 0));
-		////¡‰ñ‚Ìê‡
-		//if (box.Intersects(enemy->GetBox())) {
-		//	//ƒvƒŒƒCƒ„[‚ª“I‚É‚ ‚½‚Á‚½‚Æ‚«‚Ì‚Ìˆ—
-		//	//¡‰ñ‚ÍAhit_flag‚ðtrue‚É‚·‚é
-		//	hit_flag = true;
-		//	enemy ->Damage();
+		//if (box.Intersects(->GetBox())) {
+		//	//UŒ‚‚ª“–‚½‚Á‚½‚ç‚Pƒ_ƒ[ƒW‚ð—^‚¦‚é
+		//	//“G‚ÌHP‚Í3‚È‚Ì‚Å¬Œ÷‚·‚ê‚ÎŽO”­‚Å“|‚ê‚é
+		//	EnemyBase–Œ^‚Ì•Ï”->Damage();
 		//}
 	}
 
@@ -91,6 +87,10 @@ void PlayerManager::Render()
 	model->Draw();
 
 	//collision->Draw();
+}
+
+void PlayerManager::OnCollisionEnter(PlayerManager* player) {
+
 }
 
 
@@ -182,7 +182,7 @@ void PlayerManager::Player_jump(DX9::MODEL& ground,const float deltaTime)
 	if (jump_flag_) {
 		jump_time_ += deltaTime;
 		auto pos = model->GetPosition();
-		pos.y = jump_start_v_ + V0 * jump_time_ - half * gravity_ * jump_time_ * jump_time_;
+		pos.y = jump_start_v_ + V0 * jump_time_ - 0.5f * gravity_ * jump_time_ * jump_time_;
 		model->SetPosition(pos);
 
 		float dist = 0;

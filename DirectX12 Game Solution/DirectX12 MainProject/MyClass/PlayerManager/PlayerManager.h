@@ -5,8 +5,6 @@ using namespace DirectX;
 #include "Base/DX12Effekseer.h"
 #include "MyClass/CameraManager/CameraManager.h"
 
-class EnemyBase;
-
 class PlayerManager
 {
 public:
@@ -18,18 +16,18 @@ public:
 	void LoadAssets();
 	int Update(DX9::MODEL& ground,  const float deltaTime);
 	void Render();
-
 	void _2DRender();
 
+	void OnCollisionEnter(PlayerManager* player);
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
 	BoundingBox  GetBox()		  { return  box; }
-	bool GetHitFlag()			  { return hit_flag; }
 
 	static PlayerManager& Instance() {
 		static PlayerManager instance;
 		return instance;
 	}
+
 private:
 	//ÉvÉåÉCÉÑÅ[
 	DX9::SKINNEDMODEL model;
@@ -86,7 +84,6 @@ private:
 	//èâë¨
 	float V0 = 28.0f;
 
-	bool hit_flag = false;
 
 	DX9::SPRITEFONT font;
 

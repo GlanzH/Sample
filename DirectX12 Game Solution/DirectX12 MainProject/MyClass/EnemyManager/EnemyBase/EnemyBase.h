@@ -24,8 +24,8 @@ public:
 
 private:
 	D3DMATERIAL9      material;
-
 	GroundManager ground;
+
 protected:
 	DX9::SKINNEDMODEL model;
 	BoundingBox  box;

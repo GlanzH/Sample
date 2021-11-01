@@ -11,12 +11,13 @@ public:
 	~EnemyManager();
 
 	bool Initialize();
-	void LoadAsset();
 	int  Update(DX9::MODEL& ground, const float deltaTime);
-	void OnDeviceLost();
 	void Render();
 
-	int GetDeathEnemyCount() { return dead_enemy_count; }
+	std::list<EnemyBase*> GetEnemy() { return enemy; }
+	int  GetDeathEnemyCount()		 { return dead_enemy_count; }
+
+	void OnCollisionEnter(EnemyBase* base);
 
 private:
 	
