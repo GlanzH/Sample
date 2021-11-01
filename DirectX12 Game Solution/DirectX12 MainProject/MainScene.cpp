@@ -9,7 +9,14 @@
 // Initialize member variables.
 MainScene::MainScene() : dx9GpuDescriptor{}
 {
+	player = new PlayerManager;
+	enemy = new EnemyManager;
+}
 
+MainScene::~MainScene() {
+	delete player;
+	delete enemy;
+	Terminate();
 }
 
 // Initialize a variable and audio resources.
@@ -19,8 +26,8 @@ void MainScene::Initialize()
 	text.Initialize();
 	text.LoadText();
 	camera.Initialize();
-	PlayerManager::Instance().Initialize();
-	enemy.Initialize();
+	player->Initialize();
+	enemy->Initialize();
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -55,7 +62,7 @@ void MainScene::LoadAssets()
 
 	//‰æ‘œ‚âƒ‚ƒfƒ‹‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 	ground.LoadAsset();
-	PlayerManager::Instance().LoadAssets();
+	player->LoadAssets();
 
 	DX12Effect.Initialize();
 }
@@ -91,11 +98,11 @@ NextScene MainScene::Update(const float deltaTime)
 	// TODO: Add your game logic here.
 
 	text.Update(deltaTime);
-	camera.Update();
+	camera.Update(player);
 
 	DX12Effect.Update();
-	PlayerManager::Instance().Update(ground.GetModel(), deltaTime);
-	enemy.Update(ground.GetModel(), deltaTime);
+	player->Update(ground.GetModel(), deltaTime);
+	enemy->Update(ground.GetModel(),player,deltaTime);
 	//observer.Update(player, enemy);
 	return NextScene::Continue;
 }
@@ -109,10 +116,10 @@ void MainScene::Render()
 	DXTK->Direct3D9->BeginScene();
 
 	//3D•`‰æ
-	camera.Render(PlayerManager::Instance().GetModel()->GetPosition());
+	camera.Render(player->GetModel()->GetPosition());
 	ground.Render();
-	PlayerManager::Instance().Render();
-	enemy.Render();
+	player->Render();
+	enemy->Render();
 
 	DX9::SpriteBatch->Begin();
 

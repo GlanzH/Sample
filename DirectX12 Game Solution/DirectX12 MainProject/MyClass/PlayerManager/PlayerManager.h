@@ -22,11 +22,6 @@ public:
 	DX9::SKINNEDMODEL& GetModel() { return model; }
 	BoundingBox  GetBox()		  { return  box; }
 
-	static PlayerManager& Instance() {
-		static PlayerManager instance;
-		return instance;
-	}
-
 private:
 	//ƒvƒŒƒCƒ„[
 	DX9::SKINNEDMODEL model;

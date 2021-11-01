@@ -8,7 +8,7 @@ class CameraManager
 {
 public:
 	bool Initialize();
-	int  Update();
+	int  Update(PlayerManager* player);
 	void Render(SimpleMath::Vector3 player_position);
 
 private:
@@ -16,6 +16,4 @@ private:
 	SimpleMath::Vector3 position;
 	
 	const float view_y = 10.0f;
-
-	//PlayerManager player;
 };

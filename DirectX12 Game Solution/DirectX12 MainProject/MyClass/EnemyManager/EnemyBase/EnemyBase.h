@@ -4,6 +4,8 @@
 #include "Base/dxtk.h"
 
 #include "MyClass/GroundManager/GroundManager.h"
+#include"MyClass/EnumManager/EnumManager.h"
+#include "MyClass/PlayerManager/PlayerManager.h"
 
 using namespace DirectX;
 
@@ -15,7 +17,7 @@ public:
 
 	bool Initialize(SimpleMath::Vector3 speed,int hp);
 	void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
-	virtual int Update(DX9::MODEL& ground, const float deltaTime);
+	virtual int Update(DX9::MODEL& ground, PlayerManager* player, const float deltaTime);
 	void Render();
 
 	void Damage();
