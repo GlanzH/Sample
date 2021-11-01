@@ -6,7 +6,7 @@
  * @author HASHIMOTO HIKARU
  * @date Å@2021/10/31
  */
-#include "../EnemyBase/EnemyBase.h"
+
 #include "MyClass/EnemyManager/EnemyBase/Enemy/Enemy.h"
 #include "Base/pch.h"
 #include<string>

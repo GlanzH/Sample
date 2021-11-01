@@ -5,9 +5,11 @@
 
 
 #include "MyClass/GroundManager/GroundManager.h"
+#include "MyClass/PlayerManager/PlayerManager.h"
 
 using namespace DirectX;
 
+class PlayerManager;
 
 class EnemyBase
 {
