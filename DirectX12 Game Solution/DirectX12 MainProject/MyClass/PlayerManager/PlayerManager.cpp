@@ -68,6 +68,7 @@ int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
 		
 		//斬撃
 		handle = DX12Effect.Play(Sword_Effect_);
+		DX12Effect.SetPosition(handle, Vector3(2, -4, 0));
 		//if (box.Intersects(->GetBox())) {
 		//	//攻撃が当たったら１ダメージを与える
 		//	//敵のHPは3なので成功すれば三発で倒れる
