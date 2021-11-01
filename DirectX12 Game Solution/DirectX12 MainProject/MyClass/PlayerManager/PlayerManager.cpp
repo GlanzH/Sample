@@ -8,7 +8,6 @@ bool PlayerManager::Initialize()
 	jump_time_ = 0.0f;
 	jump_start_v_ = 0.0f;
 
-	hit_flag = false;
 
 	return 0;
 }
@@ -69,13 +68,6 @@ int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
 		
 		//斬撃
 		handle = DX12Effect.Play(Sword_Effect_);
-		////今回の場合
-		//if (box.Intersects(enemy->GetBox())) {
-		//	//プレイヤーが的にあたったときのの処理
-		//	//今回は、hit_flagをtrueにする
-		//	hit_flag = true;
-		//	enemy ->Damage();
-		//}
 	}
 
 

@@ -4,8 +4,6 @@ using namespace DirectX;
 
 #include "Base/DX12Effekseer.h"
 
-class EnemyBase;
-
 class PlayerManager
 {
 public:
@@ -23,6 +21,11 @@ public:
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
 	BoundingBox  GetBox()		  { return  box; }
+
+	static PlayerManager& Instance() {
+		static PlayerManager instance;
+		return instance;
+	}
 
 private:
 	//ƒvƒŒƒCƒ„[
@@ -78,7 +81,6 @@ private:
 	//‰‘¬
 	float V0 = 28.0f;
 
-	bool hit_flag = false;
 
 	DX9::SPRITEFONT font;
 

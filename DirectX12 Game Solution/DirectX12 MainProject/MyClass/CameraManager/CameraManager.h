@@ -16,4 +16,6 @@ private:
 	SimpleMath::Vector3 position;
 	
 	const float view_y = 10.0f;
+
+	//PlayerManager player;
 };

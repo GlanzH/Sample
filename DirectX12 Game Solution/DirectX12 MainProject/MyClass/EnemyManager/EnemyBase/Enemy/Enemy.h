@@ -1,5 +1,7 @@
 #pragma once
 #include "../EnemyBase.h"
+#include"MyClass/EnumManager/EnumManager.h"
+#include"MyClass/PlayerManager/PlayerManager.h"
 
 using namespace DirectX;
 
@@ -9,7 +11,7 @@ public:
 	Enemy()  {}
 	~Enemy() {}
 
-	int  Update(DX9::MODEL& ground, const float deltaTime) override;
+	int   Update(DX9::MODEL& ground, const float deltaTime) override;
 
 private:
 	void Move(DX9::MODEL& ground, const float deltaTime);

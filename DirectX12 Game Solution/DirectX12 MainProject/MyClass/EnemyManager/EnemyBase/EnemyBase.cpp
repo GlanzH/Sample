@@ -39,7 +39,6 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 int EnemyBase::Update(DX9::MODEL& ground, const float deltaTime) {
 
 	//count = (count++) % 5;
-	box.Center = model->GetPosition();
 	return 0;
 }
 
@@ -53,5 +52,5 @@ void EnemyBase::Render() {
 			model->Draw();
 		//}
 
-	collision->Draw();
+	//collision->Draw();
 }
