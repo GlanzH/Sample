@@ -57,6 +57,8 @@ void MainScene::LoadAssets()
 	ground.LoadAsset();
 	PlayerManager::Instance().LoadAssets();
 	enemy.LoadAsset();
+
+	DX12Effect.Initialize();
 }
 
 // Releasing resources required for termination.
@@ -73,6 +75,7 @@ void MainScene::Terminate()
 void MainScene::OnDeviceLost()
 {
 	enemy.OnDeviceLost();
+	DX12Effect.Reset();
 }
 
 // Restart any looped sounds here
@@ -90,9 +93,11 @@ NextScene MainScene::Update(const float deltaTime)
 	// TODO: Add your game logic here.
 
 	text.Update(deltaTime);
-	PlayerManager::Instance().Update(ground.GetModel(), deltaTime);
 	enemy.Update(ground.GetModel(), deltaTime);
 	camera.Update();
+
+	DX12Effect.Update();
+	PlayerManager::Instance().Update(ground.GetModel(), deltaTime);
 
 	return NextScene::Continue;
 }
@@ -136,6 +141,8 @@ void MainScene::Render()
 	);
 
 	spriteBatch->End();
+
+	DX12Effect.Renderer();
 
 	DXTK->ExecuteCommandList();
 	DXTK->Direct3D9->WaitUpdate();

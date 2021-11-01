@@ -42,6 +42,9 @@ void PlayerManager::LoadAssets()
 
 	font = DX9::SpriteFont::CreateDefaultFont(DXTK->Device9);
 
+	DX12Effect.Initialize();
+	Sword_Effect_ = DX12Effect.Create(L"Effect//Sword_Effect.efk");
+
 }
 
 int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
@@ -59,18 +62,21 @@ int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
 	Player_jump(ground, deltaTime);
 
 
-	////プレイヤー:攻撃
-	//if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F) {
-	//	//当たり判定はIntersertsを使う
-	//	//当たり判定をさせたいモデルのコリジョン.Interserts(相手モデルのコリジョン)
-	//	//今回の場合
-	//	if (box.Intersects(enemy->GetBox())) {
-	//		//プレイヤーが的にあたったときのの処理
-	//		//今回は、hit_flagをtrueにする
-	//		hit_flag = true;
-	//		enemy ->Damage();
-	//	}
-	//}
+	//プレイヤー:攻撃
+	if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F) {
+		//当たり判定はIntersertsを使う
+		//当たり判定をさせたいモデルのコリジョン.Interserts(相手モデルのコリジョン)
+		
+		//斬撃
+		handle = DX12Effect.Play(Sword_Effect_);
+		////今回の場合
+		//if (box.Intersects(enemy->GetBox())) {
+		//	//プレイヤーが的にあたったときのの処理
+		//	//今回は、hit_flagをtrueにする
+		//	hit_flag = true;
+		//	enemy ->Damage();
+		//}
+	}
 
 
 	//ランバージャック(移動制限)
