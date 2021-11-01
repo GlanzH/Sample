@@ -13,7 +13,7 @@ public:
 
 	bool Initialize();
 	void LoadAssets();
-	int Update(DX9::MODEL& ground, DX9::MODEL& enemy, const float deltaTime);
+	int Update(DX9::MODEL& ground,  const float deltaTime);
 	void Render();
 
 	void _2DRender();
@@ -89,5 +89,7 @@ private:
 	void Player_limit();
 	//ƒWƒƒƒ“ƒv
 	void Player_jump(DX9::MODEL& ground, const float deltaTime);
+
+	EnemyBase* enemy;
 
 };

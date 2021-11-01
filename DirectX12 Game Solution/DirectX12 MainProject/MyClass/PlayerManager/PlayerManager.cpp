@@ -44,7 +44,7 @@ void PlayerManager::LoadAssets()
 
 }
 
-int PlayerManager::Update(DX9::MODEL& ground, DX9::MODEL& enemy, const float deltaTime)
+int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
 {
 	//地形の当たり判定
 	Player_collision_detection(ground);
@@ -56,19 +56,21 @@ int PlayerManager::Update(DX9::MODEL& ground, DX9::MODEL& enemy, const float del
 	Player_move(deltaTime);
 
 	//プレイヤー:ジャンプ
-	Player_jump(ground,deltaTime);
+	Player_jump(ground, deltaTime);
 
-	//プレイヤー:攻撃
-	if (DXTK->KeyEvent->pressed.J||DXTK->KeyEvent->pressed.F) {
-		//当たり判定はIntersertsを使う
-		//当たり判定をさせたいモデルのコリジョン.Interserts(相手モデルのコリジョン)
-		//今回の場合
-		if (box.Intersects()) {
-			//プレイヤーが的にあたったときのの処理
-			//今回は、hit_flagをtrueにする
-			hit_flag = true;
-		}
-	}
+
+	////プレイヤー:攻撃
+	//if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F) {
+	//	//当たり判定はIntersertsを使う
+	//	//当たり判定をさせたいモデルのコリジョン.Interserts(相手モデルのコリジョン)
+	//	//今回の場合
+	//	if (box.Intersects(enemy->GetBox())) {
+	//		//プレイヤーが的にあたったときのの処理
+	//		//今回は、hit_flagをtrueにする
+	//		hit_flag = true;
+	//		enemy ->Damage();
+	//	}
+	//}
 
 
 	//ランバージャック(移動制限)

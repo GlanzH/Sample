@@ -22,7 +22,7 @@ public:
 
 	void Damage();
 
-	BoundingBox GetBox() { return box; }
+f	BoundingBox GetBox() { return box; }
 
 private:
 	D3DMATERIAL9      material;
