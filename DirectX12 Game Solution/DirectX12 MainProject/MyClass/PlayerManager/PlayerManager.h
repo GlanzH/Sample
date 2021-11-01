@@ -2,7 +2,7 @@
 
 using namespace DirectX;
 
-#include "MyClass/EnemyManager/EnemyBase/EnemyBase.h"
+class EnemyBase;
 
 class PlayerManager
 {
@@ -60,6 +60,9 @@ private:
 		Walk,
 		MOTION_MAX
 	};
+
+	//エフェクト
+
 
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack);
 

@@ -3,13 +3,9 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 
-
 #include "MyClass/GroundManager/GroundManager.h"
-#include "MyClass/PlayerManager/PlayerManager.h"
 
 using namespace DirectX;
-
-class PlayerManager;
 
 class EnemyBase
 {
@@ -24,7 +20,7 @@ public:
 
 	void Damage();
 
-f	BoundingBox GetBox() { return box; }
+	BoundingBox GetBox() { return box; }
 
 private:
 	D3DMATERIAL9      material;
