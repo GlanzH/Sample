@@ -52,5 +52,5 @@ void EnemyBase::Render() {
 			model->Draw();
 		//}
 
-	//collision->Draw();
+	collision->Draw();
 }
