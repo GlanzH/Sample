@@ -9,13 +9,16 @@
 // Initialize member variables.
 MainScene::MainScene() : dx9GpuDescriptor{}
 {
-	player = new PlayerManager;
-	enemy = new EnemyManager;
+	player   = new PlayerManager;
+	enemy    = new EnemyManager;
+	observer = new Observer;
 }
 
 MainScene::~MainScene() {
 	delete player;
 	delete enemy;
+	delete observer;
+
 	Terminate();
 }
 
@@ -103,7 +106,7 @@ NextScene MainScene::Update(const float deltaTime)
 	DX12Effect.Update();
 	player->Update(ground.GetModel(), deltaTime);
 	enemy->Update(ground.GetModel(),player,deltaTime);
-	//observer.Update(player, enemy);
+	observer->Update(player, enemy);
 	return NextScene::Continue;
 }
 

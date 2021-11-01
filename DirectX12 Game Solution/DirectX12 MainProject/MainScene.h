@@ -53,5 +53,5 @@ private:
 	TextManager	   text;
 	PlayerManager* player;
 	EnemyManager*  enemy;
-	Observer     observer;
+	Observer*      observer;
 };
