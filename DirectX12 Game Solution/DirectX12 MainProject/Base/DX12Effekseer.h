@@ -41,7 +41,7 @@ namespace DX12Effekseer
 		void Update();
 		void Renderer();
 
-		void SetCamera(Vector3 cameraPositon);
+		void SetCamera(DX12::CAMERA camera);
 
 		Effekseer::EffectRef Create(LPCWSTR fileName);
 		Effekseer::Handle Play(EFFECT effectName);

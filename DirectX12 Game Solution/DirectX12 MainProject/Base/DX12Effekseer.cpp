@@ -109,9 +109,11 @@ void DX12Effekseer::CEffekseer::Renderer()
 	@brief	カメラ設定
 	@param	cameraPosition カメラのポジション
 */
-void DX12Effekseer::CEffekseer::SetCamera(Vector3 cameraPositon)
+void DX12Effekseer::CEffekseer::SetCamera(DX12::CAMERA camera)
 {
-	Effekseer::Vector3D position = Effekseer::Vector3D(cameraPositon.x, cameraPositon.y, cameraPositon.z);
+	auto camera_pos = camera->GetPosition();
+
+	Effekseer::Vector3D position = Effekseer::Vector3D(camera_pos.x, camera_pos.y, camera_pos.z);
 
 	m_renderer->SetCameraMatrix(::Effekseer::Matrix44().LookAtRH
 	(position, Effekseer::Vector3D(0, 0, 0), ::Effekseer::Vector3D(0, 1, 0)));

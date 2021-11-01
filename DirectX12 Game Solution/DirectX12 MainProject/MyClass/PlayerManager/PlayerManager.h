@@ -3,6 +3,7 @@
 using namespace DirectX;
 
 #include "Base/DX12Effekseer.h"
+#include "MyClass/CameraManager/CameraManager.h"
 
 class EnemyBase;
 
@@ -78,6 +79,8 @@ private:
 	float jump_time_ = 0.0f;
 	float jump_start_v_;
 
+	//1/2
+	float half = 0.5f;
 	//重力加速度
 	float gravity_ = 100.0f;
 	//初速
@@ -96,4 +99,5 @@ private:
 	void Player_limit();
 	//ジャンプ
 	void Player_jump(DX9::MODEL& ground, const float deltaTime);
+
 };

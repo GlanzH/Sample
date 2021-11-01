@@ -13,7 +13,7 @@ bool PlayerManager::Initialize()
 	return 0;
 }
 
-void PlayerManager::LoadAssets() 
+void PlayerManager::LoadAssets()
 {
 	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Mikoto//mikoto.x");
 	model->SetScale(model_scsle);
@@ -69,6 +69,7 @@ int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
 		
 		//斬撃
 		handle = DX12Effect.Play(Sword_Effect_);
+		DX12Effect.SetPosition(handle, Vector3(2, -8, 0));
 		////今回の場合
 		//if (box.Intersects(enemy->GetBox())) {
 		//	//プレイヤーが的にあたったときのの処理
@@ -181,7 +182,7 @@ void PlayerManager::Player_jump(DX9::MODEL& ground,const float deltaTime)
 	if (jump_flag_) {
 		jump_time_ += deltaTime;
 		auto pos = model->GetPosition();
-		pos.y = jump_start_v_ + V0 * jump_time_ - 0.5f * gravity_ * jump_time_ * jump_time_;
+		pos.y = jump_start_v_ + V0 * jump_time_ - half * gravity_ * jump_time_ * jump_time_;
 		model->SetPosition(pos);
 
 		float dist = 0;

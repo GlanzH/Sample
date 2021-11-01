@@ -59,6 +59,7 @@ void MainScene::LoadAssets()
 	enemy.LoadAsset();
 
 	DX12Effect.Initialize();
+	//DX12Effect.SetCamera(camera);
 }
 
 // Releasing resources required for termination.
