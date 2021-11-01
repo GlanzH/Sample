@@ -64,10 +64,9 @@ void MainScene::LoadAssets()
 	DXTK->Direct3D9->LightEnable(0, true);
 
 	//‰æ‘œ‚âƒ‚ƒfƒ‹‚Ì‰Šú‰»‚Í‚±‚¿‚ç
+	DX12Effect.Initialize();
 	ground.LoadAsset();
 	player->LoadAssets();
-
-	DX12Effect.Initialize();
 }
 
 // Releasing resources required for termination.

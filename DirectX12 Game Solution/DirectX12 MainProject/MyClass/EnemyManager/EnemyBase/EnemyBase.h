@@ -22,7 +22,8 @@ public:
 
 	void Damage();
 
-	BoundingBox GetBox() { return box; }
+	DX9::SKINNEDMODEL& GetModel() { return model; }
+	BoundingBox GetBox()		  { return box; }
 
 private:
 	D3DMATERIAL9      material;
