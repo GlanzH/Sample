@@ -3,11 +3,13 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 
-#include "MyClass/EnumManager/EnumManager.h"
+
 #include "MyClass/GroundManager/GroundManager.h"
+#include "MyClass/PlayerManager/PlayerManager.h"
 
 using namespace DirectX;
 
+class PlayerManager;
 
 class EnemyBase
 {
@@ -34,6 +36,6 @@ protected:
 	DX9::MODEL	 collision;
 	SimpleMath::Vector3  position;
 	SimpleMath::Vector3  enemy_speed;
-	
+	int count = 0;
 	int enemy_hp;
 };

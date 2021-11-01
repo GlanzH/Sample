@@ -38,6 +38,7 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 
 int EnemyBase::Update(DX9::MODEL& ground, const float deltaTime) {
 
+	//count = (count++) % 5;
 	return 0;
 }
 
@@ -46,8 +47,10 @@ void EnemyBase::Damage() {
 }
 
 void EnemyBase::Render() {
-	if (!PlayerManager::Instance().GetHitFlag())
-		model->Draw();
+		//if (count<2)
+		//{
+			model->Draw();
+		//}
 
 	//collision->Draw();
 }

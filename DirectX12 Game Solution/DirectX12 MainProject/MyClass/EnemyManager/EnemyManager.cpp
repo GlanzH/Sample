@@ -1,6 +1,6 @@
 #include "Base/pch.h"
-
 #include "Base/dxtk.h"
+#include"MyClass/EnumManager/EnumManager.h"
 #include "EnemyManager.h"
 
 EnemyManager::EnemyManager()
@@ -28,7 +28,7 @@ void EnemyManager::LoadAsset()
 
 int EnemyManager::Update(DX9::MODEL& ground, const float deltaTime) 
 {
-
+	
 	for (auto& enemies : enemy) {
 		enemies->Update(ground,deltaTime);
 	}
@@ -56,10 +56,11 @@ void EnemyManager::Iterator(DX9::MODEL& ground, const float deltaTime) {
 
 void EnemyManager::Generator() {
 	std::unique_ptr<EnemyFactory> factory = std::make_unique<EnemyFactory>();
-
-	enemy.push_back(factory->Create("normal", SimpleMath::Vector3(30, 0, 50)));
-	enemy.push_back(factory->Create("normal", SimpleMath::Vector3(100, 0, 50)));
-	enemy.push_back(factory->Create("normal", SimpleMath::Vector3(170, 0, 50)));
+	
+		
+			enemy.push_back(factory->Create("normal", SimpleMath::Vector3(30, 0, 50)));
+			enemy.push_back(factory->Create("normal", SimpleMath::Vector3(100, 0, 50)));
+			enemy.push_back(factory->Create("normal", SimpleMath::Vector3(170, 0, 50)));
 }
 
 void EnemyManager::OnDeviceLost() {
