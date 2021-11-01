@@ -1,7 +1,10 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
+
 #include "Enemy.h"
+
 #include"MyClass/EnumManager/EnumManager.h"
+#include"MyClass/PlayerManager/PlayerManager.h"
 
 int Enemy::Update(DX9::MODEL& ground, const float deltaTime) {
 	Move(ground, deltaTime);

@@ -44,7 +44,7 @@ void PlayerManager::LoadAssets()
 
 }
 
-int PlayerManager::Update(DX9::MODEL& ground, const float deltaTime)
+int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
 {
 	//地形の当たり判定
 	Player_collision_detection(ground);
@@ -56,17 +56,19 @@ int PlayerManager::Update(DX9::MODEL& ground, const float deltaTime)
 	Player_move(deltaTime);
 
 	//プレイヤー:ジャンプ
-	Player_jump(ground,deltaTime);
+	Player_jump(ground, deltaTime);
+
 
 	////プレイヤー:攻撃
-	//if (DXTK->KeyEvent->pressed.J||DXTK->KeyEvent->pressed.F) {
+	//if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F) {
 	//	//当たり判定はIntersertsを使う
 	//	//当たり判定をさせたいモデルのコリジョン.Interserts(相手モデルのコリジョン)
 	//	//今回の場合
-	//	if (box.Intersects(enemy)) {
+	//	if (box.Intersects(enemy->GetBox())) {
 	//		//プレイヤーが的にあたったときのの処理
 	//		//今回は、hit_flagをtrueにする
 	//		hit_flag = true;
+	//		enemy ->Damage();
 	//	}
 	//}
 
@@ -115,16 +117,30 @@ void PlayerManager::Player_collision_detection(DX9::MODEL& ground)
 
 void PlayerManager::Player_move(const float deltaTime)
 {
-	//プレイヤー:移動
-	if (DXTK->KeyState->Right || DXTK->KeyState->D) {
+	//プレイヤー:移動(キーボード)
+	if (DXTK->KeyState->Right || DXTK->KeyState->D||DXTK->GamePadState[0].dpad.right) {
 		model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
 		SetAnimation(model, Walk);
 
 	}
-	if (DXTK->KeyState->Left || DXTK->KeyState->A) {
+	if (DXTK->KeyState->Left || DXTK->KeyState->A || DXTK->GamePadState[0].dpad.left) {
 		model->Move(0.0f, 0.0f, player_speed_ * deltaTime);
 		SetAnimation(model, Walk);
 	}
+
+	////プレイヤー(ゲームパッド)
+	//SimpleMath::Vector3 movement = SimpleMath::Vector3(
+	//	 DXTK->GamePadState[0].thumbSticks.leftX,
+	//	-DXTK->GamePadState[0].thumbSticks.leftY,
+	//	0.0f
+	//);
+	//const float SQUARE_X =  DXTK->GamePadState[0].thumbSticks.leftX;
+	//const float SQUARE_Y = -DXTK->GamePadState[0].thumbSticks.leftY;
+
+	//movement.x = SQUARE_X * sqrt(5.0f - 0.5 * SQUARE_Y * SQUARE_Y);
+	//movement.y = SQUARE_Y * sqrt(5.0f - 0.5 * SQUARE_X * SQUARE_X);
+
+
 
 }
 
@@ -148,7 +164,7 @@ void PlayerManager::Player_jump(DX9::MODEL& ground,const float deltaTime)
 {
 	//ジャンプ
 	if (!jump_flag_) {
-		if (DXTK->KeyEvent->pressed.Space) {
+		if (DXTK->KeyEvent->pressed.Space||DXTK->GamePadEvent[0].a) {
 			jump_flag_ = true;
 			jump_time_ = 0;
 			jump_start_v_ = model->Position.y;
