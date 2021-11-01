@@ -1,5 +1,6 @@
 #pragma once
 #include "Base/pch.h"
+#include "Base/dxtk.h"
 #include "MyClass/PlayerManager/PlayerManager.h"
 #include "MyClass/EnemyManager/EnemyManager.h"
 

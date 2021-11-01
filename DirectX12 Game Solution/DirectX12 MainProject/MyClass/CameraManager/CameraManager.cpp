@@ -16,8 +16,8 @@ bool CameraManager::Initialize() {
 	return true;
 }
 
-int CameraManager::Update() {
-	auto pos = PlayerManager::Instance().GetModel()->GetPosition();
+int CameraManager::Update(PlayerManager* player) {
+	auto pos = player->GetModel()->GetPosition();
 	camera->SetPosition(pos.x,10.0f,-10.0f);
 	return 0;
 }

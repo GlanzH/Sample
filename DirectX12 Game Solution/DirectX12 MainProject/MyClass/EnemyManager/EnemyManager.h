@@ -3,6 +3,8 @@
 using namespace DirectX;
 #include "Base/DX12Effekseer.h"
 #include "../EnemyManager/EnemyFactory/EnemyFactory.h"
+#include "MyClass/EnumManager/EnumManager.h"
+#include "MyClass/PlayerManager/PlayerManager.h"
 
 class EnemyManager
 {
@@ -11,7 +13,7 @@ public:
 	~EnemyManager();
 
 	bool Initialize();
-	int  Update(DX9::MODEL& ground, const float deltaTime);
+	int  Update(DX9::MODEL& ground, PlayerManager* player, const float deltaTime);
 	void Render();
 
 	std::list<EnemyBase*> GetEnemy() { return enemy; }
@@ -22,7 +24,7 @@ public:
 private:
 	
 	void Generator();
-	void Iterator(DX9::MODEL& ground, const float deltaTime);
+	void Iterator(DX9::MODEL& ground, PlayerManager* player, const float deltaTime);
 
 	std::list<EnemyBase*> enemy;
 	int dead_enemy_count = 0;

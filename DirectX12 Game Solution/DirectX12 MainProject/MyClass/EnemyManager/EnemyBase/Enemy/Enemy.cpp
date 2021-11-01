@@ -2,8 +2,8 @@
 #include "Base/dxtk.h"
 #include "Enemy.h"
 
-int Enemy::Update(DX9::MODEL& ground, const float deltaTime) {
-	Move(ground, deltaTime);
+int Enemy::Update(DX9::MODEL& ground, PlayerManager* player, const float deltaTime) {
+	Move(ground,player,deltaTime);
 
 	float dist = FLT_MAX;
 	if (ground->IntersectRay(model->GetPosition() + SimpleMath::Vector3(0, ground_collision_y, 0), SimpleMath::Vector3::Down, &dist)) {
@@ -17,8 +17,8 @@ int Enemy::Update(DX9::MODEL& ground, const float deltaTime) {
 	return LIVE;
 }
 
-void Enemy::Move(DX9::MODEL& ground, const float deltaTime) {
-	float player_pos = PlayerManager::Instance().GetModel()->GetPosition().x;
+void Enemy::Move(DX9::MODEL& ground, PlayerManager* player, const float deltaTime) {
+	float player_pos = player->GetModel()->GetPosition().x;
 
 	if (player_pos < position.x - stop_enemy_pos || player_pos > position.x + stop_enemy_pos) {
 		count = 0;

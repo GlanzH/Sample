@@ -21,7 +21,7 @@ using namespace DX9;
 class MainScene final : public Scene {
 public:
 	MainScene();
-	virtual ~MainScene() { Terminate(); }
+	virtual ~MainScene();
 
 	MainScene(MainScene&&) = default;
 	MainScene& operator= (MainScene&&) = default;
@@ -51,7 +51,7 @@ private:
 	GroundManager  ground;
 	CameraManager  camera;
 	TextManager	   text;
-	//PlayerManager player;
-	EnemyManager  enemy;
-	Observer     observer;
+	PlayerManager* player;
+	EnemyManager*  enemy;
+	Observer*      observer;
 };

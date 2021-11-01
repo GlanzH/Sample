@@ -1,6 +1,5 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
-#include"MyClass/EnumManager/EnumManager.h"
 #include "EnemyManager.h"
 
 EnemyManager::EnemyManager()
@@ -21,24 +20,23 @@ bool EnemyManager::Initialize()
 	return true;
 }
 
-int EnemyManager::Update(DX9::MODEL& ground, const float deltaTime) 
+int EnemyManager::Update(DX9::MODEL& ground, PlayerManager* player, const float deltaTime)
 {
-	
 	for (auto& enemies : enemy) {
-		enemies->Update(ground,deltaTime);
+		enemies->Update(ground,player,deltaTime);
 	}
 
-	Iterator(ground,deltaTime);
+	Iterator(ground,player,deltaTime);
 
 	return 0;
 }
 
-void EnemyManager::Iterator(DX9::MODEL& ground, const float deltaTime) {
+void EnemyManager::Iterator(DX9::MODEL& ground,PlayerManager* player, const float deltaTime) {
 	auto itr = enemy.begin();
 
 	while (itr != enemy.end())
 	{
-		if ((*itr)->Update(ground,deltaTime) == LIVE)
+		if ((*itr)->Update(ground,player,deltaTime) == LIVE)
 			itr++;
 		else {
 			//“G‚ª€–S‚µ‚½‚Æ‚«‚Ìˆ—

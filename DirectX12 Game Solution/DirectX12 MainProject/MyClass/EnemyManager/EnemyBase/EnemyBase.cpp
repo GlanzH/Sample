@@ -2,7 +2,6 @@
 #include "Base/dxtk.h"
 
 #include "EnemyBase.h"
-#include"MyClass/PlayerManager/PlayerManager.h"
 
 bool EnemyBase::Initialize(SimpleMath::Vector3 speed, int hp)
 {
@@ -36,7 +35,7 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	box.Center = position;
 }
 
-int EnemyBase::Update(DX9::MODEL& ground, const float deltaTime) {
+int EnemyBase::Update(DX9::MODEL& ground, PlayerManager* player, const float deltaTime){
 
 	//count = (count++) % 5;
 	return 0;
@@ -52,5 +51,5 @@ void EnemyBase::Render() {
 			model->Draw();
 		//}
 
-	collision->Draw();
+	//collision->Draw();
 }
