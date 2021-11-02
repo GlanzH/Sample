@@ -86,8 +86,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\DirectX12AffinityLayer;$(SolutionDir)\DirectXTK12\Inc;$(SolutionDir)\DirectXTK9\Inc;$(SolutionDir)\DirectXTK9\DirectShow\BaseClasses;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\DirectX12AffinityLayer;$(SolutionDir)\DirectXTK12\Inc;$(SolutionDir)\DirectXTK9\Inc;$(SolutionDir)\DirectXTK9\DirectShow\BaseClasses;$(SolutionDir)\Effekseer\include;$(IncludePath)</IncludePath>
     <TargetName>$(SolutionName)</TargetName>
+    <LibraryPath>$(SolutionDir)\Effekseer\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -192,21 +193,23 @@
     <ClInclude Include="DontDestroyOnLoad.h" />
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="MyClass\CameraManager\CameraManager.h" />
-    <ClInclude Include="MyClass\EnemyManager\EnemyBase\EnemyBase.h" />
-    <ClInclude Include="MyClass\EnemyManager\EnemyBase\Enemy\Enemy.h" />
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.h" />
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Enemy.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyFactory.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyManager.h" />
     <ClInclude Include="MyClass\EnumManager\EnumManager.h" />
     <ClInclude Include="MyClass\GroundManager\GroundManager.h" />
     <ClInclude Include="MyClass\Observer\Observer.h" />
     <ClInclude Include="MyClass\PlayerManager\PlayerManager.h" />
-    <ClInclude Include="MyClass\SwordManager\SwordManager.h" />
+    <ClInclude Include="MyClass\PlayerManager\Sword\Sword.h" />
     <ClInclude Include="MyClass\TextManager\TextManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneFactory.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Base\DX12Effekseer.cpp" />
+    <ClCompile Include="Base\DX12Effekseer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Base\GameBase.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
@@ -226,20 +229,24 @@
     <ClCompile Include="MyClass\CameraManager\CameraManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyBase\EnemyBase.cpp" />
-    <ClCompile Include="MyClass\EnemyManager\EnemyBase\Enemy\Enemy.cpp" />
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyFactory.cpp" />
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.cpp" />
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Enemy.cpp" />
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyFactory.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="MyClass\EnemyManager\EnemyManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="MyClass\GroundManager\GroundManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MyClass\Observer\Observer.cpp" />
+    <ClCompile Include="MyClass\Observer\Observer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="MyClass\PlayerManager\PlayerManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MyClass\SwordManager\SwordManager.cpp" />
+    <ClCompile Include="MyClass\PlayerManager\Sword\Sword.cpp" />
     <ClCompile Include="MyClass\TextManager\TextManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>

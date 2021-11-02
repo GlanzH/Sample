@@ -6,12 +6,12 @@
 
 using namespace DirectX;
 
-class SwordManager
+class Sword
 {
 public:
 
-	SwordManager(){}
-	~SwordManager(){};
+	Sword(){}
+	~Sword(){};
 
 	bool Initialize();
 	void LoadAssets();
