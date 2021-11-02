@@ -14,7 +14,8 @@ bool PlayerManager::Initialize()
 
 void PlayerManager::LoadAssets() 
 {
-	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Mikoto//mikoto.x");
+	model = DX9::Model::CreateFromFile(DXTK->Device9, L"Player\\nitousin_neginuki.X");
+	model->SetTexture(L"Player\\nitousin.png");
 	model->SetScale(model_scsle);
 	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, XMConvertToRadians(model_rotetion), 0.0f);
@@ -52,7 +53,7 @@ int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
 	Player_collision_detection(ground);
 
 	//モデル　アニメーション
-	SetAnimation(model, Wait);
+	//SetAnimation(model, Wait);
 
 	//プレイヤー:移動
 	Player_move(deltaTime);
@@ -115,12 +116,12 @@ void PlayerManager::Player_move(const float deltaTime)
 	//プレイヤー:移動(キーボード)
 	if (DXTK->KeyState->Right || DXTK->KeyState->D||DXTK->GamePadState[0].dpad.right) {
 		model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-		SetAnimation(model, Walk);
+		//SetAnimation(model, Walk);
 
 	}
 	if (DXTK->KeyState->Left || DXTK->KeyState->A || DXTK->GamePadState[0].dpad.left) {
 		model->Move(0.0f, 0.0f, player_speed_ * deltaTime);
-		SetAnimation(model, Walk);
+		//SetAnimation(model, Walk);
 	}
 
 	//プレイヤー(ゲームパッド)
@@ -163,7 +164,7 @@ void PlayerManager::Player_jump(DX9::MODEL& ground,const float deltaTime)
 			jump_flag_ = true;
 			jump_time_ = 0;
 			jump_start_v_ = model->Position.y;
-			SetAnimation(model, Jump);
+			//SetAnimation(model, Jump);
 		}
 	}
 
@@ -208,7 +209,7 @@ void PlayerManager::Player_attack() {
 
 		//斬撃
 		handle = DX12Effect.Play(Sword_Effect_);
-		DX12Effect.SetPosition(handle, Vector3(3, -8, 0));
+		DX12Effect.SetPosition(handle, Vector3(5, -6, 0));
 		//if (box.Intersects(->GetBox())) {
 		//	//攻撃が当たったら１ダメージを与える
 		//	//敵のHPは3なので成功すれば三発で倒れる

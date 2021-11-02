@@ -20,14 +20,14 @@ public:
 
 	void OnCollisionEnter(PlayerManager* player);
 
-	DX9::SKINNEDMODEL& GetModel() { return model; }
+	DX9::MODEL& GetModel() { return model; }
 	BoundingBox  GetBox()		  { return  box; }
 
 private:
 	//プレイヤー
-	DX9::SKINNEDMODEL model;
+	DX9::MODEL model;
 	SimpleMath::Vector3 player_pos = SimpleMath::Vector3(0.0f, 0.0f, 50.0f);
-	float model_scsle = 0.04f;
+	float model_scsle = 12.0f;
 	float model_rotetion = -90.0f;
 
 	//プレイヤーの移動制限(幅)

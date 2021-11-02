@@ -49,6 +49,9 @@
     <Filter Include="MyClass\Observer">
       <UniqueIdentifier>{35f39bf1-15c0-4ecd-93f6-5b782226a252}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\SwordManager">
+      <UniqueIdentifier>{feb2129a-7cf9-48a2-8830-d113854442fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -114,6 +117,9 @@
     <ClInclude Include="MyClass\Observer\Observer.h">
       <Filter>MyClass\Observer</Filter>
     </ClInclude>
+    <ClInclude Include="MyClass\SwordManager\SwordManager.h">
+      <Filter>MyClass\SwordManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -157,6 +163,9 @@
     </ClCompile>
     <ClCompile Include="MyClass\Observer\Observer.cpp">
       <Filter>MyClass\Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\SwordManager\SwordManager.cpp">
+      <Filter>MyClass\SwordManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
