@@ -62,21 +62,7 @@ int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
 
 
 	//ƒvƒŒƒCƒ„[:UŒ‚
-	//ƒvƒŒƒCƒ„[:UŒ‚
-	if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F||DXTK->GamePadEvent->b) {
-		//“–‚½‚è”»’è‚ÍInterserts‚ðŽg‚¤
-		//“–‚½‚è”»’è‚ð‚³‚¹‚½‚¢ƒ‚ƒfƒ‹‚ÌƒRƒŠƒWƒ‡ƒ“.Interserts(‘ŠŽèƒ‚ƒfƒ‹‚ÌƒRƒŠƒWƒ‡ƒ“)
-		
-		//ŽaŒ‚
-		handle = DX12Effect.Play(Sword_Effect_);
-		DX12Effect.SetPosition(handle, Vector3(2, -4, 0));
-		//if (box.Intersects(->GetBox())) {
-		//	//UŒ‚‚ª“–‚½‚Á‚½‚ç‚Pƒ_ƒ[ƒW‚ð—^‚¦‚é
-		//	//“G‚ÌHP‚Í3‚È‚Ì‚Å¬Œ÷‚·‚ê‚ÎŽO”­‚Å“|‚ê‚é
-		//	EnemyBase–Œ^‚Ì•Ï”->Damage();
-		//}
-	}
-
+	Player_attack();
 
 	//ƒ‰ƒ“ƒo[ƒWƒƒƒbƒN(ˆÚ“®§ŒÀ)
 	Player_limit();
@@ -215,5 +201,19 @@ void PlayerManager::Player_jump(DX9::MODEL& ground,const float deltaTime)
 }
 
 void PlayerManager::Player_attack() {
+	//ƒvƒŒƒCƒ„[:UŒ‚
+	if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent->b) {
+		//“–‚½‚è”»’è‚ÍInterserts‚ðŽg‚¤
+		//“–‚½‚è”»’è‚ð‚³‚¹‚½‚¢ƒ‚ƒfƒ‹‚ÌƒRƒŠƒWƒ‡ƒ“.Interserts(‘ŠŽèƒ‚ƒfƒ‹‚ÌƒRƒŠƒWƒ‡ƒ“)
+
+		//ŽaŒ‚
+		handle = DX12Effect.Play(Sword_Effect_);
+		DX12Effect.SetPosition(handle, Vector3(3, -8, 0));
+		//if (box.Intersects(->GetBox())) {
+		//	//UŒ‚‚ª“–‚½‚Á‚½‚ç‚Pƒ_ƒ[ƒW‚ð—^‚¦‚é
+		//	//“G‚ÌHP‚Í3‚È‚Ì‚Å¬Œ÷‚·‚ê‚ÎŽO”­‚Å“|‚ê‚é
+		//	EnemyBase–Œ^‚Ì•Ï”->Damage();
+		//}
+	}
 
 }
