@@ -91,5 +91,7 @@ private:
 	void Player_limit();
 	//ƒWƒƒƒ“ƒv
 	void Player_jump(DX9::MODEL& ground, const float deltaTime);
+	//UŒ‚
+	void Player_attack();
 
 };

@@ -62,7 +62,8 @@ int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
 
 
 	//プレイヤー:攻撃
-	if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F) {
+	//プレイヤー:攻撃
+	if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F||DXTK->GamePadEvent->b) {
 		//当たり判定はIntersertsを使う
 		//当たり判定をさせたいモデルのコリジョン.Interserts(相手モデルのコリジョン)
 		
@@ -136,17 +137,17 @@ void PlayerManager::Player_move(const float deltaTime)
 		SetAnimation(model, Walk);
 	}
 
-	////プレイヤー(ゲームパッド)
-	//SimpleMath::Vector3 movement = SimpleMath::Vector3(
-	//	 DXTK->GamePadState[0].thumbSticks.leftX,
-	//	-DXTK->GamePadState[0].thumbSticks.leftY,
-	//	0.0f
-	//);
-	//const float SQUARE_X =  DXTK->GamePadState[0].thumbSticks.leftX;
-	//const float SQUARE_Y = -DXTK->GamePadState[0].thumbSticks.leftY;
+	//プレイヤー(ゲームパッド)
+	SimpleMath::Vector3 movement = SimpleMath::Vector3(
+		 DXTK->GamePadState[0].thumbSticks.leftX,
+		-DXTK->GamePadState[0].thumbSticks.leftY,
+		0.0f
+	);
+	const float SQUARE_X =  DXTK->GamePadState[0].thumbSticks.leftX;
+	const float SQUARE_Y = -DXTK->GamePadState[0].thumbSticks.leftY;
 
-	//movement.x = SQUARE_X * sqrt(5.0f - 0.5 * SQUARE_Y * SQUARE_Y);
-	//movement.y = SQUARE_Y * sqrt(5.0f - 0.5 * SQUARE_X * SQUARE_X);
+	movement.x = SQUARE_X * sqrt(5.0f - 0.5 * SQUARE_Y * SQUARE_Y);
+	movement.y = SQUARE_Y * sqrt(5.0f - 0.5 * SQUARE_X * SQUARE_X);
 
 
 
@@ -210,5 +211,9 @@ void PlayerManager::Player_jump(DX9::MODEL& ground,const float deltaTime)
 			}
 		}
 	}
+
+}
+
+void PlayerManager::Player_attack() {
 
 }
