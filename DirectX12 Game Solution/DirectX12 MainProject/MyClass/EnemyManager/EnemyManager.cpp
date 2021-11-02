@@ -49,11 +49,10 @@ void EnemyManager::Iterator(DX9::MODEL& ground,PlayerManager* player, const floa
 
 void EnemyManager::Generator() {
 	std::unique_ptr<EnemyFactory> factory = std::make_unique<EnemyFactory>();
-	
 		
-			enemy.push_back(factory->Create("normal", SimpleMath::Vector3(30, 0, 50)));
-			enemy.push_back(factory->Create("normal", SimpleMath::Vector3(100, 0, 50)));
-			enemy.push_back(factory->Create("normal", SimpleMath::Vector3(170, 0, 50)));
+	enemy.push_back(factory->Create("normal", SimpleMath::Vector3(30, 0, 50)));
+	enemy.push_back(factory->Create("normal", SimpleMath::Vector3(100, 0, 50)));
+	enemy.push_back(factory->Create("normal", SimpleMath::Vector3(170, 0, 50)));
 }
 
 void EnemyManager::Render()
@@ -68,6 +67,5 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	base->Retreat();
 
 	DX12Effect.SetPosition(handle,base->GetModel()->GetPosition());
-	//DX12Effect.SetRotation(handle, SimpleMath::Vector3(0,90,0));
 	handle = DX12Effect.Play(effect);
 }
