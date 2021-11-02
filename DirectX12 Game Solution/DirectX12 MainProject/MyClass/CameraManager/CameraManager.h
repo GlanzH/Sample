@@ -11,13 +11,19 @@ using namespace DX9;
 class CameraManager
 {
 public:
+	CameraManager() {};
+	~CameraManager() {};
+
 	bool Initialize();
-	int  Update(PlayerManager* player);
+	void LoadAsset();
+	int  Update(PlayerManager* player,DX9::MODEL& ground);
 	void Render(SimpleMath::Vector3 player_position);
 
 private:
 	CAMERA  camera;
+
 	SimpleMath::Vector3 position;
 	
-	const float view_y = 10.0f;
+	const float fixed_pos = 10.0f;
+	const float adjust_y  = 100.0f;
 };
