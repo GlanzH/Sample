@@ -104,7 +104,7 @@ NextScene MainScene::Update(const float deltaTime)
 	// TODO: Add your game logic here.
 
 	text.Update(deltaTime);
-	camera.Update(player);
+	camera.Update(player,ground.GetModel());
 
 	DX12Effect.Update();
 	player->Update(ground.GetModel(), deltaTime);
