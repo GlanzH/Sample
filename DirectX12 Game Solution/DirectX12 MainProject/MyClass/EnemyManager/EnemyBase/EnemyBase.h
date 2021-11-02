@@ -20,9 +20,11 @@ public:
 	virtual int Update(DX9::MODEL& ground, PlayerManager* player, const float deltaTime);
 	void Render();
 
+	void Retreat();
 	void Damage();
 
-	BoundingBox GetBox() { return box; }
+	DX9::SKINNEDMODEL& GetModel() { return model; }
+	BoundingBox GetBox()		  { return box; }
 
 private:
 	D3DMATERIAL9      material;

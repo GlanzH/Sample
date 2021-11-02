@@ -42,7 +42,7 @@ void PlayerManager::LoadAssets()
 	font = DX9::SpriteFont::CreateDefaultFont(DXTK->Device9);
 
 	DX12Effect.Initialize();
-	Sword_Effect_ = DX12Effect.Create(L"Effect//Sword_Effect.efk");
+	Sword_Effect_ = DX12Effect.Create(L"Effect//Effect//Sword_Effect.efk");
 
 }
 

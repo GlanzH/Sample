@@ -16,7 +16,8 @@ EnemyManager::~EnemyManager() {
 
 bool EnemyManager::Initialize()
 {
-	
+	DX12Effect.Initialize();
+	effect = DX12Effect.Create(L"Effect//EnemySampleEffect//enemy_hit.efk");
 	return true;
 }
 
@@ -64,4 +65,9 @@ void EnemyManager::Render()
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	base->Damage();
+	base->Retreat();
+
+	DX12Effect.SetPosition(handle,base->GetModel()->GetPosition());
+	//DX12Effect.SetRotation(handle, SimpleMath::Vector3(0,90,0));
+	handle = DX12Effect.Play(effect);
 }

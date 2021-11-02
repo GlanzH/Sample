@@ -45,6 +45,14 @@ void EnemyBase::Damage() {
 	enemy_hp--;
 }
 
+void EnemyBase::Retreat() {
+	position.x += 8.0f;
+
+	box.Center = model->GetPosition();
+	model->SetPosition(position);
+	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
+}
+
 void EnemyBase::Render() {
 		//if (count<2)
 		//{

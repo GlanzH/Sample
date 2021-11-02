@@ -2,6 +2,8 @@
 #include "Base/dxtk.h"
 #include "CameraManager.h"
 
+#include "MyClass/PlayerManager/PlayerManager.h"
+
 bool CameraManager::Initialize() {
 	//ƒJƒƒ‰‚ÌˆÊ’u
 	camera->SetView(SimpleMath::Vector3(0.0f, 15.0f, 0.0f), SimpleMath::Vector3(0.0f, 0.0f, 0.0f));

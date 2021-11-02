@@ -1,5 +1,9 @@
 #pragma once
-#include "MyClass/PlayerManager/PlayerManager.h"
+
+#include "Base/pch.h"
+#include "Base/dxtk.h"
+
+class PlayerManager;
 
 using namespace DirectX;
 using namespace DX9;
