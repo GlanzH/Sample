@@ -60,8 +60,10 @@ void MainScene::LoadAssets()
 	light.Diffuse = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 1.0f);
 	light.Ambient = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 1.0f);
 	light.Specular = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 1.0f);
-	DXTK->Direct3D9->SetLight(0, light);
+	DXTK->Direct3D9->SetLight(100.0f, light);
 	DXTK->Direct3D9->LightEnable(0, true);
+
+	sword.LoadAssets();
 
 	//‰æ‘œ‚âƒ‚ƒfƒ‹‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 	DX12Effect.Initialize();
@@ -124,6 +126,8 @@ void MainScene::Render()
 	ground.Render();
 	player->Render();
 	enemy->Render();
+
+	sword.Render();
 
 	DX9::SpriteBatch->Begin();
 
