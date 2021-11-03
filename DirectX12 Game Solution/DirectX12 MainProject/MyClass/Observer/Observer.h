@@ -6,6 +6,6 @@
 
 class Observer {
 public:
-	int  Update(PlayerManager* player, EnemyManager* enemy);
-	void CollisionDetection(PlayerManager* player, EnemyManager* enemy);
+	int  Update(PlayerManager* player, EnemyManager* enemy, Sword* sword);
+	void CollisionDetection(PlayerManager* player, EnemyManager* enemy, Sword* sword);
 };

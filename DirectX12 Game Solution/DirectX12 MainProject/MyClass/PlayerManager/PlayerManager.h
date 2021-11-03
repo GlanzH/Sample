@@ -19,7 +19,7 @@ public:
 	void Render();
 	void _2DRender();
 
-	void OnCollisionEnter(PlayerManager* player);
+	void OnCollisionEnter();
 
 	DX9::MODEL& GetModel() { return model; }
 	BoundingBox  GetBox()		  { return  box; }

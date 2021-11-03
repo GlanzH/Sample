@@ -78,7 +78,7 @@ void PlayerManager::Render()
 	//collision->Draw();
 }
 
-void PlayerManager::OnCollisionEnter(PlayerManager* player) {
+void PlayerManager::OnCollisionEnter() {
 
 }
 

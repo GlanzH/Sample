@@ -55,5 +55,5 @@ private:
 	PlayerManager* player;
 	EnemyManager*  enemy;
 	Observer*      observer;
-	Sword          sword;
+	Sword*         sword;
 };
