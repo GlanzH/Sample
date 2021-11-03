@@ -4,6 +4,7 @@ using namespace DirectX;
 
 #include "Base/DX12Effekseer.h"
 #include "MyClass/CameraManager/CameraManager.h"
+#include "MyClass/SwordManager/SwordManager.h"
 
 class PlayerManager
 {

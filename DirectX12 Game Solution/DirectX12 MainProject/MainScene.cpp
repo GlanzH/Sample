@@ -31,6 +31,7 @@ void MainScene::Initialize()
 	camera.Initialize();
 	player->Initialize();
 	enemy->Initialize();
+	sword.Initialize();
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -105,6 +106,7 @@ NextScene MainScene::Update(const float deltaTime)
 
 	text.Update(deltaTime);
 	camera.Update(player,ground.GetModel());
+	sword.Update(player, deltaTime);
 
 	DX12Effect.Update();
 	player->Update(ground.GetModel(), deltaTime);
