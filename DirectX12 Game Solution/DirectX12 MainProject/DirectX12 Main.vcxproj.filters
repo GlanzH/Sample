@@ -52,6 +52,12 @@
     <Filter Include="MyClass\PlayerManager\Sword">
       <UniqueIdentifier>{a3baebef-f3af-4943-aeeb-e00222aabf3a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\ResourceManager">
+      <UniqueIdentifier>{c36fb98f-920c-4a13-a671-8695aba703d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\MyAlgorithm">
+      <UniqueIdentifier>{f2eea4d0-e853-4690-84ee-342ccef86f44}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -120,6 +126,12 @@
     <ClInclude Include="MyClass\PlayerManager\Sword\Sword.h">
       <Filter>MyClass\PlayerManager\Sword</Filter>
     </ClInclude>
+    <ClInclude Include="MyClass\ResourceManager\ResourceManager.h">
+      <Filter>MyClass\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\MyAlgorithm\MyAlgorithm.h">
+      <Filter>MyClass\MyAlgorithm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -166,6 +178,9 @@
     </ClCompile>
     <ClCompile Include="MyClass\PlayerManager\Sword\Sword.cpp">
       <Filter>MyClass\PlayerManager\Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\ResourceManager\ResourceManager.cpp">
+      <Filter>MyClass\ResourceManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

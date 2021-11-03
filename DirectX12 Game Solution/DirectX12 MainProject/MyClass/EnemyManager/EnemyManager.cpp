@@ -1,6 +1,7 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 #include "EnemyManager.h"
+#include "MyClass/ResourceManager/ResourceManager.h"
 
 EnemyManager::EnemyManager()
 {
@@ -17,7 +18,7 @@ EnemyManager::~EnemyManager() {
 bool EnemyManager::Initialize()
 {
 	DX12Effect.Initialize();
-	effect = DX12Effect.Create(L"Effect//EnemySampleEffect//enemy_hit.efk");
+	effect = ResourceManager::Instance().LoadEffect(L"Effect//EnemySampleEffect//enemy_hit.efk");
 	return true;
 }
 

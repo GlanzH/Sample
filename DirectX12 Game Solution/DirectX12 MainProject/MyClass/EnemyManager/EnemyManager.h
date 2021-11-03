@@ -5,7 +5,6 @@ using namespace DirectX;
 #include "../EnemyManager/EnemyFactory/EnemyFactory.h"
 #include "MyClass/EnumManager/EnumManager.h"
 #include "MyClass/PlayerManager/PlayerManager.h"
-#include "Base/DX12Effekseer.h"
 
 class EnemyManager
 {
@@ -32,4 +31,6 @@ private:
 
 	EFFECTHANDLE handle;
 	EFFECT       effect;
+	DX9::SPRITEFONT font;
+
 };
