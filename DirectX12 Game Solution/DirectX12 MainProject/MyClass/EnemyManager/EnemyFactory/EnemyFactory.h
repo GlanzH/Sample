@@ -7,7 +7,7 @@
  * @date Å@2021/10/31
  */
 
-#include "MyClass/EnemyManager/EnemyBase/Enemy/Enemy.h"
+#include "MyClass/EnemyManager/EnemyFactory/EnemyBase/Enemy/Enemy.h"
 #include "Base/pch.h"
 #include<string>
 #include<vector>

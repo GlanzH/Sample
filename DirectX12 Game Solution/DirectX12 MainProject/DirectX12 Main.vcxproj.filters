@@ -31,12 +31,6 @@
     <Filter Include="MyClass\GroundManager">
       <UniqueIdentifier>{3484e38c-733b-4580-a58d-5fa05c40e4b3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\EnemyManager\EnemyBase">
-      <UniqueIdentifier>{936ec52a-008d-4dc3-89ea-f50e09f99149}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyClass\EnemyManager\EnemyBase\Enemy">
-      <UniqueIdentifier>{040a1c7d-45fe-4185-bdcb-889b7306e236}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MyClass\EnumManager">
       <UniqueIdentifier>{9b28ac42-a149-4556-9f5b-83757bd94399}</UniqueIdentifier>
     </Filter>
@@ -49,8 +43,20 @@
     <Filter Include="MyClass\Observer">
       <UniqueIdentifier>{35f39bf1-15c0-4ecd-93f6-5b782226a252}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\SwordManager">
-      <UniqueIdentifier>{feb2129a-7cf9-48a2-8830-d113854442fe}</UniqueIdentifier>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase">
+      <UniqueIdentifier>{936ec52a-008d-4dc3-89ea-f50e09f99149}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy">
+      <UniqueIdentifier>{040a1c7d-45fe-4185-bdcb-889b7306e236}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\PlayerManager\Sword">
+      <UniqueIdentifier>{a3baebef-f3af-4943-aeeb-e00222aabf3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\ResourceManager">
+      <UniqueIdentifier>{c36fb98f-920c-4a13-a671-8695aba703d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\MyAlgorithm">
+      <UniqueIdentifier>{f2eea4d0-e853-4690-84ee-342ccef86f44}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -99,14 +105,8 @@
     <ClInclude Include="MyClass\EnemyManager\EnemyManager.h">
       <Filter>MyClass\EnemyManager</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyBase\EnemyBase.h">
-      <Filter>MyClass\EnemyManager\EnemyBase</Filter>
-    </ClInclude>
     <ClInclude Include="MyClass\EnumManager\EnumManager.h">
       <Filter>MyClass\EnumManager</Filter>
-    </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyBase\Enemy\Enemy.h">
-      <Filter>MyClass\EnemyManager\EnemyBase\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Base\DX12Effekseer.h">
       <Filter>MyClass\Effekseer</Filter>
@@ -117,8 +117,20 @@
     <ClInclude Include="MyClass\Observer\Observer.h">
       <Filter>MyClass\Observer</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\SwordManager\SwordManager.h">
-      <Filter>MyClass\SwordManager</Filter>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Enemy.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\PlayerManager\Sword\Sword.h">
+      <Filter>MyClass\PlayerManager\Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\ResourceManager\ResourceManager.h">
+      <Filter>MyClass\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\MyAlgorithm\MyAlgorithm.h">
+      <Filter>MyClass\MyAlgorithm</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -149,12 +161,6 @@
     <ClCompile Include="MyClass\GroundManager\GroundManager.cpp">
       <Filter>MyClass\GroundManager</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyBase\EnemyBase.cpp">
-      <Filter>MyClass\EnemyManager\EnemyBase</Filter>
-    </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyBase\Enemy\Enemy.cpp">
-      <Filter>MyClass\EnemyManager\EnemyBase\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Base\DX12Effekseer.cpp">
       <Filter>MyClass\Effekseer</Filter>
     </ClCompile>
@@ -164,8 +170,17 @@
     <ClCompile Include="MyClass\Observer\Observer.cpp">
       <Filter>MyClass\Observer</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\SwordManager\SwordManager.cpp">
-      <Filter>MyClass\SwordManager</Filter>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Enemy.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\PlayerManager\Sword\Sword.cpp">
+      <Filter>MyClass\PlayerManager\Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\ResourceManager\ResourceManager.cpp">
+      <Filter>MyClass\ResourceManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

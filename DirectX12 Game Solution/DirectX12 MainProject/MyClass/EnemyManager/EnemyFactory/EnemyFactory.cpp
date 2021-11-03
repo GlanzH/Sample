@@ -8,7 +8,7 @@ EnemyFactory::EnemyFactory()
 
 	//!敵の種類のタグをプッシュバック
 	enemy_tag.push_back("normal");
-	enemy_model[NORMAL] = L"Mikoto\\mikoto.x";
+	enemy_model[NORMAL] = L"Model\\Enemy\\slime.X";
 }
 
 EnemyBase* EnemyFactory::Create(std::string tag, DirectX::SimpleMath::Vector3 position)
