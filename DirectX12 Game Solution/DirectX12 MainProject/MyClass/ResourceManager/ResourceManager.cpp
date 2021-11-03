@@ -69,7 +69,7 @@ DX9::SPRITE	ResourceManager::LoadSprite(std::wstring sprite_name) {
 	}
 }
 
-DX9::SPRITEFONT ResourceManager::CreateFontFromFile(std::wstring font_file,std::wstring font_name, float size) {
+DX9::SPRITEFONT ResourceManager::LoadFontFromFile(std::wstring font_file,std::wstring font_name, float size) {
 	auto&& itr = resource_font.find(font_file);
 
 	if (itr != resource_font.end()) {
@@ -94,7 +94,7 @@ DX9::SPRITEFONT ResourceManager::CreateFontFromFile(std::wstring font_file,std::
 	}
 }
 
-DX9::SPRITEFONT ResourceManager::CreateFontFromName(std::wstring font_name, float size) {
+DX9::SPRITEFONT ResourceManager::LoadFontFromName(std::wstring font_name, float size) {
 	auto&& itr = resource_font.find(font_name);
 
 	if (itr != resource_font.end()) {

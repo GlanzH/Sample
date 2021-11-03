@@ -13,8 +13,8 @@ public:
 	//DX9::MODEL&		   LoadModel(TCHAR model_name);
 
 	DX9::SPRITE		  LoadSprite(std::wstring sprite_name);
-	DX9::SPRITEFONT   CreateFontFromFile(std::wstring font_file,std::wstring font_name, float size);
-	DX9::SPRITEFONT   CreateFontFromName(std::wstring font_name, float size);
+	DX9::SPRITEFONT   LoadFontFromFile(std::wstring font_file,std::wstring font_name, float size);
+	DX9::SPRITEFONT   LoadFontFromName(std::wstring font_name, float size);
 
 	EFFECT LoadEffect(std::wstring effect_name);
 
