@@ -5,6 +5,7 @@ using namespace DirectX;
 #include "Base/DX12Effekseer.h"
 #include "MyClass/CameraManager/CameraManager.h"
 #include "MyClass/PlayerManager/Sword/Sword.h"
+#include "MyClass/EnemyManager/EnemyManager.h"
 
 class PlayerManager
 {
@@ -20,6 +21,8 @@ public:
 	void _2DRender();
 
 	void OnCollisionEnter(PlayerManager* player);
+	void Retreat();
+
 
 	DX9::MODEL& GetModel() { return model; }
 	BoundingBox  GetBox()		  { return  box; }

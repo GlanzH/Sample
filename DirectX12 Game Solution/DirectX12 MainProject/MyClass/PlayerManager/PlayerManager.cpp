@@ -79,8 +79,17 @@ void PlayerManager::Render()
 }
 
 void PlayerManager::OnCollisionEnter(PlayerManager* player) {
+	player->Retreat();
+}
+
+void PlayerManager::Retreat() {
+	//player_pos.x -= 8.0;
+
+	//model->SetPosition(player_pos);
+	//collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
 
 }
+
 
 
 //指定されたモーションはTRUE,それ以外はFALSE
