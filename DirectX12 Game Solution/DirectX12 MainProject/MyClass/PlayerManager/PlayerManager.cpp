@@ -78,18 +78,9 @@ void PlayerManager::Render()
 	//collision->Draw();
 }
 
-void PlayerManager::OnCollisionEnter(PlayerManager* player) {
-	player->Retreat();
-}
-
-void PlayerManager::Retreat() {
-	//player_pos.x -= 8.0;
-
-	//model->SetPosition(player_pos);
-	//collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
+void PlayerManager::OnCollisionEnter() {
 
 }
-
 
 
 //指定されたモーションはTRUE,それ以外はFALSE
@@ -133,17 +124,17 @@ void PlayerManager::Player_move(const float deltaTime)
 		//SetAnimation(model, Walk);
 	}
 
-	//プレイヤー(ゲームパッド)
-	SimpleMath::Vector3 movement = SimpleMath::Vector3(
-		 DXTK->GamePadState[0].thumbSticks.leftX,
-		-DXTK->GamePadState[0].thumbSticks.leftY,
-		0.0f
-	);
-	const float SQUARE_X =  DXTK->GamePadState[0].thumbSticks.leftX;
-	const float SQUARE_Y = -DXTK->GamePadState[0].thumbSticks.leftY;
+	////プレイヤー(ゲームパッド)
+	//SimpleMath::Vector3 movement = SimpleMath::Vector3(
+	//	 DXTK->GamePadState[0].thumbSticks.leftX,
+	//	-DXTK->GamePadState[0].thumbSticks.leftY,
+	//	0.0f
+	//);
+	//const float SQUARE_X =  DXTK->GamePadState[0].thumbSticks.leftX;
+	//const float SQUARE_Y = -DXTK->GamePadState[0].thumbSticks.leftY;
 
-	movement.x = SQUARE_X * sqrt(5.0f - 0.5 * SQUARE_Y * SQUARE_Y);
-	movement.y = SQUARE_Y * sqrt(5.0f - 0.5 * SQUARE_X * SQUARE_X);
+	//movement.x = SQUARE_X * sqrt(5.0f - 0.5 * SQUARE_Y * SQUARE_Y);
+	//movement.y = SQUARE_Y * sqrt(5.0f - 0.5 * SQUARE_X * SQUARE_X);
 
 
 

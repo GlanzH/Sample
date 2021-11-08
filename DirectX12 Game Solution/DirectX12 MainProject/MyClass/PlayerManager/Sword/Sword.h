@@ -20,13 +20,19 @@ public:
 	int Update(PlayerManager* player, const float deltaTime);
 	void Render();
 
-	DX9::MODEL& GetModel() { return sword_model_; }
+	BoundingBox GetBox() { return box; }
 
 
 private:
 
 	DX9::MODEL sword_model_;
 	SimpleMath::Vector3 sword_pos;
+
+	BoundingBox box;
+	DX9::MODEL collision;
+
+	float rotate = 0.0f;
+
 	bool  sword_flag;
 	float sword_attack_time = 0.0f;
 
