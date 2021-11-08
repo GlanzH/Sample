@@ -27,11 +27,9 @@ void PlayerManager::LoadAssets()
 		DXTK->Device9,
 		box.Extents.x * box_size,
 		box.Extents.y * box_size,
-		box.Extents.z * box_size
+		box.Extents.z * 1
 	);
 	collision->SetRotation(0.0f, XMConvertToRadians(model_rotetion), 0.0f);
-
-
 
 	material.Diffuse = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.75f);
 	material.Ambient = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
@@ -67,6 +65,12 @@ int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
 
 	//ランバージャック(移動制限)
 	Player_limit();
+
+	//パリィ
+	Parry();
+
+	box.Center = model->GetPosition();
+	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(-0.5, 4, 0));
 	return 0;
 }
 
@@ -75,13 +79,29 @@ void PlayerManager::Render()
 	//プレイヤーの描画
 	model->Draw();
 
-	//collision->Draw();
+	collision->Draw();
 }
 
 void PlayerManager::OnCollisionEnter() {
-
+	//敵に当たったときの処理
 }
 
+void PlayerManager::OnParryArea() {
+	//パリィ成功時の処理
+}
+
+void PlayerManager::Parry() {
+	if (DXTK->KeyState->P) {
+		if (parry_count < max_parry_count) {
+			parry_count++;
+			parry_flag = true;
+		}
+		else
+			parry_flag = false;
+	}
+	else
+		parry_count = 0;
+}
 
 //指定されたモーションはTRUE,それ以外はFALSE
 void PlayerManager::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack)
@@ -99,6 +119,21 @@ void PlayerManager::_2DRender()
 		DX9::Colors::DarkBlue,
 		L"%f", model->Position.x
 	);
+
+	if (!parry_flag) {
+		DX9::SpriteBatch->DrawString(font.Get(),
+			SimpleMath::Vector2(1000.0f, 0.0f),
+			DX9::Colors::Black,
+			L"あ"
+		);
+	}
+	else {
+		DX9::SpriteBatch->DrawString(font.Get(),
+			SimpleMath::Vector2(1000.0f, 0.0f),
+			DX9::Colors::Black,
+			L"い"
+		);
+	}
 }
 
 void PlayerManager::Player_collision_detection(DX9::MODEL& ground)
@@ -135,9 +170,6 @@ void PlayerManager::Player_move(const float deltaTime)
 
 	//movement.x = SQUARE_X * sqrt(5.0f - 0.5 * SQUARE_Y * SQUARE_Y);
 	//movement.y = SQUARE_Y * sqrt(5.0f - 0.5 * SQUARE_X * SQUARE_X);
-
-
-
 }
 
 void PlayerManager::Player_limit()
@@ -150,10 +182,6 @@ void PlayerManager::Player_limit()
 		std::clamp(p_pos.z, -model_collision_detection_Z,     model_collision_detection_Z)
 	);
 	model->SetPosition(p_pos);
-
-	box.Center = model->GetPosition();
-	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
-
 }
 
 void PlayerManager::Player_jump(DX9::MODEL& ground,const float deltaTime)

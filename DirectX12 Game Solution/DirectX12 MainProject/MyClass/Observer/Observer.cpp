@@ -8,14 +8,19 @@ int Observer::Update(PlayerManager* player,EnemyManager* enemy,Sword* sword) {
 void Observer::CollisionDetection(PlayerManager* player, EnemyManager* enemy, Sword* sword) {
 	//プレイヤー・敵当たり判定
 	for (auto enemies_roop : enemy->GetEnemy()) {
-		if (DXTK->KeyEvent->pressed.F || DXTK->KeyEvent->pressed.J || DXTK->GamePadEvent->b) {
-			if (sword->GetBox().Intersects(enemies_roop->GetBox())) {
+		if (sword->IsAttack()) {
+			if (sword->GetBox().Intersects(enemies_roop->GetBox()))
 				enemy->OnCollisionEnter(enemies_roop);
-			}
 		}
 
 		if (player->GetBox().Intersects(enemies_roop->GetBox())) {
-			player->OnCollisionEnter();
+			if (!player->GetParryFlag()) {
+				player->OnCollisionEnter();
+			}
+			else if(player->GetModel()->GetPosition().x < enemies_roop->GetModel()->GetPosition().x) {
+				player->OnParryArea();
+				enemy->OnParryArea(enemies_roop);
+			}
 		}
 	}
 }

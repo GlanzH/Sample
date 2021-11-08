@@ -27,7 +27,7 @@ public:
 	BoundingBox GetBox()		  { return box; }
 
 private:
-	D3DMATERIAL9      material;
+	D3DMATERIAL9  material;
 	GroundManager ground;
 
 protected:

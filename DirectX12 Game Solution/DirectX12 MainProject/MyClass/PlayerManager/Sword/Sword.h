@@ -21,7 +21,7 @@ public:
 	void Render();
 
 	BoundingBox GetBox() { return box; }
-
+	bool IsAttack();
 
 private:
 
