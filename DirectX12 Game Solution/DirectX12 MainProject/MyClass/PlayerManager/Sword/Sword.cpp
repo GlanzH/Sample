@@ -34,7 +34,7 @@ int Sword::Update(PlayerManager* player, const float deltaTime)
 {
 	sword_model_->SetPosition(player->GetModel()->GetPosition() + SimpleMath::Vector3(3,0,0));
 
-	if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent->b) {
+	if (IsAttack()) {
 		sword_flag = true;
 		sword_attack_time = 0.0f;
 	}
@@ -55,6 +55,13 @@ int Sword::Update(PlayerManager* player, const float deltaTime)
 	collision->SetPosition(sword_model_->GetPosition() + SimpleMath::Vector3(3, 7, 0));
 	
 	return 0;
+}
+
+bool Sword::IsAttack() {
+	if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent->b)
+		return true;
+
+	return false;
 }
 
 void Sword::Render()

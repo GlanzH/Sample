@@ -20,9 +20,12 @@ public:
 	void _2DRender();
 
 	void OnCollisionEnter();
+	void OnParryArea();
+
+	bool GetParryFlag() { return parry_flag; }
 
 	DX9::MODEL& GetModel() { return model; }
-	BoundingBox  GetBox()		  { return  box; }
+	BoundingBox  GetBox()  { return  box; }
 
 private:
 	//プレイヤー
@@ -32,19 +35,23 @@ private:
 	float model_rotetion = -90.0f;
 
 	//プレイヤーの移動制限(幅)
-	float model_collision_detection_X     = 495.0f;
-	float model_collision_detection_Y_MAX = 1000.0f;
-	float model_collision_detection_Y_MIN =   -5.0f;
-	float model_collision_detection_Z     =  100.0f;
+	const float model_collision_detection_X     = 495.0f;
+	const float model_collision_detection_Y_MAX = 1000.0f;
+	const float model_collision_detection_Y_MIN =   -5.0f;
+	const float model_collision_detection_Z     =  100.0f;
 
 
 	BoundingBox box;
 	D3DMATERIAL9 material;
 
-	int box_size = 2;
+	const int box_size = 2;
+	
+	const int max_parry_count = 40;
+	int		  parry_count = 0;
+	bool	  parry_flag = false;
 
 	//プレイヤーのスピード
-	float player_speed_ = 50.0f;
+	const float player_speed_ = 50.0f;
 
 	DX9::MODEL collision;
 
@@ -74,11 +81,11 @@ private:
 	float jump_start_v_;
 
 	//1/2
-	float half = 0.5f;
+	const float half = 0.5f;
 	//重力加速度
-	float gravity_ = 100.0f;
+	const float gravity_ = 100.0f;
 	//初速
-	float V0 = 28.0f;
+	const float V0 = 28.0f;
 
 
 	DX9::SPRITEFONT font;
@@ -94,5 +101,6 @@ private:
 	void Player_jump(DX9::MODEL& ground, const float deltaTime);
 	//攻撃
 	void Player_attack();
-
+	//パリィ
+	void Parry();
 };

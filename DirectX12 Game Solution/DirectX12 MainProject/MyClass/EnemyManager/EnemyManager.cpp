@@ -70,3 +70,7 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	DX12Effect.SetPosition(handle,base->GetModel()->GetPosition());
 	handle = DX12Effect.Play(effect);
 }
+
+void EnemyManager::OnParryArea(EnemyBase* base) {
+
+}
