@@ -89,6 +89,7 @@ void PlayerManager::OnCollisionEnter() {
 	box.Center = model->GetPosition();
 	model->SetPosition(player_pos);
 	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
+	SetAnimation(model, Koke);
 	//float dist = 0;
 	//if (ground->IntersectRay(
 	//	model->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
@@ -103,6 +104,8 @@ void PlayerManager::OnCollisionEnter() {
 
 void PlayerManager::OnParryArea() {
 	//ƒpƒŠƒB¬Œ÷‚Ìˆ—
+	parry_flag = false;
+	SetAnimation(model, Run);
 
 }
 
@@ -111,6 +114,7 @@ void PlayerManager::Parry() {
 		if (parry_count < max_parry_count) {
 			parry_count++;
 			parry_flag = true;
+			SetAnimation(model, Push);
 		}
 		else
 			parry_flag = false;
