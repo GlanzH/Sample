@@ -24,14 +24,14 @@ public:
 
 	bool GetParryFlag() { return parry_flag; }
 
-	DX9::MODEL& GetModel() { return model; }
+	DX9::SKINNEDMODEL& GetModel() { return model; }
 	BoundingBox  GetBox()  { return  box; }
 
 private:
 	//プレイヤー
-	DX9::MODEL model;
+	DX9::SKINNEDMODEL model;
 	SimpleMath::Vector3 player_pos = SimpleMath::Vector3(0.0f, 0.0f, 50.0f);
-	float model_scsle = 12.0f;
+	float model_scsle = 0.05f;
 	float model_rotetion = -90.0f;
 
 	//プレイヤーの移動制限(幅)
@@ -55,6 +55,9 @@ private:
 
 	DX9::MODEL collision;
 
+	//アニメーション
+	void SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack);
+
 	enum
 	{
 		Wait,
@@ -70,7 +73,6 @@ private:
 	EFFECT Sword_Effect_;
 	EFFECTHANDLE handle;
 
-	void SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack);
 
 
 

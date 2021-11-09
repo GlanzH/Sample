@@ -14,8 +14,7 @@ bool PlayerManager::Initialize()
 
 void PlayerManager::LoadAssets() 
 {
-	model = DX9::Model::CreateFromFile(DXTK->Device9, L"Player\\nitousin_neginuki.X");
-	model->SetTexture(L"Player\\nitousin.png");
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Mikoto\\mikoto.x");
 	model->SetScale(model_scsle);
 	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, XMConvertToRadians(model_rotetion), 0.0f);
@@ -51,7 +50,7 @@ int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
 	Player_collision_detection(ground);
 
 	//モデル　アニメーション
-	//SetAnimation(model, Wait);
+	SetAnimation(model, Wait);
 
 	//プレイヤー:移動
 	Player_move(deltaTime);
@@ -71,6 +70,7 @@ int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
 
 	box.Center = model->GetPosition();
 	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(-0.5, 4, 0));
+	model->AdvanceTime(deltaTime/70.0f);
 	return 0;
 }
 
@@ -84,10 +84,26 @@ void PlayerManager::Render()
 
 void PlayerManager::OnCollisionEnter() {
 	//敵に当たったときの処理
+	player_pos.x -= 1.5f;
+
+	box.Center = model->GetPosition();
+	model->SetPosition(player_pos);
+	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
+	//float dist = 0;
+	//if (ground->IntersectRay(
+	//	model->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
+	//	SimpleMath::Vector3::Up,
+	//	&dist
+	//)) {
+	//	model->Move(0.0f, dist, 0.0f);
+	//}
+
+
 }
 
 void PlayerManager::OnParryArea() {
 	//パリィ成功時の処理
+
 }
 
 void PlayerManager::Parry() {
@@ -149,27 +165,29 @@ void PlayerManager::Player_collision_detection(DX9::MODEL& ground)
 void PlayerManager::Player_move(const float deltaTime)
 {
 	//プレイヤー:移動(キーボード)
-	if (DXTK->KeyState->Right || DXTK->KeyState->D||DXTK->GamePadState[0].dpad.right) {
-		model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-		//SetAnimation(model, Walk);
+	if (!parry_flag) {
+		if (DXTK->KeyState->Right || DXTK->KeyState->D || DXTK->GamePadState[0].dpad.right) {
+			model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+			SetAnimation(model, Walk);
 
+		}
+		if (DXTK->KeyState->Left || DXTK->KeyState->A || DXTK->GamePadState[0].dpad.left) {
+			model->Move(0.0f, 0.0f, player_speed_ * deltaTime);
+			SetAnimation(model, Walk);
+		}
+
+		////プレイヤー(ゲームパッド)
+		//SimpleMath::Vector3 movement = SimpleMath::Vector3(
+		//	 DXTK->GamePadState[0].thumbSticks.leftX,
+		//	-DXTK->GamePadState[0].thumbSticks.leftY,
+		//	0.0f
+		//);
+		//const float SQUARE_X =  DXTK->GamePadState[0].thumbSticks.leftX;
+		//const float SQUARE_Y = -DXTK->GamePadState[0].thumbSticks.leftY;
+
+		//movement.x = SQUARE_X * sqrt(5.0f - 0.5 * SQUARE_Y * SQUARE_Y);
+		//movement.y = SQUARE_Y * sqrt(5.0f - 0.5 * SQUARE_X * SQUARE_X);
 	}
-	if (DXTK->KeyState->Left || DXTK->KeyState->A || DXTK->GamePadState[0].dpad.left) {
-		model->Move(0.0f, 0.0f, player_speed_ * deltaTime);
-		//SetAnimation(model, Walk);
-	}
-
-	////プレイヤー(ゲームパッド)
-	//SimpleMath::Vector3 movement = SimpleMath::Vector3(
-	//	 DXTK->GamePadState[0].thumbSticks.leftX,
-	//	-DXTK->GamePadState[0].thumbSticks.leftY,
-	//	0.0f
-	//);
-	//const float SQUARE_X =  DXTK->GamePadState[0].thumbSticks.leftX;
-	//const float SQUARE_Y = -DXTK->GamePadState[0].thumbSticks.leftY;
-
-	//movement.x = SQUARE_X * sqrt(5.0f - 0.5 * SQUARE_Y * SQUARE_Y);
-	//movement.y = SQUARE_Y * sqrt(5.0f - 0.5 * SQUARE_X * SQUARE_X);
 }
 
 void PlayerManager::Player_limit()
@@ -187,34 +205,25 @@ void PlayerManager::Player_limit()
 void PlayerManager::Player_jump(DX9::MODEL& ground,const float deltaTime)
 {
 	//ジャンプ
-	if (!jump_flag_) {
-		if (DXTK->KeyEvent->pressed.Space||DXTK->GamePadEvent[0].a) {
-			jump_flag_ = true;
-			jump_time_ = 0;
-			jump_start_v_ = model->Position.y;
-			//SetAnimation(model, Jump);
-		}
-	}
+	if (!parry_flag) {
+		if (!jump_flag_) {
+			if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent[0].a) {
+				jump_flag_ = true;
+				jump_time_ = 0;
+				jump_start_v_ = model->Position.y;
 
-	if (jump_flag_) {
-		jump_time_ += deltaTime;
-		auto pos = model->GetPosition();
-		pos.y = jump_start_v_ + V0 * jump_time_ - 0.5f * gravity_ * jump_time_ * jump_time_;
-		model->SetPosition(pos);
-
-		float dist = 0;
-		if (ground->IntersectRay(
-			model->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
-			SimpleMath::Vector3::Up,
-			&dist
-		)) {
-			model->Move(0.0f, dist, 0.0f);
-			jump_flag_ = false;
+			}
 		}
 
+		if (jump_flag_) {
 
-		//ジャンプの終了判定
-		if (V0 * jump_time_ < gravity_ * jump_time_ * jump_time_) {
+			jump_time_ += deltaTime;
+			auto pos = model->GetPosition();
+			pos.y = jump_start_v_ + V0 * jump_time_ - 0.5f * gravity_ * jump_time_ * jump_time_;
+			model->SetPosition(pos);
+			SetAnimation(model, Jump);
+
+
 			float dist = 0;
 			if (ground->IntersectRay(
 				model->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
@@ -223,6 +232,21 @@ void PlayerManager::Player_jump(DX9::MODEL& ground,const float deltaTime)
 			)) {
 				model->Move(0.0f, dist, 0.0f);
 				jump_flag_ = false;
+			}
+
+
+			//ジャンプの終了判定
+			if (V0 * jump_time_ < gravity_ * jump_time_ * jump_time_) {
+
+				float dist = 0;
+				if (ground->IntersectRay(
+					model->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
+					SimpleMath::Vector3::Up,
+					&dist
+				)) {
+					model->Move(0.0f, dist, 0.0f);
+					jump_flag_ = false;
+				}
 			}
 		}
 	}
@@ -237,7 +261,7 @@ void PlayerManager::Player_attack() {
 
 		//斬撃
 		handle = DX12Effect.Play(Sword_Effect_);
-		DX12Effect.SetPosition(handle, Vector3(5, -6, 0));
+		DX12Effect.SetPosition(handle, Vector3(4, -7, 0));
 		//if (box.Intersects(->GetBox())) {
 		//	//攻撃が当たったら１ダメージを与える
 		//	//敵のHPは3なので成功すれば三発で倒れる

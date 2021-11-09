@@ -67,5 +67,5 @@ bool Sword::IsAttack() {
 void Sword::Render()
 {
 	sword_model_->Draw();
-//	collision->Draw();
+	collision->Draw();
 }
