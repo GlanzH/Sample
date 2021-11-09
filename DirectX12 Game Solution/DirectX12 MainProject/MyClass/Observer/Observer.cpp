@@ -22,5 +22,7 @@ void Observer::CollisionDetection(PlayerManager* player, EnemyManager* enemy, Sw
 				enemy->OnParryArea(enemies_roop);
 			}
 		}
+
+
 	}
 }
