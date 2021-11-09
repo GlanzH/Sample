@@ -58,6 +58,9 @@
     <Filter Include="MyClass\MyAlgorithm">
       <UniqueIdentifier>{f2eea4d0-e853-4690-84ee-342ccef86f44}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\UIManager">
+      <UniqueIdentifier>{21cee7ac-b5a0-40d5-9982-75e62705735b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -132,6 +135,9 @@
     <ClInclude Include="MyClass\MyAlgorithm\MyAlgorithm.h">
       <Filter>MyClass\MyAlgorithm</Filter>
     </ClInclude>
+    <ClInclude Include="MyClass\UIManager\UIManager.h">
+      <Filter>MyClass\UIManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -181,6 +187,9 @@
     </ClCompile>
     <ClCompile Include="MyClass\ResourceManager\ResourceManager.cpp">
       <Filter>MyClass\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\UIManager\UIManager.cpp">
+      <Filter>MyClass\UIManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
