@@ -46,12 +46,9 @@ private:
 
 	const int box_size = 2;
 	
-	const int max_parry_count = 40;
-	int		  parry_count = 0;
-	bool	  parry_flag = false;
 
 	//プレイヤーのスピード
-	const float player_speed_ = 50.0f;
+	const float player_speed_ = 40.0f;
 
 	DX9::MODEL collision;
 
@@ -73,7 +70,10 @@ private:
 	EFFECT Sword_Effect_;
 	EFFECTHANDLE handle;
 
-
+	//無敵時間
+	bool  invincible_flag      = false;
+	float invincible_count     = 0.0f;
+	float invincible_count_max = 0.05f;
 
 
 
@@ -87,7 +87,16 @@ private:
 	//重力加速度
 	const float gravity_ = 100.0f;
 	//初速
-	const float V0 = 28.0f;
+	const float V0 = 45.0f;
+
+	//パリィ
+	const int max_parry_count = 40;
+	int		  parry_count = 0;
+	bool	  parry_flag = false;
+
+	bool parry_begin_flag = false;
+
+
 
 
 	DX9::SPRITEFONT font;
@@ -105,4 +114,5 @@ private:
 	void Player_attack();
 	//パリィ
 	void Parry();
+
 };

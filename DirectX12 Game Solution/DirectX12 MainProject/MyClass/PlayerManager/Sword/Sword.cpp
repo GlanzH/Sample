@@ -22,17 +22,21 @@ void Sword::LoadAssets()
 
 	collision = DX9::Model::CreateBox(
 		DXTK->Device9,
-		box.Extents.x * 14,
+		box.Extents.x * 22,
 		box.Extents.y * 4,
-		box.Extents.z * 14
+		box.Extents.z * 20
 	);
 
 	box.Center = sword_model_->GetPosition();
+	
 }
 
 int Sword::Update(PlayerManager* player, const float deltaTime)
 {
+	
 	sword_model_->SetPosition(player->GetModel()->GetPosition() + SimpleMath::Vector3(3,0,0));
+
+
 
 	if (IsAttack()) {
 		sword_flag = true;
@@ -51,14 +55,16 @@ int Sword::Update(PlayerManager* player, const float deltaTime)
 		}
 	}
 
-	box.Center  = sword_model_->GetPosition() + SimpleMath::Vector3(3, 0, 0);
-	collision->SetPosition(sword_model_->GetPosition() + SimpleMath::Vector3(3, 7, 0));
+	box.Center  = player->GetModel()->GetPosition() + SimpleMath::Vector3(6, 0, 0);
+	collision->SetPosition(player->GetModel()->GetPosition() + SimpleMath::Vector3(5, 6, 0));
+
+
 	
 	return 0;
 }
 
 bool Sword::IsAttack() {
-	if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent->b)
+	if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent->x)
 		return true;
 
 	return false;
@@ -67,5 +73,5 @@ bool Sword::IsAttack() {
 void Sword::Render()
 {
 	sword_model_->Draw();
-	collision->Draw();
+	//collision->Draw();
 }

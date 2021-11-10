@@ -84,33 +84,40 @@ void PlayerManager::Render()
 
 void PlayerManager::OnCollisionEnter() {
 	//敵に当たったときの処理
-	player_pos.x -= 1.5f;
+	if (!invincible_flag) {
+		player_pos.x -= 1.0f;
+		
+		box.Center = model->GetPosition();
+		model->SetPosition(player_pos);
+		collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
+		SetAnimation(model, Koke);
+		//float dist = 0;
+		//if (ground->IntersectRay(
+		//	model->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
+		//	SimpleMath::Vector3::Up,
+		//	&dist
+		//)) {
+		//	model->Move(0.0f, dist, 0.0f);
+		//}
+		invincible_flag = true;
+		invincible_count++;
+	}
 
-	box.Center = model->GetPosition();
-	model->SetPosition(player_pos);
-	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
-	SetAnimation(model, Koke);
-	//float dist = 0;
-	//if (ground->IntersectRay(
-	//	model->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
-	//	SimpleMath::Vector3::Up,
-	//	&dist
-	//)) {
-	//	model->Move(0.0f, dist, 0.0f);
-	//}
-
-
+	if (invincible_count >= invincible_count_max) {
+		invincible_flag = false;
+		invincible_count = 0;
+	}
 }
 
 void PlayerManager::OnParryArea() {
 	//パリィ成功時の処理
-	parry_flag = false;
 	SetAnimation(model, Run);
 
 }
 
 void PlayerManager::Parry() {
-	if (DXTK->KeyState->P) {
+	if (DXTK->KeyEvent->pressed.P||DXTK->GamePadEvent->b) {
+		parry_begin_flag = true;
 		if (parry_count < max_parry_count) {
 			parry_count++;
 			parry_flag = true;
@@ -172,12 +179,15 @@ void PlayerManager::Player_move(const float deltaTime)
 	if (!parry_flag) {
 		if (DXTK->KeyState->Right || DXTK->KeyState->D || DXTK->GamePadState[0].dpad.right) {
 			model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+			model->SetRotation(0.0f, XMConvertToRadians(model_rotetion), 0.0f);
 			SetAnimation(model, Walk);
 
 		}
 		if (DXTK->KeyState->Left || DXTK->KeyState->A || DXTK->GamePadState[0].dpad.left) {
-			model->Move(0.0f, 0.0f, player_speed_ * deltaTime);
+			model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+			model->SetRotation(0.0f, XMConvertToRadians(-model_rotetion), 0.0f);
 			SetAnimation(model, Walk);
+
 		}
 
 		////プレイヤー(ゲームパッド)
@@ -259,13 +269,13 @@ void PlayerManager::Player_jump(DX9::MODEL& ground,const float deltaTime)
 
 void PlayerManager::Player_attack() {
 	//プレイヤー:攻撃
-	if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent->b) {
+	if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent->x) {
 		//当たり判定はIntersertsを使う
 		//当たり判定をさせたいモデルのコリジョン.Interserts(相手モデルのコリジョン)
 
 		//斬撃
 		handle = DX12Effect.Play(Sword_Effect_);
-		DX12Effect.SetPosition(handle, Vector3(4, -7, 0));
+		DX12Effect.SetPosition(handle, Vector3(6, -7, 0));
 		//if (box.Intersects(->GetBox())) {
 		//	//攻撃が当たったら１ダメージを与える
 		//	//敵のHPは3なので成功すれば三発で倒れる
