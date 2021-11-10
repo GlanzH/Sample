@@ -24,14 +24,19 @@ public:
 
 	bool GetParryFlag() { return parry_flag; }
 
+	bool IsAttack();
+
+
 	DX9::SKINNEDMODEL& GetModel() { return model; }
 	BoundingBox  GetBox()  { return  box; }
+
+	BoundingBox GetSwordBox() { return sword_box; }
 
 private:
 	//プレイヤー
 	DX9::SKINNEDMODEL model;
 	SimpleMath::Vector3 player_pos = SimpleMath::Vector3(0.0f, 0.0f, 50.0f);
-	float model_scsle = 0.05f;
+	float model_scsle = 500.0f;
 	float model_rotetion = -90.0f;
 
 	//プレイヤーの移動制限(幅)
@@ -46,12 +51,9 @@ private:
 
 	const int box_size = 2;
 	
-	const int max_parry_count = 40;
-	int		  parry_count = 0;
-	bool	  parry_flag = false;
 
 	//プレイヤーのスピード
-	const float player_speed_ = 50.0f;
+	const float player_speed_ = 40.0f;
 
 	DX9::MODEL collision;
 
@@ -61,11 +63,13 @@ private:
 	enum
 	{
 		Wait,
-		Koke,
-		Jump,
-		Push,
 		Run,
-		Walk,
+		Jump,
+		Damage,
+		Attack_S,
+		Attack_L,
+		Parry_,
+		Appeil,
 		MOTION_MAX
 	};
 
@@ -73,7 +77,10 @@ private:
 	EFFECT Sword_Effect_;
 	EFFECTHANDLE handle;
 
-
+	//無敵時間
+	bool  invincible_flag      = false;
+	float invincible_count     = 0.0f;
+	float invincible_count_max = 0.05f;
 
 
 
@@ -87,8 +94,19 @@ private:
 	//重力加速度
 	const float gravity_ = 100.0f;
 	//初速
-	const float V0 = 28.0f;
+	const float V0 = 45.0f;
 
+	//パリィ
+	const int max_parry_count = 40;
+	int		  parry_count = 0;
+	bool	  parry_flag = true;
+
+
+	//プレイヤーの攻撃範囲
+	BoundingBox sword_box;
+	DX9::MODEL  sword_collision;
+
+	
 
 	DX9::SPRITEFONT font;
 
@@ -105,4 +123,5 @@ private:
 	void Player_attack();
 	//パリィ
 	void Parry();
+
 };
