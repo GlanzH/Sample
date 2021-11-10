@@ -45,7 +45,7 @@ void EnemyBase::Damage() {
 }
 
 void EnemyBase::Retreat() {
-	position.x += 8.0f;
+	model->SetPosition(position.x += 15.0f, position.y, position.z);
 
 	box.Center = model->GetPosition();
 	model->SetPosition(position);
