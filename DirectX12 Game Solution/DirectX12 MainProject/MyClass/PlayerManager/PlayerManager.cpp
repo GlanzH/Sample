@@ -14,13 +14,15 @@ bool PlayerManager::Initialize()
 
 void PlayerManager::LoadAssets() 
 {
-	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Mikoto\\mikoto.x");
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"motion\\playler_motion.X");
 	model->SetScale(model_scsle);
 	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, XMConvertToRadians(model_rotetion), 0.0f);
 
 	//プレイヤーの当たり判定
 	box = model->GetBoundingBox();
+
+	//box.Extents = SimpleMath::Vector3(box.Extents);
 
 	collision = DX9::Model::CreateBox(
 		DXTK->Device9,
@@ -36,6 +38,20 @@ void PlayerManager::LoadAssets()
 	collision->SetMaterial(material);
 
 	box.Center = player_pos;
+
+
+	sword_box = model->GetBoundingBox();
+
+	sword_collision = DX9::Model::CreateBox(
+		DXTK->Device9,
+		box.Extents.x * 22,
+		box.Extents.y * 4,
+		box.Extents.z * 20
+	);
+
+
+	sword_box.Center = model->GetPosition() + SimpleMath::Vector3(6, 0, 0);
+
 
 	font = DX9::SpriteFont::CreateDefaultFont(DXTK->Device9);
 
@@ -68,9 +84,13 @@ int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
 	//パリィ
 	Parry();
 
+	sword_box.Center = model->GetPosition() + SimpleMath::Vector3(6, 0, 0);
+	sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(5, 6, 0));
+
+
 	box.Center = model->GetPosition();
 	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(-0.5, 4, 0));
-	model->AdvanceTime(deltaTime/70.0f);
+	model->AdvanceTime(deltaTime/1.0f);
 	return 0;
 }
 
@@ -80,17 +100,16 @@ void PlayerManager::Render()
 	model->Draw();
 
 	collision->Draw();
+	sword_collision->Draw();
 }
 
 void PlayerManager::OnCollisionEnter() {
 	//敵に当たったときの処理
-	if (!invincible_flag) {
-		player_pos.x -= 1.0f;
 		
 		box.Center = model->GetPosition();
 		model->SetPosition(player_pos);
 		collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
-		SetAnimation(model, Koke);
+		SetAnimation(model, Damage);
 		//float dist = 0;
 		//if (ground->IntersectRay(
 		//	model->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
@@ -101,7 +120,7 @@ void PlayerManager::OnCollisionEnter() {
 		//}
 		invincible_flag = true;
 		invincible_count++;
-	}
+	
 
 	if (invincible_count >= invincible_count_max) {
 		invincible_flag = false;
@@ -111,17 +130,15 @@ void PlayerManager::OnCollisionEnter() {
 
 void PlayerManager::OnParryArea() {
 	//パリィ成功時の処理
-	SetAnimation(model, Run);
+	SetAnimation(model, Parry_);
 
 }
 
 void PlayerManager::Parry() {
 	if (DXTK->KeyEvent->pressed.P||DXTK->GamePadEvent->b) {
-		parry_begin_flag = true;
 		if (parry_count < max_parry_count) {
 			parry_count++;
 			parry_flag = true;
-			SetAnimation(model, Push);
 		}
 		else
 			parry_flag = false;
@@ -176,32 +193,19 @@ void PlayerManager::Player_collision_detection(DX9::MODEL& ground)
 void PlayerManager::Player_move(const float deltaTime)
 {
 	//プレイヤー:移動(キーボード)
-	if (!parry_flag) {
-		if (DXTK->KeyState->Right || DXTK->KeyState->D || DXTK->GamePadState[0].dpad.right) {
-			model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-			model->SetRotation(0.0f, XMConvertToRadians(model_rotetion), 0.0f);
-			SetAnimation(model, Walk);
+	if (DXTK->KeyState->Right || DXTK->KeyState->D || DXTK->GamePadState[0].dpad.right) {
+		model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+		model->SetRotation(0.0f, XMConvertToRadians(model_rotetion), 0.0f);
+		SetAnimation(model, Run);
 
-		}
-		if (DXTK->KeyState->Left || DXTK->KeyState->A || DXTK->GamePadState[0].dpad.left) {
-			model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-			model->SetRotation(0.0f, XMConvertToRadians(-model_rotetion), 0.0f);
-			SetAnimation(model, Walk);
-
-		}
-
-		////プレイヤー(ゲームパッド)
-		//SimpleMath::Vector3 movement = SimpleMath::Vector3(
-		//	 DXTK->GamePadState[0].thumbSticks.leftX,
-		//	-DXTK->GamePadState[0].thumbSticks.leftY,
-		//	0.0f
-		//);
-		//const float SQUARE_X =  DXTK->GamePadState[0].thumbSticks.leftX;
-		//const float SQUARE_Y = -DXTK->GamePadState[0].thumbSticks.leftY;
-
-		//movement.x = SQUARE_X * sqrt(5.0f - 0.5 * SQUARE_Y * SQUARE_Y);
-		//movement.y = SQUARE_Y * sqrt(5.0f - 0.5 * SQUARE_X * SQUARE_X);
 	}
+	if (DXTK->KeyState->Left || DXTK->KeyState->A || DXTK->GamePadState[0].dpad.left) {
+		model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+		model->SetRotation(0.0f, XMConvertToRadians(-model_rotetion), 0.0f);
+		SetAnimation(model, Run);
+
+	}
+
 }
 
 void PlayerManager::Player_limit()
@@ -216,27 +220,40 @@ void PlayerManager::Player_limit()
 	model->SetPosition(p_pos);
 }
 
-void PlayerManager::Player_jump(DX9::MODEL& ground,const float deltaTime)
+void PlayerManager::Player_jump(DX9::MODEL& ground, const float deltaTime)
 {
 	//ジャンプ
-	if (!parry_flag) {
-		if (!jump_flag_) {
-			if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent[0].a) {
-				jump_flag_ = true;
-				jump_time_ = 0;
-				jump_start_v_ = model->Position.y;
+	if (!jump_flag_) {
+		if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent[0].a) {
+			jump_flag_ = true;
+			jump_time_ = 0;
+			jump_start_v_ = model->Position.y;
 
-			}
+		}
+	}
+
+	if (jump_flag_) {
+
+		jump_time_ += deltaTime;
+		auto pos = model->GetPosition();
+		pos.y = jump_start_v_ + V0 * jump_time_ - 0.5f * gravity_ * jump_time_ * jump_time_;
+		model->SetPosition(pos);
+		SetAnimation(model, Jump);
+
+
+		float dist = 0;
+		if (ground->IntersectRay(
+			model->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
+			SimpleMath::Vector3::Up,
+			&dist
+		)) {
+			model->Move(0.0f, dist, 0.0f);
+			jump_flag_ = false;
 		}
 
-		if (jump_flag_) {
 
-			jump_time_ += deltaTime;
-			auto pos = model->GetPosition();
-			pos.y = jump_start_v_ + V0 * jump_time_ - 0.5f * gravity_ * jump_time_ * jump_time_;
-			model->SetPosition(pos);
-			SetAnimation(model, Jump);
-
+		//ジャンプの終了判定
+		if (V0 * jump_time_ < gravity_ * jump_time_ * jump_time_) {
 
 			float dist = 0;
 			if (ground->IntersectRay(
@@ -247,33 +264,22 @@ void PlayerManager::Player_jump(DX9::MODEL& ground,const float deltaTime)
 				model->Move(0.0f, dist, 0.0f);
 				jump_flag_ = false;
 			}
-
-
-			//ジャンプの終了判定
-			if (V0 * jump_time_ < gravity_ * jump_time_ * jump_time_) {
-
-				float dist = 0;
-				if (ground->IntersectRay(
-					model->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
-					SimpleMath::Vector3::Up,
-					&dist
-				)) {
-					model->Move(0.0f, dist, 0.0f);
-					jump_flag_ = false;
-				}
-			}
 		}
 	}
+
 
 }
 
 void PlayerManager::Player_attack() {
 	//プレイヤー:攻撃
-	if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent->x) {
+	if (IsAttack()) {
+	
+
 		//当たり判定はIntersertsを使う
 		//当たり判定をさせたいモデルのコリジョン.Interserts(相手モデルのコリジョン)
 
 		//斬撃
+		SetAnimation(model, Attack_S);
 		handle = DX12Effect.Play(Sword_Effect_);
 		DX12Effect.SetPosition(handle, Vector3(6, -7, 0));
 		//if (box.Intersects(->GetBox())) {
@@ -282,5 +288,13 @@ void PlayerManager::Player_attack() {
 		//	EnemyBase＊型の変数->Damage();
 		//}
 	}
+
+}
+
+bool PlayerManager::IsAttack() {
+	if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent->x)
+		return true;
+
+	return false;
 
 }

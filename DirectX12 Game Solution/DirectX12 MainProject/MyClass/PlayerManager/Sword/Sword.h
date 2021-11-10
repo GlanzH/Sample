@@ -38,4 +38,9 @@ private:
 
 	const float fixed_pos = 50.0f;
 
+	//クールタイム
+	bool  cool_time_flag;
+	float cool_time      = 0.0f;
+	float cool_time_max  = 5.0f;
+
 };
