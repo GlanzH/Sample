@@ -29,7 +29,7 @@ int EnemyManager::Update(DX9::MODEL& ground, PlayerManager* player, const float 
 	}
 
 	Iterator(ground,player,deltaTime);
-
+	SetAnimesion(model, WAIT);
 	return 0;
 }
 
@@ -74,4 +74,13 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 
 void EnemyManager::OnParryArea(EnemyBase* base) {
 
+}
+
+void EnemyManager::SetAnimesion(DX9::SKINNEDMODEL& enemy, const int enabletack)
+{
+	for (int i = 0; i < MAX_MOSION; i++)
+	{
+		enemy->SetTrackEnable(i, FALSE);
+		enemy->SetTrackEnable(enabletack, TRUE);
+	}
 }
