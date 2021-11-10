@@ -13,11 +13,15 @@ bool EnemyBase::Initialize(SimpleMath::Vector3 speed, int hp)
 void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
 	position = initial_position;
 
-	model = DX9::Model::CreateFromFile(DXTK->Device9, model_name);
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
 	model->SetPosition(position);
+	model->SetScale(50.0f);
 	model->SetRotation(0.0f, XMConvertToRadians(90.0f), 0.0f);
 
 	box = model->GetBoundingBox();
+
+	//box‚Ì”¼Œa‚Ì‘å‚«‚³•ÏX
+	box.Extents = SimpleMath::Vector3(box.Extents) * 0.01f;
 
 	collision = DX9::Model::CreateBox(
 		DXTK->Device9,
@@ -30,6 +34,7 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	material.Ambient = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	collision->SetMaterial(material);
+	collision->SetScale(0.01f);
 
 	box.Center = position;
 }
@@ -58,5 +63,5 @@ void EnemyBase::Render() {
 			model->Draw();
 		//}
 
-	//collision->Draw();
+	collision->Draw();
 }
