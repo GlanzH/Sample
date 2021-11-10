@@ -15,9 +15,10 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 
 	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
 	model->SetPosition(position);
-	model->SetScale(50.0f);
 	model->SetRotation(0.0f, XMConvertToRadians(90.0f), 0.0f);
 
+	model->SetScale(50.0f);
+	
 	box = model->GetBoundingBox();
 
 	//box‚Ì”¼Œa‚Ì‘å‚«‚³•ÏX

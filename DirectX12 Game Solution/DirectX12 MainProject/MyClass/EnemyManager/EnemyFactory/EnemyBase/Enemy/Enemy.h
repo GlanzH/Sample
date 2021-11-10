@@ -17,7 +17,7 @@ private:
 	bool rush_flag = false;
 	int  count = 0;
 
-	const float fit_collision_y    = 3.0f;
+	const float fit_collision_y    = 4.0f;
 	const float stop_enemy_pos     = 20.0f;
 	const float ground_collision_y = 100.0f;
 
