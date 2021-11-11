@@ -8,6 +8,11 @@ bool PlayerManager::Initialize()
 	jump_time_ = 0.0f;
 	jump_start_v_ = 0.0f;
 
+	//true  = 右向き
+	//false = 左向き 
+	//攻撃の向き
+	direction_flag = true;
+
 
 	return 0;
 }
@@ -79,7 +84,7 @@ int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
 
 
 	//プレイヤー:攻撃
-	Player_attack();
+	Player_attack(deltaTime);
 
 	//ランバージャック(移動制限)
 	Player_limit();
@@ -87,16 +92,31 @@ int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
 	//パリィ
 	Parry();
 
-	sword_box.Center = model->GetPosition();
+
+	if (invincible_flag)
+		invincible_time += deltaTime;
+
+	if (invincible_time >= invincible_time_max) {
+		invincible_flag = false;
+		invincible_time = 0.0f;
+	}
+
+
+	//if (!direction_flag)
+	sword_box.Center = model->GetPosition() + SimpleMath::Vector3(7, 0, 0);
+	//else if(direction_flag)
+	//	sword_box.Center = model->GetPosition() + SimpleMath::Vector3(-6, 0, 0);
+
+
 
 	//if(DXTK->KeyState->Left)
-		sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(-8, 6, 0));
+		//sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(-8, 6, 0));
 	//else if(DXTK->KeyState->Right)
-	//	sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(8, 6, 0));
+		sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(8, 6, 0));
 
 	box.Center = model->GetPosition();
 	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(-0.5, 4, 0));
-	model->AdvanceTime(deltaTime/1.0f);
+	model->AdvanceTime(deltaTime/1.5f);
 	return 0;
 }
 
@@ -110,8 +130,17 @@ void PlayerManager::Render()
 }
 
 void PlayerManager::OnCollisionEnter() {
+
 	//敵に当たったときの処理
+	if (!invincible_flag) {
+		model->SetPosition(player_pos.x -= 2.0f, player_pos.y, player_pos.z);
 		
+		//無敵
+		invincible_flag = true;
+
+		sword_box.Center = model->GetPosition() + SimpleMath::Vector3(6, 0, 0);
+		sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(8, 6, 0));
+
 		box.Center = model->GetPosition();
 		model->SetPosition(player_pos);
 		collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
@@ -124,27 +153,25 @@ void PlayerManager::OnCollisionEnter() {
 		//)) {
 		//	model->Move(0.0f, dist, 0.0f);
 		//}
-		invincible_flag = true;
-		invincible_count++;
+	}
+	
+	
 	
 
-	if (invincible_count >= invincible_count_max) {
-		invincible_flag = false;
-		invincible_count = 0;
-	}
+
 }
 
 void PlayerManager::OnParryArea() {
 	//パリィ成功時の処理
-
+	SetAnimation(model, Parry_);
 
 }
 
 void PlayerManager::Parry() {
-	if (DXTK->KeyEvent->pressed.P||DXTK->GamePadEvent->b) {
+	if (DXTK->KeyState->P||DXTK->GamePadState->buttons.b) {
 		if (parry_count < max_parry_count) {
 			parry_count++;
-			SetAnimation(model, Parry_);
+			
 			parry_flag = true;
 		}
 		else
@@ -166,9 +193,9 @@ void PlayerManager::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack
 void PlayerManager::_2DRender()
 {
 	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(0.0f, 0.0f),
+	//	SimpleMath::Vector2(0.0f, 50.0f),
 	//	DX9::Colors::DarkBlue,
-	//	L"%f", model->Position.x
+	//	L"%f", invincible_time
 	//);
 
 	//if (!parry_flag) {
@@ -199,18 +226,20 @@ void PlayerManager::Player_collision_detection(DX9::MODEL& ground)
 
 void PlayerManager::Player_move(const float deltaTime)
 {
-	//プレイヤー:移動(キーボード)
-	if (DXTK->KeyState->Right || DXTK->KeyState->D || DXTK->GamePadState[0].dpad.right) {
-		model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-		model->SetRotation(0.0f, XMConvertToRadians(model_rotetion), 0.0f);
-		SetAnimation(model, Run);
+	if (!parry_flag) {
+		//プレイヤー:移動(キーボード)
+		if (DXTK->KeyState->Right || DXTK->KeyState->D || DXTK->GamePadState[0].dpad.right) {
+			model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+			model->SetRotation(0.0f, XMConvertToRadians(model_rotetion), 0.0f);
+			SetAnimation(model, Run);
 
-	}
-	if (DXTK->KeyState->Left || DXTK->KeyState->A || DXTK->GamePadState[0].dpad.left) {
-		model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-		model->SetRotation(0.0f, XMConvertToRadians(-model_rotetion), 0.0f);
-		SetAnimation(model, Run);
+		}
+		if (DXTK->KeyState->Left || DXTK->KeyState->A || DXTK->GamePadState[0].dpad.left) {
+			model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+			model->SetRotation(0.0f, XMConvertToRadians(-model_rotetion), 0.0f);
+			SetAnimation(model, Run);
 
+		}
 	}
 
 }
@@ -230,12 +259,14 @@ void PlayerManager::Player_limit()
 void PlayerManager::Player_jump(DX9::MODEL& ground, const float deltaTime)
 {
 	//ジャンプ
-	if (!jump_flag_) {
-		if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent[0].a) {
-			jump_flag_ = true;
-			jump_time_ = 0;
-			jump_start_v_ = model->Position.y;
+	if (!parry_flag) {
+		if (!jump_flag_) {
+			if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent[0].a) {
+				jump_flag_ = true;
+				jump_time_ = 0;
+				jump_start_v_ = model->Position.y;
 
+			}
 		}
 	}
 
@@ -277,31 +308,45 @@ void PlayerManager::Player_jump(DX9::MODEL& ground, const float deltaTime)
 
 }
 
-void PlayerManager::Player_attack() {
+void PlayerManager::Player_attack(const float deltaTime) {
 	//プレイヤー:攻撃
-	if (IsAttack()) {
-	
 
-		//当たり判定はIntersertsを使う
-		//当たり判定をさせたいモデルのコリジョン.Interserts(相手モデルのコリジョン)
+	if (!cool_time_flag) {
+		if (IsAttack()) {
+			//斬撃アニメーション
+			SetAnimation(model, Attack_S);
+			cool_time_flag = true;
+			
 
-		//斬撃
-		SetAnimation(model, Attack_S);
-		handle = DX12Effect.Play(Sword_Effect_);
-		DX12Effect.SetPosition(handle, Vector3(6, -7, 0));
-		//if (box.Intersects(->GetBox())) {
-		//	//攻撃が当たったら１ダメージを与える
-		//	//敵のHPは3なので成功すれば三発で倒れる
-		//	EnemyBase＊型の変数->Damage();
-		//}
+			handle = DX12Effect.Play(Sword_Effect_);
+			DX12Effect.SetPosition(handle, Vector3(6, -7, 0));
+			DX12Effect.SetSpeed(handle, 2.0f);
+
+
+		}
 	}
+	else
+	{
+		cool_time += deltaTime;
+	}
+
+	if (cool_time >= cool_time_max) {
+		cool_time = 0;
+		cool_time_flag = false;
+		
+
+	}
+
 
 }
 
+
 bool PlayerManager::IsAttack() {
-	if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent->x)
-		return true;
+	if (cool_time == 0) {
+		if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent->x) {
 
+			return true;
+		}
+	}
 	return false;
-
 }
