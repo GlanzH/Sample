@@ -171,14 +171,13 @@ void PlayerManager::Parry() {
 	if (DXTK->KeyState->P||DXTK->GamePadState->buttons.b) {
 		if (parry_count < max_parry_count) {
 			parry_count++;
-			
 			parry_flag = true;
 		}
-		else
-			parry_flag = false;
 	}
-	else
+	else {
+		parry_flag  = false;
 		parry_count = 0;
+	}
 }
 
 //指定されたモーションはTRUE,それ以外はFALSE
