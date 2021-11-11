@@ -2,7 +2,7 @@
 #include "Base/dxtk.h"
 #include "PlayerManager.h"
 
-bool PlayerManager::Initialize()
+bool PlayerManager::Initialize() 
 {
 	jump_flag_ = false;
 	jump_time_ = 0.0f;
@@ -12,7 +12,7 @@ bool PlayerManager::Initialize()
 	return 0;
 }
 
-void PlayerManager::LoadAssets()
+void PlayerManager::LoadAssets() 
 {
 	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"motion\\playler_motion.X");
 	model->SetScale(model_scsle);
@@ -63,7 +63,7 @@ void PlayerManager::LoadAssets()
 
 }
 
-int PlayerManager::Update(DX9::MODEL& ground, const float deltaTime)
+int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
 {
 	//地形の当たり判定
 	Player_collision_detection(ground);
@@ -90,17 +90,17 @@ int PlayerManager::Update(DX9::MODEL& ground, const float deltaTime)
 	sword_box.Center = model->GetPosition();
 
 	//if(DXTK->KeyState->Left)
-	sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(-8, 6, 0));
+		sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(-8, 6, 0));
 	//else if(DXTK->KeyState->Right)
 	//	sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(8, 6, 0));
 
 	box.Center = model->GetPosition();
 	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(-0.5, 4, 0));
-	model->AdvanceTime(deltaTime / 1.0f);
+	model->AdvanceTime(deltaTime/1.0f);
 	return 0;
 }
 
-void PlayerManager::Render()
+void PlayerManager::Render() 
 {
 	//プレイヤーの描画
 	model->Draw();
@@ -111,22 +111,22 @@ void PlayerManager::Render()
 
 void PlayerManager::OnCollisionEnter() {
 	//敵に当たったときの処理
-
-	box.Center = model->GetPosition();
-	model->SetPosition(player_pos);
-	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
-	SetAnimation(model, Damage);
-	//float dist = 0;
-	//if (ground->IntersectRay(
-	//	model->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
-	//	SimpleMath::Vector3::Up,
-	//	&dist
-	//)) {
-	//	model->Move(0.0f, dist, 0.0f);
-	//}
-	invincible_flag = true;
-	invincible_count++;
-
+		
+		box.Center = model->GetPosition();
+		model->SetPosition(player_pos);
+		collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
+		SetAnimation(model, Damage);
+		//float dist = 0;
+		//if (ground->IntersectRay(
+		//	model->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
+		//	SimpleMath::Vector3::Up,
+		//	&dist
+		//)) {
+		//	model->Move(0.0f, dist, 0.0f);
+		//}
+		invincible_flag = true;
+		invincible_count++;
+	
 
 	if (invincible_count >= invincible_count_max) {
 		invincible_flag = false;
@@ -141,7 +141,7 @@ void PlayerManager::OnParryArea() {
 }
 
 void PlayerManager::Parry() {
-	if (DXTK->KeyEvent->pressed.P || DXTK->GamePadEvent->b) {
+	if (DXTK->KeyEvent->pressed.P||DXTK->GamePadEvent->b) {
 		if (parry_count < max_parry_count) {
 			parry_count++;
 			SetAnimation(model, Parry_);
@@ -220,9 +220,9 @@ void PlayerManager::Player_limit()
 	//ランバージャック(移動制限)
 	auto p_pos = model->GetPosition();
 	p_pos = SimpleMath::Vector3(
-		std::clamp(p_pos.x, -model_collision_detection_X, model_collision_detection_X),
-		std::clamp(p_pos.y, model_collision_detection_Y_MIN, model_collision_detection_Y_MAX),
-		std::clamp(p_pos.z, -model_collision_detection_Z, model_collision_detection_Z)
+		std::clamp(p_pos.x, -model_collision_detection_X,     model_collision_detection_X),
+		std::clamp(p_pos.y,  model_collision_detection_Y_MIN, model_collision_detection_Y_MAX),
+		std::clamp(p_pos.z, -model_collision_detection_Z,     model_collision_detection_Z)
 	);
 	model->SetPosition(p_pos);
 }
@@ -280,7 +280,7 @@ void PlayerManager::Player_jump(DX9::MODEL& ground, const float deltaTime)
 void PlayerManager::Player_attack() {
 	//プレイヤー:攻撃
 	if (IsAttack()) {
-
+	
 
 		//当たり判定はIntersertsを使う
 		//当たり判定をさせたいモデルのコリジョン.Interserts(相手モデルのコリジョン)
