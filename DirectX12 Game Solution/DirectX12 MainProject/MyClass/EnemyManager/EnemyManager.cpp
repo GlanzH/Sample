@@ -73,6 +73,6 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 }
 
 void EnemyManager::OnParryArea(EnemyBase* base) {
-
+	base->Retreat();
 }
 
