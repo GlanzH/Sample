@@ -29,7 +29,7 @@ int EnemyManager::Update(DX9::MODEL& ground, PlayerManager* player, const float 
 	}
 	delta = deltaTime;
 	Iterator(ground,player,deltaTime);
-	
+
 	return 0;
 }
 
@@ -75,4 +75,3 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 void EnemyManager::OnParryArea(EnemyBase* base) {
 	base->Retreat();
 }
-
