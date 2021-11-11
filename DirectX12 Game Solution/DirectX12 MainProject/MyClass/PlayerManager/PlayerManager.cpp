@@ -14,7 +14,7 @@ bool PlayerManager::Initialize()
 
 void PlayerManager::LoadAssets() 
 {
-	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Mikoto\\mikoto.x");
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"motion\\playler_motion.X");
 	model->SetScale(model_scsle);
 	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, XMConvertToRadians(model_rotetion), 0.0f);
