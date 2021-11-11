@@ -1,8 +1,5 @@
 #pragma once
 
-#include "Base/pch.h"
-#include "Base/dxtk.h"
-
 #include "MyClass/GroundManager/GroundManager.h"
 #include"MyClass/EnumManager/EnumManager.h"
 #include "MyClass/PlayerManager/PlayerManager.h"
@@ -21,21 +18,28 @@ public:
 	void Render();
 
 	void Retreat();
-	void Damage();
+	virtual void Damage(const float deltaTime);
 
-	DX9::MODEL& GetModel() { return model; }
+	DX9::SKINNEDMODEL& GetModel() { return model; }
 	BoundingBox GetBox()		  { return box; }
 
 private:
 	D3DMATERIAL9  material;
 	GroundManager ground;
-
+	
 protected:
-	DX9::MODEL model;
+	DX9::SKINNEDMODEL model;
 	BoundingBox  box;
 	DX9::MODEL	 collision;
 	SimpleMath::Vector3  position;
 	SimpleMath::Vector3  enemy_speed;
 	int count = 0;
 	int enemy_hp;
+	void SetAnimesion(DX9::SKINNEDMODEL& model, const int enabletack);
+	enum ENEMYMOSION
+	{
+		DAMAGE,
+		WAIT,
+		MAX_MOSION
+	};
 };

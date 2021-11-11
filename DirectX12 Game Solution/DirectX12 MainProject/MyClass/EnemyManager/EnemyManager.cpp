@@ -27,9 +27,9 @@ int EnemyManager::Update(DX9::MODEL& ground, PlayerManager* player, const float 
 	for (auto& enemies : enemy) {
 		enemies->Update(ground,player,deltaTime);
 	}
-
+	delta = deltaTime;
 	Iterator(ground,player,deltaTime);
-	SetAnimesion(model, WAIT);
+	
 	return 0;
 }
 
@@ -64,7 +64,7 @@ void EnemyManager::Render()
 }
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
-	base->Damage();
+	base->Damage(delta);
 	base->Retreat();
 
 	DX12Effect.SetPosition(handle,base->GetModel()->GetPosition());
@@ -76,11 +76,3 @@ void EnemyManager::OnParryArea(EnemyBase* base) {
 
 }
 
-void EnemyManager::SetAnimesion(DX9::SKINNEDMODEL& enemy, const int enabletack)
-{
-	for (int i = 0; i < MAX_MOSION; i++)
-	{
-		enemy->SetTrackEnable(i, FALSE);
-		enemy->SetTrackEnable(enabletack, TRUE);
-	}
-}

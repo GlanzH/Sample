@@ -1,5 +1,3 @@
-#include "Base/pch.h"
-#include "Base/dxtk.h"
 #include "GroundManager.h"
 
 void GroundManager::LoadAsset() {

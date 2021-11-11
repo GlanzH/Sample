@@ -1,10 +1,11 @@
 #pragma once
 
-using namespace DirectX;
 #include "Base/DX12Effekseer.h"
 #include "../EnemyManager/EnemyFactory/EnemyFactory.h"
 #include "MyClass/EnumManager/EnumManager.h"
 #include "MyClass/PlayerManager/PlayerManager.h"
+
+using namespace DirectX;
 
 class EnemyManager
 {
@@ -26,13 +27,7 @@ private:
 	
 	void Generator();
 	void Iterator(DX9::MODEL& ground, PlayerManager* player, const float deltaTime);
-	void SetAnimesion(DX9::SKINNEDMODEL& enemy, const int enabletack);
-	enum ENEMYMOSION
-	{
-		WAIT,
-		DAMAGE,
-		MAX_MOSION
-	};
+	float delta ;
 	std::list<EnemyBase*> enemy;
 	int dead_enemy_count = 0;
 
