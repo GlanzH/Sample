@@ -13,6 +13,8 @@ bool PlayerManager::Initialize()
 	//攻撃の向き
 	direction_flag = true;
 
+	appeal_state_mode = Appeal_state::NORMAL;
+
 
 	return 0;
 }
@@ -63,8 +65,15 @@ void PlayerManager::LoadAssets()
 
 	font = DX9::SpriteFont::CreateDefaultFont(DXTK->Device9);
 
+	//攻撃エフェクト
 	DX12Effect.Initialize();
-	Sword_Effect_ = DX12Effect.Create(L"Effect//SwordEffect//Sword_Effect.efk");
+	//1
+	Sword_Effect_1 = DX12Effect.Create(L"Effect\\SwordEffect_AOZORA\\one\\one.efk");
+	//2
+	Sword_Effect_2 = DX12Effect.Create(L"Effect\\SwordEffect_AOZORA\\two\\two.efk");
+	//3
+	Sword_Effect_3 = DX12Effect.Create(L"Effect\\SwordEffect_AOZORA\\three\\three.efk");
+
 
 }
 
@@ -92,14 +101,13 @@ int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
 	//パリィ
 	Parry();
 
+	//アピール
+	//Appeal(deltaTime);
 
-	if (invincible_flag)
-		invincible_time += deltaTime;
 
-	if (invincible_time >= invincible_time_max) {
-		invincible_flag = false;
-		invincible_time = 0.0f;
-	}
+	//無敵時間
+	Invincible(deltaTime);
+
 
 
 	//if (!direction_flag)
@@ -154,12 +162,19 @@ void PlayerManager::OnCollisionEnter() {
 		//	model->Move(0.0f, dist, 0.0f);
 		//}
 	}
-	
-	
-	
-
-
 }
+
+void PlayerManager::Invincible(const float deltaTime)
+{
+	if (invincible_flag)
+		invincible_time += deltaTime;
+
+	if (invincible_time >= invincible_time_max) {
+		invincible_flag = false;
+		invincible_time = 0.0f;
+	}
+}
+
 
 void PlayerManager::OnParryArea() {
 	//パリィ成功時の処理
@@ -304,7 +319,7 @@ void PlayerManager::Player_jump(DX9::MODEL& ground, const float deltaTime)
 		}
 	}
 
-
+	
 }
 
 void PlayerManager::Player_attack(const float deltaTime) {
@@ -317,9 +332,9 @@ void PlayerManager::Player_attack(const float deltaTime) {
 			cool_time_flag = true;
 			
 
-			handle = DX12Effect.Play(Sword_Effect_);
-			DX12Effect.SetPosition(handle, Vector3(6, -7, 0));
-			DX12Effect.SetSpeed(handle, 2.0f);
+			handle_1 = DX12Effect.Play(Sword_Effect_1);
+			DX12Effect.SetPosition(handle_1, Vector3(6, -7, 0));
+			DX12Effect.SetSpeed(handle_1, 1.5f);
 
 
 		}
@@ -348,4 +363,19 @@ bool PlayerManager::IsAttack() {
 		}
 	}
 	return false;
+}
+
+void PlayerManager::Appeal(const float deltaTime)
+{
+	//アピール
+	if (DXTK->KeyEvent->pressed.W)
+		appeal_state_mode = Appeal_state::APPEAL;
+
+	if (appeal_state_mode = Appeal_state::APPEAL) {
+		SetAnimation(model, Appeil);
+		appeal_time += deltaTime;
+		if (appeal_time >= appeal_time_max) {
+			appeal_state_mode = Appeal_state::NORMAL;
+		}
+	}
 }
