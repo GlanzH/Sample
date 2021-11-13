@@ -61,6 +61,9 @@
     <Filter Include="MyClass\UIManager">
       <UniqueIdentifier>{21cee7ac-b5a0-40d5-9982-75e62705735b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\StatusManager">
+      <UniqueIdentifier>{6c6c639d-5e5b-4387-8311-b953fd8ddb0c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -138,6 +141,9 @@
     <ClInclude Include="MyClass\UIManager\UIManager.h">
       <Filter>MyClass\UIManager</Filter>
     </ClInclude>
+    <ClInclude Include="MyClass\StatusManager\StatusManager.h">
+      <Filter>MyClass\StatusManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -190,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="MyClass\UIManager\UIManager.cpp">
       <Filter>MyClass\UIManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\StatusManager\StatusManager.cpp">
+      <Filter>MyClass\StatusManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
