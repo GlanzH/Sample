@@ -8,13 +8,9 @@ bool PlayerManager::Initialize()
 	jump_time_ = 0.0f;
 	jump_start_v_ = 0.0f;
 
-	//true  = 右向き
-	//false = 左向き 
-	//攻撃の向き
-	direction_flag = true;
-
 	appeal_state_mode = Appeal_state::NORMAL;
 
+	direction_state_mode = Direction_State::RIGHT;
 
 	return 0;
 }
@@ -77,7 +73,7 @@ void PlayerManager::LoadAssets()
 
 }
 
-int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
+int PlayerManager::Update(DX9::MODEL& ground, const float deltaTime)
 {
 	//地形の当たり判定
 	Player_collision_detection(ground);
@@ -110,17 +106,17 @@ int PlayerManager::Update(DX9::MODEL& ground,  const float deltaTime)
 
 
 
-	//if (!direction_flag)
-	sword_box.Center = model->GetPosition() + SimpleMath::Vector3(7, 0, 0);
-	//else if(direction_flag)
-	//	sword_box.Center = model->GetPosition() + SimpleMath::Vector3(-6, 0, 0);
-
+	if (direction_state_mode == Direction_State::RIGHT) {
+		sword_box.Center = model->GetPosition() + SimpleMath::Vector3(7, 0, 0);
+	}
+	else if (direction_state_mode == Direction_State::LEFT) {
+		sword_box.Center = model->GetPosition() + SimpleMath::Vector3(-4, 0, 0);
+	}
 
 
 	//if(DXTK->KeyState->Left)
-		//sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(-8, 6, 0));
+		sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(-8, 6, 0));
 	//else if(DXTK->KeyState->Right)
-		sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(8, 6, 0));
 
 	box.Center = model->GetPosition();
 	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(-0.5, 4, 0));
@@ -245,12 +241,16 @@ void PlayerManager::Player_move(const float deltaTime)
 		if (DXTK->KeyState->Right || DXTK->KeyState->D || DXTK->GamePadState[0].dpad.right) {
 			model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
 			model->SetRotation(0.0f, XMConvertToRadians(model_rotetion), 0.0f);
+			sword_box.Center = model->GetRotation();
+			direction_state_mode = Direction_State::RIGHT;
 			SetAnimation(model, Run);
 
 		}
 		if (DXTK->KeyState->Left || DXTK->KeyState->A || DXTK->GamePadState[0].dpad.left) {
 			model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
 			model->SetRotation(0.0f, XMConvertToRadians(-model_rotetion), 0.0f);
+			sword_box.Center = model->GetRotation();
+			direction_state_mode = Direction_State::LEFT;
 			SetAnimation(model, Run);
 
 		}
@@ -331,11 +331,21 @@ void PlayerManager::Player_attack(const float deltaTime) {
 			SetAnimation(model, Attack_S);
 			cool_time_flag = true;
 			
+			if (direction_state_mode == Direction_State::RIGHT) {
+				handle_1 = DX12Effect.Play(Sword_Effect_1);
+				DX12Effect.SetPosition(handle_1, Vector3(6, -7, 0));
+				DX12Effect.SetSpeed(handle_1, 1.5f);
+			}
 
-			handle_1 = DX12Effect.Play(Sword_Effect_1);
-			DX12Effect.SetPosition(handle_1, Vector3(6, -7, 0));
-			DX12Effect.SetSpeed(handle_1, 1.5f);
+			if (direction_state_mode == Direction_State::LEFT) {
+				handle_1 = DX12Effect.Play(Sword_Effect_1);
+				DX12Effect.SetPosition(handle_1, Vector3(-7, -9, -2));
+				DX12Effect.SetSpeed(handle_1, 1.5f);
+				DX12Effect.SetRotation(handle_1, Vector3(0, XMConvertToRadians(180), 0));
+				DX12Effect.SetScale(handle_1, Vector3(1.5, 1.5, 1.5));
 
+			}
+			
 
 		}
 	}
@@ -367,15 +377,15 @@ bool PlayerManager::IsAttack() {
 
 void PlayerManager::Appeal(const float deltaTime)
 {
-	//アピール
-	if (DXTK->KeyEvent->pressed.W)
-		appeal_state_mode = Appeal_state::APPEAL;
+	////アピール
+	//if (DXTK->KeyEvent->pressed.W)
+	//	appeal_state_mode = Appeal_state::APPEAL;
 
-	if (appeal_state_mode = Appeal_state::APPEAL) {
-		SetAnimation(model, Appeil);
-		appeal_time += deltaTime;
-		if (appeal_time >= appeal_time_max) {
-			appeal_state_mode = Appeal_state::NORMAL;
-		}
-	}
+	//if (appeal_state_mode = Appeal_state::APPEAL) {
+	//	SetAnimation(model, Appeil);
+	//	appeal_time += deltaTime;
+	//	if (appeal_time >= appeal_time_max) {
+	//		appeal_state_mode = Appeal_state::NORMAL;
+	//	}
+	//}
 }

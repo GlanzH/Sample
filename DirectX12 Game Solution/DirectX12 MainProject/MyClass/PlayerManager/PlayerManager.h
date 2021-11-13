@@ -49,7 +49,7 @@ private:
 	BoundingBox box;
 	D3DMATERIAL9 material;
 
-	const int box_size = 2;
+	const int box_size = 4;
 	
 
 	//プレイヤーのスピード
@@ -98,7 +98,13 @@ private:
 	DX9::MODEL  sword_collision;
 
 	//攻撃の向き
-	bool direction_flag;
+	enum Direction_State
+	{
+		LEFT,
+		RIGHT
+	};
+
+	Direction_State direction_state_mode;
 
 	//攻撃‐3連撃‐カウント
 	int attack_count;
@@ -128,7 +134,7 @@ private:
 	//無敵時間
 	bool  invincible_flag = false;
 	float invincible_time      = 0.0f;
-	float invincible_time_max  = 2.0f;
+	float invincible_time_max  = 100.0f;
 
 	//アピール
 	enum Appeal_state
