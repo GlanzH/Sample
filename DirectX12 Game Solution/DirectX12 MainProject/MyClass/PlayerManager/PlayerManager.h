@@ -6,7 +6,6 @@ using namespace DirectX;
 
 #include "MyClass/CameraManager/CameraManager.h"
 #include "MyClass/PlayerManager/Sword/Sword.h"
-#include "MyClass/StatusManager/StatusManager.h"
 
 
 class PlayerManager
@@ -18,7 +17,7 @@ public:
 
 	bool Initialize();
 	void LoadAssets();
-	int Update(DX9::MODEL& ground, StatusManager* status, const float deltaTime);
+	int Update(DX9::MODEL& ground, const float deltaTime);
 	void Render();
 	void _2DRender();
 
@@ -165,12 +164,15 @@ private:
 	//ジャンプ
 	void Player_jump(DX9::MODEL& ground, const float deltaTime);
 	//攻撃
-	void Player_attack(StatusManager* status, const float deltaTime);
+	void Player_attack(const float deltaTime);
+	//攻撃エフェクト関係
+	void Player_Attack_Effect();
 	//パリィ
 	void Parry();
 	//無敵時間
 	void Invincible(const float deltaTime);
 	//アピール
 	void Appeal(const float deltaTime);
+
 
 };
