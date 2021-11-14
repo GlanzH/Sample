@@ -2,6 +2,7 @@
 #include "Base/dxtk.h"
 #include "PlayerManager.h"
 
+
 bool PlayerManager::Initialize() 
 {
 	jump_flag_ = false;
@@ -73,7 +74,7 @@ void PlayerManager::LoadAssets()
 
 }
 
-int PlayerManager::Update(DX9::MODEL& ground, const float deltaTime)
+int PlayerManager::Update(DX9::MODEL& ground, StatusManager* status, const float deltaTime)
 {
 	//地形の当たり判定
 	Player_collision_detection(ground);
@@ -89,7 +90,7 @@ int PlayerManager::Update(DX9::MODEL& ground, const float deltaTime)
 
 
 	//プレイヤー:攻撃
-	Player_attack(deltaTime);
+	Player_attack(status, deltaTime);
 
 	//ランバージャック(移動制限)
 	Player_limit();
@@ -322,29 +323,70 @@ void PlayerManager::Player_jump(DX9::MODEL& ground, const float deltaTime)
 	
 }
 
-void PlayerManager::Player_attack(const float deltaTime) {
+void PlayerManager::Player_attack(StatusManager* status, const float deltaTime) {
 	//プレイヤー:攻撃
 
 	if (!cool_time_flag) {
 		if (IsAttack()) {
-			//斬撃アニメーション
-			SetAnimation(model, Attack_S);
-			cool_time_flag = true;
-			
-			if (direction_state_mode == Direction_State::RIGHT) {
-				handle_1 = DX12Effect.Play(Sword_Effect_1);
-				DX12Effect.SetPosition(handle_1, Vector3(6, -7, 0));
-				DX12Effect.SetSpeed(handle_1, 1.5f);
+			if (status->GetCombo() == 0) {
+				//斬撃アニメーション
+				SetAnimation(model, Attack_S);
+				cool_time_flag = true;
+
+				if (direction_state_mode == Direction_State::RIGHT) {
+					handle_1 = DX12Effect.Play(Sword_Effect_1);
+					DX12Effect.SetPosition(handle_1, Vector3(6, -7, 0));
+					DX12Effect.SetSpeed(handle_1, 1.5f);
+				}
+
+				if (direction_state_mode == Direction_State::LEFT) {
+					handle_1 = DX12Effect.Play(Sword_Effect_1);
+					DX12Effect.SetPosition(handle_1, Vector3(-7, -9, -2));
+					DX12Effect.SetSpeed(handle_1, 1.5f);
+					DX12Effect.SetRotation(handle_1, Vector3(0, XMConvertToRadians(180), 0));
+					DX12Effect.SetScale(handle_1, Vector3(1.5, 1.5, 1.5));
+
+				}
+			}
+			else if(status->GetCombo() == 1) {
+				SetAnimation(model, Attack_S);
+
+				if (direction_state_mode == Direction_State::RIGHT) {
+					handle_2 = DX12Effect.Play(Sword_Effect_2);
+					DX12Effect.SetPosition(handle_2, Vector3(6, -7, 0));
+					DX12Effect.SetSpeed(handle_2, 1.5f);
+				}
+
+				if (direction_state_mode == Direction_State::LEFT) {
+					handle_2 = DX12Effect.Play(Sword_Effect_2);
+					DX12Effect.SetPosition(handle_2, Vector3(-7, -9, -2));
+					DX12Effect.SetSpeed(handle_2, 1.5f);
+					DX12Effect.SetRotation(handle_2, Vector3(0, XMConvertToRadians(180), 0));
+					DX12Effect.SetScale(handle_2, Vector3(1.5, 1.5, 1.5));
+
+				}
+
+			}
+			else if (status->GetCombo() == 2) {
+				SetAnimation(model, Attack_L);
+
+				if (direction_state_mode == Direction_State::RIGHT) {
+					handle_2 = DX12Effect.Play(Sword_Effect_2);
+					DX12Effect.SetPosition(handle_2, Vector3(6, -7, 0));
+					DX12Effect.SetSpeed(handle_2, 1.5f);
+				}
+
+				if (direction_state_mode == Direction_State::LEFT) {
+					handle_2 = DX12Effect.Play(Sword_Effect_2);
+					DX12Effect.SetPosition(handle_2, Vector3(-7, -9, -2));
+					DX12Effect.SetSpeed(handle_2, 1.5f);
+					DX12Effect.SetRotation(handle_2, Vector3(0, XMConvertToRadians(180), 0));
+					DX12Effect.SetScale(handle_2, Vector3(1.5, 1.5, 1.5));
+
+				}
+
 			}
 
-			if (direction_state_mode == Direction_State::LEFT) {
-				handle_1 = DX12Effect.Play(Sword_Effect_1);
-				DX12Effect.SetPosition(handle_1, Vector3(-7, -9, -2));
-				DX12Effect.SetSpeed(handle_1, 1.5f);
-				DX12Effect.SetRotation(handle_1, Vector3(0, XMConvertToRadians(180), 0));
-				DX12Effect.SetScale(handle_1, Vector3(1.5, 1.5, 1.5));
-
-			}
 			
 
 		}
