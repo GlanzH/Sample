@@ -1,6 +1,7 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 #include "PlayerManager.h"
+
 #include "MyClass/StatusManager/StatusManager.h"
 
 
@@ -414,7 +415,7 @@ void PlayerManager::Player_attack( const float deltaTime) {
 void PlayerManager::Player_Attack_Effect()
 {
 	if (cool_time == 0) {
-		if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent->x) {
+		if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
 			if (StatusManager::Instance().GetCombo() == 0) {
 				//斬撃アニメーション
 				SetAnimation(model, Attack_S);
@@ -483,7 +484,7 @@ void PlayerManager::Player_Attack_Effect()
 
 bool PlayerManager::IsAttack() {
 	if (cool_time == 0) {
-		if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent->x) {
+		if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
 
 			return true;
 		}
