@@ -86,9 +86,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\DirectX12AffinityLayer;$(SolutionDir)\DirectXTK12\Inc;$(SolutionDir)\DirectXTK9\Inc;$(SolutionDir)\DirectXTK9\DirectShow\BaseClasses;$(SolutionDir)\Effekseer\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\DirectX12AffinityLayer;$(SolutionDir)\DirectXTK12\Inc;$(SolutionDir)\DirectXTK9\Inc;$(SolutionDir)\DirectXTK9\DirectShow\BaseClasses;$(IncludePath)</IncludePath>
     <TargetName>$(SolutionName)</TargetName>
-    <LibraryPath>$(SolutionDir)\Effekseer\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -160,7 +159,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
@@ -183,8 +182,8 @@
     </FXCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\Downloads\DX12Effekseer.h" />
     <ClInclude Include="Base\d3dx12.h" />
-    <ClInclude Include="Base\DX12Effekseer.h" />
     <ClInclude Include="Base\dxtk.h" />
     <ClInclude Include="Base\DXTKHelpers.h" />
     <ClInclude Include="Base\GameBase.h" />
@@ -211,11 +210,10 @@
     <ClInclude Include="SceneFactory.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Base\DX12Effekseer.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="..\..\..\..\Downloads\DX12Effekseer.cpp" />
     <ClCompile Include="Base\GameBase.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Base\Main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
@@ -230,32 +228,18 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MyClass\CameraManager\CameraManager.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="MyClass\CameraManager\CameraManager.cpp" />
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.cpp" />
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Enemy.cpp" />
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyFactory.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyManager.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="MyClass\GroundManager\GroundManager.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="MyClass\Observer\Observer.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="MyClass\PlayerManager\PlayerManager.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyFactory.cpp" />
+    <ClCompile Include="MyClass\EnemyManager\EnemyManager.cpp" />
+    <ClCompile Include="MyClass\GroundManager\GroundManager.cpp" />
+    <ClCompile Include="MyClass\Observer\Observer.cpp" />
+    <ClCompile Include="MyClass\PlayerManager\PlayerManager.cpp" />
     <ClCompile Include="MyClass\PlayerManager\Sword\Sword.cpp" />
     <ClCompile Include="MyClass\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="MyClass\StatusManager\StatusManager.cpp" />
-    <ClCompile Include="MyClass\TextManager\TextManager.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="MyClass\TextManager\TextManager.cpp" />
     <ClCompile Include="MyClass\UIManager\UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -268,7 +252,7 @@
     <Manifest Include="Resource\settings.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DirectXTK12\DirectXTK_Desktop_2019_Win10.vcxproj">
+    <ProjectReference Include="..\DirectXTK12\DirectXTK12.vcxproj">
       <Project>{3e0e8608-cd9b-4c76-af33-29ca38f2c9f0}</Project>
     </ProjectReference>
     <ProjectReference Include="..\DirectXTK9\DirectXTK9.vcxproj">

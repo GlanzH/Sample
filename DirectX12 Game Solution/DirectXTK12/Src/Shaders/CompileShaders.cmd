@@ -67,7 +67,10 @@ if exist %PCFXC% goto continue
 set PCFXC=fxc.exe
 
 :continue
-@if %CompileShadersOutput%.==. set CompileShadersOutput=Compiled
+if not defined CompileShadersOutput set CompileShadersOutput=Compiled
+set StrTrim=%CompileShadersOutput%##
+set StrTrim=%StrTrim: ##=%
+set CompileShadersOutput=%StrTrim:##=%
 @if not exist %CompileShadersOutput% mkdir %CompileShadersOutput%
 call :CompileShader%1 AlphaTestEffect vs VSAlphaTest
 call :CompileShader%1 AlphaTestEffect vs VSAlphaTestNoFog
@@ -183,6 +186,11 @@ call :CompileShader%1 NormalMapEffect vs VSNormalPixelLightingTxNoSpecBnInst
 call :CompileShader%1 NormalMapEffect vs VSNormalPixelLightingTxVcNoSpecInst
 call :CompileShader%1 NormalMapEffect vs VSNormalPixelLightingTxVcNoSpecBnInst
 
+call :CompileShader%1 NormalMapEffect vs VSSkinnedPixelLightingTx
+call :CompileShader%1 NormalMapEffect vs VSSkinnedPixelLightingTxBn
+call :CompileShader%1 NormalMapEffect vs VSSkinnedPixelLightingTxNoSpec
+call :CompileShader%1 NormalMapEffect vs VSSkinnedPixelLightingTxNoSpecBn
+
 call :CompileShader%1 NormalMapEffect ps PSNormalPixelLightingTx
 call :CompileShader%1 NormalMapEffect ps PSNormalPixelLightingTxNoFog
 call :CompileShader%1 NormalMapEffect ps PSNormalPixelLightingTxNoSpec
@@ -194,6 +202,8 @@ call :CompileShader%1 PBREffect vs VSConstantVelocity
 call :CompileShader%1 PBREffect vs VSConstantBn
 call :CompileShader%1 PBREffect vs VSConstantBnInst
 call :CompileShader%1 PBREffect vs VSConstantVelocityBn
+call :CompileShader%1 PBREffect vs VSSkinned
+call :CompileShader%1 PBREffect vs VSSkinnedBn
 
 call :CompileShader%1 PBREffect ps PSConstant
 call :CompileShader%1 PBREffect ps PSTextured

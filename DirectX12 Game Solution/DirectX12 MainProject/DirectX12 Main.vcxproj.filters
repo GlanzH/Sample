@@ -11,58 +11,52 @@
       <UniqueIdentifier>{d7d56ad3-60f4-40ad-b499-8133f5f75990}</UniqueIdentifier>
     </Filter>
     <Filter Include="MyClass">
-      <UniqueIdentifier>{5d0d5dae-649a-4afc-925d-e708a033d453}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyClass\GameSceneManager">
-      <UniqueIdentifier>{16da01d1-9308-4dfd-9897-44235304e396}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyClass\EnemyManager">
-      <UniqueIdentifier>{d877da3f-f73b-4b65-83c9-8dfdf5ca6b7d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyClass\PlayerManager">
-      <UniqueIdentifier>{8b994392-6c90-4f5c-a765-c1f205668d6a}</UniqueIdentifier>
+      <UniqueIdentifier>{a46a2bc4-01d1-438b-b735-f520a6ae6a8f}</UniqueIdentifier>
     </Filter>
     <Filter Include="MyClass\CameraManager">
-      <UniqueIdentifier>{b5c7ebcc-3e32-4ac7-be02-6d789d7dfd13}</UniqueIdentifier>
+      <UniqueIdentifier>{99c26648-1af8-4924-b054-d3092f674d32}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\TextManager">
-      <UniqueIdentifier>{5ea0d9d5-4529-4a6f-a920-7a8ef8778487}</UniqueIdentifier>
+    <Filter Include="MyClass\EnemyManager">
+      <UniqueIdentifier>{a542ac74-0ede-4b2d-8832-cb4b0057ec32}</UniqueIdentifier>
     </Filter>
     <Filter Include="MyClass\GroundManager">
-      <UniqueIdentifier>{3484e38c-733b-4580-a58d-5fa05c40e4b3}</UniqueIdentifier>
+      <UniqueIdentifier>{16b03223-72cd-4566-8132-fdd07b726902}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\EnumManager">
-      <UniqueIdentifier>{9b28ac42-a149-4556-9f5b-83757bd94399}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyClass\EnemyManager\EnemyFactory">
-      <UniqueIdentifier>{e110343c-e1ac-4e86-a7ab-b11f37bcd27e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyClass\Effekseer">
-      <UniqueIdentifier>{06a908bf-6f5a-42a5-86d7-51acc9fe576a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyClass\Observer">
-      <UniqueIdentifier>{35f39bf1-15c0-4ecd-93f6-5b782226a252}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase">
-      <UniqueIdentifier>{936ec52a-008d-4dc3-89ea-f50e09f99149}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy">
-      <UniqueIdentifier>{040a1c7d-45fe-4185-bdcb-889b7306e236}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyClass\PlayerManager\Sword">
-      <UniqueIdentifier>{a3baebef-f3af-4943-aeeb-e00222aabf3a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyClass\ResourceManager">
-      <UniqueIdentifier>{c36fb98f-920c-4a13-a671-8695aba703d5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyClass\MyAlgorithm">
-      <UniqueIdentifier>{f2eea4d0-e853-4690-84ee-342ccef86f44}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyClass\UIManager">
-      <UniqueIdentifier>{21cee7ac-b5a0-40d5-9982-75e62705735b}</UniqueIdentifier>
+    <Filter Include="MyClass\PlayerManager">
+      <UniqueIdentifier>{63ee3fb6-f5c8-4b63-98fd-b3c5bd994a82}</UniqueIdentifier>
     </Filter>
     <Filter Include="MyClass\StatusManager">
-      <UniqueIdentifier>{6c6c639d-5e5b-4387-8311-b953fd8ddb0c}</UniqueIdentifier>
+      <UniqueIdentifier>{36b0fb98-cf9f-4960-823e-7481a7dff9d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory">
+      <UniqueIdentifier>{040e5591-6bf6-48c1-9b1b-ad1105e4eb60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase">
+      <UniqueIdentifier>{1196da3b-3806-4951-ab98-da2825122e04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy">
+      <UniqueIdentifier>{e1afea84-9eeb-472b-a548-d6ec2f4196d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\EnumManager">
+      <UniqueIdentifier>{18d419ba-5c4e-43de-ab03-ccf66b73725a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\PlayerManager\Sword">
+      <UniqueIdentifier>{5e183545-bb76-4ebb-9fa1-ef1f476052b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\ResourceManager">
+      <UniqueIdentifier>{ff9393be-8735-40df-863d-5dcf6fd318b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\MyAlgorithm">
+      <UniqueIdentifier>{3ad5ab19-c2c5-4bdb-a590-d7dfec4c6b1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\Observer">
+      <UniqueIdentifier>{5f83f898-c16b-4101-a090-3843d83b9eef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\TextManager">
+      <UniqueIdentifier>{3818bb41-0f58-43bd-bc46-1ee458c53018}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\UIManager">
+      <UniqueIdentifier>{ac1164c3-8ff1-4ac1-b627-637f09ec25b8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -99,35 +93,29 @@
     <ClInclude Include="MyClass\CameraManager\CameraManager.h">
       <Filter>MyClass\CameraManager</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\PlayerManager\PlayerManager.h">
-      <Filter>MyClass\PlayerManager</Filter>
-    </ClInclude>
-    <ClInclude Include="MyClass\TextManager\TextManager.h">
-      <Filter>MyClass\TextManager</Filter>
-    </ClInclude>
     <ClInclude Include="MyClass\GroundManager\GroundManager.h">
       <Filter>MyClass\GroundManager</Filter>
     </ClInclude>
     <ClInclude Include="MyClass\EnemyManager\EnemyManager.h">
       <Filter>MyClass\EnemyManager</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\EnumManager\EnumManager.h">
-      <Filter>MyClass\EnumManager</Filter>
+    <ClInclude Include="MyClass\PlayerManager\PlayerManager.h">
+      <Filter>MyClass\PlayerManager</Filter>
     </ClInclude>
-    <ClInclude Include="Base\DX12Effekseer.h">
-      <Filter>MyClass\Effekseer</Filter>
+    <ClInclude Include="MyClass\StatusManager\StatusManager.h">
+      <Filter>MyClass\StatusManager</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyFactory.h">
-      <Filter>MyClass\EnemyManager\EnemyFactory</Filter>
-    </ClInclude>
-    <ClInclude Include="MyClass\Observer\Observer.h">
-      <Filter>MyClass\Observer</Filter>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Enemy.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.h">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Enemy.h">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyFactory.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnumManager\EnumManager.h">
+      <Filter>MyClass\EnumManager</Filter>
     </ClInclude>
     <ClInclude Include="MyClass\PlayerManager\Sword\Sword.h">
       <Filter>MyClass\PlayerManager\Sword</Filter>
@@ -138,12 +126,16 @@
     <ClInclude Include="MyClass\MyAlgorithm\MyAlgorithm.h">
       <Filter>MyClass\MyAlgorithm</Filter>
     </ClInclude>
+    <ClInclude Include="MyClass\Observer\Observer.h">
+      <Filter>MyClass\Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\TextManager\TextManager.h">
+      <Filter>MyClass\TextManager</Filter>
+    </ClInclude>
     <ClInclude Include="MyClass\UIManager\UIManager.h">
       <Filter>MyClass\UIManager</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\StatusManager\StatusManager.h">
-      <Filter>MyClass\StatusManager</Filter>
-    </ClInclude>
+    <ClInclude Include="..\..\..\..\Downloads\DX12Effekseer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -164,29 +156,23 @@
     <ClCompile Include="MyClass\EnemyManager\EnemyManager.cpp">
       <Filter>MyClass\EnemyManager</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\PlayerManager\PlayerManager.cpp">
-      <Filter>MyClass\PlayerManager</Filter>
-    </ClCompile>
-    <ClCompile Include="MyClass\TextManager\TextManager.cpp">
-      <Filter>MyClass\TextManager</Filter>
-    </ClCompile>
     <ClCompile Include="MyClass\GroundManager\GroundManager.cpp">
       <Filter>MyClass\GroundManager</Filter>
     </ClCompile>
-    <ClCompile Include="Base\DX12Effekseer.cpp">
-      <Filter>MyClass\Effekseer</Filter>
+    <ClCompile Include="MyClass\PlayerManager\PlayerManager.cpp">
+      <Filter>MyClass\PlayerManager</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyFactory.cpp">
-      <Filter>MyClass\EnemyManager\EnemyFactory</Filter>
+    <ClCompile Include="MyClass\StatusManager\StatusManager.cpp">
+      <Filter>MyClass\StatusManager</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\Observer\Observer.cpp">
-      <Filter>MyClass\Observer</Filter>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Enemy.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.cpp">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Enemy.cpp">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyFactory.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory</Filter>
     </ClCompile>
     <ClCompile Include="MyClass\PlayerManager\Sword\Sword.cpp">
       <Filter>MyClass\PlayerManager\Sword</Filter>
@@ -194,12 +180,16 @@
     <ClCompile Include="MyClass\ResourceManager\ResourceManager.cpp">
       <Filter>MyClass\ResourceManager</Filter>
     </ClCompile>
+    <ClCompile Include="MyClass\Observer\Observer.cpp">
+      <Filter>MyClass\Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\TextManager\TextManager.cpp">
+      <Filter>MyClass\TextManager</Filter>
+    </ClCompile>
     <ClCompile Include="MyClass\UIManager\UIManager.cpp">
       <Filter>MyClass\UIManager</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\StatusManager\StatusManager.cpp">
-      <Filter>MyClass\StatusManager</Filter>
-    </ClCompile>
+    <ClCompile Include="..\..\..\..\Downloads\DX12Effekseer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resource\directx.ico">
