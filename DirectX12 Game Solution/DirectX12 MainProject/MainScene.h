@@ -12,6 +12,7 @@
 #include "MyClass/EnemyManager/EnemyManager.h"
 #include "MyClass/Observer/Observer.h"
 #include "MyClass/CameraManager/CameraManager.h"
+#include "MyClass/StatusManager/StatusManager.h"
 
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
@@ -54,4 +55,5 @@ private:
 	PlayerManager* player;
 	EnemyManager*  enemy;
 	Observer*      observer;
+	StatusManager* status;
 };
