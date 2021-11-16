@@ -213,26 +213,12 @@ void PlayerManager::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack
 
 void PlayerManager::_2DRender()
 {
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(0.0f, 50.0f),
-	//	DX9::Colors::DarkBlue,
-	//	L"%f", 
-	//);
-
-	//if (!parry_flag) {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 0.0f),
-	//		DX9::Colors::Black,
-	//		L"あ"
-	//	);
-	//}
-	//else {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 0.0f),
-	//		DX9::Colors::Black,
-	//		L"い"
-	//	);
-	//}
+	//コンボ確認用
+	///DX9::SpriteBatch->DrawString(font.Get(),
+	///	SimpleMath::Vector2(1000.0f, 0.0f),
+	///	DX9::Colors::Black,
+	///	L"%d",StatusManager::Instance().GetCombo()
+	///);
 }
 
 void PlayerManager::Player_collision_detection(DX9::MODEL& ground)

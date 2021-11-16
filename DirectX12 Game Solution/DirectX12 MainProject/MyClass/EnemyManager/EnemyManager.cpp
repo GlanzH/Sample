@@ -31,7 +31,7 @@ int EnemyManager::Update(DX9::MODEL& ground, PlayerManager* player, const float 
 	delta = deltaTime;
 	Iterator(ground,player,deltaTime);
 
-	StatusManager::Instance().Update(deltaTime);
+//	StatusManager::Instance().Update(deltaTime);
 
 	return 0;
 }
@@ -72,7 +72,7 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	if(StatusManager::Instance().GetCombo() == 3)
 	base->Retreat();
 
-	StatusManager::Instance().AddCombo(delta);
+	//StatusManager::Instance().AddCombo(delta);
 
 	DX12Effect.SetPosition(handle,base->GetModel()->GetPosition());
 	handle = DX12Effect.Play(effect);
