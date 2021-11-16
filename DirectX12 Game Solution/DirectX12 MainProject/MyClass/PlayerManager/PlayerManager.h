@@ -136,7 +136,7 @@ private:
 	//無敵時間
 	bool  invincible_flag = false;
 	float invincible_time      = 0.0f;
-	float invincible_time_max  = 100.0f;
+	float invincible_time_max = 100.0f;//1.5f;
 
 	//アピール
 	enum Appeal_state
@@ -150,7 +150,8 @@ private:
 	float appeal_time     = 0.0f;
 	float appeal_time_max = 5.0f;
 	
-	
+	float delta;
+
 
 	DX9::SPRITEFONT font;
 
@@ -166,7 +167,7 @@ private:
 	//攻撃
 	void Player_attack(const float deltaTime);
 	//攻撃エフェクト関係
-	void Player_Attack_Effect();
+	void Player_Attack_Effect(const float deltaTime);
 	//パリィ
 	void Parry();
 	//無敵時間
