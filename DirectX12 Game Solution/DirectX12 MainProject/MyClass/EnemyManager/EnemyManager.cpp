@@ -67,7 +67,7 @@ void EnemyManager::Render()
 }
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
-	base->Damage(delta);
+     base->Damage(delta);
 
 	if(StatusManager::Instance().GetCombo() == 3)
 	base->Retreat();

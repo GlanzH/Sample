@@ -126,9 +126,6 @@
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.h">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Enemy.h">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="MyClass\PlayerManager\Sword\Sword.h">
       <Filter>MyClass\PlayerManager\Sword</Filter>
     </ClInclude>
@@ -143,6 +140,18 @@
     </ClInclude>
     <ClInclude Include="MyClass\StatusManager\StatusManager.h">
       <Filter>MyClass\StatusManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\FakerLamiel.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\StoneStatue.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\HighSlime.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Slime.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -185,9 +194,6 @@
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.cpp">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Enemy.cpp">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="MyClass\PlayerManager\Sword\Sword.cpp">
       <Filter>MyClass\PlayerManager\Sword</Filter>
     </ClCompile>
@@ -199,6 +205,18 @@
     </ClCompile>
     <ClCompile Include="MyClass\StatusManager\StatusManager.cpp">
       <Filter>MyClass\StatusManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\FakerLamiel.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\HighSlime.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\StoneStatue.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Slime.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

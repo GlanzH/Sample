@@ -1,14 +1,16 @@
 #include "EnemyFactory.h"
+#include "EnemyBase/Enemy/Slime.h"
+
 
 EnemyFactory::EnemyFactory()
 {
 	//!動く敵のステータス設定
 	normal_enemy_speed.x = 3.0f;
-	normal_enemy_hp = 3;
+	slime_hp = 3;
 
 	//!敵の種類のタグをプッシュバック
-	enemy_tag.push_back("normal");
-	enemy_model[NORMAL] = L"Model\\Enemy\\slime.X";
+	enemy_tag.push_back("slime");
+	enemy_model[SLIME] = L"Model\\Enemy\\slime.X";
 }
 
 EnemyBase* EnemyFactory::Create(std::string tag, DirectX::SimpleMath::Vector3 position)
@@ -22,7 +24,7 @@ EnemyBase* EnemyFactory::Create(std::string tag, DirectX::SimpleMath::Vector3 po
 
 EnemyBase* EnemyFactory::CreateProduct(std::string tag, DirectX::SimpleMath::Vector3 position)
 {
-	EnemyBase* classes[] = { new Enemy};
+	EnemyBase* classes[] = { new Slime};
 
 	for (int i = 0; i < enemy_tag.size(); ++i)
 	{
@@ -34,7 +36,7 @@ EnemyBase* EnemyFactory::CreateProduct(std::string tag, DirectX::SimpleMath::Vec
 
 LPCWSTR EnemyFactory::SetModel(std::string tag)
 {
-	LPCWSTR models[] = { enemy_model[NORMAL] };
+	LPCWSTR models[] = { enemy_model[SLIME] };
 	for (int i = 0; i < enemy_tag.size(); ++i)
 	{
 		if (tag == enemy_tag[i]) { model_name = models[i]; }
@@ -54,7 +56,7 @@ DirectX::SimpleMath::Vector3 EnemyFactory::SetSpeed(std::string tag)
 
 int EnemyFactory::SetHP(std::string tag)
 {
-	int hps[] = { normal_enemy_hp};
+	int hps[] = { slime_hp};
 
 	for (int i = 0; i < enemy_tag.size(); ++i)
 	{

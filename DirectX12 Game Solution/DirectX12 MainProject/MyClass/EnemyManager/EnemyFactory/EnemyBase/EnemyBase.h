@@ -9,7 +9,7 @@ using namespace DirectX;
 class EnemyBase
 {
 public:
-	EnemyBase() {};
+	EnemyBase();
 	~EnemyBase() {};
 
 	bool Initialize(SimpleMath::Vector3 speed,int hp);

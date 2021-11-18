@@ -3,6 +3,11 @@
 
 #include "EnemyBase.h"
 
+EnemyBase::EnemyBase()
+{
+
+}
+
 bool EnemyBase::Initialize(SimpleMath::Vector3 speed, int hp)
 {
 	enemy_speed = speed;

@@ -7,10 +7,11 @@
  * @date 　2021/10/31
  */
 
-#include "MyClass/EnemyManager/EnemyFactory/EnemyBase/Enemy/Enemy.h"
 #include "Base/pch.h"
 #include<string>
 #include<vector>
+
+#include "EnemyBase/EnemyBase.h"
 
 class EnemyBase;
 
@@ -27,7 +28,9 @@ public:
 private:
 	EnemyBase* enemy;
 	char hp;
-	char normal_enemy_hp;
+	char slime_hp;
+	char Highslime_hp;
+	char fakerlamiel;
 
 	std::vector<std::string> enemy_tag;
 
@@ -40,5 +43,5 @@ private:
 　　* @enum EnemyType
 　　* 敵の種類
 　　*/
-	enum EnemyType {NORMAL};
+	enum EnemyType {SLIME};
 };
