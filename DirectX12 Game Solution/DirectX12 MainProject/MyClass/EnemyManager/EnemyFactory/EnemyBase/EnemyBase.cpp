@@ -3,6 +3,11 @@
 
 #include "EnemyBase.h"
 
+EnemyBase::EnemyBase()
+{
+
+}
+
 bool EnemyBase::Initialize(SimpleMath::Vector3 speed, int hp)
 {
 	enemy_speed = speed;
@@ -50,10 +55,10 @@ int EnemyBase::Update(DX9::MODEL& ground, PlayerManager* player, const float del
 	return 0;
 }
 
-void EnemyBase::Damage(const float deltaTime) {
+void EnemyBase::Damage(const float deltaTime,int damage) {
 	model->AdvanceTime(deltaTime / 1.0f);
 	SetAnimesion(model, DAMAGE);
-	enemy_hp--;
+	enemy_hp -= damage;
 }
 
 void EnemyBase::Retreat() {

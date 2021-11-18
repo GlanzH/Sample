@@ -24,15 +24,18 @@ public:
 	void OnParryArea(EnemyBase* base);
 	
 private:
-	
 	void Generator();
 	void Iterator(DX9::MODEL& ground, PlayerManager* player, const float deltaTime);
-	float delta ;
+	
 	std::list<EnemyBase*> enemy;
-	int dead_enemy_count = 0;
+
+	PlayerManager* player_data;
 
 	EFFECTHANDLE handle;
 	EFFECT       effect;
 	DX9::SPRITEFONT font;
 	DX9::SKINNEDMODEL model;
+	
+	int dead_enemy_count = 0;
+	float delta;
 };
