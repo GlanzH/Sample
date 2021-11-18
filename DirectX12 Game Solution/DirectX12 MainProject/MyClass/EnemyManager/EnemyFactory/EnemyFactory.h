@@ -24,6 +24,7 @@ public:
 	DirectX::SimpleMath::Vector3 SetSpeed(std::string tag);
 	int SetHP(std::string tag);
 
+
 private:
 	EnemyBase* enemy;
 	char hp;

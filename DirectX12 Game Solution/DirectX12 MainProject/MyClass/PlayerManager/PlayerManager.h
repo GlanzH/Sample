@@ -34,6 +34,9 @@ public:
 
 	BoundingBox GetSwordBox() { return sword_box; }
 
+	int GetDamege() { return damege; }
+
+
 private:
 	//プレイヤー
 	DX9::SKINNEDMODEL model;
@@ -62,6 +65,8 @@ private:
 	//アニメーション
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack);
 
+
+
 	enum
 	{
 		Wait,
@@ -85,7 +90,7 @@ private:
 	//1/2
 	const float half = 0.5f;
 	//重力加速度
-	const float gravity_ = 110.0f;
+	const float gravity_ = 150.0f;
 	//初速
 	const float V0 = 50.0f;
 
@@ -114,10 +119,25 @@ private:
 	//攻撃のカウント(秒)
 	float attack_count_time;
 
+	//攻撃の時間
+	bool  attack_flag = false;
+
+	float attack_zeit = 0.0f;
+	float attack_zeit_max = 0.03309f;
+
+
 	//攻撃のクールタイム
-	bool cool_time_flag   = false;
-	float cool_time       = 0.0f;
-	float cool_time_max = 0.4f;
+	//bool cool_time_flag   = false;
+	//float cool_time       = 0.0f;
+	//float cool_time_max = 0.2f;
+
+	bool cool_time_flag_zwei = false;
+	float cool_time_zwei = 0.0f;
+	float cool_time_max_zwei[3]{ 0.1f,0.4f,0.6f };
+	int count = 0;
+
+	
+	int damege = 0;
 
 	//攻撃エフェクト
 	//1
@@ -150,7 +170,6 @@ private:
 	float appeal_time     = 0.0f;
 	float appeal_time_max = 5.0f;
 	
-	float delta;
 
 
 	DX9::SPRITEFONT font;
