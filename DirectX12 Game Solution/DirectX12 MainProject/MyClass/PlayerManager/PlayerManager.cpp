@@ -241,11 +241,11 @@ void PlayerManager::_2DRender()
 		L"%d", count
 	);
 
-	DX9::SpriteBatch->DrawString(font.Get(),
-		SimpleMath::Vector2(1000.0f, 80.0f),
-		DX9::Colors::DarkGreen,
-		L"%f", StatusManager::Instance().Gettime()
-	);
+	//DX9::SpriteBatch->DrawString(font.Get(),
+	//	SimpleMath::Vector2(1000.0f, 80.0f),
+	//	DX9::Colors::DarkGreen,
+	//	L"%f", StatusManager::Instance().Gettime()
+	//);
 
 	DX9::SpriteBatch->DrawString(font.Get(),
 		SimpleMath::Vector2(1000.0f, 100.0f),
