@@ -1,15 +1,15 @@
 #include "MyClass/Observer/Observer.h"
 
-int Observer::Update(PlayerManager* player,EnemyManager* enemy,Sword* sword) {
-	CollisionDetection(player, enemy,sword);
+int Observer::Update(PlayerManager* player,EnemyManager* enemy) {
+	CollisionDetection(player, enemy);
 	return 0;
 }
 
-void Observer::CollisionDetection(PlayerManager* player, EnemyManager* enemy, Sword* sword) {
+void Observer::CollisionDetection(PlayerManager* player, EnemyManager* enemy) {
 	//プレイヤー・敵当たり判定
 	for (auto enemies_roop : enemy->GetEnemy()) {
-		if (sword->IsAttack()) {
-			if (sword->GetBox().Intersects(enemies_roop->GetBox()))
+		if (player->IsAttack()) {
+			if (player->GetSwordBox().Intersects(enemies_roop->GetBox()))
 				enemy->OnCollisionEnter(enemies_roop);
 		}
 
@@ -22,7 +22,5 @@ void Observer::CollisionDetection(PlayerManager* player, EnemyManager* enemy, Sw
 				enemy->OnParryArea(enemies_roop);
 			}
 		}
-
-
 	}
 }

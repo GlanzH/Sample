@@ -2,6 +2,7 @@
 #include "Base/dxtk.h"
 #include "EnemyManager.h"
 #include "MyClass/ResourceManager/ResourceManager.h"
+#include "MyClass/StatusManager/StatusManager.h"
 
 EnemyManager::EnemyManager()
 {
@@ -29,6 +30,8 @@ int EnemyManager::Update(DX9::MODEL& ground, PlayerManager* player, const float 
 	}
 	delta = deltaTime;
 	Iterator(ground,player,deltaTime);
+
+	StatusManager::Instance().Update(deltaTime);
 
 	return 0;
 }
@@ -65,7 +68,11 @@ void EnemyManager::Render()
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	base->Damage(delta);
+
+	if(StatusManager::Instance().GetCombo() == 3)
 	base->Retreat();
+
+	StatusManager::Instance().AddCombo(delta);
 
 	DX12Effect.SetPosition(handle,base->GetModel()->GetPosition());
 	handle = DX12Effect.Play(effect);

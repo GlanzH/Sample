@@ -12,7 +12,6 @@ MainScene::MainScene() : dx9GpuDescriptor{}
 	player   = new PlayerManager;
 	enemy    = new EnemyManager;
 	observer = new Observer;
-	sword    = new Sword;
 }
 
 MainScene::~MainScene() {
@@ -32,7 +31,6 @@ void MainScene::Initialize()
 	camera.Initialize();
 	player->Initialize();
 	enemy->Initialize();
-	sword->Initialize();
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -64,8 +62,6 @@ void MainScene::LoadAssets()
 	light.Specular = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 1.0f);
 	DXTK->Direct3D9->SetLight(100.0f, light);
 	DXTK->Direct3D9->LightEnable(0, true);
-
-	sword->LoadAssets();
 
 	//‰æ‘œ‚âƒ‚ƒfƒ‹‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 	DX12Effect.Initialize();
@@ -107,12 +103,11 @@ NextScene MainScene::Update(const float deltaTime)
 
 	text.Update(deltaTime);
 	camera.Update(player,ground.GetModel());
-	sword->Update(player, deltaTime);
 
 	DX12Effect.Update();
 	player->Update(ground.GetModel(), deltaTime);
 	enemy->Update(ground.GetModel(),player,deltaTime);
-	observer->Update(player, enemy,sword);
+	observer->Update(player, enemy);
 	return NextScene::Continue;
 }
 
@@ -129,8 +124,6 @@ void MainScene::Render()
 	ground.Render();
 	player->Render();
 	enemy->Render();
-
-	sword->Render();
 
 	DX9::SpriteBatch->Begin();
 
