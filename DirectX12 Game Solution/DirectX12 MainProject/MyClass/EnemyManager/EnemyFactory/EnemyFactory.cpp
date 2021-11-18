@@ -5,7 +5,7 @@
 EnemyFactory::EnemyFactory()
 {
 	//!動く敵のステータス設定
-	normal_enemy_speed.x = 3.0f;
+	slime_speed.x = 3.0f;
 	slime_hp = 3;
 
 	//!敵の種類のタグをプッシュバック
@@ -46,7 +46,7 @@ LPCWSTR EnemyFactory::SetModel(std::string tag)
 
 DirectX::SimpleMath::Vector3 EnemyFactory::SetSpeed(std::string tag)
 {
-	DirectX::SimpleMath::Vector3 speeds[] = { normal_enemy_speed };
+	DirectX::SimpleMath::Vector3 speeds[] = { slime_speed };
 	for (int i = 0; i < enemy_tag.size(); ++i)
 	{
 		if (tag == enemy_tag[i]) { speed = speeds[i]; }

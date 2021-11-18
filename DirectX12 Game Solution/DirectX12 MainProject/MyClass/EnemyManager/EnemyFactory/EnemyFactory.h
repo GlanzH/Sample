@@ -30,11 +30,12 @@ private:
 	char hp;
 	char slime_hp;
 	char Highslime_hp;
-	char fakerlamiel;
+	char fakerlamiel_hp;
 
 	std::vector<std::string> enemy_tag;
 
-	DirectX::SimpleMath::Vector3 normal_enemy_speed;
+	DirectX::SimpleMath::Vector3 slime_speed;
+
 	DirectX::SimpleMath::Vector3 speed;
 
 	LPCWSTR enemy_model[1];
