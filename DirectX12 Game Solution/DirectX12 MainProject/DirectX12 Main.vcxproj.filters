@@ -126,9 +126,6 @@
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.h">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Enemy.h">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="MyClass\PlayerManager\Sword\Sword.h">
       <Filter>MyClass\PlayerManager\Sword</Filter>
     </ClInclude>
@@ -151,6 +148,9 @@
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\HighSlime.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Slime.h">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
@@ -194,9 +194,6 @@
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.cpp">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Enemy.cpp">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="MyClass\PlayerManager\Sword\Sword.cpp">
       <Filter>MyClass\PlayerManager\Sword</Filter>
     </ClCompile>
@@ -216,6 +213,9 @@
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\StoneStatue.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Slime.cpp">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
     </ClCompile>
   </ItemGroup>

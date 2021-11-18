@@ -3,11 +3,11 @@
 
 using namespace DirectX;
 
-class Enemy : public EnemyBase
+class Slime : public EnemyBase
 {
 public:
-	Enemy()  {}
-	~Enemy() {}
+	Slime()  {}
+	~Slime() {}
 
 	virtual int Update(DX9::MODEL& ground, PlayerManager* player, const float deltaTime) ;
 
