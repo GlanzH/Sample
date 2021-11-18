@@ -138,6 +138,15 @@
     <ClInclude Include="MyClass\UIManager\UIManager.h">
       <Filter>MyClass\UIManager</Filter>
     </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\HighSlime.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\StoneStatue.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\FakerLamiel.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -190,6 +199,15 @@
     </ClCompile>
     <ClCompile Include="MyClass\UIManager\UIManager.cpp">
       <Filter>MyClass\UIManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\StoneStatue.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\FakerLamiel.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\HighSlime.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
