@@ -18,7 +18,7 @@ public:
 	void Render();
 
 	void Retreat();
-	virtual void Damage(const float deltaTime);
+	virtual void Damage(const float deltaTime,int damage);
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
 	BoundingBox GetBox()		  { return box; }

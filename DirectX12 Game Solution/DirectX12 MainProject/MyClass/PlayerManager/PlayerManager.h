@@ -34,7 +34,7 @@ public:
 
 	BoundingBox GetSwordBox() { return sword_box; }
 
-	int GetDamege() { return damege; }
+	int GetDamage() { return damage; }
 
 
 private:
@@ -141,7 +141,7 @@ private:
 	float count_time_max = 0.4f;
 
 	
-	int damege = 0;
+	int damage = 0;
 
 	//攻撃エフェクト
 	//1

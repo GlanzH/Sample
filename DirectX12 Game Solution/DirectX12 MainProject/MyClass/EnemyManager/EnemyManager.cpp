@@ -28,8 +28,10 @@ int EnemyManager::Update(DX9::MODEL& ground, PlayerManager* player, const float 
 	for (auto& enemies : enemy) {
 		enemies->Update(ground,player,deltaTime);
 	}
-	delta = deltaTime;
-	Iterator(ground,player,deltaTime);
+	player_data = player;
+	delta		= deltaTime;
+
+	Iterator(ground,player_data,delta);
 
 	return 0;
 }
@@ -65,7 +67,7 @@ void EnemyManager::Render()
 }
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
-     base->Damage(delta);
+     base->Damage(delta,player_data->GetDamage());
 
 	if(StatusManager::Instance().GetCombo() == 3)
 	base->Retreat();

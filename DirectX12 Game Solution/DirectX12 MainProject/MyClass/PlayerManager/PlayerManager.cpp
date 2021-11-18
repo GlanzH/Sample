@@ -223,35 +223,35 @@ void PlayerManager::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack
 void PlayerManager::_2DRender()
 {
 	//コンボ確認用
-	DX9::SpriteBatch->DrawString(font.Get(),
-		SimpleMath::Vector2(1000.0f, 0.0f),
-		DX9::Colors::Black,
-		L"%d",StatusManager::Instance().GetCombo()
-	);
+	//DX9::SpriteBatch->DrawString(font.Get(),
+	//	SimpleMath::Vector2(1000.0f, 0.0f),
+	//	DX9::Colors::Black,
+	//	L"%d",StatusManager::Instance().GetCombo()
+	//);
 
-	DX9::SpriteBatch->DrawString(font.Get(),
-		SimpleMath::Vector2(1000.0f, 40.0f),
-		DX9::Colors::Red,
-		L"%f", cool_time_zwei
-	);
+	//DX9::SpriteBatch->DrawString(font.Get(),
+	//	SimpleMath::Vector2(1000.0f, 40.0f),
+	//	DX9::Colors::Red,
+	//	L"%f", cool_time_zwei
+	//);
 
-	DX9::SpriteBatch->DrawString(font.Get(),
-		SimpleMath::Vector2(1000.0f, 60.0f),
-		DX9::Colors::Brown,
-		L"%d", count
-	);
+	//DX9::SpriteBatch->DrawString(font.Get(),
+	//	SimpleMath::Vector2(1000.0f, 60.0f),
+	//	DX9::Colors::Brown,
+	//	L"%d", count
+	//);
 
-	DX9::SpriteBatch->DrawString(font.Get(),
-		SimpleMath::Vector2(1000.0f, 80.0f),
-		DX9::Colors::DarkGreen,
-		L"%f", StatusManager::Instance().Gettime()
-	);
+	//DX9::SpriteBatch->DrawString(font.Get(),
+	//	SimpleMath::Vector2(1000.0f, 80.0f),
+	//	DX9::Colors::DarkGreen,
+	//	L"%f", StatusManager::Instance().Gettime()
+	//);
 
-	DX9::SpriteBatch->DrawString(font.Get(),
-		SimpleMath::Vector2(1000.0f, 100.0f),
-		DX9::Colors::DarkGreen,
-		L"%f", count_time
-	);
+	//DX9::SpriteBatch->DrawString(font.Get(),
+	//	SimpleMath::Vector2(1000.0f, 100.0f),
+	//	DX9::Colors::DarkGreen,
+	//	L"%f", count_time
+	//);
 
 
 }
@@ -365,7 +365,7 @@ void PlayerManager::Player_attack(const float deltaTime) {
 					//斬撃アニメーション
 					SetAnimation(model, Attack_S);
 					cool_time_flag_zwei = true;
-					damege = 2;
+					damage = 2;
 
 					if (direction_state_mode == Direction_State::RIGHT) {
 						handle_1 = DX12Effect.Play(Sword_Effect_1);
@@ -387,7 +387,7 @@ void PlayerManager::Player_attack(const float deltaTime) {
 				else if (StatusManager::Instance().GetCombo() == 2) {
 					SetAnimation(model, Attack_S);
 					cool_time_flag_zwei = true;
-					damege = 3;
+					damage = 3;
 
 					if (direction_state_mode == Direction_State::RIGHT) {
 						handle_2 = DX12Effect.Play(Sword_Effect_2);
@@ -408,7 +408,7 @@ void PlayerManager::Player_attack(const float deltaTime) {
 				else if (StatusManager::Instance().GetCombo() == 3) {
 					SetAnimation(model, Attack_L);
 					cool_time_flag_zwei = true;
-					damege = 5;
+					damage = 5;
 
 					if (direction_state_mode == Direction_State::RIGHT) {
 						handle_3 = DX12Effect.Play(Sword_Effect_3);
