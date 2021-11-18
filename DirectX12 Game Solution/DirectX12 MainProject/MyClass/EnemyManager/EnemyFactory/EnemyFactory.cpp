@@ -1,5 +1,5 @@
 #include "EnemyFactory.h"
-#include "EnemyBase/Enemy/Slime.h"
+#include "MyClass/EnemyManager/EnemyFactory/EnemyBase/Slime/Slime.h"
 
 
 EnemyFactory::EnemyFactory()

@@ -1,11 +1,8 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
-#include "../Enemy/Slime.h"
+#include "HighSlime.h"
 
-
-
-
-int Slime::Update(DX9::MODEL& ground, PlayerManager* player, const float deltaTime) {
+int HighSlime::Update(DX9::MODEL& ground, PlayerManager* player, const float deltaTime) {
 	Move(ground,player,deltaTime);
 	SetAnimesion(model, WAIT);
 
@@ -22,10 +19,10 @@ int Slime::Update(DX9::MODEL& ground, PlayerManager* player, const float deltaTi
 	return LIVE;
 }
 
-void Slime::Move(DX9::MODEL& ground, PlayerManager* player, const float deltaTime) {
+void HighSlime::Move(DX9::MODEL& ground, PlayerManager* player, const float deltaTime) {
 	float player_pos = player->GetModel()->GetPosition().x;
 
-	/*if (player_pos < position.x - stop_enemy_pos || player_pos > position.x + stop_enemy_pos) {
+	if (player_pos < position.x - stop_enemy_pos || player_pos > position.x + stop_enemy_pos) {
 		count = 0;
 		position.x -= enemy_speed.x * deltaTime;
 	}
@@ -35,7 +32,7 @@ void Slime::Move(DX9::MODEL& ground, PlayerManager* player, const float deltaTim
 		}
 		else
 			count++;
-	}*/
+	}
 	
 		count++;
 		if (count >= 15)

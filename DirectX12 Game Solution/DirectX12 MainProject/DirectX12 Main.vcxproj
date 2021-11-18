@@ -194,10 +194,10 @@
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="MyClass\CameraManager\CameraManager.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.h" />
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\FakerLamiel.h" />
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\HighSlime.h" />
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Slime.h" />
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\StoneStatue.h" />
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FakerLamiel\FakerLamiel.h" />
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\HighSlime\HighSlime.h" />
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime\Slime.h" />
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\StoneStatue.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyFactory.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyManager.h" />
     <ClInclude Include="MyClass\EnumManager\EnumManager.h" />
@@ -237,10 +237,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.cpp" />
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\FakerLamiel.cpp" />
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\HighSlime.cpp" />
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Slime.cpp" />
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\StoneStatue.cpp" />
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FakerLamiel\FakerLamiel.cpp" />
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\HighSlime\HighSlime.cpp" />
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime\Slime.cpp" />
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\StoneStatue.cpp" />
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyFactory.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>

@@ -46,9 +46,6 @@
     <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase">
       <UniqueIdentifier>{936ec52a-008d-4dc3-89ea-f50e09f99149}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy">
-      <UniqueIdentifier>{040a1c7d-45fe-4185-bdcb-889b7306e236}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MyClass\PlayerManager\Sword">
       <UniqueIdentifier>{a3baebef-f3af-4943-aeeb-e00222aabf3a}</UniqueIdentifier>
     </Filter>
@@ -63,6 +60,18 @@
     </Filter>
     <Filter Include="MyClass\StatusManager">
       <UniqueIdentifier>{6c6c639d-5e5b-4387-8311-b953fd8ddb0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime">
+      <UniqueIdentifier>{629d2039-9391-4a80-a176-4eeacbc59399}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\HighSlime">
+      <UniqueIdentifier>{78bee7a9-8ccf-4ed7-88d7-070eda2fd015}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue">
+      <UniqueIdentifier>{070fa7d8-b151-4b6e-bbac-db737d6164e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FakerLamiel">
+      <UniqueIdentifier>{cd53771a-d8ab-4b8c-a891-0e8fa70edf17}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -141,17 +150,17 @@
     <ClInclude Include="MyClass\StatusManager\StatusManager.h">
       <Filter>MyClass\StatusManager</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\FakerLamiel.h">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FakerLamiel\FakerLamiel.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\FakerLamiel</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\StoneStatue.h">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\HighSlime\HighSlime.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\HighSlime</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\HighSlime.h">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime\Slime.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Slime.h">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\StoneStatue.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -206,17 +215,17 @@
     <ClCompile Include="MyClass\StatusManager\StatusManager.cpp">
       <Filter>MyClass\StatusManager</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\FakerLamiel.cpp">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FakerLamiel\FakerLamiel.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\FakerLamiel</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\HighSlime.cpp">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\HighSlime\HighSlime.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\HighSlime</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\StoneStatue.cpp">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime\Slime.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy\Slime.cpp">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Enemy</Filter>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\StoneStatue.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

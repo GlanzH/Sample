@@ -1,11 +1,11 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
-#include "../Enemy/FakerLamiel.h"
+#include "Slime.h"
 
 
 
 
-int FakerLamiel::Update(DX9::MODEL& ground, PlayerManager* player, const float deltaTime) {
+int Slime::Update(DX9::MODEL& ground, PlayerManager* player, const float deltaTime) {
 	Move(ground,player,deltaTime);
 	SetAnimesion(model, WAIT);
 
@@ -22,7 +22,7 @@ int FakerLamiel::Update(DX9::MODEL& ground, PlayerManager* player, const float d
 	return LIVE;
 }
 
-void FakerLamiel::Move(DX9::MODEL& ground, PlayerManager* player, const float deltaTime) {
+void Slime::Move(DX9::MODEL& ground, PlayerManager* player, const float deltaTime) {
 	float player_pos = player->GetModel()->GetPosition().x;
 
 	/*if (player_pos < position.x - stop_enemy_pos || player_pos > position.x + stop_enemy_pos) {
