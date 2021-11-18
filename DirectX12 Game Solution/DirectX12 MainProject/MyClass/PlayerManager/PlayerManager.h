@@ -90,7 +90,7 @@ private:
 	//1/2
 	const float half = 0.5f;
 	//d—Í‰Á‘¬“x
-	const float gravity_ = 150.0f;
+	const float gravity_ = 120.0f;
 	//‰‘¬
 	const float V0 = 50.0f;
 
@@ -135,6 +135,10 @@ private:
 	float cool_time_zwei = 0.0f;
 	float cool_time_max_zwei[3]{ 0.1f,0.4f,0.6f };
 	int count = 0;
+
+	bool  count_flag = false;
+	float count_time = 0.0f;
+	float count_time_max = 0.4f;
 
 	
 	int damege = 0;
