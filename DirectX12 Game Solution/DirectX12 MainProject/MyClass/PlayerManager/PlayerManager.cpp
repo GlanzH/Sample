@@ -12,15 +12,13 @@ bool PlayerManager::Initialize()
 
 	direction_state_mode = Direction_State::RIGHT;
 
-
-
 	return 0;
 }
 
 void PlayerManager::LoadAssets() 
 {
 	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\playler_motion.X");
-	model->SetScale(model_scsle);
+	model->SetScale(model_scale);
 	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
 
