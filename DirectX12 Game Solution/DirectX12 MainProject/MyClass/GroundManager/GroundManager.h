@@ -10,7 +10,6 @@ public:
 
 	void LoadAsset();
 	void Render();
-	DX9::MODEL& GetModel() { return model; }
 
 private:
 	DX9::MODEL model;
