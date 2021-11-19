@@ -9,10 +9,10 @@ public:
 	HighSlime()  {}
 	~HighSlime() {}
 
-	virtual int Update(DX9::MODEL& ground, PlayerManager* player, const float deltaTime) ;
+	int Update(PlayerManager* player, const float deltaTime) override;
 
 private:
-	void Move(DX9::MODEL& ground, PlayerManager* player, const float deltaTime);
+	void Move(PlayerManager* player, const float deltaTime);
 
 	bool rush_flag = false;
 	char  count = 0;

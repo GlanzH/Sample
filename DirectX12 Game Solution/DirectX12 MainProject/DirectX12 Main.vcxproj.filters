@@ -46,9 +46,6 @@
     <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase">
       <UniqueIdentifier>{936ec52a-008d-4dc3-89ea-f50e09f99149}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\PlayerManager\Sword">
-      <UniqueIdentifier>{a3baebef-f3af-4943-aeeb-e00222aabf3a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MyClass\ResourceManager">
       <UniqueIdentifier>{c36fb98f-920c-4a13-a671-8695aba703d5}</UniqueIdentifier>
     </Filter>
@@ -135,9 +132,6 @@
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.h">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\PlayerManager\Sword\Sword.h">
-      <Filter>MyClass\PlayerManager\Sword</Filter>
-    </ClInclude>
     <ClInclude Include="MyClass\ResourceManager\ResourceManager.h">
       <Filter>MyClass\ResourceManager</Filter>
     </ClInclude>
@@ -202,9 +196,6 @@
     </ClCompile>
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.cpp">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase</Filter>
-    </ClCompile>
-    <ClCompile Include="MyClass\PlayerManager\Sword\Sword.cpp">
-      <Filter>MyClass\PlayerManager\Sword</Filter>
     </ClCompile>
     <ClCompile Include="MyClass\ResourceManager\ResourceManager.cpp">
       <Filter>MyClass\ResourceManager</Filter>

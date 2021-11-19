@@ -14,7 +14,7 @@ public:
 
 	bool Initialize(SimpleMath::Vector3 speed,int hp);
 	void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
-	virtual int Update(DX9::MODEL& ground, PlayerManager* player, const float deltaTime);
+	virtual int Update(PlayerManager* player, const float deltaTime) = 0;
 	void Render();
 
 	void Retreat();
