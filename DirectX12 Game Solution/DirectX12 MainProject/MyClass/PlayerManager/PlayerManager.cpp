@@ -1,7 +1,4 @@
-#include "Base/pch.h"
-#include "Base/dxtk.h"
 #include "PlayerManager.h"
-
 #include "MyClass/StatusManager/StatusManager.h"
 
 
@@ -25,7 +22,7 @@ void PlayerManager::LoadAssets()
 	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\playler_motion.X");
 	model->SetScale(model_scsle);
 	model->SetPosition(player_pos);
-	model->SetRotation(0.0f, XMConvertToRadians(model_rotetion), 0.0f);
+	model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
 
 	//プレイヤーの当たり判定
 	box = model->GetBoundingBox();
@@ -38,7 +35,7 @@ void PlayerManager::LoadAssets()
 		box.Extents.y * box_size,
 		box.Extents.z * 1
 	);
-	collision->SetRotation(0.0f, XMConvertToRadians(model_rotetion), 0.0f);
+	collision->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
 
 	material.Diffuse = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.75f);
 	material.Ambient = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
@@ -78,10 +75,8 @@ void PlayerManager::LoadAssets()
 
 }
 
-int PlayerManager::Update(DX9::MODEL& ground, const float deltaTime)
+int PlayerManager::Update(const float deltaTime)
 {
-	//地形の当たり判定
-	Player_collision_detection(ground);
 
 	//モデル　アニメーション
 	SetAnimation(model, Wait);
@@ -90,7 +85,7 @@ int PlayerManager::Update(DX9::MODEL& ground, const float deltaTime)
 	Player_move(deltaTime);
 
 	//プレイヤー:ジャンプ
-	Player_jump(ground, deltaTime);
+	Player_jump(deltaTime);
 
 
 	//プレイヤー:攻撃
@@ -254,16 +249,6 @@ void PlayerManager::_2DRender()
 
 }
 
-void PlayerManager::Player_collision_detection(DX9::MODEL& ground)
-{
-	//地形の当たり判定
-	float dist = FLT_MAX;
-	if (ground->IntersectRay(model->GetPosition() + SimpleMath::Vector3(0, collision_detection, 0), SimpleMath::Vector3::Down, &dist)) {
-		model->Move(0.0f, collision_detection - dist, 0.0f);
-	}
-
-}
-
 void PlayerManager::Player_move(const float deltaTime)
 {
 	if (!parry_flag) {
@@ -271,7 +256,7 @@ void PlayerManager::Player_move(const float deltaTime)
 				//プレイヤー:移動(キーボード)
 			if (DXTK->KeyState->Right || DXTK->KeyState->D || DXTK->GamePadState[0].dpad.right) {
 				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-				model->SetRotation(0.0f, XMConvertToRadians(model_rotetion), 0.0f);
+				model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
 				sword_box.Center = model->GetRotation();
 				direction_state_mode = Direction_State::RIGHT;
 				SetAnimation(model, Run);
@@ -279,7 +264,7 @@ void PlayerManager::Player_move(const float deltaTime)
 			}
 			if (DXTK->KeyState->Left || DXTK->KeyState->A || DXTK->GamePadState[0].dpad.left) {
 				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-				model->SetRotation(0.0f, XMConvertToRadians(-model_rotetion), 0.0f);
+				model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
 				sword_box.Center = model->GetRotation();
 				direction_state_mode = Direction_State::LEFT;
 				SetAnimation(model, Run);
@@ -300,7 +285,7 @@ void PlayerManager::Player_limit()
 	model->SetPosition(p_pos);
 }
 
-void PlayerManager::Player_jump(DX9::MODEL& ground, const float deltaTime)
+void PlayerManager::Player_jump(const float deltaTime)
 {
 	//ジャンプ
 	if (!parry_flag) {
@@ -324,37 +309,15 @@ void PlayerManager::Player_jump(DX9::MODEL& ground, const float deltaTime)
 		model->SetPosition(pos);
 		//SetAnimation(model, Jump);
 
-		float dist = 0;
-		if (ground->IntersectRay(
-			model->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
-			SimpleMath::Vector3::Up,
-			&dist
-		)) {
-			model->Move(0.0f, dist, 0.0f);
+		if (model->GetPosition().y <= 0.5f) {
 			jump_flag_ = false;
 		}
-
-		//ジャンプの終了判定
-		if (V0 * jump_time_ < gravity_ * jump_time_ * jump_time_) {
-
-			float dist = 0;
-			if (ground->IntersectRay(
-				model->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
-				SimpleMath::Vector3::Up,
-				&dist
-			)) {
-				model->Move(0.0f, dist, 0.0f);
-				jump_flag_ = false;
-			}
-		}
 	}
-
-	
 }
+
 
 void PlayerManager::Player_attack(const float deltaTime) {
 	//プレイヤー:攻撃
-
 	if (!cool_time_flag_zwei) {
 		if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
 			if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {

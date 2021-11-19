@@ -1,11 +1,10 @@
 #pragma once
 
-using namespace DirectX;
 
+#include "Base/pch.h"
+#include "Base/dxtk.h"
 #include "Base/DX12Effekseer.h"
-
 #include "MyClass/CameraManager/CameraManager.h"
-
 
 class PlayerManager
 {
@@ -16,7 +15,7 @@ public:
 
 	bool Initialize();
 	void LoadAssets();
-	int Update(DX9::MODEL& ground, const float deltaTime);
+	int Update(const float deltaTime);
 	void Render();
 	void _2DRender();
 
@@ -177,15 +176,12 @@ private:
 
 	DX9::SPRITEFONT font;
 
-	//地面との当たり判定
-	void Player_collision_detection(DX9::MODEL& ground);
-	float collision_detection = 100.0f;
 	//移動
 	void Player_move(const float deltaTime);
 	//移動制限
 	void Player_limit();
 	//ジャンプ
-	void Player_jump(DX9::MODEL& ground, const float deltaTime);
+	void Player_jump(const float deltaTime);
 	//攻撃
 	void Player_attack(const float deltaTime);
 	//パリィ

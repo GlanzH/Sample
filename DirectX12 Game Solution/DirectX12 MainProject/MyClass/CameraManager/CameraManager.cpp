@@ -1,5 +1,3 @@
-#include "Base/pch.h"
-#include "Base/dxtk.h"
 #include "CameraManager.h"
 
 #include "MyClass/PlayerManager/PlayerManager.h"
