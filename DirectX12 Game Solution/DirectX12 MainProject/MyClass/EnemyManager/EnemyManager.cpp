@@ -28,10 +28,10 @@ int EnemyManager::Update(DX9::MODEL& ground, PlayerManager* player, const float 
 	for (auto& enemies : enemy) {
 		enemies->Update(ground,player,deltaTime);
 	}
-	delta = deltaTime;
-	Iterator(ground,player,deltaTime);
+	player_data = player;
+	delta		= deltaTime;
 
-//	StatusManager::Instance().Update(deltaTime);
+	Iterator(ground,player_data,delta);
 
 	return 0;
 }
@@ -54,9 +54,9 @@ void EnemyManager::Iterator(DX9::MODEL& ground,PlayerManager* player, const floa
 void EnemyManager::Generator() {
 	std::unique_ptr<EnemyFactory> factory = std::make_unique<EnemyFactory>();
 		
-	enemy.push_back(factory->Create("normal", SimpleMath::Vector3(30, 0, 50)));
-	enemy.push_back(factory->Create("normal", SimpleMath::Vector3(100, 0, 50)));
-	enemy.push_back(factory->Create("normal", SimpleMath::Vector3(170, 0, 50)));
+	enemy.push_back(factory->Create("slime", SimpleMath::Vector3(30, 0, 50)));
+	enemy.push_back(factory->Create("slime", SimpleMath::Vector3(100, 0, 50)));
+	enemy.push_back(factory->Create("slime", SimpleMath::Vector3(170, 0, 50)));
 }
 
 void EnemyManager::Render()
@@ -67,12 +67,10 @@ void EnemyManager::Render()
 }
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
-	base->Damage(delta);
+     base->Damage(delta,player_data->GetDamage());
 
 	if(StatusManager::Instance().GetCombo() == 3)
 	base->Retreat();
-
-	//StatusManager::Instance().AddCombo(delta);
 
 	DX12Effect.SetPosition(handle,base->GetModel()->GetPosition());
 	handle = DX12Effect.Play(effect);

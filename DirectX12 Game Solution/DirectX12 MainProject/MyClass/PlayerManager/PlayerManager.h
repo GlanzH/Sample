@@ -34,7 +34,7 @@ public:
 
 	BoundingBox GetSwordBox() { return sword_box; }
 
-	int GetDamege() { return damege; }
+	int GetDamage() { return damage; }
 
 
 private:
@@ -127,10 +127,6 @@ private:
 
 
 	//攻撃のクールタイム
-	//bool cool_time_flag   = false;
-	//float cool_time       = 0.0f;
-	//float cool_time_max = 0.2f;
-
 	bool cool_time_flag_zwei = false;
 	float cool_time_zwei = 0.0f;
 	float cool_time_max_zwei[3]{ 0.1f,0.4f,0.6f };
@@ -141,7 +137,7 @@ private:
 	float count_time_max = 0.4f;
 
 	
-	int damege = 0;
+	int damage = 0;
 
 	//攻撃エフェクト
 	//1
@@ -166,15 +162,19 @@ private:
 	enum Appeal_state
 	{
 		NORMAL,
-		APPEAL
+		APPEAL,
+		FOCUS
 	};
 
 	Appeal_state appeal_state_mode;
 
-	float appeal_time     = 0.0f;
-	float appeal_time_max = 5.0f;
+	//アピールする時間
+	float appeal_time     = 0.0f; //アピールする初期値
+	float appeal_time_max = 2.0f; //アピールする時間の最大値
 	
-
+	//ステータスアップの時間
+	float focus_time     =  0.0f;//ステータスアップの時間:初期値
+	float focus_time_max = 10.0f;//ステータスアップの時間:最大値
 
 	DX9::SPRITEFONT font;
 
@@ -189,8 +189,6 @@ private:
 	void Player_jump(DX9::MODEL& ground, const float deltaTime);
 	//攻撃
 	void Player_attack(const float deltaTime);
-	//攻撃エフェクト関係
-	void Player_Attack_Effect(const float deltaTime);
 	//パリィ
 	void Parry();
 	//無敵時間

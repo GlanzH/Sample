@@ -7,10 +7,11 @@
  * @date 　2021/10/31
  */
 
-#include "MyClass/EnemyManager/EnemyFactory/EnemyBase/Enemy/Enemy.h"
 #include "Base/pch.h"
 #include<string>
 #include<vector>
+
+#include "EnemyBase/EnemyBase.h"
 
 class EnemyBase;
 
@@ -28,11 +29,14 @@ public:
 private:
 	EnemyBase* enemy;
 	char hp;
-	char normal_enemy_hp;
+	char slime_hp;
+	char Highslime_hp;
+	char fakerlamiel_hp;
 
 	std::vector<std::string> enemy_tag;
 
-	DirectX::SimpleMath::Vector3 normal_enemy_speed;
+	DirectX::SimpleMath::Vector3 slime_speed;
+
 	DirectX::SimpleMath::Vector3 speed;
 
 	LPCWSTR enemy_model[1];
@@ -41,5 +45,5 @@ private:
 　　* @enum EnemyType
 　　* 敵の種類
 　　*/
-	enum EnemyType {NORMAL};
+	enum EnemyType {SLIME};
 };

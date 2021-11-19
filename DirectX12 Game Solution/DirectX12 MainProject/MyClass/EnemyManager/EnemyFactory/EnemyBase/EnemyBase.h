@@ -9,7 +9,7 @@ using namespace DirectX;
 class EnemyBase
 {
 public:
-	EnemyBase() {};
+	EnemyBase();
 	~EnemyBase() {};
 
 	bool Initialize(SimpleMath::Vector3 speed,int hp);
@@ -18,7 +18,7 @@ public:
 	void Render();
 
 	void Retreat();
-	virtual void Damage(const float deltaTime);
+	virtual void Damage(const float deltaTime,int damage);
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
 	BoundingBox GetBox()		  { return box; }
