@@ -48,13 +48,6 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	box.Center = position;
 }
 
-int EnemyBase::Update(DX9::MODEL& ground, PlayerManager* player, const float deltaTime){
-
-	//count = (count++) % 5;
-
-	return 0;
-}
-
 void EnemyBase::Damage(const float deltaTime,int damage) {
 	model->AdvanceTime(deltaTime / 1.0f);
 	SetAnimesion(model, DAMAGE);
@@ -70,10 +63,7 @@ void EnemyBase::Retreat() {
 }
 
 void EnemyBase::Render() {
-		//if (count<2)
-		//{
-			model->Draw();
-		//}
+	model->Draw();
 
 	//collision->Draw();
 }

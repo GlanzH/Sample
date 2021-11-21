@@ -2,16 +2,11 @@
 #include "Base/dxtk.h"
 #include "StoneStatue.h"
 
-int StoneStatue::Update(DX9::MODEL& ground, PlayerManager* player, const float deltaTime) {
-	Move(ground,player,deltaTime);
+int StoneStatue::Update(PlayerManager* player, const float deltaTime) {
+	Move(player,deltaTime);
 	SetAnimesion(model, WAIT);
 
 	model->AdvanceTime(deltaTime / 1.0f);
-	float dist = FLT_MAX;
-	if (ground->IntersectRay(model->GetPosition() + SimpleMath::Vector3(0, ground_collision_y, 0), SimpleMath::Vector3::Down, &dist)) {
-		model->Move(0.0f, ground_collision_y - dist, 0.0f);
-		collision->Move(0.0f, ground_collision_y - dist, 0.0f);
-	}
 
 	if (enemy_hp < 0)
 		return DEAD;
@@ -19,9 +14,8 @@ int StoneStatue::Update(DX9::MODEL& ground, PlayerManager* player, const float d
 	return LIVE;
 }
 
-void StoneStatue::Move(DX9::MODEL& ground, PlayerManager* player, const float deltaTime) {
+void StoneStatue::Move(PlayerManager* player, const float deltaTime) {
 	float player_pos = player->GetModel()->GetPosition().x;
-
 
 	box.Center = model->GetPosition();
 	model->SetPosition(position);

@@ -16,7 +16,7 @@ public:
 
 	bool Initialize();
 	void LoadAsset();
-	int  Update(PlayerManager* player,DX9::MODEL& ground);
+	int  Update(PlayerManager* player);
 	void Render(SimpleMath::Vector3 player_position);
 
 private:
@@ -24,6 +24,6 @@ private:
 
 	SimpleMath::Vector3 position;
 	
-	const float fixed_pos = 10.0f;
-	const float adjust_y  = 100.0f;
+	const float position_y = 30.0f;
+	const float fixed_pos  = 10.0f;
 };
