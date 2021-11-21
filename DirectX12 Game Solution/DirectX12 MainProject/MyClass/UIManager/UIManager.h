@@ -1,5 +1,9 @@
-#pragma ones
+#pragma once
 #include "Base/pch.h"
+#include <DirectXTK9.h>
+#include <Base/dxtk.h>
+
+using namespace DirectX;
 
 class UIManager {
 public:
@@ -10,8 +14,9 @@ public:
 	void LoadAsset();
 	int Update(const float deltaTime);
 	int GetTensionCount(int count) { return 0; }
-	void Render();
-	
+	void Render(float f);
+
 private:
-	
+	DX9::SPRITE volt_empty;
+	DX9::SPRITE volt_max;
 };

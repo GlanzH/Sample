@@ -18,3 +18,25 @@ void StatusManager::AddCombo(const float deltaTime) {
 
 	return;
 }
+
+void StatusManager::AddVoltage(int volt_size, const float deltaTime) {
+	now_volt = volt_size;
+	//‘«‚µˆø‚«‚·‚é‘O‚Éƒtƒ‰ƒO‚ð—§‚Ä‚é
+	if (voltage < now_volt) {
+		plus_flag = true;
+	}
+	else {
+		plus_flag = false;
+	}
+
+	if (plus_flag) {
+		voltage = std::min((float)voltage + 100 * deltaTime, (float)now_volt);
+	}
+	else {
+		if (voltage > 0.0f) {
+			voltage = std::max((float)voltage - 100 * deltaTime, (float)now_volt);
+		}
+	}
+
+	return;
+}
