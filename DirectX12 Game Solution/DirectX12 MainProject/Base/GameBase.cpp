@@ -18,9 +18,10 @@ const D3D12_RESOURCE_STATES GameBase::m_resourceState[AdapterCount]
 
 GameBase::GameBase() :
     m_window(nullptr),
-    m_outputWidth(static_cast<int>(screen::width)),
+    m_outputWidth (static_cast<int>(screen::width )),
     m_outputHeight(static_cast<int>(screen::height)),
     m_adapterCount(0),
+    m_venderId(0),
     m_backBufferIndex(0),
 #if DXTK_MULTIGPU
     m_crossAdapterTextureSupport(FALSE),
@@ -58,7 +59,7 @@ GameBase::~GameBase()
 void GameBase::Initialize(HWND window, int width, int height)
 {
     m_window = window;
-    m_outputWidth = std::max(width, 1);
+    m_outputWidth  = std::max(width, 1);
     m_outputHeight = std::max(height, 1);
 
     std::wstring window_title = GAME_TITLE;
@@ -442,7 +443,7 @@ void GameBase::OnResuming()
 void GameBase::GetDefaultSize(int& width, int& height) const noexcept
 {
     // TODO: Change to desired default window size (note minimum size is 320x180).
-    width = static_cast<int>(screen::width);
+    width  = static_cast<int>(screen::width);
     height = static_cast<int>(screen::height);
 }
 
@@ -482,6 +483,8 @@ void GameBase::CreateDevice()
     // in this library.
     DX::ThrowIfFailed(CreateDXGIFactory2(dxgiFactoryFlags, IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));
     {
+        const D3D_FEATURE_LEVEL FEATURE_LEVEL = D3D_FEATURE_LEVEL_11_0;
+
         ComPtr<IDXGIFactory6> factory6;
         ComPtr<IDXGIAdapter1> adapter;
         m_adapterCount = 0;
@@ -497,8 +500,10 @@ void GameBase::CreateDevice()
             }
 
             // Create the DX12 API device object.
-            if (SUCCEEDED(D3D12CreateDevice(adapter.Get(), m_featureLevel, IID_PPV_ARGS(m_devices[m_adapterCount].Device.ReleaseAndGetAddressOf()))))
+            if (SUCCEEDED(D3D12CreateDevice(adapter.Get(), FEATURE_LEVEL, IID_PPV_ARGS(m_devices[m_adapterCount].Device.ReleaseAndGetAddressOf()))))
             {
+                if (m_adapterCount == 0)
+                    m_venderId = desc.VendorId;
                 ++m_adapterCount;
             }
         };
@@ -525,7 +530,7 @@ void GameBase::CreateDevice()
             {
                 throw std::exception("WARP12 not available. Enable the 'Graphics Tools' optional feature");
             }
-            if (FAILED(D3D12CreateDevice(adapter.Get(), m_featureLevel, IID_PPV_ARGS(m_devices[m_adapterCount].Device.ReleaseAndGetAddressOf()))))
+            if (FAILED(D3D12CreateDevice(adapter.Get(), FEATURE_LEVEL, IID_PPV_ARGS(m_devices[m_adapterCount].Device.ReleaseAndGetAddressOf()))))
             {
                 throw std::exception("No Direct3D 12 device found");
             }
@@ -534,7 +539,7 @@ void GameBase::CreateDevice()
             ComPtr<IDXGIAdapter1> secondaryAdapter;
             if (SUCCEEDED(m_dxgiFactory->EnumWarpAdapter(IID_PPV_ARGS(secondaryAdapter.GetAddressOf()))))
             {
-                if (SUCCEEDED(D3D12CreateDevice(adapter.Get(), m_featureLevel, IID_PPV_ARGS(m_devices[m_adapterCount].Device.ReleaseAndGetAddressOf()))))
+                if (SUCCEEDED(D3D12CreateDevice(adapter.Get(), FEATURE_LEVEL, IID_PPV_ARGS(m_devices[m_adapterCount].Device.ReleaseAndGetAddressOf()))))
                 {
                     ++m_adapterCount;
                 }
@@ -543,9 +548,9 @@ void GameBase::CreateDevice()
     }
 
     // Create the command queue.
-    D3D12_COMMAND_QUEUE_DESC queueDesc = {};
+    D3D12_COMMAND_QUEUE_DESC queueDesc{};
     queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
-    queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
+    queueDesc.Type  = D3D12_COMMAND_LIST_TYPE_DIRECT;
 #if DXTK_MULTIGPU
     for (UINT adapter = 0; adapter < m_adapterCount; ++adapter)
     {
@@ -564,7 +569,7 @@ void GameBase::CreateDevice()
     if (m_devices[SecondaryAdapter].Device)
     {
         queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
-        queueDesc.Type = D3D12_COMMAND_LIST_TYPE_COMPUTE;
+        queueDesc.Type  = D3D12_COMMAND_LIST_TYPE_COMPUTE;
         DX::ThrowIfFailed(m_devices[SecondaryAdapter].Device->CreateCommandQueue(
             &queueDesc,
             IID_PPV_ARGS(m_devices[SecondaryAdapter].CommandQueue.ReleaseAndGetAddressOf())
@@ -573,14 +578,14 @@ void GameBase::CreateDevice()
 #endif
 
     // Create depth stencil views.
-    D3D12_DESCRIPTOR_HEAP_DESC dsvDescriptorHeapDesc = {};
+    D3D12_DESCRIPTOR_HEAP_DESC dsvDescriptorHeapDesc{};
     dsvDescriptorHeapDesc.NumDescriptors = 1;
     dsvDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
     DX::ThrowIfFailed(m_devices[PrimaryAdapter].Device->CreateDescriptorHeap(&dsvDescriptorHeapDesc, IID_PPV_ARGS(m_dsvDescriptorHeap.ReleaseAndGetAddressOf())));
 
     // Create a command allocator and descriptor heaps.
-    D3D12_DESCRIPTOR_HEAP_DESC rtvDescriptorHeapDesc = {};
-    rtvDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+    D3D12_DESCRIPTOR_HEAP_DESC rtvDescriptorHeapDesc{};
+    rtvDescriptorHeapDesc.Type  = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
     rtvDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
     // PrimaryAdapter
     {
@@ -1096,19 +1101,23 @@ void GameBase::D3D11CreateDevice()
 // These are the resources that depend on the Direct3D9 device.
 void GameBase::D3D9CreateDevice()
 {
-    // Direct3D9 Object
-//  D3D9ON12_ARGS args{};
-//  args.Enable9On12      = TRUE;
-//  args.pD3D12Device     = m_devices[PrimaryAdapter].Device.Get();
-//  args.ppD3D12Queues[0] = nullptr;    //m_d3d12uploadCommandQueue.Get();
-//  args.NumQueues        = 1;
-//  DX::ThrowIfFailed(Direct3DCreate9On12Ex(D3D_SDK_VERSION, &args, 1, m_d3d9.ReleaseAndGetAddressOf()));
-    DX::ThrowIfFailed(Direct3DCreate9Ex(D3D_SDK_VERSION, m_d3d9.ReleaseAndGetAddressOf()));
-//  m_d3d9 = Direct3DCreate9On12(D3D_SDK_VERSION, &args, 1);
-//  m_d3d9 = Direct3DCreate9(D3D_SDK_VERSION);
+    //D3D9ON12_ARGS args{};
+    //args.Enable9On12      = TRUE;
+    //args.pD3D12Device     = m_devices[PrimaryAdapter].Device.Get();
+    //args.ppD3D12Queues[0] = nullptr;    //m_d3d12UploadCommandQueue.Get();
+    //args.NumQueues        = 0;          //1;
+    //DX::ThrowIfFailed(Direct3DCreate9On12Ex(D3D_SDK_VERSION, &args, 1, m_d3d9.ReleaseAndGetAddressOf()));
 
-    D3DADAPTER_IDENTIFIER9 id;
-    m_d3d9->GetAdapterIdentifier(0, 0, &id);
+    // Direct3D9 Object
+    DX::ThrowIfFailed(Direct3DCreate9Ex(D3D_SDK_VERSION, m_d3d9.ReleaseAndGetAddressOf()));
+
+    //D3DADAPTER_IDENTIFIER9 adapter_id;
+    //m_d3d9->GetAdapterIdentifier(0, 0, &adapter_id);
+    //if (adapter_id.VendorId == m_venderId) {
+    //    D3D9ON12_ARGS args{};
+    //    args.Enable9On12 = TRUE;
+    //    DX::ThrowIfFailed(Direct3DCreate9On12Ex(D3D_SDK_VERSION, &args, 1, m_d3d9.ReleaseAndGetAddressOf()));
+    //}
 
     // Direct3DDevice9 Object
     D3DPRESENT_PARAMETERS params{};

@@ -60,6 +60,9 @@
     <ClInclude Include="Inc\SkinnedModel.h">
       <Filter>Inc</Filter>
     </ClInclude>
+    <ClInclude Include="Inc\Shader.h">
+      <Filter>Inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\pch.cpp">
@@ -90,6 +93,9 @@
       <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="Src\SkinnedModel.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Shader.cpp">
       <Filter>Src</Filter>
     </ClCompile>
   </ItemGroup>

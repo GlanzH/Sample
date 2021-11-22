@@ -18,6 +18,7 @@
 #endif
 
 #include <cstddef>
+#include <cstdint>
 #include <memory>
 #include <string>
 
@@ -455,7 +456,8 @@ namespace DirectX
     {
     public:
         NormalMapEffect(_In_ ID3D12Device* device, uint32_t effectFlags,
-            const EffectPipelineStateDescription& pipelineDescription);
+            const EffectPipelineStateDescription& pipelineDescription) :
+            NormalMapEffect(device, effectFlags, pipelineDescription, false) {}
 
         NormalMapEffect(NormalMapEffect&&) noexcept;
         NormalMapEffect& operator= (NormalMapEffect&&) noexcept;
@@ -503,11 +505,32 @@ namespace DirectX
         void __cdecl SetNormalTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor);
         void __cdecl SetSpecularTexture(D3D12_GPU_DESCRIPTOR_HANDLE srvDescriptor);
 
-    private:
+    protected:
         // Private implementation.
         class Impl;
 
         std::unique_ptr<Impl> pImpl;
+
+        NormalMapEffect(_In_ ID3D12Device* device, uint32_t effectFlags,
+            const EffectPipelineStateDescription& pipelineDescription, bool skinningEnabled);
+    };
+
+    class SkinnedNormalMapEffect : public NormalMapEffect, public IEffectSkinning
+    {
+    public:
+        SkinnedNormalMapEffect(_In_ ID3D12Device* device, uint32_t effectFlags,
+            const EffectPipelineStateDescription& pipelineDescription) :
+            NormalMapEffect(device, effectFlags, pipelineDescription, true) {}
+
+        SkinnedNormalMapEffect(SkinnedNormalMapEffect&&) = default;
+        SkinnedNormalMapEffect& operator= (SkinnedNormalMapEffect&&) = default;
+
+        SkinnedNormalMapEffect(SkinnedNormalMapEffect const&) = delete;
+        SkinnedNormalMapEffect& operator= (SkinnedNormalMapEffect const&) = delete;
+
+        // Animation settings.
+        void __cdecl SetBoneTransforms(_In_reads_(count) XMMATRIX const* value, size_t count) override;
+        void __cdecl ResetBoneTransforms() override;
     };
 
 
@@ -517,7 +540,8 @@ namespace DirectX
     {
     public:
         PBREffect(_In_ ID3D12Device* device, uint32_t effectFlags,
-            const EffectPipelineStateDescription& pipelineDescription);
+            const EffectPipelineStateDescription& pipelineDescription) :
+            PBREffect(device, effectFlags, pipelineDescription, false) {}
 
         PBREffect(PBREffect&&) noexcept;
         PBREffect& operator= (PBREffect&&) noexcept;
@@ -571,15 +595,36 @@ namespace DirectX
         // Render target size, required for velocity buffer output.
         void __cdecl SetRenderTargetSizeInPixels(int width, int height);
 
-    private:
+    protected:
         // Private implementation.
         class Impl;
 
         std::unique_ptr<Impl> pImpl;
 
+        PBREffect(_In_ ID3D12Device* device, uint32_t effectFlags,
+            const EffectPipelineStateDescription& pipelineDescription, bool skinningEnabled);
+
         // Unsupported interface methods.
         void XM_CALLCONV SetAmbientLightColor(FXMVECTOR value) override;
         void XM_CALLCONV SetLightSpecularColor(int whichLight, FXMVECTOR value) override;
+    };
+
+    class SkinnedPBREffect : public PBREffect, public IEffectSkinning
+    {
+    public:
+        SkinnedPBREffect(_In_ ID3D12Device* device, uint32_t effectFlags,
+            const EffectPipelineStateDescription& pipelineDescription) :
+            PBREffect(device, effectFlags, pipelineDescription, true) {}
+
+        SkinnedPBREffect(SkinnedPBREffect&&) = default;
+        SkinnedPBREffect& operator= (SkinnedPBREffect&&) = default;
+
+        SkinnedPBREffect(SkinnedPBREffect const&) = delete;
+        SkinnedPBREffect& operator= (SkinnedPBREffect const&) = delete;
+
+        // Animation settings.
+        void __cdecl SetBoneTransforms(_In_reads_(count) XMMATRIX const* value, size_t count) override;
+        void __cdecl ResetBoneTransforms() override;
     };
 
 

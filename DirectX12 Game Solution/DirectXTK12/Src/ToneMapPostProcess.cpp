@@ -240,9 +240,9 @@ namespace
         ID3D12Device* GetDevice() const noexcept { return mDevice.Get(); }
 
     protected:
-        ComPtr<ID3D12Device>                        mDevice;
-        Microsoft::WRL::ComPtr<ID3D12RootSignature> mRootSignature;
-        std::mutex                                  mMutex;
+        ComPtr<ID3D12Device>        mDevice;
+        ComPtr<ID3D12RootSignature> mRootSignature;
+        std::mutex                  mMutex;
     };
 }
 
@@ -470,7 +470,7 @@ void ToneMapPostProcess::SetColorRotation(ColorPrimaryRotation value)
 }
 
 
-void ToneMapPostProcess::SetColorRotation(FXMMATRIX value)
+void ToneMapPostProcess::SetColorRotation(CXMMATRIX value)
 {
     XMMATRIX transpose = XMMatrixTranspose(value);
     pImpl->constants.colorRotation[0] = transpose.r[0];

@@ -170,6 +170,7 @@
     <ClInclude Include="Inc\DirectShow.h" />
     <ClInclude Include="Inc\DirectXTK9.h" />
     <ClInclude Include="Inc\Model.h" />
+    <ClInclude Include="Inc\Shader.h" />
     <ClInclude Include="Inc\SkinnedModel.h" />
     <ClInclude Include="Inc\SpriteBatch9.h" />
     <ClInclude Include="Inc\SpriteFont.h" />
@@ -183,15 +184,13 @@
     <ClCompile Include="Src\Camera.cpp" />
     <ClCompile Include="Src\Model.cpp" />
     <ClCompile Include="Src\pch.cpp" />
+    <ClCompile Include="Src\Shader.cpp" />
     <ClCompile Include="Src\SkinnedModel.cpp" />
     <ClCompile Include="Src\SpriteBatch9.cpp" />
     <ClCompile Include="Src\SpriteFont.cpp" />
     <ClCompile Include="Src\TextureLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DirectXTK12\DirectXTK_Desktop_2019_Win10.vcxproj">
-      <Project>{3e0e8608-cd9b-4c76-af33-29ca38f2c9f0}</Project>
-    </ProjectReference>
     <ProjectReference Include="DirectShow\BaseClasses\BaseClasses.vcxproj">
       <Project>{e8a3f6fa-ae1c-4c8e-a0b6-9c8480324eaa}</Project>
     </ProjectReference>

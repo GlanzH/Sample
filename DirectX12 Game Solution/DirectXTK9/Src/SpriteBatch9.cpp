@@ -95,7 +95,7 @@ void DX9::SpriteBatch9::DrawText(
 	const  int count,
 	RECT& destRect,
 	const D3DCOLOR color
-) 
+)
 {
 	ResetTransform();
 	font->DrawText(m_sprite.Get(), text, count, &destRect, DT_LEFT | DT_WORDBREAK, color);
