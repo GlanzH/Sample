@@ -9,14 +9,6 @@ int StatusManager::Update(const float deltaTime) {
 		
 	}
 
-	if (volt_add_flag == plus) {
-		UpVoltage(deltaTime);
-	}
-	else
-	{
-		DownVoltage(deltaTime);
-	}
-
 	return 0;
 }
 
@@ -28,7 +20,7 @@ void StatusManager::AddCombo(const float deltaTime) {
 	return;
 }
 
-void StatusManager::AddVoltage(float volt_size) {
+void StatusManager::GetVoltage(float volt_size) {
 	now_volt += volt_size;	//現在のボルテージ
 
 	JudgeVolt();
@@ -47,6 +39,18 @@ void StatusManager::JudgeVolt() {
 
 	return;
 }
+
+void StatusManager::AddVoltage(const float deltaTime) {
+	if (volt_add_flag == plus) {
+		UpVoltage(deltaTime);
+	}
+	else
+	{
+		DownVoltage(deltaTime);
+	}
+	return;
+}
+
 
 void StatusManager::UpVoltage(const float deltaTime) {
 	voltage = std::min((float)voltage + VOL_UPDN_SPEED * deltaTime, (float)now_volt);

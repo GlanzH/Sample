@@ -17,11 +17,12 @@ public:
 	}
 
 	//ボルテージ
-	void AddVoltage(float volt_size);	//値を取得
-	void JudgeVolt();	//アップorダウン判定
-	void UpVoltage	(const float deltaTime);	//アップ
-	void DownVoltage(const float deltaTime);	//ダウン
-	float ReturnVolt() { return voltage; }		//ゲージ描画時呼び出し
+	void  GetVoltage (float volt_size);	//値を取得
+	void  JudgeVolt  ();	//アップorダウン判定
+	void  AddVoltage (const float deltaTime);	//値の追加
+	void  UpVoltage	 (const float deltaTime);	//アップ
+	void  DownVoltage(const float deltaTime);	//ダウン
+	float ReturnVolt () { return voltage; }	//ゲージ描画時呼び出し
 
 	//パリィ
 	void ParryCount();	//パリィ成功時呼び出し
