@@ -70,6 +70,12 @@
     <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FakerLamiel">
       <UniqueIdentifier>{cd53771a-d8ab-4b8c-a891-0e8fa70edf17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\ShotManager">
+      <UniqueIdentifier>{1e319cba-faa5-4203-8065-7fbddf5a31d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\ShotManager\Shot">
+      <UniqueIdentifier>{80e23520-a5ad-4d6e-bafb-8af171ee3c09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -156,6 +162,12 @@
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\StoneStatue.h">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue</Filter>
     </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\ShotManager\ShotManager.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\ShotManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\ShotManager\Shot\Shot.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\ShotManager\Shot</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -217,6 +229,12 @@
     </ClCompile>
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\StoneStatue.cpp">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\ShotManager\ShotManager.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\ShotManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\ShotManager\Shot\Shot.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\ShotManager\Shot</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
