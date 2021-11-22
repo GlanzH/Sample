@@ -1,5 +1,8 @@
 #include "EnemyFactory.h"
 #include "MyClass/EnemyManager/EnemyFactory/EnemyBase/Slime/Slime.h"
+#include"EnemyBase/HighSlime/HighSlime.h"
+#include"EnemyBase/FakerLamiel/FakerLamiel.h"
+#include"EnemyBase/StoneStatue/StoneStatue.h"
 
 
 EnemyFactory::EnemyFactory()
