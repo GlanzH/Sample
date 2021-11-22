@@ -20,6 +20,7 @@ bool EnemyManager::Initialize()
 {
 	DX12Effect.Initialize();
 	effect = ResourceManager::Instance().LoadEffect(L"Effect//EnemySampleEffect//enemy_hit.efk");
+
 	MAX_COUNT = 5;
 	return true;
 }
@@ -54,10 +55,10 @@ void EnemyManager::Iterator(PlayerManager* player, const float deltaTime) {
 
 void EnemyManager::Generator() {
 	std::unique_ptr<EnemyFactory> factory = std::make_unique<EnemyFactory>();
-	for (int i = 0; i < MAX_COUNT; i++)
+	/*for (int i = 0; i < MAX_COUNT; i++)
 	{
-		enemy.push_back(factory->Create("slime", SimpleMath::Vector3(, 0, 50)));
-	}
+		enemy.push_back(factory->Create("slime", SimpleMath::Vector3(0, 0, 50)));
+	}*/
 	enemy.push_back(factory->Create("slime", SimpleMath::Vector3(30, 0, 50)));
 	enemy.push_back(factory->Create("slime", SimpleMath::Vector3(100, 0, 50)));
 	enemy.push_back(factory->Create("slime", SimpleMath::Vector3(170, 0, 50)));

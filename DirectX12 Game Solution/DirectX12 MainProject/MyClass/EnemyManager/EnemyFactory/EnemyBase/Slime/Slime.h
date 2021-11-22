@@ -9,6 +9,7 @@ public:
 	Slime()  {}
 	~Slime() {}
 
+	bool Initialize();
 	int Update(PlayerManager* player, const float deltaTime) override;
 
 private:
@@ -23,11 +24,13 @@ private:
 	
 	const int stop_count = 120;
 	const int accel_num  = 5;
-	/*void SetAnimesion(DX9::SKINNEDMODEL& model, const int enabletack);
+
 	enum ENEMYMOSION
 	{
 		DAMAGE,
 		WAIT,
 		MAX_MOSION
-	};*/
+	};
+protected:
+
 };

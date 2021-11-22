@@ -36,6 +36,7 @@ private:
 	std::vector<std::string> enemy_tag;
 
 	DirectX::SimpleMath::Vector3 slime_speed;
+	DirectX::SimpleMath::Vector3 FakerLamiel_speed;
 
 	DirectX::SimpleMath::Vector3 speed;
 
