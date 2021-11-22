@@ -16,14 +16,14 @@ EnemyFactory::EnemyFactory()
 	stonestatue_hp = 60;
 	///@敵の種類のタグをプッシュバック@///
 	enemy_tag.push_back("slime");
-  /*  enemy_tag.push_back("highslime");
+    enemy_tag.push_back("highslime");
     enemy_tag.push_back("fakerlamiel");
-    enemy_tag.push_back("stonestatue");*/
+    enemy_tag.push_back("stonestatue");
 	///@敵のモデル@///
-	enemy_model[SLIME]       = L"Model\\Enemy\\slime.X";
-  //enemy_model[HIGHSLIME]   = L"Model\\Enemy\\slime.X";
-  //enemy_model[FAKERLAMIEL] = L"Model\\Enemy\\slime.X";
-  //enemy_model[STONESTATUE] = L"Model\\Enemy\\slime.X";
+   enemy_model[SLIME]       = L"Model\\Enemy\\slime.X";
+   enemy_model[HIGHSLIME]   = L"Model\\Enemy\\slime.X";
+   enemy_model[FAKERLAMIEL] = L"Model\\Enemy\\slime.X";
+   enemy_model[STONESTATUE] = L"Model\\Enemy\\slime.X";
 }
 
 EnemyBase* EnemyFactory::Create(std::string tag, DirectX::SimpleMath::Vector3 position)
