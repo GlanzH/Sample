@@ -3,9 +3,11 @@
 #include "EnemyManager.h"
 #include "MyClass/ResourceManager/ResourceManager.h"
 #include "MyClass/StatusManager/StatusManager.h"
+#include<fstream>
 
 EnemyManager::EnemyManager()
 {
+	LoadEnemyArrangement();
 	enemy = {};
 	Generator();
 }
@@ -34,6 +36,18 @@ int EnemyManager::Update(PlayerManager* player, const float deltaTime)
 	delta		= deltaTime;
 
 	Iterator(player_data,delta);
+	
+	if (frame < MAX_FRAME)
+		++frame;
+	else {
+		frame = 0;
+		++timer;
+	}
+
+	//if (timer > appear_time[count] && count < ENEMY_NUM) {
+	//	Generator();
+	//	count++;
+	//}
 
 	return 0;
 }
@@ -55,13 +69,16 @@ void EnemyManager::Iterator(PlayerManager* player, const float deltaTime) {
 
 void EnemyManager::Generator() {
 	std::unique_ptr<EnemyFactory> factory = std::make_unique<EnemyFactory>();
-	/*for (int i = 0; i < MAX_COUNT; i++)
-	{
-		enemy.push_back(factory->Create("slime", SimpleMath::Vector3(0, 0, 50)));
-	}*/
-	enemy.push_back(factory->Create("slime", SimpleMath::Vector3(30, 0, 50)));
-	enemy.push_back(factory->Create("slime", SimpleMath::Vector3(100, 0, 50)));
-	enemy.push_back(factory->Create("slime", SimpleMath::Vector3(170, 0, 50)));
+	
+	enemy.push_back(factory->Create("slime", Vector3(30, 0, 50)));
+
+	//if (!appear_flag[count])
+	//{
+	//	//!“G‚Ìí—ŞE‰ŠúÀ•W‚ğ“n‚µ‚Ä“G‚ğ»‘¢
+	//	enemy.push_back(factory->Create(tag[count], appear_pos[count]));
+	//	appear_flag[count] = true;
+	//}
+
 }
 
 void EnemyManager::Render()
@@ -84,4 +101,31 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 
 void EnemyManager::OnParryArea(EnemyBase* base) {
 	base->Retreat();
+}
+
+int EnemyManager::AppearTimer() {
+	if (frame < MAX_FRAME) 
+		++frame;
+	else {
+		frame = 0;
+		++timer;
+	}
+
+	return timer;
+}
+
+void EnemyManager::LoadEnemyArrangement() {
+	std::ifstream pos_time_infile("EnemyArrangement/EnemyArrangement.txt");
+
+	std::string dummy_line;
+
+	//! 1`3s‚ğ“Ç‚İ”ò‚Î‚µ
+	for (int i = 0; i < DUMMY_LINE; i++) {
+		getline(pos_time_infile, dummy_line);
+	}
+
+	//!ƒf[ƒ^“Ç‚İ‚İ
+	for (int i = 0; i < ENEMY_NUM; ++i) {
+		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> appear_time[i] >> destract_num[i];
+	}
 }
