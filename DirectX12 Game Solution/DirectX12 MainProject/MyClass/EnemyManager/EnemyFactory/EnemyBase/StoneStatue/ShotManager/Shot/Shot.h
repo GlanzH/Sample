@@ -17,9 +17,11 @@ public:
 	void Render();
 
 	void Shots(SimpleMath::Vector3 shot_pos);
-	bool  IsShot() { return shot_flag; }
 
-	bool GetshotFlag() { return shot_flag; }
+	//DX9::MODEL& GetCollision() { return collision; }
+
+	bool  IsShot()	   { return shot_flag; }
+	bool GetShotFlag() { return shot_flag; }
 
 private:
 	SimpleMath::Vector3 pos;

@@ -9,7 +9,7 @@ bool Shot::Initialize()
 // Allocate all memory the Direct3D and Direct2D resources.
 void Shot::LoadAssets()
 {
-
+	//ƒ‚ƒfƒ‹‚ÆƒRƒŠƒWƒ‡ƒ“‚Ìİ’è‚ğ‚·‚é
 }
 
 // Updates the scene.
