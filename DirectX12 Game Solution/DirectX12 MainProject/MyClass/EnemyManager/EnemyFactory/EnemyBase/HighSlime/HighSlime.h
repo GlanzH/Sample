@@ -12,7 +12,7 @@ public:
 	int Update(PlayerManager* player, const float deltaTime) override;
 
 private:
-	void Move(PlayerManager* player, const float deltaTime);
+	void Jump(PlayerManager* player, const float deltaTime);
 
 	bool rush_flag = false;
 	char  count = 0;
@@ -23,6 +23,16 @@ private:
 	
 	const int stop_count = 120;
 	const int accel_num  = 5;
+	//ジャンプしてるかのフラグ。
+	bool jump_flag = true;
+	float jump_time = 0.0f;
+	float jump_start_y ;
+	//1/2
+	const float half = 0.5f;
+	//重力加速度
+	const float gravity = 120.0f;
+	//初速
+	const float fastspeed = 10.0f;
 	/*void SetAnimesion(DX9::SKINNEDMODEL& model, const int enabletack);
 	enum ENEMYMOSION
 	{

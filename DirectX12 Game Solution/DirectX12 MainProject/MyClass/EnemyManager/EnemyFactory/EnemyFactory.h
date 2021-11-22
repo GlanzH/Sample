@@ -29,18 +29,19 @@ public:
 private:
 	EnemyBase* enemy;
 	char hp{};
-	char slime_hp;
-	char highslime_hp;
-	char fakerlamiel_hp;
-	char stonestatue_hp;
+	char Slime_hp;
+	char HighSlime_hp;
+	char FakerLamiel_hp;
+	char StoneStatue_hp;
 	std::vector<std::string> enemy_tag;
 
-	DirectX::SimpleMath::Vector3 slime_speed;
+	DirectX::SimpleMath::Vector3 Slime_speed;
+	DirectX::SimpleMath::Vector3 HighSlime_speed;
 	DirectX::SimpleMath::Vector3 FakerLamiel_speed;
 
 	DirectX::SimpleMath::Vector3 speed;
 
-	LPCWSTR enemy_model[1];
+	LPCWSTR enemy_model[2];
 	LPCWSTR model_name;
 	/**
 Å@Å@* @enum EnemyType

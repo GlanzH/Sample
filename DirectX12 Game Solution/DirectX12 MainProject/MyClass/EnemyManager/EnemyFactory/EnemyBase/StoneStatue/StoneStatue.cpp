@@ -13,9 +13,9 @@ bool StoneStatue::Initialize()
 }
 
 int StoneStatue::Update(PlayerManager* player, const float deltaTime) {
-	SetAnimesion(model, CHARGE);
+	//SetAnimesion(model, CHARGE);
 	
-	model->AdvanceTime(deltaTime / 1.0f);
+	/*model->AdvanceTime(deltaTime / 1.0f);*/
 
 	if (enemy_hp < 0)
 		return DEAD;

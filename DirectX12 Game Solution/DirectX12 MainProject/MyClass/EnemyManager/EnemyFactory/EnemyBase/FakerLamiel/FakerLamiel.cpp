@@ -4,9 +4,9 @@
 
 int FakerLamiel::Update( PlayerManager* player, const float deltaTime) {
 	Move(player,deltaTime);
-	SetAnimesion(model, WAIT);
+	/*SetAnimesion(model, WAIT);
 
-	model->AdvanceTime(deltaTime / 1.0f);
+	model->AdvanceTime(deltaTime / 1.0f);*/
 
 	if (enemy_hp < 0)
 		return DEAD;

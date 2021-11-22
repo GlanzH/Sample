@@ -59,9 +59,9 @@ void EnemyManager::Generator() {
 	{
 		enemy.push_back(factory->Create("slime", SimpleMath::Vector3(0, 0, 50)));
 	}*/
-	enemy.push_back(factory->Create("slime", SimpleMath::Vector3(30, 0, 50)));
-	enemy.push_back(factory->Create("slime", SimpleMath::Vector3(100, 0, 50)));
-	enemy.push_back(factory->Create("slime", SimpleMath::Vector3(170, 0, 50)));
+	enemy.push_back(factory->Create("H", SimpleMath::Vector3(30, 0, 50)));
+	enemy.push_back(factory->Create("H", SimpleMath::Vector3(100, 0, 50)));
+	enemy.push_back(factory->Create("H", SimpleMath::Vector3(170, 0, 50)));
 }
 
 void EnemyManager::Render()

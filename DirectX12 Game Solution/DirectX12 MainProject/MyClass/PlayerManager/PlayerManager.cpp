@@ -305,7 +305,6 @@ void PlayerManager::Player_jump(const float deltaTime)
 		auto pos = model->GetPosition();
 		pos.y = jump_start_v_ + V0 * jump_time_ - 0.5f * gravity_ * jump_time_ * jump_time_;
 		model->SetPosition(pos);
-		//SetAnimation(model, Jump);
 
 		if (model->GetPosition().y <= 0.5f) {
 			jump_flag_ = false;
@@ -416,25 +415,6 @@ void PlayerManager::Player_attack(const float deltaTime) {
 		count = 0;
 		count_time = 0.0f;
 	}
-
-
-	//if (cool_time_flag && !cool_time_flag_zwei)
-	//{
-	//	cool_time += deltaTime;
-	//}
-	//if (!cool_time_flag && cool_time_flag_zwei)
-	//{
-	//	cool_time_zwei += deltaTime;
-	//}
-
-	//if (cool_time >= cool_time_max) {
-	//	cool_time = 0.0f;
-	//	cool_time_flag = false;
-	//}
-
-
-
-
 }
 
 
