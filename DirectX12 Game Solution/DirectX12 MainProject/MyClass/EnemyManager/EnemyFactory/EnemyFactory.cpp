@@ -4,13 +4,22 @@
 
 EnemyFactory::EnemyFactory()
 {
-	//!動く敵のステータス設定
+	///@各敵のステータス設定@///
 	slime_speed.x = 3.0f;
-	slime_hp = 3;
-
-	//!敵の種類のタグをプッシュバック
+	slime_hp       = 5;
+	highslime_hp   = 7;
+	fakerlamiel_hp = 30;
+	stonestatue_hp = 60;
+	///@敵の種類のタグをプッシュバック@///
 	enemy_tag.push_back("slime");
-	enemy_model[SLIME] = L"Model\\Enemy\\slime.X";
+    enemy_tag.push_back("highslime");
+  //enemy_tag.push_back("fakerlamiel");
+  //enemy_tag.push_back("stonestatue");
+	///@敵のモデル@///
+	enemy_model[SLIME]       = L"Model\\Enemy\\slime.X";
+  //enemy_model[HIGHSLIME]   = L"Model\\Enemy\\slime.X";
+  //enemy_model[FAKERLAMIEL] = L"Model\\Enemy\\slime.X";
+  //enemy_model[STONESTATUE] = L"Model\\Enemy\\slime.X";
 }
 
 EnemyBase* EnemyFactory::Create(std::string tag, DirectX::SimpleMath::Vector3 position)
@@ -25,6 +34,7 @@ EnemyBase* EnemyFactory::Create(std::string tag, DirectX::SimpleMath::Vector3 po
 EnemyBase* EnemyFactory::CreateProduct(std::string tag, DirectX::SimpleMath::Vector3 position)
 {
 	EnemyBase* classes[] = { new Slime};
+
 
 	for (int i = 0; i < enemy_tag.size(); ++i)
 	{
