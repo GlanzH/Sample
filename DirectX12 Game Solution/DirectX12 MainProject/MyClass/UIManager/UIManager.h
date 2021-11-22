@@ -14,7 +14,7 @@ public:
 	void LoadAsset();
 	int Update(const float deltaTime);
 	int GetTensionCount(int count) { return 0; }
-	void Render(float f);
+	void Render(float voltage);
 
 private:
 	DX9::SPRITE volt_empty;
