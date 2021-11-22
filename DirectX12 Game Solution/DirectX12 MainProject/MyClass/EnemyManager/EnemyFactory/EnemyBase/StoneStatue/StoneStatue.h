@@ -9,10 +9,10 @@ public:
 	StoneStatue()  {}
 	~StoneStatue() {}
 
-	virtual int Update(DX9::MODEL& ground, PlayerManager* player, const float deltaTime) ;
+	int Update(PlayerManager* player, const float deltaTime) override;
 
 private:
-	void Move(DX9::MODEL& ground, PlayerManager* player, const float deltaTime);
+	void Move(PlayerManager* player, const float deltaTime);
 
 	const float fit_collision_y    = 4.0f;
 	const float stop_enemy_pos     = 20.0f;

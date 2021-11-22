@@ -15,7 +15,7 @@ public:
 	~EnemyManager();
 
 	bool Initialize();
-	int  Update(DX9::MODEL& ground, PlayerManager* player, const float deltaTime);
+	int  Update(PlayerManager* player, const float deltaTime);
 	void Render();
 
 	std::list<EnemyBase*> GetEnemy() { return enemy; }
@@ -26,7 +26,7 @@ public:
 	
 private:
 	void Generator();
-	void Iterator(DX9::MODEL& ground, PlayerManager* player, const float deltaTime);
+	void Iterator(PlayerManager* player, const float deltaTime);
 	
 	std::list<EnemyBase*> enemy;
 

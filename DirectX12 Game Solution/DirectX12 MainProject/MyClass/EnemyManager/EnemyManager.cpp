@@ -24,25 +24,25 @@ bool EnemyManager::Initialize()
 	return true;
 }
 
-int EnemyManager::Update(DX9::MODEL& ground, PlayerManager* player, const float deltaTime)
+int EnemyManager::Update(PlayerManager* player, const float deltaTime)
 {
 	for (auto& enemies : enemy) {
-		enemies->Update(ground,player,deltaTime);
+		enemies->Update(player,deltaTime);
 	}
 	player_data = player;
 	delta		= deltaTime;
 
-	Iterator(ground,player_data,delta);
+	Iterator(player_data,delta);
 
 	return 0;
 }
 
-void EnemyManager::Iterator(DX9::MODEL& ground,PlayerManager* player, const float deltaTime) {
+void EnemyManager::Iterator(PlayerManager* player, const float deltaTime) {
 	auto itr = enemy.begin();
 
 	while (itr != enemy.end())
 	{
-		if ((*itr)->Update(ground,player,deltaTime) == LIVE)
+		if ((*itr)->Update(player,deltaTime) == LIVE)
 			itr++;
 		else {
 			//“G‚ª€–S‚µ‚½‚Æ‚«‚Ìˆ—
