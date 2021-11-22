@@ -1,11 +1,20 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 #include "StoneStatue.h"
+#include"MyClass/ResourceManager/ResourceManager.h"
+
+bool StoneStatue::Initialize()
+{
+	attck      = ResourceManager::Instance().LoadEffect(L"Effect//shoot//shoot.efk");
+	accumulate = ResourceManager::Instance().LoadEffect(L"Effect//charge//charge.efk");;
+	landing    = ResourceManager::Instance().LoadEffect(L"Effect//landing//landing.efk");;
+
+	return false;
+}
 
 int StoneStatue::Update(PlayerManager* player, const float deltaTime) {
-	Move(player,deltaTime);
-	SetAnimesion(model, WAIT);
-
+	SetAnimesion(model, CHARGE);
+	
 	model->AdvanceTime(deltaTime / 1.0f);
 
 	if (enemy_hp < 0)
@@ -14,10 +23,8 @@ int StoneStatue::Update(PlayerManager* player, const float deltaTime) {
 	return LIVE;
 }
 
-void StoneStatue::Move(PlayerManager* player, const float deltaTime) {
-	float player_pos = player->GetModel()->GetPosition().x;
+void StoneStatue::Attck()
+{
 
-	box.Center = model->GetPosition();
-	model->SetPosition(position);
-	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 }
+

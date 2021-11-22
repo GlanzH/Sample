@@ -8,9 +8,9 @@ using namespace DirectX;
 
 class PlayerManager
 {
-public:
+	public:
 
-	PlayerManager() {};
+	 PlayerManager() {};
 	~PlayerManager() {};
 
 	bool Initialize();

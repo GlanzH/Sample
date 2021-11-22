@@ -10,6 +10,7 @@ using namespace DirectX;
 class EnemyManager
 {
 public:
+
 	EnemyManager();
 	~EnemyManager();
 
@@ -38,4 +39,5 @@ private:
 	
 	int dead_enemy_count = 0;
 	float delta;
+	char MAX_COUNT;
 };
