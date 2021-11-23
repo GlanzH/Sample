@@ -26,7 +26,7 @@ EnemyFactory::EnemyFactory()
     enemy_tag.push_back("B");
 	///@“G‚Ìƒ‚ƒfƒ‹@///
   // enemy_model[SLIME]       = L"Model\\Enemy\\Slime\\slime.X";
-   enemy_model[HIGHSLIME]   = L"Model\\Enemy\\HighSlime\\haisuraimu.X";
+   enemy_model[HIGHSLIME]   = L"Model\\Enemy\\HighSlime\\haisuraimu_02.X";
   // enemy_model[FAKERLAMIEL] = L"Model\\Enemy\\slime.X";
   // enemy_model[STONESTATUE] = L"Model\\Enemy\\slime.X";
 }
@@ -55,7 +55,7 @@ EnemyBase* EnemyFactory::CreateProduct(std::string tag, DirectX::SimpleMath::Vec
 
 LPCWSTR EnemyFactory::SetModel(std::string tag)
 {
-	LPCWSTR models[] = { enemy_model[SLIME] ,{ enemy_model[HIGHSLIME]}};
+	LPCWSTR models[] = { enemy_model[SLIME] , enemy_model[HIGHSLIME]};
 	for (int i = 0; i < enemy_tag.size(); ++i)
 	{
 		if (tag == enemy_tag[i]) { model_name = models[i]; }

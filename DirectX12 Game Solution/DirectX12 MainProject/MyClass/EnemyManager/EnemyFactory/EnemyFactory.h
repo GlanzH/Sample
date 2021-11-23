@@ -47,5 +47,5 @@ private:
 　　* @enum EnemyType
 　　* 敵の種類
 　　*/
-	enum EnemyType {SLIME,HIGHSLIME,FAKERLAMIEL,STONESTATUE};
+	enum EnemyType { SLIME, HIGHSLIME, FAKERLAMIEL, STONESTATUE };
 };
