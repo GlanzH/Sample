@@ -17,7 +17,7 @@ public:
 	}
 private:
 	float combo_time = 0.0f;
-	const float combo_time_max =  0.7f;
+	const float combo_time_max =  0.6f;
 	int combo = 0;
-	const int combo_max = 3;
+	const int combo_max = 4;
 };

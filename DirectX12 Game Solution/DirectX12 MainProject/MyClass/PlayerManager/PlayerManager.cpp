@@ -1,4 +1,5 @@
 #include "PlayerManager.h"
+
 #include "MyClass/StatusManager/StatusManager.h"
 
 
@@ -17,7 +18,7 @@ bool PlayerManager::Initialize()
 
 void PlayerManager::LoadAssets() 
 {
-	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\playler_motion.X");
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\character_motion_v1122b_.X");
 	model->SetScale(model_scale);
 	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
@@ -29,9 +30,9 @@ void PlayerManager::LoadAssets()
 
 	collision = DX9::Model::CreateBox(
 		DXTK->Device9,
-		box.Extents.x * box_size,
-		box.Extents.y * box_size,
-		box.Extents.z * 1
+		box.Extents.x * player_box_size,
+		box.Extents.y * player_box_size,
+		box.Extents.z * player_box_size
 	);
 	collision->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
 
@@ -64,7 +65,7 @@ void PlayerManager::LoadAssets()
 	//攻撃エフェクト
 	DX12Effect.Initialize();
 	//1
-	Sword_Effect_1 = DX12Effect.Create(L"Effect\\SwordEffect_AOZORA\\first_attack\\first_attack.efk");
+	Sword_Effect_1 = DX12Effect.Create(L"Effect\\SwordEffect_AOZORA\\one\\first_attack.efk");
 	//2
 	Sword_Effect_2 = DX12Effect.Create(L"Effect\\SwordEffect_AOZORA\\second_attack\\second_attack.efk");
 	//3
@@ -77,7 +78,7 @@ int PlayerManager::Update(const float deltaTime)
 {
 
 	//モデル　アニメーション
-	SetAnimation(model, Wait);
+	SetAnimation(model, STAND);
 
 	//プレイヤー:移動
 	Player_move(deltaTime);
@@ -89,13 +90,11 @@ int PlayerManager::Update(const float deltaTime)
 	//プレイヤー:攻撃
 	Player_attack(deltaTime);
 
-
-
 	//ランバージャック(移動制限)
 	Player_limit();
 
 	//パリィ
-	Parry();
+	Parry(deltaTime);
 
 	//アピール
 	Appeal(deltaTime);
@@ -129,7 +128,20 @@ int PlayerManager::Update(const float deltaTime)
 
 	box.Center = model->GetPosition();
 	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(-0.5, 4, 0));
-	model->AdvanceTime(deltaTime / 1.5f);
+
+	model->AdvanceTime(deltaTime);
+
+	auto pos_1 = model->GetTrackPosition(ACT1);
+	if (pos_1 > 0.5f)
+		model->SetTrackPosition(ACT1, 0.0f);
+	auto pos_2 = model->GetTrackPosition(ACT2);
+	if (pos_2 > 0.5f)
+		model->SetTrackPosition(ACT2, 0.0f);
+	auto pos_3 = model->GetTrackPosition(ACT3);
+	if (pos_3 > 0.5f)
+		model->SetTrackPosition(ACT3, 0.0f);
+
+
 	return 0;
 }
 
@@ -157,7 +169,7 @@ void PlayerManager::OnCollisionEnter() {
 		box.Center = model->GetPosition();
 		model->SetPosition(player_pos);
 		collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
-		SetAnimation(model, Damage);
+		//SetAnimation(model, Damage);
 		//float dist = 0;
 		//if (ground->IntersectRay(
 		//	model->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
@@ -183,20 +195,23 @@ void PlayerManager::Invincible(const float deltaTime)
 
 void PlayerManager::OnParryArea() {
 	//パリィ成功時の処理
-	SetAnimation(model, Parry_);
 
 }
 
-void PlayerManager::Parry() {
-	if (DXTK->KeyState->P||DXTK->GamePadState->buttons.b) {
-		if (parry_count < max_parry_count) {
-			parry_count++;
+void PlayerManager::Parry(const float deltaTime) {
+	if (!parry_flag) {
+		if (DXTK->KeyEvent->pressed.P || DXTK->GamePadEvent[0].b) {
 			parry_flag = true;
 		}
 	}
 	else {
-		parry_flag  = false;
-		parry_count = 0;
+		parry_count += deltaTime;
+		SetAnimation(model, PARRY);
+
+	}
+	if (parry_count >= max_parry_count) {
+		parry_flag = false;
+		parry_count = 0.0f;
 	}
 }
 
@@ -226,17 +241,17 @@ void PlayerManager::_2DRender()
 	//	L"%f", cool_time_zwei
 	//);
 
-	DX9::SpriteBatch->DrawString(font.Get(),
-		SimpleMath::Vector2(1000.0f, 60.0f),
-		DX9::Colors::Brown,
-		L"%d", damage
-	);
+	//DX9::SpriteBatch->DrawString(font.Get(),
+	//	SimpleMath::Vector2(1000.0f, 60.0f),
+	//	DX9::Colors::Brown,
+	//	L"%d", damage
+	//);
 
-	DX9::SpriteBatch->DrawString(font.Get(),
-		SimpleMath::Vector2(1000.0f, 80.0f),
-		DX9::Colors::DarkGreen,
-		L"%f", focus_time
-	);
+	//DX9::SpriteBatch->DrawString(font.Get(),
+	//	SimpleMath::Vector2(1000.0f, 80.0f),
+	//	DX9::Colors::DarkGreen,
+	//	L"%f", focus_time
+	//);
 
 	//DX9::SpriteBatch->DrawString(font.Get(),
 	//	SimpleMath::Vector2(1000.0f, 100.0f),
@@ -257,7 +272,7 @@ void PlayerManager::Player_move(const float deltaTime)
 				model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
 				sword_box.Center = model->GetRotation();
 				direction_state_mode = Direction_State::RIGHT;
-				SetAnimation(model, Run);
+				SetAnimation(model, RUN);
 
 			}
 			if (DXTK->KeyState->Left || DXTK->KeyState->A || DXTK->GamePadState[0].dpad.left) {
@@ -265,7 +280,7 @@ void PlayerManager::Player_move(const float deltaTime)
 				model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
 				sword_box.Center = model->GetRotation();
 				direction_state_mode = Direction_State::LEFT;
-				SetAnimation(model, Run);
+				SetAnimation(model, RUN);
 			}
 		}
 	}
@@ -305,7 +320,7 @@ void PlayerManager::Player_jump(const float deltaTime)
 		auto pos = model->GetPosition();
 		pos.y = jump_start_v_ + V0 * jump_time_ - 0.5f * gravity_ * jump_time_ * jump_time_;
 		model->SetPosition(pos);
-		//SetAnimation(model, Jump);
+		SetAnimation(model, JUMP);
 
 		if (model->GetPosition().y <= 0.5f) {
 			jump_flag_ = false;
@@ -324,8 +339,6 @@ void PlayerManager::Player_attack(const float deltaTime) {
 				attack_flag = true;
 				if (IsAttack()) {
 					if (StatusManager::Instance().GetCombo() == 1) {
-						//斬撃アニメーション
-						SetAnimation(model, Attack_S);
 						cool_time_flag_zwei = true;
 						if (appeal_state_mode != Appeal_state::FOCUS)
 							damage = 2;
@@ -350,7 +363,8 @@ void PlayerManager::Player_attack(const float deltaTime) {
 						}
 					}
 					else if (StatusManager::Instance().GetCombo() == 2) {
-						SetAnimation(model, Attack_S);
+						//SetAnimation(model, ACT2);
+
 						cool_time_flag_zwei = true;
 						if (appeal_state_mode != Appeal_state::FOCUS)
 							damage = 3;
@@ -375,7 +389,7 @@ void PlayerManager::Player_attack(const float deltaTime) {
 
 					}
 					else if (StatusManager::Instance().GetCombo() == 3) {
-						SetAnimation(model, Attack_L);
+						//SetAnimation(model, ACT3);
 						cool_time_flag_zwei = true;
 						if (appeal_state_mode != Appeal_state::FOCUS)
 							damage = 5;
@@ -417,21 +431,13 @@ void PlayerManager::Player_attack(const float deltaTime) {
 		count_time = 0.0f;
 	}
 
-
-	//if (cool_time_flag && !cool_time_flag_zwei)
-	//{
-	//	cool_time += deltaTime;
-	//}
-	//if (!cool_time_flag && cool_time_flag_zwei)
-	//{
-	//	cool_time_zwei += deltaTime;
-	//}
-
-	//if (cool_time >= cool_time_max) {
-	//	cool_time = 0.0f;
-	//	cool_time_flag = false;
-	//}
-
+	//斬撃アニメーション
+	if (StatusManager::Instance().GetCombo() == 1)
+		SetAnimation(model, ACT1);
+	if (StatusManager::Instance().GetCombo() == 2)
+		SetAnimation(model, ACT2);
+	if (StatusManager::Instance().GetCombo() == 3)
+		SetAnimation(model, ACT3);
 
 
 
@@ -450,11 +456,14 @@ void PlayerManager::Appeal(const float deltaTime)
 {
 	//アピール
 	if (!jump_flag_) {
-		if (DXTK->KeyEvent->pressed.W)
+		if (DXTK->KeyEvent->pressed.W) {
 			appeal_state_mode = Appeal_state::APPEAL;
+
+		}
 	}
 	if (appeal_state_mode == Appeal_state::APPEAL) {
-		SetAnimation(model, Appeil);
+		SetAnimation(model, APPEIL);
+
 		appeal_time += deltaTime;
 		if (appeal_time >= appeal_time_max) {
 			appeal_time = 0.0f;

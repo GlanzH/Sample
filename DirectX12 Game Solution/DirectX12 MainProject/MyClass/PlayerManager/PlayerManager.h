@@ -46,7 +46,7 @@ private:
 	//攻撃
 	void Player_attack(const float deltaTime);
 	//パリィ
-	void Parry();
+	void Parry(const float deltaTime);
 	//無敵時間
 	void Invincible(const float deltaTime);
 	//アピール
@@ -73,7 +73,6 @@ private:
 	BoundingBox sword_box;
 	BoundingBox box;
 
-	DX9::SKINNEDMODEL model;
 
 	//当たり判定用モデル
 	DX9::MODEL sword_collision;
@@ -82,17 +81,19 @@ private:
 	int damage = 0;
 
 	//プレイヤー
+	DX9::SKINNEDMODEL model;
 	SimpleMath::Vector3 player_pos = SimpleMath::Vector3(0.0f, 0.0f, 50.0f);
-	float model_scale = 500.0f;
+	float model_scale = 0.1f;
 	float model_rotetion = -90.0f;
 
 	//プレイヤーの移動制限(幅)
-	const float model_collision_detection_X     = 495.0f;
+	const float model_collision_detection_X     = 80.0f;
 	const float model_collision_detection_Y_MAX = 1000.0f;
 	const float model_collision_detection_Y_MIN =   -5.0f;
 	const float model_collision_detection_Z     =  100.0f;
 
 	//当たり判定モデルの大きさ
+	const int player_box_size = 2;
 	const int box_size = 4;
 	
 	//プレイヤーのスピード
@@ -111,9 +112,9 @@ private:
 	const float V0 = 50.0f;
 
 	//パリィ
-	const int max_parry_count = 40;
-	int		  parry_count = 0;
-	bool	  parry_flag = false;
+	const float  max_parry_count = 0.5f;
+	float		 parry_count     = 0.0f;
+	bool	     parry_flag      = false;
 
 	//攻撃‐3連撃‐カウント
 	int attack_count;
@@ -129,7 +130,7 @@ private:
 	//攻撃のクールタイム
 	bool cool_time_flag_zwei = false;
 	float cool_time_zwei = 0.0f;
-	float cool_time_max_zwei[3]{ 0.1f,0.4f,0.6f };
+	float cool_time_max_zwei[3]{ 0.2f,0.4f,0.3f };
 	int count = 0;
 
 	bool  count_flag = false;
@@ -152,14 +153,14 @@ private:
 	//モーションの名前
 	enum
 	{
-		Wait,
-		Run,
-		Jump,
-		Damage,
-		Attack_S,
-		Attack_L,
-		Parry_,
-		Appeil,
+		STAND,
+		RUN,
+		ACT1,
+		ACT2,
+		ACT3,
+		APPEIL,
+		JUMP,
+		PARRY,
 		MOTION_MAX
 	};
 
