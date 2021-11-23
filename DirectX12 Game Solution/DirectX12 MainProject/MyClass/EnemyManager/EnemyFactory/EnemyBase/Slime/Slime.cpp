@@ -8,7 +8,7 @@
 bool Slime::Initialize()
 {
 	/*Damage(deleteTime/damage):*/
-	return false;
+	return true;
 }
 
 int Slime::Update(PlayerManager* player, const float deltaTime) {
