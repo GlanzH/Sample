@@ -131,15 +131,15 @@ int PlayerManager::Update(const float deltaTime)
 
 	model->AdvanceTime(deltaTime);
 
-	auto pos_1 = model->GetTrackPosition(ACT1);
-	if (pos_1 > 0.5f)
-		model->SetTrackPosition(ACT1, 0.0f);
-	auto pos_2 = model->GetTrackPosition(ACT2);
-	if (pos_2 > 0.5f)
-		model->SetTrackPosition(ACT2, 0.0f);
-	auto pos_3 = model->GetTrackPosition(ACT3);
-	if (pos_3 > 0.5f)
-		model->SetTrackPosition(ACT3, 0.0f);
+	//auto pos_1 = model->GetTrackPosition(ACT1);
+	//if (pos_1 > 0.5f)
+	//	model->SetTrackPosition(ACT1, 0.0f);
+	//auto pos_2 = model->GetTrackPosition(ACT2);
+	//if (pos_2 > 0.5f)
+	//	model->SetTrackPosition(ACT2, 0.0f);
+	//auto pos_3 = model->GetTrackPosition(ACT3);
+	//if (pos_3 > 0.5f)
+	//	model->SetTrackPosition(ACT3, 0.0f);
 
 
 	return 0;
@@ -345,22 +345,6 @@ void PlayerManager::Player_attack(const float deltaTime) {
 						else
 							damage = 2 * 2;
 
-						if (direction_state_mode == Direction_State::RIGHT) {
-							handle_1 = DX12Effect.Play(Sword_Effect_1);
-							DX12Effect.SetPosition(handle_1, Vector3(6, -5, 0));
-							DX12Effect.SetSpeed(handle_1, 1.0f);
-							DX12Effect.SetScale(handle_1, Vector3(2, 2, 2));
-							DX12Effect.SetRotation(handle_1, Vector3(XMConvertToRadians(-10.0f), 0, XMConvertToRadians(15.0f)));
-						}
-
-						if (direction_state_mode == Direction_State::LEFT) {
-							handle_1 = DX12Effect.Play(Sword_Effect_1);
-							DX12Effect.SetPosition(handle_1, Vector3(-7, -9, -2));
-							DX12Effect.SetSpeed(handle_1, 1.5f);
-							DX12Effect.SetRotation(handle_1, Vector3(0, XMConvertToRadians(180), 0));
-							DX12Effect.SetScale(handle_1, Vector3(1.5, 1.5, 1.5));
-
-						}
 					}
 					else if (StatusManager::Instance().GetCombo() == 2) {
 						//SetAnimation(model, ACT2);
@@ -432,8 +416,27 @@ void PlayerManager::Player_attack(const float deltaTime) {
 	}
 
 	//斬撃アニメーション
-	if (StatusManager::Instance().GetCombo() == 1)
+	if (StatusManager::Instance().GetCombo() == 1) {
 		SetAnimation(model, ACT1);
+
+		if (direction_state_mode == Direction_State::RIGHT) {
+			handle_1 = DX12Effect.Play(Sword_Effect_1);
+			DX12Effect.SetPosition(handle_1, Vector3(6, -5, 0));
+			DX12Effect.SetSpeed(handle_1, 1.0f);
+			DX12Effect.SetScale(handle_1, Vector3(2, 2, 2));
+			DX12Effect.SetRotation(handle_1, Vector3(XMConvertToRadians(-10.0f), 0, XMConvertToRadians(15.0f)));
+		}
+
+		if (direction_state_mode == Direction_State::LEFT) {
+			handle_1 = DX12Effect.Play(Sword_Effect_1);
+			DX12Effect.SetPosition(handle_1, Vector3(-7, -9, -2));
+			DX12Effect.SetSpeed(handle_1, 1.5f);
+			DX12Effect.SetRotation(handle_1, Vector3(0, XMConvertToRadians(180), 0));
+			DX12Effect.SetScale(handle_1, Vector3(1.5, 1.5, 1.5));
+
+		}
+
+	}
 	if (StatusManager::Instance().GetCombo() == 2)
 		SetAnimation(model, ACT2);
 	if (StatusManager::Instance().GetCombo() == 3)

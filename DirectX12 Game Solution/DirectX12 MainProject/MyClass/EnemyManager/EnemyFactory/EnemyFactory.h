@@ -28,14 +28,15 @@ public:
 
 private:
 	EnemyBase* enemy;
-	char hp;
+	char hp{};
 	char slime_hp;
-	char Highslime_hp;
+	char highslime_hp;
 	char fakerlamiel_hp;
-
+	char stonestatue_hp;
 	std::vector<std::string> enemy_tag;
 
 	DirectX::SimpleMath::Vector3 slime_speed;
+	DirectX::SimpleMath::Vector3 FakerLamiel_speed;
 
 	DirectX::SimpleMath::Vector3 speed;
 
@@ -45,5 +46,5 @@ private:
 　　* @enum EnemyType
 　　* 敵の種類
 　　*/
-	enum EnemyType {SLIME};
+	enum EnemyType {SLIME,HIGHSLIME,FAKERLAMIEL,STONESTATUE};
 };

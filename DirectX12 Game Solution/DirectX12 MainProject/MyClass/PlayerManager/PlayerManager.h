@@ -8,9 +8,9 @@ using namespace DirectX;
 
 class PlayerManager
 {
-public:
+	public:
 
-	PlayerManager() {};
+	 PlayerManager() {};
 	~PlayerManager() {};
 
 	bool Initialize();
@@ -163,6 +163,12 @@ private:
 		PARRY,
 		MOTION_MAX
 	};
+
+	//“ü—Íó•tŠÔ
+	float input_time = 0.0f;
+	float input_time_max[2]{ 0.633f, 0.8f };
+	int   input_count = 0;
+
 
 	//UŒ‚‚ÌŒü‚«
 	enum Direction_State

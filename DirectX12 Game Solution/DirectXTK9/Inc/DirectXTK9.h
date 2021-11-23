@@ -10,6 +10,8 @@
 #include "Model.h"
 #include "SkinnedModel.h"
 
+#include "Shader.h"
+
 namespace DX9 {
 	inline D3DVECTOR VectorSet(const float x, const float y, const float z)
 	{ return D3DXVECTOR3(x, y, z); }

@@ -1,6 +1,12 @@
 #include "SkinnedModel.h"
 #include <exception>
 
+#ifdef NDEBUG
+	#pragma comment(lib, "d3dx9.lib")
+#else
+	#pragma comment(lib, "d3dx9d.lib")
+#endif
+
 DX9::SkinnedModel::SkinnedModel(IDirect3DDevice9* device) :
 	m_device(device),
 	m_frameRoot(nullptr),

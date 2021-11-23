@@ -36,7 +36,7 @@ enum class screen : int {
 #endif
 
 #if DXTK_D3D9
-//  #include <d3d9on12.h>
+    #include <d3d9on12.h>
     #include "DirectXTK9.h"
 #endif
 
@@ -157,7 +157,6 @@ private:
     int                                               m_outputHeight;
 
     static const UINT                                 c_swapBufferCount = 3;
-    const D3D_FEATURE_LEVEL                           m_featureLevel = D3D_FEATURE_LEVEL_11_0;
     static const D3D12_RESOURCE_STATES                m_resourceState[AdapterCount];
 
     Microsoft::WRL::ComPtr<IDXGIFactory4>             m_dxgiFactory;
@@ -186,6 +185,7 @@ private:
     };
     D3D12OBJECTS                                      m_devices[AdapterCount];
     UINT                                              m_adapterCount;
+    UINT                                              m_venderId;
 
 #if DXTK_MULTIGPU
     Microsoft::WRL::ComPtr<ID3D12CommandQueue>        m_copyCommandQueue;

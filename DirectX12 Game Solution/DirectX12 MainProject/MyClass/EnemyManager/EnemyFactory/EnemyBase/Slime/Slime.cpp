@@ -5,6 +5,12 @@
 
 
 
+bool Slime::Initialize()
+{
+	/*Damage(deleteTime/damage)
+	return false;*/
+}
+
 int Slime::Update(PlayerManager* player, const float deltaTime) {
 	Move(player,deltaTime);
 	SetAnimesion(model, WAIT);
@@ -13,7 +19,7 @@ int Slime::Update(PlayerManager* player, const float deltaTime) {
 
 	if (enemy_hp < 0)
 		return DEAD;
-
+   
 	return LIVE;
 }
 
