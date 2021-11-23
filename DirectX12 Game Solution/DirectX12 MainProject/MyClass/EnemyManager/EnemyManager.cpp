@@ -10,9 +10,10 @@ EnemyManager::EnemyManager()
 	//!“Ç‘O‚Ì“G‚Ì‰Šú‰»
 	for (int i = 0; i < ENEMY_NUM; ++i) {
 		tag[i] = "";
-		appear_pos[i] = SimpleMath::Vector3(DBL_MAX,DBL_MAX,DBL_MAX);
-		appear_time[i] = DBL_MAX;
-		appear_flag[i] = false;
+		appear_pos[i]   = SimpleMath::Vector3(DBL_MAX,DBL_MAX,DBL_MAX);
+		appear_time[i]  = DBL_MAX;
+		destract_num[i] = INT_MAX;
+		appear_flag[i]  = false;
 	}
 
 	LoadEnemyArrangement();
@@ -42,10 +43,12 @@ int EnemyManager::Update(PlayerManager* player, const float deltaTime)
 	delta		= deltaTime;
 
 	Iterator(player_data,delta);
-	
-	if (AppearTimer() > appear_time[count] && count < ENEMY_NUM) {
-		Generator();
-		count++;
+
+	if (count < ENEMY_NUM) {
+		if (AppearTimer() > appear_time[count] || dead_enemy_count >= destract_num[count]) {
+			Generator();
+			count++;
+		}
 	}
 
 	return 0;
