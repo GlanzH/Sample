@@ -26,15 +26,15 @@ void HighSlime::Jump(PlayerManager* player, const float deltaTime)
 			position.x -= enemy_speed.x * deltaTime;
 		}	
 	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
-	if (jump_flag)
-	{
-		jump_time += deltaTime;
-		position.y= jump_start_y + gravity * jump_time - deltaTime * gravity * jump_time * jump_time;
-		if (model->GetPosition().y <= 0.5f) 
-		{
-			jump_flag = false;
-		}
-	}
+	//if (jump_flag)
+	//{
+	//	jump_time += deltaTime;
+	//	position.y= jump_start_y + gravity * jump_time - deltaTime * gravity * jump_time * jump_time;
+	//	if (model->GetPosition().y <= 0.5f) 
+	//	{
+	//		jump_flag = false;
+	//	}
+	//}
 	box.Center = model->GetPosition();
 	model->SetPosition(position);
 }

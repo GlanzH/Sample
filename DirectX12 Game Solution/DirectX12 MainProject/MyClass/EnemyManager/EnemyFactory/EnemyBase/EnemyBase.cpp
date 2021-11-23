@@ -24,7 +24,7 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 
 
 	//¡‰ñ‚Íƒ‚ƒfƒ‹‚ª‹É’[‚É¬‚³‚­‚È‚Á‚Ä‚µ‚Ü‚Á‚½‚ç‚µ‚¢‚Ì‚ÅA‘å‚«‚­‚·‚é
-	model->SetScale(50.0f);
+	model->SetScale(225.0f);
 
 	//” ‚ðì‚é€”õ
 	box = model->GetBoundingBox();
