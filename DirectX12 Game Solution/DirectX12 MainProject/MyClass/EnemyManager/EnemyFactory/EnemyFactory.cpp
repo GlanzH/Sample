@@ -8,22 +8,27 @@
 EnemyFactory::EnemyFactory()
 {
 	///@各敵のステータス設定@///
-	slime_speed.x = 3.0f;
+	Slime_speed.x = 3.0f;
+	HighSlime_speed.x = 7.0f;
 	FakerLamiel_speed.x = 1.0f;
-	slime_hp       = 5;
-	highslime_hp   = 7;
-	fakerlamiel_hp = 30;
-	stonestatue_hp = 60;
+	Slime_hp       = 5;
+	HighSlime_hp   = 7;
+	FakerLamiel_hp = 30;
+	StoneStatue_hp = 60;
 	///@敵の種類のタグをプッシュバック@///
-	enemy_tag.push_back("slime");
-    enemy_tag.push_back("highslime");
-    enemy_tag.push_back("fakerlamiel");
-    enemy_tag.push_back("stonestatue");
+	///　　スライム         ///
+	enemy_tag.push_back("S");
+    /// 　ハイスライム     ///
+    enemy_tag.push_back("H");
+	///　フェイクラミエル  ///
+    enemy_tag.push_back("L");
+	/// 　巨大な古代兵器   ///
+    enemy_tag.push_back("B");
 	///@敵のモデル@///
-   enemy_model[SLIME]       = L"Model\\Enemy\\slime.X";
-   enemy_model[HIGHSLIME]   = L"Model\\Enemy\\slime.X";
-   enemy_model[FAKERLAMIEL] = L"Model\\Enemy\\slime.X";
-   enemy_model[STONESTATUE] = L"Model\\Enemy\\slime.X";
+  // enemy_model[SLIME]       = L"Model\\Enemy\\Slime\\slime.X";
+   enemy_model[HIGHSLIME]   = L"Model\\Enemy\\HighSlime\\haisuraimu_02.X";
+  // enemy_model[FAKERLAMIEL] = L"Model\\Enemy\\slime.X";
+  // enemy_model[STONESTATUE] = L"Model\\Enemy\\slime.X";
 }
 
 EnemyBase* EnemyFactory::Create(std::string tag, DirectX::SimpleMath::Vector3 position)
@@ -37,7 +42,7 @@ EnemyBase* EnemyFactory::Create(std::string tag, DirectX::SimpleMath::Vector3 po
 
 EnemyBase* EnemyFactory::CreateProduct(std::string tag, DirectX::SimpleMath::Vector3 position)
 {
-	EnemyBase* classes[] = { new Slime};
+	EnemyBase* classes[] = { new Slime, new HighSlime};
 
 
 	for (int i = 0; i < enemy_tag.size(); ++i)
@@ -50,7 +55,7 @@ EnemyBase* EnemyFactory::CreateProduct(std::string tag, DirectX::SimpleMath::Vec
 
 LPCWSTR EnemyFactory::SetModel(std::string tag)
 {
-	LPCWSTR models[] = { enemy_model[SLIME] };
+	LPCWSTR models[] = { enemy_model[SLIME] , enemy_model[HIGHSLIME]};
 	for (int i = 0; i < enemy_tag.size(); ++i)
 	{
 		if (tag == enemy_tag[i]) { model_name = models[i]; }
@@ -60,7 +65,7 @@ LPCWSTR EnemyFactory::SetModel(std::string tag)
 
 DirectX::SimpleMath::Vector3 EnemyFactory::SetSpeed(std::string tag)
 {
-	DirectX::SimpleMath::Vector3 speeds[] = { slime_speed };
+	DirectX::SimpleMath::Vector3 speeds[] = { Slime_speed,HighSlime_speed };
 	for (int i = 0; i < enemy_tag.size(); ++i)
 	{
 		if (tag == enemy_tag[i]) { speed = speeds[i]; }
@@ -70,7 +75,7 @@ DirectX::SimpleMath::Vector3 EnemyFactory::SetSpeed(std::string tag)
 
 int EnemyFactory::SetHP(std::string tag)
 {
-	int hps[] = { slime_hp};
+	int hps[] = { Slime_hp,HighSlime_hp};
 
 	for (int i = 0; i < enemy_tag.size(); ++i)
 	{

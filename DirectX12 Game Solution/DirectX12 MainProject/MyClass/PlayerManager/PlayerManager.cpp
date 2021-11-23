@@ -320,7 +320,6 @@ void PlayerManager::Player_jump(const float deltaTime)
 		auto pos = model->GetPosition();
 		pos.y = jump_start_v_ + V0 * jump_time_ - 0.5f * gravity_ * jump_time_ * jump_time_;
 		model->SetPosition(pos);
-		SetAnimation(model, JUMP);
 
 		if (model->GetPosition().y <= 0.5f) {
 			jump_flag_ = false;
@@ -414,36 +413,6 @@ void PlayerManager::Player_attack(const float deltaTime) {
 		count = 0;
 		count_time = 0.0f;
 	}
-
-	//斬撃アニメーション
-	if (StatusManager::Instance().GetCombo() == 1) {
-		SetAnimation(model, ACT1);
-
-		if (direction_state_mode == Direction_State::RIGHT) {
-			handle_1 = DX12Effect.Play(Sword_Effect_1);
-			DX12Effect.SetPosition(handle_1, Vector3(6, -5, 0));
-			DX12Effect.SetSpeed(handle_1, 1.0f);
-			DX12Effect.SetScale(handle_1, Vector3(2, 2, 2));
-			DX12Effect.SetRotation(handle_1, Vector3(XMConvertToRadians(-10.0f), 0, XMConvertToRadians(15.0f)));
-		}
-
-		if (direction_state_mode == Direction_State::LEFT) {
-			handle_1 = DX12Effect.Play(Sword_Effect_1);
-			DX12Effect.SetPosition(handle_1, Vector3(-7, -9, -2));
-			DX12Effect.SetSpeed(handle_1, 1.5f);
-			DX12Effect.SetRotation(handle_1, Vector3(0, XMConvertToRadians(180), 0));
-			DX12Effect.SetScale(handle_1, Vector3(1.5, 1.5, 1.5));
-
-		}
-
-	}
-	if (StatusManager::Instance().GetCombo() == 2)
-		SetAnimation(model, ACT2);
-	if (StatusManager::Instance().GetCombo() == 3)
-		SetAnimation(model, ACT3);
-
-
-
 }
 
 

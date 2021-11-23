@@ -7,9 +7,16 @@
 
 EnemyManager::EnemyManager()
 {
+	//!“Ç‘O‚Ì“G‚Ì‰Šú‰»
+	for (int i = 0; i < ENEMY_NUM; ++i) {
+		tag[i] = "";
+		appear_pos[i] = SimpleMath::Vector3(DBL_MAX,DBL_MAX,DBL_MAX);
+		appear_time[i] = DBL_MAX;
+		appear_flag[i] = false;
+	}
+
 	LoadEnemyArrangement();
 	enemy = {};
-	Generator();
 }
 
 EnemyManager::~EnemyManager() {
@@ -23,7 +30,6 @@ bool EnemyManager::Initialize()
 	DX12Effect.Initialize();
 	effect = ResourceManager::Instance().LoadEffect(L"Effect//EnemySampleEffect//enemy_hit.efk");
 
-	MAX_COUNT = 5;
 	return true;
 }
 
@@ -37,17 +43,10 @@ int EnemyManager::Update(PlayerManager* player, const float deltaTime)
 
 	Iterator(player_data,delta);
 	
-	if (frame < MAX_FRAME)
-		++frame;
-	else {
-		frame = 0;
-		++timer;
+	if (AppearTimer() > appear_time[count] && count < ENEMY_NUM) {
+		Generator();
+		count++;
 	}
-
-	//if (timer > appear_time[count] && count < ENEMY_NUM) {
-	//	Generator();
-	//	count++;
-	//}
 
 	return 0;
 }
@@ -69,15 +68,13 @@ void EnemyManager::Iterator(PlayerManager* player, const float deltaTime) {
 
 void EnemyManager::Generator() {
 	std::unique_ptr<EnemyFactory> factory = std::make_unique<EnemyFactory>();
-	
-	enemy.push_back(factory->Create("slime", Vector3(30, 0, 50)));
 
-	//if (!appear_flag[count])
-	//{
-	//	//!“G‚Ìí—ŞE‰ŠúÀ•W‚ğ“n‚µ‚Ä“G‚ğ»‘¢
-	//	enemy.push_back(factory->Create(tag[count], appear_pos[count]));
-	//	appear_flag[count] = true;
-	//}
+	if (!appear_flag[count])
+	{
+		//!“G‚Ìí—ŞE‰ŠúÀ•W‚ğ“n‚µ‚Ä“G‚ğ»‘¢
+		enemy.push_back(factory->Create(tag[count], appear_pos[count]));
+		appear_flag[count] = true;
+	}
 
 }
 
