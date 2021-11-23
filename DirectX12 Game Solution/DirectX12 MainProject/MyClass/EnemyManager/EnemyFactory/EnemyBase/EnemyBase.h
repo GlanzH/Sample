@@ -20,7 +20,7 @@ public:
 	void Retreat();
 	virtual void Damage(const float deltaTime,int damage);
 
-	DX9::SKINNEDMODEL& GetModel() { return model; }
+	DX9::MODEL& GetModel() { return model; }
 	BoundingBox GetBox()		  { return box; }
 
 private:
@@ -28,7 +28,7 @@ private:
 	GroundManager ground;
 	
 protected:
-	DX9::SKINNEDMODEL model;
+	DX9::MODEL model;
 	BoundingBox  box;
 	DX9::MODEL	 collision;
 	SimpleMath::Vector3  position;
