@@ -5,6 +5,7 @@
 
 bool Slime::Initialize()
 {
+	
 	/*Damage(deleteTime/damage):*/
 	return true;
 }

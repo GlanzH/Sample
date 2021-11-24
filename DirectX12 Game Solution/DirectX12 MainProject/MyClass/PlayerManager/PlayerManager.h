@@ -8,9 +8,9 @@ using namespace DirectX;
 
 class PlayerManager
 {
-	public:
+public:
 
-	 PlayerManager() {};
+	PlayerManager() {};
 	~PlayerManager() {};
 
 	bool Initialize();
@@ -22,7 +22,7 @@ class PlayerManager
 	DX9::SKINNEDMODEL& GetModel() { return model; }
 
 	BoundingBox GetSwordBox() { return sword_box; }
-	BoundingBox GetBox()	  { return  box; }
+	BoundingBox GetBox() { return  box; }
 
 	void OnCollisionEnter();
 	void OnParryArea();
@@ -68,7 +68,7 @@ private:
 	DX9::SPRITEFONT font;
 
 	D3DMATERIAL9 material;
-	
+
 	//剣の当たり判定ボックス
 	BoundingBox sword_box;
 	BoundingBox box;
@@ -87,15 +87,15 @@ private:
 	float model_rotetion = -90.0f;
 
 	//プレイヤーの移動制限(幅)
-	const float model_collision_detection_X     = 80.0f;
+	const float model_collision_detection_X = 80.0f;
 	const float model_collision_detection_Y_MAX = 1000.0f;
-	const float model_collision_detection_Y_MIN =   -5.0f;
-	const float model_collision_detection_Z     =  100.0f;
+	const float model_collision_detection_Y_MIN = -5.0f;
+	const float model_collision_detection_Z = 100.0f;
 
 	//当たり判定モデルの大きさ
 	const int player_box_size = 2;
 	const int box_size = 4;
-	
+
 	//プレイヤーのスピード
 	const float player_speed_ = 40.0f;
 
@@ -113,8 +113,8 @@ private:
 
 	//パリィ
 	const float  max_parry_count = 0.5f;
-	float		 parry_count     = 0.0f;
-	bool	     parry_flag      = false;
+	float		 parry_count = 0.0f;
+	bool	     parry_flag = false;
 
 	//攻撃‐3連撃‐カウント
 	int attack_count;
@@ -139,15 +139,15 @@ private:
 
 	//無敵時間
 	bool  invincible_flag = false;
-	float		invincible_time     = 0.0f;
+	float		invincible_time = 0.0f;
 	const float invincible_time_max = 100.0f;//1.5f;
 
 	//アピールする時間
-	float		appeal_time     = 0.0f; //アピールする初期値
+	float		appeal_time = 0.0f; //アピールする初期値
 	const float appeal_time_max = 2.0f; //アピールする時間の最大値
-	
+
 	//ステータスアップの時間
-	float		focus_time     =  0.0f;//ステータスアップの時間:初期値
+	float		focus_time = 0.0f;//ステータスアップの時間:初期値
 	const float focus_time_max = 10.0f;//ステータスアップの時間:最大値
 
 	//モーションの名前
@@ -179,7 +179,7 @@ private:
 
 	//エフェクト表示
 	bool effect_flag = false;
-	
+
 	//アニメーションを出す時間
 	bool  animation_flag = false;
 	float animation_time = 0.0f;
@@ -200,7 +200,7 @@ private:
 	};
 
 	Direction_State direction_state_mode;
-	
+
 	//アピール
 	enum Appeal_state
 	{
