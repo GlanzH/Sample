@@ -32,7 +32,7 @@ public:
 private:
 	//ƒRƒ“ƒ{
 	float combo_time = 0.0f;
-	const float combo_time_max =  0.6f;
+	const float combo_time_max =  1.0f;
 	int combo = 0;
 	const int combo_max = 4;
 

@@ -87,7 +87,7 @@ private:
 	float model_rotetion = -90.0f;
 
 	//プレイヤーの移動制限(幅)
-	const float model_collision_detection_X     = 80.0f;
+	const float model_collision_detection_X     = 70.0f;
 	const float model_collision_detection_Y_MAX = 1000.0f;
 	const float model_collision_detection_Y_MIN =   -5.0f;
 	const float model_collision_detection_Z     =  100.0f;
@@ -191,6 +191,8 @@ private:
 
 	//連撃攻撃
 	bool attack_next_flag = false;
+
+	bool attack_combo_flag = false;
 
 	//攻撃の向き
 	enum Direction_State

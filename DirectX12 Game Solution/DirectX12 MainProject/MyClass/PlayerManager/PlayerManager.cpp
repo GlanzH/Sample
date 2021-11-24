@@ -229,11 +229,11 @@ void PlayerManager::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack
 void PlayerManager::_2DRender()
 {
 	//コンボ確認用
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(1000.0f, 0.0f),
-	//	DX9::Colors::Black,
-	//	L"%d",StatusManager::Instance().GetCombo()
-	//);
+	DX9::SpriteBatch->DrawString(font.Get(),
+		SimpleMath::Vector2(1000.0f, 0.0f),
+		DX9::Colors::Black,
+		L"%d",StatusManager::Instance().GetCombo()
+	);
 
 	//DX9::SpriteBatch->DrawString(font.Get(),
 	//	SimpleMath::Vector2(1000.0f, 40.0f),
@@ -413,34 +413,31 @@ void PlayerManager::Player_attack(const float deltaTime) {
 	//	count = 0;
 	//	count_time = 0.0f;
 	//}
-	if (!animation_flag)
+	if (!animation_flag) {
 		if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
 			if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
-				if (!first_attack_flag) {
+				if (!first_attack_flag || attack_next_flag) {
 					StatusManager::Instance().AddCombo(deltaTime);
 					first_attack_flag = true;
 				}
-				if (StatusManager::Instance().GetCombo() == 1 && animation_count == 0);
+				     if (StatusManager::Instance().GetCombo() == 1 && animation_count == 0);
 				else if (StatusManager::Instance().GetCombo() == 2 && animation_count == 1);
 				else if (StatusManager::Instance().GetCombo() == 3 && animation_count == 2);
 
 			}
 		}
+	}
 
 	if (StatusManager::Instance().GetCombo() == 1 && animation_count == 0) {
 		SetAnimation(model, ACT1);
 		animation_flag = true;
-		input_wait_flag = true;
+		input_flag = true;
 
 		auto pos = model->GetTrackPosition(ACT1);
 		if (animation_flag) {
 			if (pos > 0.617f)
 				model->SetTrackPosition(ACT1, 0.0f);
 		}
-		//else {
-		//	if (pos > 0.617f)
-		//		model->SetTrackPosition(ACT1, 0.0f);
-		//}
 
 
 	}
@@ -448,7 +445,7 @@ void PlayerManager::Player_attack(const float deltaTime) {
 	if (StatusManager::Instance().GetCombo() == 2 && animation_count == 1) {
 		SetAnimation(model, ACT2);
 		animation_flag = true;
-		input_wait_flag = true;
+		input_flag = true;
 
 		auto pos = model->GetTrackPosition(ACT2);
 		if (animation_flag) {
@@ -458,7 +455,7 @@ void PlayerManager::Player_attack(const float deltaTime) {
 
 	}
 
-	if (StatusManager::Instance().GetCombo() == 3 && animation_count == 2) {
+	if (StatusManager::Instance().GetCombo() == 3&& animation_count == 2) {
 		SetAnimation(model, ACT3);
 		animation_flag = true;
 		input_flag = true;
@@ -481,22 +478,20 @@ void PlayerManager::Player_attack(const float deltaTime) {
 
 	if (input_flag) {
 		input_time += deltaTime;
-		if (input_time <= animation_time_max[animation_count]) {
-			if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
-				StatusManager::Instance().AddCombo(deltaTime);
-				attack_next_flag = true;
-			}
+		if (input_time < animation_time_max[animation_count]) {
+
+			attack_next_flag = true;
+
 		}
 
 		if (input_time >= animation_time_max[animation_count]) {
+			attack_next_flag = false;
 			input_flag = false;
+			input_time = 0.0f;
 			animation_count++;
 		}
-
 	}
 
-	//if (attack_next_flag) {
-	//}
 
 	////入力受付時間までの時間 & エフェクト表示までの時間
 	//if (input_wait_flag) {
