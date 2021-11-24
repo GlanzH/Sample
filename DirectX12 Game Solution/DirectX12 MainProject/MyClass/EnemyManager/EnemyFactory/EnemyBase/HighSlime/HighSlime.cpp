@@ -5,7 +5,7 @@
 
 int HighSlime::Update(PlayerManager* player, const float deltaTime) 
 {
-   // Move(player, deltaTime);
+    Move(player, deltaTime);
     Rotate(player, deltaTime);
 	Jump(deltaTime);
 	//SetAnimesion(model, WAIT);
