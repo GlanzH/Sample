@@ -65,11 +65,11 @@ void PlayerManager::LoadAssets()
 	//攻撃エフェクト
 	DX12Effect.Initialize();
 	//1
-	Sword_Effect_1 = DX12Effect.Create(L"Effect\\SwordEffect_AOZORA\\one\\first_attack.efk");
+	Sword_Effect_1 = DX12Effect.Create(L"Effect\\SwordEffect\\one\\first_attack.efk");
 	//2
-	Sword_Effect_2 = DX12Effect.Create(L"Effect\\SwordEffect_AOZORA\\second_attack\\second_attack.efk");
+	Sword_Effect_2 = DX12Effect.Create(L"Effect\\SwordEffect\\two\\second_attack.efk");
 	//3
-	Sword_Effect_3 = DX12Effect.Create(L"Effect\\SwordEffect_AOZORA\\third_attack\\third_attack.efk");
+	Sword_Effect_3 = DX12Effect.Create(L"Effect\\SwordEffect\\three\\third_attack.efk");
 
 
 }
@@ -247,11 +247,11 @@ void PlayerManager::_2DRender()
 	//	L"%d", damage
 	//);
 
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(1000.0f, 80.0f),
-	//	DX9::Colors::DarkGreen,
-	//	L"%f", focus_time
-	//);
+	DX9::SpriteBatch->DrawString(font.Get(),
+		SimpleMath::Vector2(1000.0f, 80.0f),
+		DX9::Colors::DarkGreen,
+		L"%f", animation_time
+	);
 
 	//DX9::SpriteBatch->DrawString(font.Get(),
 	//	SimpleMath::Vector2(1000.0f, 100.0f),
@@ -329,89 +329,266 @@ void PlayerManager::Player_jump(const float deltaTime)
 
 
 void PlayerManager::Player_attack(const float deltaTime) {
-	//プレイヤー:攻撃
-	if (!cool_time_flag_zwei) {
+	////プレイヤー:攻撃
+	//if (!cool_time_flag_zwei) {
+	//	if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
+	//		if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
+	//			StatusManager::Instance().AddCombo(deltaTime);
+	//			count_time = 0.0f;
+	//			attack_flag = true;
+	//			if (IsAttack()) {
+	//				if (StatusManager::Instance().GetCombo() == 1) {
+	//					cool_time_flag_zwei = true;
+	//					if (appeal_state_mode != Appeal_state::FOCUS)
+	//						damage = 2;
+	//					else
+	//						damage = 2 * 2;
+
+	//				}
+	//				else if (StatusManager::Instance().GetCombo() == 2) {
+	//					//SetAnimation(model, ACT2);
+
+	//					cool_time_flag_zwei = true;
+	//					if (appeal_state_mode != Appeal_state::FOCUS)
+	//						damage = 3;
+	//					else
+	//						damage = 3 * 2;
+
+
+	//					if (direction_state_mode == Direction_State::RIGHT) {
+	//						handle_2 = DX12Effect.Play(Sword_Effect_2);
+	//						DX12Effect.SetPosition(handle_2, Vector3(6, -7, 0));
+	//						DX12Effect.SetSpeed(handle_2, 1.0f);
+	//					}
+
+	//					if (direction_state_mode == Direction_State::LEFT) {
+	//						handle_2 = DX12Effect.Play(Sword_Effect_2);
+	//						DX12Effect.SetPosition(handle_2, Vector3(-7, -9, -2));
+	//						DX12Effect.SetSpeed(handle_2, 1.0f);
+	//						DX12Effect.SetRotation(handle_2, Vector3(0, XMConvertToRadians(180), 0));
+	//						DX12Effect.SetScale(handle_2, Vector3(1.5, 1.5, 1.5));
+
+	//					}
+
+	//				}
+	//				else if (StatusManager::Instance().GetCombo() == 3) {
+	//					//SetAnimation(model, ACT3);
+	//					cool_time_flag_zwei = true;
+	//					if (appeal_state_mode != Appeal_state::FOCUS)
+	//						damage = 5;
+	//					else
+	//						damage = 5 * 2;
+
+	//					if (direction_state_mode == Direction_State::RIGHT) {
+	//						handle_3 = DX12Effect.Play(Sword_Effect_3);
+	//						DX12Effect.SetPosition(handle_3, Vector3(6, -7, 0));
+	//						DX12Effect.SetSpeed(handle_3, 1.5f);
+	//					}
+
+	//					if (direction_state_mode == Direction_State::LEFT) {
+	//						handle_3 = DX12Effect.Play(Sword_Effect_3);
+	//						DX12Effect.SetPosition(handle_3, Vector3(-7, -9, -2));
+	//						DX12Effect.SetSpeed(handle_3, 1.5f);
+	//						DX12Effect.SetRotation(handle_3, Vector3(0, XMConvertToRadians(180), 0));
+	//						DX12Effect.SetScale(handle_3, Vector3(1.5, 1.5, 1.5));
+
+	//					}
+
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
+	//if (cool_time_flag_zwei) {
+	//	cool_time_zwei += deltaTime;
+	//	if (cool_time_zwei >= cool_time_max_zwei[count]) {
+	//		cool_time_zwei = 0.0f;
+	//		count++;
+	//		cool_time_flag_zwei = false;
+	//	}
+	//}
+
+	//count_time += deltaTime;
+	//if (count >= 3 || count_time > count_time_max) {
+	//	count = 0;
+	//	count_time = 0.0f;
+	//}
+	if (!animation_flag)
 		if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
 			if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
-				StatusManager::Instance().AddCombo(deltaTime);
-				count_time = 0.0f;
-				attack_flag = true;
-				if (IsAttack()) {
-					if (StatusManager::Instance().GetCombo() == 1) {
-						cool_time_flag_zwei = true;
-						if (appeal_state_mode != Appeal_state::FOCUS)
-							damage = 2;
-						else
-							damage = 2 * 2;
-
-					}
-					else if (StatusManager::Instance().GetCombo() == 2) {
-						//SetAnimation(model, ACT2);
-
-						cool_time_flag_zwei = true;
-						if (appeal_state_mode != Appeal_state::FOCUS)
-							damage = 3;
-						else
-							damage = 3 * 2;
-
-
-						if (direction_state_mode == Direction_State::RIGHT) {
-							handle_2 = DX12Effect.Play(Sword_Effect_2);
-							DX12Effect.SetPosition(handle_2, Vector3(6, -7, 0));
-							DX12Effect.SetSpeed(handle_2, 1.0f);
-						}
-
-						if (direction_state_mode == Direction_State::LEFT) {
-							handle_2 = DX12Effect.Play(Sword_Effect_2);
-							DX12Effect.SetPosition(handle_2, Vector3(-7, -9, -2));
-							DX12Effect.SetSpeed(handle_2, 1.0f);
-							DX12Effect.SetRotation(handle_2, Vector3(0, XMConvertToRadians(180), 0));
-							DX12Effect.SetScale(handle_2, Vector3(1.5, 1.5, 1.5));
-
-						}
-
-					}
-					else if (StatusManager::Instance().GetCombo() == 3) {
-						//SetAnimation(model, ACT3);
-						cool_time_flag_zwei = true;
-						if (appeal_state_mode != Appeal_state::FOCUS)
-							damage = 5;
-						else
-							damage = 5 * 2;
-
-						if (direction_state_mode == Direction_State::RIGHT) {
-							handle_3 = DX12Effect.Play(Sword_Effect_3);
-							DX12Effect.SetPosition(handle_3, Vector3(6, -7, 0));
-							DX12Effect.SetSpeed(handle_3, 1.5f);
-						}
-
-						if (direction_state_mode == Direction_State::LEFT) {
-							handle_3 = DX12Effect.Play(Sword_Effect_3);
-							DX12Effect.SetPosition(handle_3, Vector3(-7, -9, -2));
-							DX12Effect.SetSpeed(handle_3, 1.5f);
-							DX12Effect.SetRotation(handle_3, Vector3(0, XMConvertToRadians(180), 0));
-							DX12Effect.SetScale(handle_3, Vector3(1.5, 1.5, 1.5));
-
-						}
-
-					}
+				if (!first_attack_flag) {
+					StatusManager::Instance().AddCombo(deltaTime);
+					first_attack_flag = true;
 				}
+				if (StatusManager::Instance().GetCombo() == 1 && animation_count == 0);
+				else if (StatusManager::Instance().GetCombo() == 2 && animation_count == 1);
+				else if (StatusManager::Instance().GetCombo() == 3 && animation_count == 2);
+
 			}
 		}
+
+	if (StatusManager::Instance().GetCombo() == 1 && animation_count == 0) {
+		SetAnimation(model, ACT1);
+		animation_flag = true;
+		input_wait_flag = true;
+
+		auto pos = model->GetTrackPosition(ACT1);
+		if (animation_flag) {
+			if (pos > 0.617f)
+				model->SetTrackPosition(ACT1, 0.0f);
+		}
+		//else {
+		//	if (pos > 0.617f)
+		//		model->SetTrackPosition(ACT1, 0.0f);
+		//}
+
+
 	}
-	if (cool_time_flag_zwei) {
-		cool_time_zwei += deltaTime;
-		if (cool_time_zwei >= cool_time_max_zwei[count]) {
-			cool_time_zwei = 0.0f;
-			count++;
-			cool_time_flag_zwei = false;
+
+	if (StatusManager::Instance().GetCombo() == 2 && animation_count == 1) {
+		SetAnimation(model, ACT2);
+		animation_flag = true;
+		input_wait_flag = true;
+
+		auto pos = model->GetTrackPosition(ACT2);
+		if (animation_flag) {
+			if (pos > 0.517f)
+				model->SetTrackPosition(ACT2, 0.0f);
+		}
+
+	}
+
+	if (StatusManager::Instance().GetCombo() == 3 && animation_count == 2) {
+		SetAnimation(model, ACT3);
+		animation_flag = true;
+		input_flag = true;
+	}
+
+
+	//アニメーション関係
+	if (animation_flag) {
+		animation_time += deltaTime;
+		if (animation_time >= animation_time_max[animation_count]) {
+			animation_time = 0.0f;
+			animation_count++;
+			animation_flag = false;
 		}
 	}
 
-	count_time += deltaTime;
-	if (count >= 3 || count_time > count_time_max) {
-		count = 0;
-		count_time = 0.0f;
+	if (animation_count >= 3) {
+		animation_count = 0;
+	}
+
+	if (input_flag) {
+		input_time += deltaTime;
+		if (input_time <= animation_time_max[animation_count]) {
+			if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
+				StatusManager::Instance().AddCombo(deltaTime);
+				attack_next_flag = true;
+			}
+		}
+
+		if (input_time >= animation_time_max[animation_count]) {
+			input_flag = false;
+			animation_count++;
+		}
+
+	}
+
+	//if (attack_next_flag) {
+	//}
+
+	////入力受付時間までの時間 & エフェクト表示までの時間
+	//if (input_wait_flag) {
+	//	input_wait_time += deltaTime;
+	//	if (input_wait_time >= input_wait_time_max[input_wait_count]) {
+	//		input_flag = true;
+	//		input_wait_time = 0.0f;
+	//		input_wait_count++;
+	//		input_wait_flag = false;
+	//	}
+	//}
+
+	//if (input_wait_count >= 3) {
+	//	input_wait_count = 0;
+	//}
+
+	////入力受付時間 & エフェクト表示
+	//if (input_flag) {
+	//	input_time += deltaTime;
+	//	effect_flag = true;
+	//	if (input_time <= animation_time_max[input_count]) {
+	//		if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
+	//			StatusManager::Instance().AddCombo(deltaTime);
+	//			
+	//		}
+	//	}
+	//	if (input_time >= animation_time_max[input_count]) {
+	//		input_time = 0.0f;
+	//		input_count++;
+	//		input_flag = false;
+	//	}
+	//}
+
+	//if (input_count <= 2) {
+	//	input_count = 0;
+	//}
+
+	if (effect_flag) {
+		attack_flag = true;
+		if (IsAttack()) {
+			if (StatusManager::Instance().GetCombo() == 1 && animation_count == 0) {
+				if (direction_state_mode == Direction_State::RIGHT) {
+					handle_1 = DX12Effect.Play(Sword_Effect_1);
+					DX12Effect.SetPosition(handle_1, Vector3(6, -7, 0));
+					DX12Effect.SetSpeed(handle_1, 1.0f);
+				}
+
+				if (direction_state_mode == Direction_State::LEFT) {
+					handle_1 = DX12Effect.Play(Sword_Effect_1);
+					DX12Effect.SetPosition(handle_1, Vector3(-7, -9, -2));
+					DX12Effect.SetSpeed(handle_1, 1.0f);
+					DX12Effect.SetRotation(handle_1, Vector3(0, XMConvertToRadians(180), 0));
+					DX12Effect.SetScale(handle_1, Vector3(1.5, 1.5, 1.5));
+
+				}
+
+				effect_flag = false;
+			}
+			else if (StatusManager::Instance().GetCombo() == 2 && animation_count == 1) {
+				if (direction_state_mode == Direction_State::RIGHT) {
+					handle_2 = DX12Effect.Play(Sword_Effect_2);
+					DX12Effect.SetPosition(handle_2, Vector3(6, -7, 0));
+					DX12Effect.SetSpeed(handle_2, 1.0f);
+				}
+
+				if (direction_state_mode == Direction_State::LEFT) {
+					handle_2 = DX12Effect.Play(Sword_Effect_2);
+					DX12Effect.SetPosition(handle_2, Vector3(-7, -9, -2));
+					DX12Effect.SetSpeed(handle_2, 1.0f);
+					DX12Effect.SetRotation(handle_2, Vector3(0, XMConvertToRadians(180), 0));
+					DX12Effect.SetScale(handle_2, Vector3(1.5, 1.5, 1.5));
+
+				}
+				effect_flag = false;
+			}
+			else if (StatusManager::Instance().GetCombo() == 3 && animation_count == 2) {
+				if (direction_state_mode == Direction_State::RIGHT) {
+					handle_3 = DX12Effect.Play(Sword_Effect_3);
+					DX12Effect.SetPosition(handle_3, Vector3(6, -7, 0));
+					DX12Effect.SetSpeed(handle_3, 1.5f);
+				}
+
+				if (direction_state_mode == Direction_State::LEFT) {
+					handle_3 = DX12Effect.Play(Sword_Effect_3);
+					DX12Effect.SetPosition(handle_3, Vector3(-7, -9, -2));
+					DX12Effect.SetSpeed(handle_3, 1.5f);
+					DX12Effect.SetRotation(handle_3, Vector3(0, XMConvertToRadians(180), 0));
+					DX12Effect.SetScale(handle_3, Vector3(1.5, 1.5, 1.5));
+				}
+				effect_flag = false;
+			}
+		}
 	}
 }
 

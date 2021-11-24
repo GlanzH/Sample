@@ -164,11 +164,33 @@ private:
 		MOTION_MAX
 	};
 
+
+	//入力受付時間までの時間 & エフェクト表示までの時間
+	bool  input_wait_flag = false;
+	float input_wait_time = 0.0f;
+	float input_wait_time_max[3]{ 0.433f,0.05f,0.2f };//(3回目はエフェクト表示のみ)
+	int   input_wait_count = 0;
+
 	//入力受付時間
+	bool  input_flag = false;
 	float input_time = 0.0f;
 	float input_time_max[2]{ 0.633f, 0.8f };
 	int   input_count = 0;
 
+	//エフェクト表示
+	bool effect_flag = false;
+	
+	//アニメーションを出す時間
+	bool  animation_flag = false;
+	float animation_time = 0.0f;
+	float animation_time_max[3]{ 0.967f,0.850f,0.583f };
+	int   animation_count = 0;
+
+	//最初の攻撃のフラグ
+	bool first_attack_flag = false;
+
+	//連撃攻撃
+	bool attack_next_flag = false;
 
 	//攻撃の向き
 	enum Direction_State
