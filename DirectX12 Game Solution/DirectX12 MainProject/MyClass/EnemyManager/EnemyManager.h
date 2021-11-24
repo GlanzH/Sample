@@ -46,9 +46,9 @@ private:
 	int frame = 0;
 	int timer = 0;
 
-	enum {MAX_FRAME = 60};
+	enum Frame {MAX_FRAME = 60};
 
-	enum LoadFile { DUMMY_LINE = 4, ENEMY_NUM = 250 };
+	enum LoadFile  { DUMMY_LINE = 4, ENEMY_NUM = 250 };
 
 	int count = 0;                   //!敵の累計出現数カウント 
 	std::string  tag[ENEMY_NUM];          //!敵の種類         

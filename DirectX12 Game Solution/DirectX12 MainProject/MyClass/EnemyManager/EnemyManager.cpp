@@ -129,3 +129,4 @@ void EnemyManager::LoadEnemyArrangement() {
 		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> appear_time[i] >> destract_num[i];
 	}
 }
+

@@ -12,32 +12,18 @@ public:
 	int Update(PlayerManager* player, const float deltaTime) override;
 
 private:
-	void Jump(PlayerManager* player, const float deltaTime);
+	void Move  (PlayerManager* player, const float deltaTime);
+	void Rotate(PlayerManager* player, const float deltaTime);
+	void Jump(const float deltaTime);
 
-	bool rush_flag = false;
-	char  count = 0;
-
-	const float fit_collision_y    = 4.0f;
-	const float stop_enemy_pos     = 20.0f;
+	const float fit_collision_y    =   4.0f;
 	const float ground_collision_y = 100.0f;
 	
-	const int stop_count = 120;
-	const int accel_num  = 5;
 	//ジャンプしてるかのフラグ。
 	bool jump_flag = true;
 	float jump_time = 0.0f;
-	float jump_start_y ;
-	//1/2
-	const float half = 0.5f;
-	//重力加速度
-	const float gravity = 120.0f;
-	//初速
-	const float fastspeed = 10.0f;
-	/*void SetAnimesion(DX9::SKINNEDMODEL& model, const int enabletack);
-	enum ENEMYMOSION
-	{
-		DAMAGE,
-		WAIT,
-		MAX_MOSION
-	};*/
+
+	const float jump_power = -0.1f;
+	const float jump_speed = 10.0f;
+	const float gravity	   = 9.80665f;
 };
