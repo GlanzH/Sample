@@ -131,7 +131,7 @@ namespace DX9 {
 		void SetTrackPosition(const UINT track, const double position) const
 		{ m_animationController->SetTrackPosition(track, position); }
 
-		//void SetTrackLoopMode(const UINT track, const D3DXPLAYBACK_TYPE loopType) const;
+		void SetTrackLoopMode(const UINT track, const D3DXPLAYBACK_TYPE loopType) const;
 
 		void ChangeAnimation(
 			const UINT track1, const UINT track2,
