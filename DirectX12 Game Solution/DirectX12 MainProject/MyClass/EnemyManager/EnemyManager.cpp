@@ -8,16 +8,16 @@
 EnemyManager::EnemyManager()
 {
 	//!“Ç‘O‚Ì“G‚Ì‰Šú‰»
+	enemy = {};
+
 	for (int i = 0; i < ENEMY_NUM; ++i) {
 		tag[i] = "";
-		appear_pos[i]   = SimpleMath::Vector3(DBL_MAX,DBL_MAX,DBL_MAX);
-		appear_time[i]  = DBL_MAX;
+		appear_pos[i]   = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
+		appear_time[i]  = INT_MAX;
 		destract_num[i] = INT_MAX;
 		appear_flag[i]  = false;
 	}
-
 	LoadEnemyArrangement();
-	enemy = {};
 }
 
 EnemyManager::~EnemyManager() {
@@ -44,8 +44,15 @@ int EnemyManager::Update(PlayerManager* player, const float deltaTime)
 
 	Iterator(player_data,delta);
 
+	if (frame < MAX_FRAME)
+		++frame;
+	else {
+		frame = 0;
+		++timer;
+	}
+
 	if (count < ENEMY_NUM) {
-		if (AppearTimer() > appear_time[count] || dead_enemy_count >= destract_num[count]) {
+		if (timer > appear_time[count] || dead_enemy_count >= destract_num[count]) {
 			Generator();
 			count++;
 		}
@@ -120,7 +127,7 @@ void EnemyManager::LoadEnemyArrangement() {
 	std::string dummy_line;
 
 	//! 1`3s‚ğ“Ç‚İ”ò‚Î‚µ
-	for (int i = 0; i < DUMMY_LINE; i++) {
+	for (int i = 0; i < DUMMY_LINE; ++i) {
 		getline(pos_time_infile, dummy_line);
 	}
 
