@@ -10,14 +10,14 @@ EnemyManager::EnemyManager()
 	//!“Ç‘O‚Ì“G‚Ì‰Šú‰»
 	enemy = {};
 
+
 	for (int i = 0; i < ENEMY_NUM; ++i) {
-		tag[i] = "";
+		tag[i]          = INT_MAX;
 		appear_pos[i]   = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 		appear_time[i]  = INT_MAX;
 		destract_num[i] = INT_MAX;
 		appear_flag[i]  = false;
 	}
-	LoadEnemyArrangement();
 }
 
 EnemyManager::~EnemyManager() {
@@ -31,6 +31,7 @@ bool EnemyManager::Initialize()
 	DX12Effect.Initialize();
 	effect = ResourceManager::Instance().LoadEffect(L"Effect//EnemySampleEffect//enemy_hit.efk");
 
+	LoadEnemyArrangement();
 	return true;
 }
 
