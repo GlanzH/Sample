@@ -21,11 +21,10 @@ int HighSlime::Update(PlayerManager* player, const float deltaTime)
 void HighSlime::Move(PlayerManager* player, const float deltaTime) {
     float player_pos = player->GetModel()->GetPosition().x;
 
-    if (player_pos < position.x) {
-        position.x -= 5.0f * deltaTime;
-    }
+    if (player_pos < position.x)
+        position.x -= move_speed * deltaTime;
     else
-        position.x += 5.0f * deltaTime;
+        position.x += move_speed * deltaTime;
 }
 
 void HighSlime::Rotate(PlayerManager* player, const float deltaTime) {
@@ -34,14 +33,8 @@ void HighSlime::Rotate(PlayerManager* player, const float deltaTime) {
 
     float now_rotate = model->GetRotation().y;
     float rotation = MathHelper_Atan2(-(player_pos.z - position.z), (player_pos.x - position.x)) - 45.0f;
-    
 
-    if (now_rotate > rotation)
-        now_rotate += 1.0f;
-    else
-        now_rotate -= 1.f;
-
-    model->SetRotation(0.0f,now_rotate, 0.0f);
+    model->SetRotation(0.0f,rotation, 0.0f);
 }
 
 void HighSlime::Jump(const float deltaTime)

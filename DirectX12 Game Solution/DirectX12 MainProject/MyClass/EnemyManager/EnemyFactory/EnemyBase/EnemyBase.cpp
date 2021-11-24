@@ -18,13 +18,13 @@ bool EnemyBase::Initialize(SimpleMath::Vector3 speed, int hp)
 void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
 	position = initial_position;
 
-	model = DX9::Model::CreateFromFile(DXTK->Device9, model_name);
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
 	model->SetPosition(position);
 	model->SetRotation(0.0f, XMConvertToRadians(90.0f), 0.0f);
 
 
 	//¡‰ñ‚Íƒ‚ƒfƒ‹‚ª‹É’[‚É¬‚³‚­‚È‚Á‚Ä‚µ‚Ü‚Á‚½‚ç‚µ‚¢‚Ì‚ÅA‘å‚«‚­‚·‚é
-	//model->SetScale(225.0f);
+	//model->SetScale(0.3f);
 
 	//” ‚ðì‚é€”õ
 	box = model->GetBoundingBox();

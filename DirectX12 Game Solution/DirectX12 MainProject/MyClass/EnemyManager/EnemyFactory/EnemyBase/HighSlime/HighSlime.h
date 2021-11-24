@@ -17,12 +17,12 @@ private:
 	void Jump(const float deltaTime);
 
 	const float fit_collision_y    =   4.0f;
-	const float ground_collision_y = 100.0f;
 	
 	//ジャンプしてるかのフラグ。
 	bool jump_flag = true;
 	float jump_time = 0.0f;
 
+	const float move_speed =  5.0f;
 	const float jump_power = -0.1f;
 	const float jump_speed = 10.0f;
 	const float gravity	   = 9.80665f;
