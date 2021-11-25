@@ -1,13 +1,13 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 #include "StoneStatue.h"
-#include"MyClass/ResourceManager/ResourceManager.h"
+
 
 bool StoneStatue::Initialize()
 {
-	attack      = ResourceManager::Instance().LoadEffect(L"Effect//shoot//shoot.efk");
-	charge      = ResourceManager::Instance().LoadEffect(L"Effect//charge//charge.efk");;
-	landing     = ResourceManager::Instance().LoadEffect(L"Effect//landing//landing.efk");;
+	attack      = DX12Effect.Create(L"Effect//shoot//shoot.efk");
+	charge      = DX12Effect.Create(L"Effect//charge//charge.efk");;
+	landing     = DX12Effect.Create(L"Effect//landing//landing.efk");;
 	wait_count = 0;
 	attack_efk_flg  = false;
 	charge_efk_flg  = false;
@@ -16,7 +16,7 @@ bool StoneStatue::Initialize()
 	return false;
 }
 
-int StoneStatue::Update(PlayerManager* player, const float deltaTime) {
+int StoneStatue::Update(PlayerBase* player, const float deltaTime) {
 	 player_pos = player->GetModel()->GetPosition();
 
 	//SetAnimesion(model, CHARGE);

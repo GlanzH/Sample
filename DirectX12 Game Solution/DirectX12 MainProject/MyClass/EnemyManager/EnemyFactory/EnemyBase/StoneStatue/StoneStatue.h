@@ -9,7 +9,7 @@ public:
 	StoneStatue()  {}
 	~StoneStatue() {}
 	bool Initialize();
-	int Update(PlayerManager* player, const float deltaTime) override;
+	int Update(PlayerBase* player, const float deltaTime) override;
 	void Attck(const float deltaTime);
 	
 	
