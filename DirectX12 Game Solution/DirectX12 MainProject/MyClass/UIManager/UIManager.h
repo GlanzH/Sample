@@ -19,4 +19,6 @@ public:
 private:
 	DX9::SPRITE volt_empty;
 	DX9::SPRITE volt_max;
+	DX9::SPRITE sword_empty;
+	DX9::SPRITE sword_max;
 };

@@ -7,7 +7,6 @@
 #include "Scene.h"
 #include "MyClass/GroundManager/GroundManager.h"
 #include "MyClass/CameraManager/CameraManager.h"
-#include "MyClass/TextManager/TextManager.h"
 #include "MyClass/PlayerManager/PlayerManager.h"
 #include "MyClass/EnemyManager/EnemyManager.h"
 #include "MyClass/Observer/Observer.h"
@@ -51,7 +50,6 @@ private:
 
 	GroundManager  ground;
 	CameraManager  camera;
-	TextManager	   text;
 	PlayerBase*    player;
 	EnemyManager*  enemy;
 	Observer*      observer;

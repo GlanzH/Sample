@@ -91,7 +91,6 @@ void DX12Effekseer::CEffekseer::Update(const float deltaTime)
 {
 	m_manager->Update();
 	m_renderer->SetTime(deltaTime);
-
 }
 
 /**
@@ -123,108 +122,126 @@ void DX12Effekseer::CEffekseer::SetCamera(DX12::CAMERA camera)
 }
 
 /**
-	@brief	エフェクトの再生
+	@brief	エフェクトのループ再生
 	@param	effectName エフェクト名
-	@return ハンドル番号
 */
-Effekseer::Handle DX12Effekseer::CEffekseer::Play(EFFECT effectName)
+void DX12Effekseer::CEffekseer::Play(std::string effectName)
 {
-	EFFECTHANDLE handle = m_manager->Play(effectName, 0, 0, 0);
+	if (m_handles[effectName] == NULL) 
+	{
+		m_handles[effectName] = m_manager->Play(m_effects[effectName], 0, 0, 0);
+	}
+	
+	if (!m_manager->Exists(m_handles[effectName]))
+	{
+		m_handles[effectName] = m_manager->Play(m_effects[effectName], 0, 0, 0);
+	}	
+}
 
-	return handle;
+/**
+	@brief	エフェクト一度だけ再生
+	@param	effectName エフェクト名
+*/
+void DX12Effekseer::CEffekseer::PlayOneShot(std::string effectName)
+{
+	if (m_handles[effectName] == NULL)
+	{
+		m_handles[effectName] = m_manager->Play(m_effects[effectName], 0, 0, 0);
+	}
 }
 
 /**
 	@brief	エフェクトの停止
-	@param	handleName ハンドル番号
+	@param	effectName エフェクト名
 */
-void DX12Effekseer::CEffekseer::Stop(EFFECTHANDLE handleName)
+void DX12Effekseer::CEffekseer::Stop(std::string effectName)
 {
-	m_manager->StopEffect(handleName);
+	m_manager->StopEffect(m_handles[effectName]);
 }
 
 /**
 	@brief	エフェクトの一時停止　再生
-	@param	handleName ハンドル番号
+	@param	effectName エフェクト名
 */
-void DX12Effekseer::CEffekseer::Pause(EFFECTHANDLE handleName)
+void DX12Effekseer::CEffekseer::Pause(std::string effectName)
 {
-	auto flag = m_manager->GetPaused(handleName);
-	m_manager->SetPaused(handleName, !flag);
+	auto flag = m_manager->GetPaused(m_handles[effectName]);
+	m_manager->SetPaused(m_handles[effectName], !flag);
+	m_manager->SetShown(m_handles[effectName], flag);
 }
 
 /**
 	@brief	エフェクトのポジション変更
-	@param	handleName		ハンドル番号
+	@param	effectName エフェクト名
 	@param	effectPosition	ポジション
 */
-void DX12Effekseer::CEffekseer::SetPosition(EFFECTHANDLE handleName,Vector3 effectPosition)
+void DX12Effekseer::CEffekseer::SetPosition(std::string effectName,Vector3 effectPosition)
 {
 	Effekseer::Vector3D position = Effekseer::Vector3D(effectPosition.x, effectPosition.y, effectPosition.z);
-	m_manager->SetLocation(handleName, position);
+	m_manager->SetLocation(m_handles[effectName], position);
 
 }
 
 /**
 	@brief	エフェクトを移動させる
-	@param	handleName	ハンドル番号
+	@param	effectName エフェクト名
 	@param	position	ポジション
 */
-void DX12Effekseer::CEffekseer::MoveEffect(EFFECTHANDLE handleName, Vector3 position)
+void DX12Effekseer::CEffekseer::MoveEffect(std::string effectName, Vector3 position)
 {
 	Effekseer::Vector3D pos = Effekseer::Vector3D(position.x, position.y, position.z);
-	m_manager->AddLocation(handleName, pos);
+	m_manager->AddLocation(m_handles[effectName], pos);
 }
 
 /**
 	@brief	エフェクトを回転させる
-	@param	handleName	ハンドル番号
+	@param	effectName エフェクト名
 	@param	rotation	ローテーション
 */
-void DX12Effekseer::CEffekseer::SetRotation(EFFECTHANDLE handleName, Vector3 rotation)
+void DX12Effekseer::CEffekseer::SetRotation(std::string effectName, Vector3 rotation)
 {
-	m_manager->SetRotation(handleName, rotation.x, rotation.y, rotation.z);
+	m_manager->SetRotation(m_handles[effectName], rotation.x, rotation.y, rotation.z);
 }
 
 /**
 	@brief	エフェクトのスケール変更
-	@param	handleName	ハンドル番号
+	@param	effectName エフェクト名
 	@param	scale		拡大率
 */
-void DX12Effekseer::CEffekseer::SetScale(EFFECTHANDLE handleName, Vector3 scale)
+void DX12Effekseer::CEffekseer::SetScale(std::string effectName, Vector3 scale)
 {
-	m_manager->SetScale(handleName, scale.x, scale.y, scale.z);
+	m_manager->SetScale(m_handles[effectName], scale.x, scale.y, scale.z);
 }
 
 /**
 	@brief	エフェクトを特定の位置まで動かす
-	@param	handleName	ハンドル番号
+	@param	effectName エフェクト名
 	@param	position	ポジション
 */
-void DX12Effekseer::CEffekseer::SetTarget(EFFECTHANDLE handleName, Vector3 position)
+void DX12Effekseer::CEffekseer::SetTarget(std::string effectName, Vector3 position)
 {
 	Effekseer::Vector3D pos = Effekseer::Vector3D(position.x, position.y, position.z);
-	m_manager->SetTargetLocation(handleName, pos);
+	m_manager->SetTargetLocation(m_handles[effectName], pos);
 }
 
 /**
 	@brief	エフェクトの再生速度を取得する
-	@param	handleName	ハンドル番号
+	@param	effectName エフェクト名
 	@return 再生速度
 */
-float DX12Effekseer::CEffekseer::GetSpeed(EFFECTHANDLE handleName)
+float DX12Effekseer::CEffekseer::GetSpeed(std::string effectName)
 {
-	return m_manager->GetSpeed(handleName);
+	return m_manager->GetSpeed(m_handles[effectName]);
 }
 
 /**
 	@brief	エフェクトの再生速度を変更する
-	@param	handleName	ハンドル番号
+	@param	effectName エフェクト名
 	@param	float		再生速度
 */
-void DX12Effekseer::CEffekseer::SetSpeed(EFFECTHANDLE handleName , float speed)
+void DX12Effekseer::CEffekseer::SetSpeed(std::string effectName, float speed)
 {
-	m_manager->SetSpeed(handleName, speed);
+	m_manager->SetSpeed(m_handles[effectName], speed);
 }
 
 /**
@@ -232,9 +249,10 @@ void DX12Effekseer::CEffekseer::SetSpeed(EFFECTHANDLE handleName , float speed)
 	@param	fileName	ファイル名
 	@return	エフェクト
 */
-Effekseer::Effect* DX12Effekseer::CEffekseer::Create(LPCWSTR fileName)
+Effekseer::Effect* DX12Effekseer::CEffekseer::Create(LPCWSTR fileName, std::string name)
 {
-	Effekseer::Effect* effect = Effekseer::Effect::Create(m_manager, (const EFK_CHAR*)fileName, 1.0f);
+	EFFECT effect = Effekseer::Effect::Create(m_manager, (const EFK_CHAR*)fileName, 1.0f);
+	m_effects[name] = effect;
 
 	return effect;
 }

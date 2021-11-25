@@ -5,16 +5,11 @@
 
 bool StoneStatue::Initialize()
 {
-	attack      = DX12Effect.Create(L"Effect//shoot//shoot.efk");
-	charge      = DX12Effect.Create(L"Effect//charge//charge.efk");;
-	landing     = DX12Effect.Create(L"Effect//landing//landing.efk");;
+	DX12Effect.Create(L"Effect//shoot//shoot.efk","shoot");
+	DX12Effect.Create(L"Effect//charge//charge.efk","charge");
+	DX12Effect.Create(L"Effect//landing//landing.efk","landing");
 	wait_count = 0;
-    
-	attack_efk_flg  = false;
-	charge_efk_flg  = false;
-	landing_efk_flg = false;
-
-	return false;
+	return true;
 }
 
 int StoneStatue::Update(PlayerBase* player, const float deltaTime) {
@@ -38,16 +33,12 @@ void StoneStatue::Attck(const float deltaTime)
 	{
 	case stone::CHARGE:
 
-		if (!charge_efk_flg)
-		{
-			DX12Effect.SetPosition(charge_h, position);
-			charge_h = DX12Effect.Play(charge);
-			charge_efk_flg = true;
-		}
-		else
-		{
+		DX12Effect.SetPosition("charge", position);
+		DX12Effect.PlayOneShot("charge");
+		//else
+		//{
 			wait_count +=deltaTime;
-		}
+		//}
 		if (wait_count ==1)
 		{
 			stone::ATTACK;
@@ -57,12 +48,10 @@ void StoneStatue::Attck(const float deltaTime)
 
 		wait_count = 0;
 		wait_count++;
-		if (!attack_efk_flg)
-		{
-			DX12Effect.SetPosition(attack_h, position);
-			attack_h = DX12Effect.Play(attack);
-			attack_efk_flg = true;
-		}
+
+		DX12Effect.SetPosition("shoot", position);
+		DX12Effect.PlayOneShot("shoot");
+	
 		if (wait_count ==150)
 		{
 			stone::WAIT;
@@ -70,23 +59,16 @@ void StoneStatue::Attck(const float deltaTime)
 		break;
 	case stone::WAIT:
 		wait_count = 0;
-		if (!landing_efk_flg)
-		{
-			DX12Effect.SetPosition(landing_h, position);
-			landing_h = DX12Effect.Play(landing);
-			landing_efk_flg = true;
+			DX12Effect.SetPosition("landing", position);
+			DX12Effect.PlayOneShot("landing");
 			wait_count++;
 			if (wait_count == 600)
 			{
 				stone::INIT;
 			}
-		}
 		break;
 	case stone::INIT:
 		wait_count = 0;
-		charge_efk_flg  = false;
-		attack_efk_flg  = false;
-		landing_efk_flg = false;
 		stone::CHARGE;
 		break;
 	default:
