@@ -1,6 +1,6 @@
 #include "CameraManager.h"
 
-#include "MyClass/PlayerManager/PlayerManager.h"
+#include "MyClass/PlayerManager/PlayerBase/PlayerBase.h"
 
 bool CameraManager::Initialize() {
 	//ƒJƒƒ‰‚ÌˆÊ’u
@@ -19,7 +19,7 @@ void CameraManager::LoadAsset() {
 
 }
 
-int CameraManager::Update(PlayerManager* player) {
+int CameraManager::Update(PlayerBase* player) {
 	auto pos = player->GetModel()->GetPosition();
 	camera->SetPosition(pos.x,fixed_pos, - fixed_pos);
 	return 0;

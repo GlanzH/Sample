@@ -52,7 +52,7 @@ private:
 	GroundManager  ground;
 	CameraManager  camera;
 	TextManager	   text;
-	PlayerManager* player;
+	PlayerBase*    player;
 	EnemyManager*  enemy;
 	Observer*      observer;
 	StatusManager* status;

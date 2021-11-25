@@ -41,7 +41,7 @@ private:
 
 	DirectX::SimpleMath::Vector3 speed;
 
-	LPCWSTR enemy_model[2];
+	LPCWSTR enemy_model[3];
 	LPCWSTR model_name;
 	/**
 Å@Å@* @enum EnemyType
