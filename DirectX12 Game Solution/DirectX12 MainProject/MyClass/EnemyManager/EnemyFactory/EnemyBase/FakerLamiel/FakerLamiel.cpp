@@ -2,7 +2,7 @@
 #include "Base/dxtk.h"
 #include "FakerLamiel.h"
 
-int FakerLamiel::Update( PlayerManager* player, const float deltaTime) {
+int FakerLamiel::Update( PlayerBase* player, const float deltaTime) {
 	Move(player,deltaTime);
 	/*SetAnimesion(model, WAIT);
 
@@ -14,7 +14,7 @@ int FakerLamiel::Update( PlayerManager* player, const float deltaTime) {
 	return LIVE;
 }
 
-void FakerLamiel::Move(PlayerManager* player, const float deltaTime) {
+void FakerLamiel::Move(PlayerBase* player, const float deltaTime) {
 	float player_pos = player->GetModel()->GetPosition().x;
 
 	

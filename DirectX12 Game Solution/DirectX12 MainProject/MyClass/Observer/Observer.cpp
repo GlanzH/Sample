@@ -1,11 +1,11 @@
 #include "MyClass/Observer/Observer.h"
 
-int Observer::Update(PlayerManager* player, EnemyManager* enemy) {
+int Observer::Update(PlayerBase* player, EnemyManager* enemy) {
 	CollisionDetection(player, enemy);
 	return 0;
 }
 
-void Observer::CollisionDetection(PlayerManager* player, EnemyManager* enemy) {
+void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy) {
 	//プレイヤー・敵当たり判定
 	for (auto enemies_roop : enemy->GetEnemy()) {
 		if (player->IsAttack()) {

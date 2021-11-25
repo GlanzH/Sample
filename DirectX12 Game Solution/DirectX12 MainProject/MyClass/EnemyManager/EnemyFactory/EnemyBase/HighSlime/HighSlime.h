@@ -9,10 +9,10 @@ public:
 	HighSlime()  {}
 	~HighSlime() {}
 
-	int Update(PlayerManager* player, const float deltaTime) override;
+	int Update(PlayerBase* player, const float deltaTime) override;
 
 private:
-	void Jump(PlayerManager* player, const float deltaTime);
+	void Jump(PlayerBase* player, const float deltaTime);
 
 	bool rush_flag = false;
 	char  count = 0;

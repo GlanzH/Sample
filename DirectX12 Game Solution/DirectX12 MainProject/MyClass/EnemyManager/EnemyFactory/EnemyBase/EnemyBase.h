@@ -2,7 +2,7 @@
 
 #include "MyClass/GroundManager/GroundManager.h"
 #include"MyClass/EnumManager/EnumManager.h"
-#include "MyClass/PlayerManager/PlayerManager.h"
+#include "MyClass/PlayerManager/PlayerBase/PlayerBase.h"
 
 using namespace DirectX;
 
@@ -14,7 +14,7 @@ public:
 
 	bool Initialize(SimpleMath::Vector3 speed,int hp);
 	void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
-	virtual int Update(PlayerManager* player, const float deltaTime) = 0;
+	virtual int Update(PlayerBase* player, const float deltaTime) = 0;
 	void Render();
 
 	void Retreat();

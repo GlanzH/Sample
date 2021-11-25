@@ -33,7 +33,7 @@ bool EnemyManager::Initialize()
 	return true;
 }
 
-int EnemyManager::Update(PlayerManager* player, const float deltaTime)
+int EnemyManager::Update(PlayerBase* player, const float deltaTime)
 {
 	for (auto& enemies : enemy) {
 		enemies->Update(player,deltaTime);
@@ -51,7 +51,7 @@ int EnemyManager::Update(PlayerManager* player, const float deltaTime)
 	return 0;
 }
 
-void EnemyManager::Iterator(PlayerManager* player, const float deltaTime) {
+void EnemyManager::Iterator(PlayerBase* player, const float deltaTime) {
 	auto itr = enemy.begin();
 
 	while (itr != enemy.end())

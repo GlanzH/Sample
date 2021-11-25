@@ -11,7 +11,7 @@ bool Slime::Initialize()
 	return true;
 }
 
-int Slime::Update(PlayerManager* player, const float deltaTime) {
+int Slime::Update(PlayerBase* player, const float deltaTime) {
 	Move(player,deltaTime);
 	/*SetAnimesion(model, WAIT);*/
 
@@ -23,7 +23,7 @@ int Slime::Update(PlayerManager* player, const float deltaTime) {
 	return LIVE;
 }
 
-void Slime::Move(PlayerManager* player, const float deltaTime) {
+void Slime::Move(PlayerBase* player, const float deltaTime) {
 	float player_pos = player->GetModel()->GetPosition().x;
 
 	/*if (player_pos < position.x - stop_enemy_pos || player_pos > position.x + stop_enemy_pos) {

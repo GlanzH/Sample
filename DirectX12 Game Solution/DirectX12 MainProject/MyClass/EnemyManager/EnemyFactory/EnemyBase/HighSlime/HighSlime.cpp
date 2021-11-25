@@ -2,7 +2,7 @@
 #include "Base/dxtk.h"
 #include "HighSlime.h"
 
-int HighSlime::Update(PlayerManager* player, const float deltaTime) 
+int HighSlime::Update(PlayerBase* player, const float deltaTime) 
 {
 	
 	Jump(player,deltaTime);
@@ -16,7 +16,7 @@ int HighSlime::Update(PlayerManager* player, const float deltaTime)
 	return LIVE;
 }
 
-void HighSlime::Jump(PlayerManager* player, const float deltaTime)
+void HighSlime::Jump(PlayerBase* player, const float deltaTime)
 {
 	
 	float player_pos = player->GetModel()->GetPosition().x;

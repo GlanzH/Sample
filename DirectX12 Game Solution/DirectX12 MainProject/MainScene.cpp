@@ -9,7 +9,7 @@
 // Initialize member variables.
 MainScene::MainScene() : dx9GpuDescriptor{}
 {
-	player   = new PlayerManager;
+	player   = new PlayerBase;
 	enemy    = new EnemyManager;
 	observer = new Observer;
 }
@@ -129,7 +129,6 @@ void MainScene::Render()
 
 	//2D•`‰æ
 	text.Render2D();
-	player->_2DRender();
 
 	DX9::SpriteBatch->End();
 	DXTK->Direct3D9->EndScene();

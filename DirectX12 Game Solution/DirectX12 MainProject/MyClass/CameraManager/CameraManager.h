@@ -3,7 +3,7 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 
-class PlayerManager;
+class PlayerBase;
 
 using namespace DirectX;
 using namespace DX9;
@@ -16,7 +16,7 @@ public:
 
 	bool Initialize();
 	void LoadAsset();
-	int  Update(PlayerManager* player);
+	int  Update(PlayerBase* player);
 	void Render(SimpleMath::Vector3 player_position);
 
 private:
