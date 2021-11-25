@@ -15,6 +15,8 @@ bool PlayerBase::Initialize()
 
 	direction_state_mode = Direction_State::RIGHT;
 
+	under_attack_state_mode = UNDER_ATTACK_STATE::NOMAL;
+
 	return 0;
 }
 
@@ -252,14 +254,17 @@ void PlayerBase::Player_limit()
 void PlayerBase::Player_jump(const float deltaTime)
 {
 	//ジャンプ
+	
 	if (!parry_flag) {
-		if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
-			if (!jump_flag_) {
-				if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent[0].a) {
-					jump_flag_ = true;
-					jump_time_ = 0;
-					jump_start_v_ = model->Position.y;
+		if(under_attack_state_mode==UNDER_ATTACK_STATE::NOMAL){
+			if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
+				if (!jump_flag_) {
+					if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent[0].a) {
+						jump_flag_ = true;
+						jump_time_ = 0;
+						jump_start_v_ = model->Position.y;
 
+					}
 				}
 			}
 		}
@@ -281,156 +286,74 @@ void PlayerBase::Player_jump(const float deltaTime)
 
 void PlayerBase::Player_attack(const float deltaTime) {
 	//プレイヤー:攻撃
-	//if (!cool_time_flag_zwei) {
-	//	if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
-	//		if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
-	//			StatusManager::Instance().AddCombo(deltaTime);
-	//			count_time = 0.0f;
-	//			attack_flag = true;
-	//			if (IsAttack()) {
-	//				if (StatusManager::Instance().GetCombo() == 1) {
-	//					cool_time_flag_zwei = true;
-	//					if (appeal_state_mode != Appeal_state::FOCUS)
-	//						damage = 2;
-	//					else
-	//						damage = 2 * 2;
-	//					if (direction_state_mode == Direction_State::RIGHT) {
-	//						handle_1 = DX12Effect.Play(Sword_Effect_1);
-	//						DX12Effect.SetPosition(handle_1, Vector3(6, -7, 0));
-	//						DX12Effect.SetSpeed(handle_1, 1.0f);
-	//					}
+	if (!cool_time_flag_zwei) {
+		if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
+			if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
+				if (!first_attaack_flag) {
+					StatusManager::Instance().AddCombo(deltaTime);
+					first_attaack_flag = true;
+				}
+				under_attack_state_mode = UNDER_ATTACK_STATE::ATTACK;
 
-	//					if (direction_state_mode == Direction_State::LEFT) {
-	//						handle_1 = DX12Effect.Play(Sword_Effect_1);
-	//						DX12Effect.SetPosition(handle_1, Vector3(-7, -9, -2));
-	//						DX12Effect.SetSpeed(handle_1, 1.0f);
-	//						DX12Effect.SetRotation(handle_1, Vector3(0, XMConvertToRadians(180), 0));
-	//						DX12Effect.SetScale(handle_1, Vector3(1.5, 1.5, 1.5));
-
-	//					}
-	//				}
-	//				else if (StatusManager::Instance().GetCombo() == 2) {
-	//					//SetAnimation(model, ACT2);
-
-	//					cool_time_flag_zwei = true;
-	//					if (appeal_state_mode != Appeal_state::FOCUS)
-	//						damage = 3;
-	//					else
-	//						damage = 3 * 2;
-
-
-	//					if (direction_state_mode == Direction_State::RIGHT) {
-	//						handle_2 = DX12Effect.Play(Sword_Effect_2);
-	//						DX12Effect.SetPosition(handle_2, Vector3(6, -7, 0));
-	//						DX12Effect.SetSpeed(handle_2, 1.0f);
-	//					}
-
-	//					if (direction_state_mode == Direction_State::LEFT) {
-	//						handle_2 = DX12Effect.Play(Sword_Effect_2);
-	//						DX12Effect.SetPosition(handle_2, Vector3(-7, -9, -2));
-	//						DX12Effect.SetSpeed(handle_2, 1.0f);
-	//						DX12Effect.SetRotation(handle_2, Vector3(0, XMConvertToRadians(180), 0));
-	//						DX12Effect.SetScale(handle_2, Vector3(1.5, 1.5, 1.5));
-
-	//					}
-
-	//				}
-	//				else if (StatusManager::Instance().GetCombo() == 3) {
-	//					//SetAnimation(model, ACT3);
-	//					cool_time_flag_zwei = true;
-	//					if (appeal_state_mode != Appeal_state::FOCUS)
-	//						damage = 5;
-	//					else
-	//						damage = 5 * 2;
-
-	//					if (direction_state_mode == Direction_State::RIGHT) {
-	//						handle_3 = DX12Effect.Play(Sword_Effect_3);
-	//						DX12Effect.SetPosition(handle_3, Vector3(6, -7, 0));
-	//						DX12Effect.SetSpeed(handle_3, 1.5f);
-	//					}
-
-	//					if (direction_state_mode == Direction_State::LEFT) {
-	//						handle_3 = DX12Effect.Play(Sword_Effect_3);
-	//						DX12Effect.SetPosition(handle_3, Vector3(-7, -9, -2));
-	//						DX12Effect.SetSpeed(handle_3, 1.5f);
-	//						DX12Effect.SetRotation(handle_3, Vector3(0, XMConvertToRadians(180), 0));
-	//						DX12Effect.SetScale(handle_3, Vector3(1.5, 1.5, 1.5));
-
-	//					}
-
-	//				}
-
-	//			}
-	//		
-	//		}
-	//	}
-	//}
-	//if (cool_time_flag_zwei) {
-	//	cool_time_zwei += deltaTime;
-	//	if (cool_time_zwei >= cool_time_max_zwei[count]) {
-	//		cool_time_zwei = 0.0f;
-	//		count++;
-	//		cool_time_flag_zwei = false;
-	//	}
-	//}
-
-	//count_time += deltaTime;
-	//if (count >= 3 || count_time > count_time_max) {
-	//	count = 0;
-	//	count_time = 0.0f;
-	//}
-
-	if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
-		if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
-			if (!first_attaack_flag) {
-				StatusManager::Instance().AddCombo(deltaTime);
-				first_attaack_flag = true;
+				if (StatusManager::Instance().GetCombo() == 1);
+				else if (StatusManager::Instance().GetCombo() == 2);
+				else if (StatusManager::Instance().GetCombo() == 3);
 			}
-
-			if (StatusManager::Instance().GetCombo() == 1);
-			else if (StatusManager::Instance().GetCombo() == 2);
-			else if (StatusManager::Instance().GetCombo() == 3);
 		}
 	}
-
-
 	if (StatusManager::Instance().GetCombo() == 1) {
-		motion_time += deltaTime;
+		motion_time_start_flag = true;
 		SetAnimation(model, ACT1);
 	}
-
-
-
-
 	if (StatusManager::Instance().GetCombo() == 2) {
-		motion_time += deltaTime;
+		motion_time_start_flag = true;
 		SetAnimation(model, ACT2);
 	}
-
 	if (StatusManager::Instance().GetCombo() == 3) {
+		motion_time_start_flag = true;
 		SetAnimation(model, ACT3);
 	}
-
-	if (motion_time < motion_time_max[motion_count]) {
-		if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
-			motion_attack_flag= true;
+	if (motion_time_start_flag == true) {
+		motion_time += deltaTime;
+	}
+	if (!motion_attack_flag) {
+		if (motion_time >= 0.1f && motion_time < motion_time_max[motion_count]) {
+			if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
+				motion_attack_flag = true;
+			}
 		}
-
+	} else {
+		if (motion_time >= motion_time_max[motion_count]) {
+			StatusManager::Instance().AddCombo(deltaTime);
+			motion_time = 0.0f;
+			motion_time_start_flag = false;
+			motion_attack_flag = false;
+			motion_count++;
+			if (StatusManager::Instance().GetCombo() == 3) {
+				cool_time_flag_zwei = true;
+			}
+		}
 	}
-
-	if (motion_time >= motion_time_max[motion_count] && motion_attack_flag == true) {
-		StatusManager::Instance().AddCombo(deltaTime);
-		motion_time = 0.0f;
-		motion_attack_flag = false;
-		motion_count++;
-
+	if (cool_time_flag_zwei == true) {
+		cool_time_zwei += deltaTime;
 	}
-
+	if (cool_time_zwei >= cool_time_max_zwei) {
+		first_attaack_flag = false;
+		cool_time_flag_zwei = false;
+		cool_time_zwei = 0.0f;
+	}
 	if (motion_count >= 3) {
 		motion_count = 0;
 		first_attaack_flag = false;
-	}
+		under_attack_state_mode = UNDER_ATTACK_STATE::NOMAL;
 
+	}
+	if (motion_time >= motion_time_max[motion_count] || StatusManager::Instance().GetCombo() == 0) {
+		motion_time = 0.0f;
+		motion_count = 0;
+		under_attack_state_mode = UNDER_ATTACK_STATE::NOMAL;
+		first_attaack_flag = false;
+	}
 }
 
 
@@ -469,5 +392,35 @@ void PlayerBase::Appeal(const float deltaTime)
 			appeal_state_mode = Appeal_state::NORMAL;
 		}
 	}
+
+
+}
+
+void PlayerBase::_2DRender()
+{
+	DX9::SpriteBatch->DrawString(font.Get(),
+		SimpleMath::Vector2(1000.0f, 30.0f),
+		DX9::Colors::BlueViolet,
+		L"%d", motion_count
+	);
+
+	DX9::SpriteBatch->DrawString(font.Get(),
+		SimpleMath::Vector2(1000.0f, 50.0f),
+		DX9::Colors::BlueViolet,
+		L"%f", motion_time
+	);
+
+	DX9::SpriteBatch->DrawString(font.Get(),
+		SimpleMath::Vector2(1000.0f, 70.0f),
+		DX9::Colors::BlueViolet,
+		L"%d", StatusManager::Instance().GetCombo()
+	);
+
+	DX9::SpriteBatch->DrawString(font.Get(),
+		SimpleMath::Vector2(1000.0f, 90.0f),
+		DX9::Colors::BlueViolet,
+		L"%f", cool_time_zwei
+	);
+
 
 }

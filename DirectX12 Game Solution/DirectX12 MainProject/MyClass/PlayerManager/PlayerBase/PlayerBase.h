@@ -33,7 +33,7 @@ public:
 
 	int GetDamage() { return damage; }
 
-
+	void _2DRender();
 
 
 private:
@@ -134,7 +134,7 @@ private:
 	//攻撃のクールタイム
 	bool cool_time_flag_zwei = false;
 	float cool_time_zwei = 0.0f;
-	float cool_time_max_zwei[3]{ 0.2f,0.4f,0.3f };
+	float cool_time_max_zwei = 1.0f;
 	int count = 0;
 
 	bool  count_flag = false;
@@ -146,12 +146,23 @@ private:
 
 	//攻撃-カウント-フラグ
 	//モーション
+	bool motion_time_start_flag = false;
+
 	bool motion_attack_flag = false;
 
 	float motion_time = 0.0f;
-	float motion_time_max[3]{ 2.0f,2.0f,2.0f };
+	float motion_time_max[3]{ 0.9f,0.9f,0.9f };
 	int   motion_count = 0;
 
+	//攻撃中　ジャンプ不可
+
+	enum UNDER_ATTACK_STATE
+	{
+		NOMAL,
+		ATTACK
+	};
+
+	UNDER_ATTACK_STATE under_attack_state_mode;
 
 	//無敵時間
 	bool  invincible_flag = false;
