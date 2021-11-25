@@ -68,11 +68,15 @@ void StatusManager::DownVoltage(const float deltaTime) {
 }
 
 void StatusManager::ParryCount() {
-	parry++;
+	if (parry < 6.0f) {
+		parry++;
+	}
 	return;
 }
 
 void StatusManager::ParryReset() {
-	parry = 0.0f;
+	if (parry >= 5.0f) {
+		parry = 0.0f;
+	}
 	return;
 }
