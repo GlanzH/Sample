@@ -20,7 +20,7 @@ public:
 	void Retreat();
 	virtual void Damage(const float deltaTime,int damage);
 
-	DX9::MODEL& GetModel() { return model; }
+	DX9::SKINNEDMODEL& GetModel() { return model; }
 	BoundingBox GetBox()		  { return box; }
 
 private:
@@ -28,18 +28,18 @@ private:
 	GroundManager ground;
 	
 protected:
-	DX9::MODEL model;
+	DX9::SKINNEDMODEL model;
 	BoundingBox  box;
 	DX9::MODEL	 collision;
 	SimpleMath::Vector3  position;
 	SimpleMath::Vector3  enemy_speed;
 	int count = 0;
 	int enemy_hp;
-	void SetAnimesion(DX9::SKINNEDMODEL& model, const int enabletack);
+	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack);
 	enum ENEMYMOSION
 	{
-		DAMAGE,
 		WAIT,
-		MAX_MOSION
+		DAMAGE,
+		MAX_MOTION
 	};
 };

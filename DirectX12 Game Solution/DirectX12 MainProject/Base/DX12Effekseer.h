@@ -17,7 +17,7 @@
 #include <EffekseerRendererDX12.h>
 
 typedef DirectX::SimpleMath::Vector3 Vector3;
-typedef Effekseer::EffectRef EFFECT;
+typedef Effekseer::Effect* EFFECT;
 typedef Effekseer::Handle    EFFECTHANDLE;
 
 //------------------------------------------------------------------------------
@@ -38,12 +38,12 @@ namespace DX12Effekseer
 
 		bool Initialize();
 		void Reset();
-		void Update();
+		void Update(const float deltaTime);
 		void Renderer();
 
 		void SetCamera(DX12::CAMERA camera);
 
-		Effekseer::EffectRef Create(LPCWSTR fileName);
+		Effekseer::Effect* Create(LPCWSTR fileName);
 		Effekseer::Handle Play(EFFECT effectName);
 		void Stop(EFFECTHANDLE handleName);
 		void Pause(EFFECTHANDLE handleName);
@@ -60,10 +60,10 @@ namespace DX12Effekseer
 
 
 	private:
-		Effekseer::ManagerRef			m_manager;
-		EffekseerRenderer::RendererRef	m_renderer;
-		Effekseer::RefPtr<EffekseerRenderer::SingleFrameMemoryPool> m_sfMemoryPoolEfk;
-		Effekseer::RefPtr<EffekseerRenderer::CommandList>			m_commandListEfk;
+		Effekseer::Manager*			m_manager;
+		EffekseerRenderer::Renderer*	m_renderer;
+		EffekseerRenderer::SingleFrameMemoryPool* m_sfMemoryPoolEfk;
+		EffekseerRenderer::CommandList*			m_commandListEfk;
 
 	private:
 		CEffekseer();

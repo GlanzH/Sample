@@ -25,8 +25,8 @@ EnemyFactory::EnemyFactory()
 	/// Å@ãêëÂÇ»å√ë„ï∫äÌ   ///
     enemy_tag.push_back("B");
 	///@ìGÇÃÉÇÉfÉã@///
-  // enemy_model[SLIME]       = L"Model\\Enemy\\Slime\\slime.X";
-   enemy_model[HIGHSLIME]   = L"Model\\Enemy\\HighSlime\\haisuraimu_02.X";
+     enemy_model[SLIME]       = L"Model\\Enemy\\Slime\\slime_blue.X";
+	 enemy_model[HIGHSLIME]   = L"Model\\Enemy\\HighSlime\\slime_animatinonv02.X";
   // enemy_model[FAKERLAMIEL] = L"Model\\Enemy\\slime.X";
   // enemy_model[STONESTATUE] = L"Model\\Enemy\\slime.X";
 }

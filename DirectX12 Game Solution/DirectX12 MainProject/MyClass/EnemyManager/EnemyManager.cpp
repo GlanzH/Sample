@@ -1,22 +1,22 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 #include "EnemyManager.h"
-#include "MyClass/ResourceManager/ResourceManager.h"
 #include "MyClass/StatusManager/StatusManager.h"
 #include<fstream>
 
 EnemyManager::EnemyManager()
 {
 	//!“Ç‘O‚Ì“G‚Ì‰Šú‰»
-	for (int i = 0; i < ENEMY_NUM; ++i) {
-		tag[i] = "";
-		appear_pos[i] = SimpleMath::Vector3(DBL_MAX,DBL_MAX,DBL_MAX);
-		appear_time[i] = DBL_MAX;
-		appear_flag[i] = false;
-	}
-
-	LoadEnemyArrangement();
 	enemy = {};
+
+
+	for (int i = 0; i < ENEMY_NUM; ++i) {
+		tag[i]          = INT_MAX;
+		appear_pos[i]   = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
+		appear_time[i]  = INT_MAX;
+		destract_num[i] = INT_MAX;
+		appear_flag[i]  = false;
+	}
 }
 
 EnemyManager::~EnemyManager() {
@@ -28,8 +28,9 @@ EnemyManager::~EnemyManager() {
 bool EnemyManager::Initialize()
 {
 	DX12Effect.Initialize();
-	effect = ResourceManager::Instance().LoadEffect(L"Effect//EnemySampleEffect//enemy_hit.efk");
+	effect = DX12Effect.Create(L"Effect/test/test.efk");
 
+	LoadEnemyArrangement();
 	return true;
 }
 
@@ -42,10 +43,19 @@ int EnemyManager::Update(PlayerBase* player, const float deltaTime)
 	delta		= deltaTime;
 
 	Iterator(player_data,delta);
-	
-	if (AppearTimer() > appear_time[count] && count < ENEMY_NUM) {
-		Generator();
-		count++;
+
+	if (frame < MAX_FRAME)
+		++frame;
+	else {
+		frame = 0;
+		++timer;
+	}
+
+	if (count < ENEMY_NUM) {
+		if (timer > appear_time[count] || dead_enemy_count >= destract_num[count]) {
+			Generator();
+			count++;
+		}
 	}
 
 	return 0;
@@ -117,7 +127,7 @@ void EnemyManager::LoadEnemyArrangement() {
 	std::string dummy_line;
 
 	//! 1`3s‚ğ“Ç‚İ”ò‚Î‚µ
-	for (int i = 0; i < DUMMY_LINE; i++) {
+	for (int i = 0; i < DUMMY_LINE; ++i) {
 		getline(pos_time_infile, dummy_line);
 	}
 
@@ -126,3 +136,4 @@ void EnemyManager::LoadEnemyArrangement() {
 		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> appear_time[i] >> destract_num[i];
 	}
 }
+

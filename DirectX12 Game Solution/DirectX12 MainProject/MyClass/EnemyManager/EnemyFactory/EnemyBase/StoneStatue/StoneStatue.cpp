@@ -1,15 +1,16 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 #include "StoneStatue.h"
-#include"MyClass/ResourceManager/ResourceManager.h"
 
 bool StoneStatue::Initialize()
 {
-	attck      = ResourceManager::Instance().LoadEffect(L"Effect//shoot//shoot.efk");
-	accumulate = ResourceManager::Instance().LoadEffect(L"Effect//charge//charge.efk");;
-	landing    = ResourceManager::Instance().LoadEffect(L"Effect//landing//landing.efk");;
+	DX12Effect.Initialize();
 
-	return false;
+	attck      = DX12Effect.Create(L"Effect//shoot//shoot.efk");
+	accumulate = DX12Effect.Create(L"Effect//charge//charge.efk");;
+	landing    = DX12Effect.Create(L"Effect//landing//landing.efk");;
+
+	return true;
 }
 
 int StoneStatue::Update(PlayerBase* player, const float deltaTime) {
