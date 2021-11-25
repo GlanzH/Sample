@@ -73,6 +73,12 @@
     <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\ShotManager\Shot">
       <UniqueIdentifier>{80e23520-a5ad-4d6e-bafb-8af171ee3c09}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\PlayerManager\PlayerBase">
+      <UniqueIdentifier>{da6da9bd-3875-442d-8c5d-50637ea58f13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\PlayerManager\PlayerBase\PlayerAttack">
+      <UniqueIdentifier>{80701191-cb24-4bf8-86c7-db30bf6aa28a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -168,6 +174,12 @@
     <ClInclude Include="ResultScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerBase.h">
+      <Filter>MyClass\PlayerManager\PlayerBase</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.h">
+      <Filter>MyClass\PlayerManager\PlayerBase\PlayerAttack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -238,6 +250,12 @@
     </ClCompile>
     <ClCompile Include="ResultScene.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerBase.cpp">
+      <Filter>MyClass\PlayerManager\PlayerBase</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.cpp">
+      <Filter>MyClass\PlayerManager\PlayerBase\PlayerAttack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
