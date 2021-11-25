@@ -3,7 +3,7 @@
 #include "MyClass/MyAlgorithm/MyAlgorithm.h"
 #include "HighSlime.h"
 
-int HighSlime::Update(PlayerBase* player, const float deltaTime) 
+int HighSlime::Update(PlayerBase* player, const float deltaTime)
 {
     Move(player, deltaTime);
     Rotate(player, deltaTime);
@@ -32,7 +32,7 @@ void HighSlime::Rotate(PlayerBase* player, const float deltaTime) {
     SimpleMath::Vector3 player_pos = player->GetModel()->GetPosition();
 
     float now_rotate = model->GetRotation().y;
-    float rotation = MathHelper_Atan2(-(player_pos.z - position.z), (player_pos.x - position.x)) - 90.0f;
+    float rotation = MathHelper_Atan2(-(player_pos.z - position.z), (player_pos.x - position.x)) - 45.0f;
 
     model->SetRotation(0.0f,rotation, 0.0f);
 }

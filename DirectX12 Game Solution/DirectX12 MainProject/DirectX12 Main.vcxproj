@@ -271,8 +271,12 @@
     <ClCompile Include="MyClass\Observer\Observer.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.cpp" />
-    <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerBase.cpp" />
+    <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerBase.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="MyClass\PlayerManager\PlayerManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
