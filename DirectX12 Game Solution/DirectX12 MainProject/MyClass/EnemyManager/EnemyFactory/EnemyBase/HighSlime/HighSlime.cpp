@@ -8,9 +8,9 @@ int HighSlime::Update(PlayerManager* player, const float deltaTime)
     Move(player, deltaTime);
     Rotate(player, deltaTime);
 	Jump(deltaTime);
-	//SetAnimesion(model, WAIT);
+    SetAnimation(model, WAIT);
 
-	//model->AdvanceTime(deltaTime / 1.0f);
+	model->AdvanceTime(deltaTime / 1.0f);
 
 	if (enemy_hp < 0)
 		return DEAD;
@@ -32,7 +32,7 @@ void HighSlime::Rotate(PlayerManager* player, const float deltaTime) {
     SimpleMath::Vector3 player_pos = player->GetModel()->GetPosition();
 
     float now_rotate = model->GetRotation().y;
-    float rotation = MathHelper_Atan2(-(player_pos.z - position.z), (player_pos.x - position.x)) - 45.0f;
+    float rotation = MathHelper_Atan2(-(player_pos.z - position.z), (player_pos.x - position.x)) - 90.0f;
 
     model->SetRotation(0.0f,rotation, 0.0f);
 }

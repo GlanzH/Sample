@@ -44,8 +44,8 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 }
 
 void EnemyBase::Damage(const float deltaTime,int damage) {
-	//model->AdvanceTime(deltaTime / 1.0f);
-	//SetAnimesion(model, DAMAGE);
+	model->AdvanceTime(deltaTime / 1.0f);
+	SetAnimation(model, DAMAGE);
 	enemy_hp -= damage;
 }
 
@@ -62,9 +62,9 @@ void EnemyBase::Render() {
 
 	//collision->Draw();
 }
-void EnemyBase::SetAnimesion(DX9::SKINNEDMODEL& model, const int enabletack)
+void EnemyBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack)
 {
-	for (int i = 0; i < MAX_MOSION; i++)
+	for (int i = 0; i < MAX_MOTION; i++)
 	{
 		model->SetTrackEnable(i, FALSE);
 		model->SetTrackEnable(enabletack, TRUE);

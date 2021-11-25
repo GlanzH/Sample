@@ -46,9 +46,6 @@
     <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase">
       <UniqueIdentifier>{936ec52a-008d-4dc3-89ea-f50e09f99149}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\ResourceManager">
-      <UniqueIdentifier>{c36fb98f-920c-4a13-a671-8695aba703d5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MyClass\MyAlgorithm">
       <UniqueIdentifier>{f2eea4d0-e853-4690-84ee-342ccef86f44}</UniqueIdentifier>
     </Filter>
@@ -138,9 +135,6 @@
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.h">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\ResourceManager\ResourceManager.h">
-      <Filter>MyClass\ResourceManager</Filter>
-    </ClInclude>
     <ClInclude Include="MyClass\MyAlgorithm\MyAlgorithm.h">
       <Filter>MyClass\MyAlgorithm</Filter>
     </ClInclude>
@@ -208,9 +202,6 @@
     </ClCompile>
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.cpp">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase</Filter>
-    </ClCompile>
-    <ClCompile Include="MyClass\ResourceManager\ResourceManager.cpp">
-      <Filter>MyClass\ResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="MyClass\UIManager\UIManager.cpp">
       <Filter>MyClass\UIManager</Filter>

@@ -1,7 +1,6 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 #include "EnemyManager.h"
-#include "MyClass/ResourceManager/ResourceManager.h"
 #include "MyClass/StatusManager/StatusManager.h"
 #include<fstream>
 
