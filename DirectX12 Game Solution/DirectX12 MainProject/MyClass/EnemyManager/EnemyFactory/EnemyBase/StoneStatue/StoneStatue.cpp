@@ -13,7 +13,7 @@ bool StoneStatue::Initialize()
 	return true;
 }
 
-int StoneStatue::Update(PlayerManager* player, const float deltaTime) {
+int StoneStatue::Update(PlayerBase* player, const float deltaTime) {
 	//SetAnimesion(model, CHARGE);
 	
 	/*model->AdvanceTime(deltaTime / 1.0f);*/

@@ -10,7 +10,7 @@ bool Slime::Initialize()
 	return true;
 }
 
-int Slime::Update(PlayerManager* player, const float deltaTime) {
+int Slime::Update(PlayerBase* player, const float deltaTime) {
 	Rotate(player, deltaTime);
 	Move(player,deltaTime);
 	SetAnimation(model, WAIT);
@@ -23,7 +23,7 @@ int Slime::Update(PlayerManager* player, const float deltaTime) {
 	return LIVE;
 }
 
-void Slime::Rotate(PlayerManager* player, const float deltaTime) {
+void Slime::Rotate(PlayerBase* player, const float deltaTime) {
 	//!プレイヤーの座標 - 敵の座標でプレイヤーのいる方向に向く
 	SimpleMath::Vector3 player_pos = player->GetModel()->GetPosition();
 
@@ -33,7 +33,7 @@ void Slime::Rotate(PlayerManager* player, const float deltaTime) {
 	model->SetRotation(0.0f, rotation, 0.0f);
 }
 
-void Slime::Move(PlayerManager* player, const float deltaTime) {
+void Slime::Move(PlayerBase* player, const float deltaTime) {
 	float player_pos = player->GetModel()->GetPosition().x;
 
 	if (player_pos < position.x)

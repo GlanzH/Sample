@@ -9,11 +9,11 @@ public:
 	HighSlime()  {}
 	~HighSlime() {}
 
-	int Update(PlayerManager* player, const float deltaTime) override;
+	int Update(PlayerBase* player, const float deltaTime) override;
 
 private:
-	void Move  (PlayerManager* player, const float deltaTime);
-	void Rotate(PlayerManager* player, const float deltaTime);
+	void Move  (PlayerBase* player, const float deltaTime);
+	void Rotate(PlayerBase* player, const float deltaTime);
 	void Jump(const float deltaTime);
 
 	const float fit_collision_y    =   4.0f;

@@ -9,10 +9,10 @@ public:
 	FakerLamiel()  {}
 	~FakerLamiel() {}
 
-	int Update(PlayerManager* player, const float deltaTime) override;
+	int Update(PlayerBase* player, const float deltaTime) override;
 
 private:
-	void Move(PlayerManager* player, const float deltaTime);
+	void Move(PlayerBase* player, const float deltaTime);
 
 	bool rush_flag = false;
 	char  count = 0;
