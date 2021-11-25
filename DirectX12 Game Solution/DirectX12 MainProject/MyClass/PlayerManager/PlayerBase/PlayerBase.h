@@ -141,12 +141,16 @@ private:
 	float count_time = 0.0f;
 	float count_time_max = 0.4f;
 
-	//攻撃 - 初回
-	bool First_attack_flag = false;
+	//攻撃-初回
+	bool first_attaack_flag = false;
 
-	//受付時間
-	float Reception_time = 0.0f;
+	//攻撃-カウント-フラグ
+	//モーション
+	bool motion_attack_flag = false;
 
+	float motion_time = 0.0f;
+	float motion_time_max[3]{ 2.0f,2.0f,2.0f };
+	int   motion_count = 0;
 
 
 	//無敵時間

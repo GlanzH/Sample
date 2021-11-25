@@ -382,12 +382,12 @@ void PlayerBase::Player_attack(const float deltaTime) {
 
 	if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
 		if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
-			if (!First_attack_flag) {
+			if (!first_attaack_flag) {
 				StatusManager::Instance().AddCombo(deltaTime);
-				First_attack_flag = true;
+				first_attaack_flag = true;
 			}
 
-			     if (StatusManager::Instance().GetCombo() == 1);
+			if (StatusManager::Instance().GetCombo() == 1);
 			else if (StatusManager::Instance().GetCombo() == 2);
 			else if (StatusManager::Instance().GetCombo() == 3);
 		}
@@ -395,15 +395,40 @@ void PlayerBase::Player_attack(const float deltaTime) {
 
 
 	if (StatusManager::Instance().GetCombo() == 1) {
+		motion_time += deltaTime;
 		SetAnimation(model, ACT1);
 	}
 
+
+
+
 	if (StatusManager::Instance().GetCombo() == 2) {
+		motion_time += deltaTime;
 		SetAnimation(model, ACT2);
 	}
 
 	if (StatusManager::Instance().GetCombo() == 3) {
 		SetAnimation(model, ACT3);
+	}
+
+	if (motion_time < motion_time_max[motion_count]) {
+		if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
+			motion_attack_flag= true;
+		}
+
+	}
+
+	if (motion_time >= motion_time_max[motion_count] && motion_attack_flag == true) {
+		StatusManager::Instance().AddCombo(deltaTime);
+		motion_time = 0.0f;
+		motion_attack_flag = false;
+		motion_count++;
+
+	}
+
+	if (motion_count >= 3) {
+		motion_count = 0;
+		first_attaack_flag = false;
 	}
 
 }
