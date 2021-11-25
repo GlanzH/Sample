@@ -43,20 +43,21 @@ namespace DX12Effekseer
 
 		void SetCamera(DX12::CAMERA camera);
 
-		Effekseer::Effect* Create(LPCWSTR fileName);
-		Effekseer::Handle Play(EFFECT effectName);
-		void Stop(EFFECTHANDLE handleName);
-		void Pause(EFFECTHANDLE handleName);
+		Effekseer::Effect* Create(LPCWSTR fileName,std::string name);
+		void Play(std::string effectName);
+		void PlayOneShot(std::string effectName);
+		void Stop(std::string handleName);
+		void Pause(std::string handleName);
 
-		void SetPosition(EFFECTHANDLE handleName,Vector3 effectPosition);
-		void MoveEffect(EFFECTHANDLE handleName, Vector3 position);
-		void SetRotation(EFFECTHANDLE handleName, Vector3 rotation);
-		void SetScale(EFFECTHANDLE handleName, Vector3 scale);
+		void SetPosition(std::string handleName,Vector3 effectPosition);
+		void MoveEffect(std::string handleName, Vector3 position);
+		void SetRotation(std::string handleName, Vector3 rotation);
+		void SetScale(std::string handleName, Vector3 scale);
 
-		void SetTarget(EFFECTHANDLE handleName, Vector3 position);
+		void SetTarget(std::string handleName, Vector3 position);
 
-		float GetSpeed(EFFECTHANDLE handleName);
-		void SetSpeed(EFFECTHANDLE handleName,float speed);
+		float GetSpeed(std::string handleName);
+		void SetSpeed(std::string handleName,float speed);
 
 
 	private:
@@ -64,6 +65,9 @@ namespace DX12Effekseer
 		EffekseerRenderer::Renderer*	m_renderer;
 		EffekseerRenderer::SingleFrameMemoryPool* m_sfMemoryPoolEfk;
 		EffekseerRenderer::CommandList*			m_commandListEfk;
+
+		std::map<std::string,EFFECT> m_effects;
+		std::map<std::string,EFFECTHANDLE> m_handles;
 
 	private:
 		CEffekseer();

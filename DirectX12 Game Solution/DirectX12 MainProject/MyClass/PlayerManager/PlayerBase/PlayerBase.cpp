@@ -65,9 +65,9 @@ void PlayerBase::LoadAssets()
 	font = DX9::SpriteFont::CreateDefaultFont(DXTK->Device9);
 
 	DX12Effect.Initialize();
-	Sword_Effect_1 = DX12Effect.Create(L"Effect\\SwordEffect\\one\\first_attack.efk");
-	Sword_Effect_2 = DX12Effect.Create(L"Effect\\SwordEffect\\two\\second_attack.efk");
-	Sword_Effect_3 = DX12Effect.Create(L"Effect\\SwordEffect\\three\\third_attack.efk");
+	DX12Effect.Create(L"Effect\\SwordEffect\\one\\first_attack.efk","first");
+	DX12Effect.Create(L"Effect\\SwordEffect\\two\\second_attack.efk","second");
+	DX12Effect.Create(L"Effect\\SwordEffect\\three\\third_attack.efk","third");
 
 }
 

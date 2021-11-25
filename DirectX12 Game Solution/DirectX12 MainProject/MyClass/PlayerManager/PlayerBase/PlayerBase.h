@@ -55,20 +55,6 @@ private:
 	//アピール
 	void Appeal(const float deltaTime);
 
-	//攻撃エフェクト
-	//1撃目
-	EFFECT Sword_Effect_1;
-	EFFECTHANDLE handle_1;
-
-	//2連撃目
-	EFFECT Sword_Effect_2;
-	EFFECTHANDLE handle_2;
-
-	//3連撃目
-	EFFECT Sword_Effect_3;
-	EFFECTHANDLE handle_3;
-
-
 	DX9::SPRITEFONT font;
 
 	D3DMATERIAL9 material;

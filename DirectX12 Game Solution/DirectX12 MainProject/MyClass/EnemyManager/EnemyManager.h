@@ -35,8 +35,6 @@ private:
 
 	PlayerBase* player_data;
 
-	EFFECTHANDLE handle;
-	EFFECT       effect;
 	DX9::SPRITEFONT font;
 	DX9::SKINNEDMODEL model;
 	
