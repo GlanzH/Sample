@@ -3,7 +3,7 @@
 #include "Base/DX12Effekseer.h"
 #include "../EnemyManager/EnemyFactory/EnemyFactory.h"
 #include "MyClass/EnumManager/EnumManager.h"
-#include "MyClass/PlayerManager/PlayerManager.h"
+#include "MyClass/PlayerManager/PlayerBase/PlayerBase.h"
 
 using namespace DirectX;
 
@@ -15,7 +15,7 @@ public:
 	~EnemyManager();
 
 	bool Initialize();
-	int  Update(PlayerManager* player, const float deltaTime);
+	int  Update(PlayerBase* player, const float deltaTime);
 	void Render();
 
 	std::list<EnemyBase*> GetEnemy() { return enemy; }
@@ -27,13 +27,13 @@ public:
 private:
 	void LoadEnemyArrangement();
 	void Generator();
-	void Iterator(PlayerManager* player, const float deltaTime);
+	void Iterator(PlayerBase* player, const float deltaTime);
 	
 	int AppearTimer();
 
 	std::list<EnemyBase*> enemy;
 
-	PlayerManager* player_data;
+	PlayerBase* player_data;
 
 	EFFECTHANDLE handle;
 	EFFECT       effect;

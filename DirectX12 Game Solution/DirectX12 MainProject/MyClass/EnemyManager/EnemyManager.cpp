@@ -1,7 +1,6 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 #include "EnemyManager.h"
-#include "MyClass/ResourceManager/ResourceManager.h"
 #include "MyClass/StatusManager/StatusManager.h"
 #include<fstream>
 
@@ -29,13 +28,13 @@ EnemyManager::~EnemyManager() {
 bool EnemyManager::Initialize()
 {
 	DX12Effect.Initialize();
-	effect = ResourceManager::Instance().LoadEffect(L"Effect//EnemySampleEffect//enemy_hit.efk");
+	effect = DX12Effect.Create(L"Effect/test/test.efk");
 
 	LoadEnemyArrangement();
 	return true;
 }
 
-int EnemyManager::Update(PlayerManager* player, const float deltaTime)
+int EnemyManager::Update(PlayerBase* player, const float deltaTime)
 {
 	for (auto& enemies : enemy) {
 		enemies->Update(player,deltaTime);
@@ -62,7 +61,7 @@ int EnemyManager::Update(PlayerManager* player, const float deltaTime)
 	return 0;
 }
 
-void EnemyManager::Iterator(PlayerManager* player, const float deltaTime) {
+void EnemyManager::Iterator(PlayerBase* player, const float deltaTime) {
 	auto itr = enemy.begin();
 
 	while (itr != enemy.end())
