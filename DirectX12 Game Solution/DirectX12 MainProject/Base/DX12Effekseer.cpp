@@ -33,13 +33,13 @@ bool DX12Effekseer::CEffekseer::Initialize()
 	m_renderer = ::EffekseerRendererDX12::Create(DXTK->Device, DXTK->CommandQueue, 3, &format, 1, DXGI_FORMAT_UNKNOWN, false, 8000);
 
 	//メモリプールの生成
-	m_sfMemoryPoolEfk = EffekseerRenderer::CreateSingleFrameMemoryPool(m_renderer->GetGraphicsDevice());
+	m_sfMemoryPoolEfk = EffekseerRendererDX12::CreateSingleFrameMemoryPool(m_renderer);
 
 	//コマンドリストの生成
-	m_commandListEfk = EffekseerRenderer::CreateCommandList(m_renderer->GetGraphicsDevice(), m_sfMemoryPoolEfk);
+	m_commandListEfk = EffekseerRendererDX12::CreateCommandList(m_renderer, m_sfMemoryPoolEfk);
 
 	//エフェクトのマネージャーの生成
-	m_manager = Effekseer::Manager::Create(10000);
+	m_manager = Effekseer::Manager::Create(8000);
 
 	m_manager->SetCoordinateSystem(Effekseer::CoordinateSystem::LH);
 
@@ -55,9 +55,8 @@ bool DX12Effekseer::CEffekseer::Initialize()
 	m_manager->SetTextureLoader(m_renderer->CreateTextureLoader());
 	m_manager->SetModelLoader(m_renderer->CreateModelLoader());
 	m_manager->SetMaterialLoader(m_renderer->CreateMaterialLoader());
-	m_manager->SetCurveLoader(Effekseer::MakeRefPtr<Effekseer::CurveLoader>());
 
-	m_renderer->SetCommandList(m_commandListEfk);
+
 
 	auto g_position = ::Effekseer::Vector3D(10.0f, 5.0f, 20.0f);
 
@@ -72,6 +71,8 @@ bool DX12Effekseer::CEffekseer::Initialize()
 	if (m_manager == nullptr || m_renderer == nullptr || m_commandListEfk == nullptr)
 		return false;
 
+
+
 	return true;
 }
 
@@ -80,17 +81,17 @@ bool DX12Effekseer::CEffekseer::Initialize()
 */
 void DX12Effekseer::CEffekseer::Reset()
 {
-	m_manager.Reset();
-	m_renderer.Reset();
+
 }
 
 /**
 	@brief	Effekseerの更新
 */
-void DX12Effekseer::CEffekseer::Update()
+void DX12Effekseer::CEffekseer::Update(const float deltaTime)
 {
 	m_manager->Update();
-	m_sfMemoryPoolEfk->NewFrame();
+	m_renderer->SetTime(deltaTime);
+
 }
 
 /**
@@ -98,25 +99,27 @@ void DX12Effekseer::CEffekseer::Update()
 */
 void DX12Effekseer::CEffekseer::Renderer()
 {
+	m_sfMemoryPoolEfk->NewFrame();
 	EffekseerRendererDX12::BeginCommandList(m_commandListEfk, DXTK->CommandList);
+	m_renderer->SetCommandList(m_commandListEfk);
 	m_renderer->BeginRendering();
 	m_manager->Draw();
 	m_renderer->EndRendering();
+	m_renderer->SetCommandList(nullptr);
 	EffekseerRendererDX12::EndCommandList(m_commandListEfk);
 }
 
 /**
 	@brief	カメラ設定
-	@param	cameraPosition カメラのポジション
+	@param	camera DX12のカメラ
 */
 void DX12Effekseer::CEffekseer::SetCamera(DX12::CAMERA camera)
 {
-	auto camera_pos = camera->GetPosition();
+	auto view = camera->GetViewMatrix();
+	m_renderer->SetCameraMatrix(*(Effekseer::Matrix44*)&view);
 
-	Effekseer::Vector3D position = Effekseer::Vector3D(camera_pos.x, camera_pos.y, camera_pos.z);
-
-	m_renderer->SetCameraMatrix(::Effekseer::Matrix44().LookAtRH
-	(position, Effekseer::Vector3D(0, 0, 0), ::Effekseer::Vector3D(0, 1, 0)));
+	auto proj = camera->GetProjectionMatrix();
+	m_renderer->SetProjectionMatrix(*(Effekseer::Matrix44*)&proj);
 }
 
 /**
@@ -229,9 +232,9 @@ void DX12Effekseer::CEffekseer::SetSpeed(EFFECTHANDLE handleName , float speed)
 	@param	fileName	ファイル名
 	@return	エフェクト
 */
-Effekseer::EffectRef DX12Effekseer::CEffekseer::Create(LPCWSTR fileName)
+Effekseer::Effect* DX12Effekseer::CEffekseer::Create(LPCWSTR fileName)
 {
-	Effekseer::EffectRef effect = Effekseer::Effect::Create(m_manager, (const EFK_CHAR*)fileName, 1.0f);
+	Effekseer::Effect* effect = Effekseer::Effect::Create(m_manager, (const EFK_CHAR*)fileName, 1.0f);
 
 	return effect;
 }

@@ -29,7 +29,7 @@ EnemyManager::~EnemyManager() {
 bool EnemyManager::Initialize()
 {
 	DX12Effect.Initialize();
-	effect = ResourceManager::Instance().LoadEffect(L"Effect//EnemySampleEffect//enemy_hit.efk");
+	effect = DX12Effect.Create(L"Effect/test/test.efk");
 
 	LoadEnemyArrangement();
 	return true;

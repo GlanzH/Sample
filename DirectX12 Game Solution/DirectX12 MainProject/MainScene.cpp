@@ -104,7 +104,7 @@ NextScene MainScene::Update(const float deltaTime)
 	text.Update(deltaTime);
 	camera.Update(player);
 
-	DX12Effect.Update();
+	DX12Effect.Update(deltaTime);
 	player->Update(deltaTime);
 	enemy->Update(player,deltaTime);
 	observer->Update(player, enemy);
