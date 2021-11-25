@@ -207,7 +207,6 @@
     <ClInclude Include="MyClass\MyAlgorithm\MyAlgorithm.h" />
     <ClInclude Include="MyClass\Observer\Observer.h" />
     <ClInclude Include="MyClass\PlayerManager\PlayerManager.h" />
-    <ClInclude Include="MyClass\ResourceManager\ResourceManager.h" />
     <ClInclude Include="MyClass\StatusManager\StatusManager.h" />
     <ClInclude Include="MyClass\TextManager\TextManager.h" />
     <ClInclude Include="MyClass\UIManager\UIManager.h" />
@@ -261,7 +260,6 @@
     <ClCompile Include="MyClass\PlayerManager\PlayerManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MyClass\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="MyClass\StatusManager\StatusManager.cpp" />
     <ClCompile Include="MyClass\TextManager\TextManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
