@@ -24,7 +24,7 @@ void FakerLamiel::Attck(PlayerManager*player, const float deltaTime)
 {
 	switch (attck_method)
 	{
-	///‘Ò‹@ó‘Ô
+	//‘Ò‹@ó‘Ô
 	case Lami::STAND:
 		Move(player, deltaTime);
 		if (true)
@@ -32,7 +32,7 @@ void FakerLamiel::Attck(PlayerManager*player, const float deltaTime)
 			Lami::ATTCK;
 		}
 		break;
-	///‰ºUŒ‚
+	//‰ºUŒ‚
 	case Lami::ATTCK:
 		if (true)
 		{
@@ -50,11 +50,6 @@ void FakerLamiel::Attck(PlayerManager*player, const float deltaTime)
 	case Lami::TELEPORT:
 
 		Recoil_count = 0;
-
-		SimpleMath::Vector3 player_pos = player->GetModel()->GetPosition();
-	
-
-	//	model->SetRotation(0.0f, rotation, 0.0f);
 		break;
 	default:
 		attck_method = Lami::STAND;

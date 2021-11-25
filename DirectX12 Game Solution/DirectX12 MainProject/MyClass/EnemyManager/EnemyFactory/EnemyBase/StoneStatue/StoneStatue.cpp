@@ -8,57 +8,96 @@ bool StoneStatue::Initialize()
 	attack      = ResourceManager::Instance().LoadEffect(L"Effect//shoot//shoot.efk");
 	charge      = ResourceManager::Instance().LoadEffect(L"Effect//charge//charge.efk");;
 	landing     = ResourceManager::Instance().LoadEffect(L"Effect//landing//landing.efk");;
+	wait_count = 0;
+	attack_efk_flg  = false;
+	charge_efk_flg  = false;
+	landing_efk_flg = false;
 
 	return false;
 }
 
 int StoneStatue::Update(PlayerManager* player, const float deltaTime) {
+	 player_pos = player->GetModel()->GetPosition();
+
 	//SetAnimesion(model, CHARGE);
 	
 	/*model->AdvanceTime(deltaTime / 1.0f);*/
-
+	
 	if (enemy_hp < 0)
 		return DEAD;
 
 	return LIVE;
 }
 
-void StoneStatue::Attck(EnemyBase* base)
+void StoneStatue::Attck(const float deltaTime)
 {
+
+
 	switch (attck_method)
 	{
 	case stone::CHARGE:
 
-		wait_count = 0;
-		DX12Effect.SetPosition(charge_h, base->GetModel()->GetPosition());
-		charge_h = DX12Effect.Play(charge);
-
+		if (!charge_efk_flg)
+		{
+			DX12Effect.SetPosition(charge_h, position);
+			charge_h = DX12Effect.Play(charge);
+			charge_efk_flg = true;
+		}
+		else
+		{
+			wait_count +=deltaTime;
+		}
 		if (wait_count ==1)
 		{
 			stone::ATTACK;
 		}
+		break;
 	case stone::ATTACK:
 
 		wait_count = 0;
-		DX12Effect.SetPosition(attack_h, base->GetModel()->GetPosition());
-		attack_h = DX12Effect.Play(attack);
-		if (true)
+		wait_count++;
+		if (!attack_efk_flg)
+		{
+			DX12Effect.SetPosition(attack_h, position);
+			attack_h = DX12Effect.Play(attack);
+			attack_efk_flg = true;
+		}
+		if (wait_count ==150)
 		{
 			stone::WAIT;
 		}
-
+		break;
 	case stone::WAIT:
-
-		DX12Effect.SetPosition(landing_h, base->GetModel()->GetPosition());
-		landing_h = DX12Effect.Play(landing);
-		wait_count++;
-		if (wait_count ==10)
+		wait_count = 0;
+		if (!landing_efk_flg)
 		{
-			stone::CHARGE;
+			DX12Effect.SetPosition(landing_h, position);
+			landing_h = DX12Effect.Play(landing);
+			landing_efk_flg = true;
+			wait_count++;
+			if (wait_count == 600)
+			{
+				stone::INIT;
+			}
 		}
+		break;
+	case stone::INIT:
+		wait_count = 0;
+		charge_efk_flg  = false;
+		attack_efk_flg  = false;
+		landing_efk_flg = false;
+		stone::CHARGE;
+		break;
 	default:
 		attck_method = stone::CHARGE;
 		break;
 	}
+}
+
+void StoneStatue::Shot()
+{
+	SimpleMath::Vector3 bullet_pos;
+	bullet_pos.x -= 3.0f;
+	bullet_pos.y -= 2.0f;
 }
 
