@@ -144,6 +144,9 @@ private:
 	//UŒ‚ - ‰‰ñ
 	bool First_attack_flag = false;
 
+	//ó•tŠÔ
+	float Reception_time = 0.0f;
+
 
 
 	//–³“GŠÔ
