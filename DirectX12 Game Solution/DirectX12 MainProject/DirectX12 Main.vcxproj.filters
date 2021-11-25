@@ -25,9 +25,6 @@
     <Filter Include="MyClass\CameraManager">
       <UniqueIdentifier>{b5c7ebcc-3e32-4ac7-be02-6d789d7dfd13}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\TextManager">
-      <UniqueIdentifier>{5ea0d9d5-4529-4a6f-a920-7a8ef8778487}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MyClass\GroundManager">
       <UniqueIdentifier>{3484e38c-733b-4580-a58d-5fa05c40e4b3}</UniqueIdentifier>
     </Filter>
@@ -117,9 +114,6 @@
     <ClInclude Include="MyClass\PlayerManager\PlayerManager.h">
       <Filter>MyClass\PlayerManager</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\TextManager\TextManager.h">
-      <Filter>MyClass\TextManager</Filter>
-    </ClInclude>
     <ClInclude Include="MyClass\GroundManager\GroundManager.h">
       <Filter>MyClass\GroundManager</Filter>
     </ClInclude>
@@ -202,9 +196,6 @@
     </ClCompile>
     <ClCompile Include="MyClass\PlayerManager\PlayerManager.cpp">
       <Filter>MyClass\PlayerManager</Filter>
-    </ClCompile>
-    <ClCompile Include="MyClass\TextManager\TextManager.cpp">
-      <Filter>MyClass\TextManager</Filter>
     </ClCompile>
     <ClCompile Include="MyClass\GroundManager\GroundManager.cpp">
       <Filter>MyClass\GroundManager</Filter>

@@ -26,8 +26,6 @@ MainScene::~MainScene() {
 void MainScene::Initialize()
 {
 	//•Ï”‚âŠÖ”‚Ì‰Šú‰»‚Í‚±‚¿‚ç
-	text.Initialize();
-	text.LoadText();
 	camera.Initialize();
 	player->Initialize();
 	enemy->Initialize();
@@ -100,8 +98,6 @@ NextScene MainScene::Update(const float deltaTime)
 	UNREFERENCED_PARAMETER(deltaTime);
 
 	// TODO: Add your game logic here.
-
-	text.Update(deltaTime);
 	camera.Update(player);
 
 	DX12Effect.Update(deltaTime);
@@ -128,7 +124,6 @@ void MainScene::Render()
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ
-	text.Render2D();
 
 	DX9::SpriteBatch->End();
 	DXTK->Direct3D9->EndScene();

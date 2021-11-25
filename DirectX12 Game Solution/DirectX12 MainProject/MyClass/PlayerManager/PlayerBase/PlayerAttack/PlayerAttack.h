@@ -19,21 +19,6 @@ public:
 	void Player_Attack(const float deltaTime);
 
 private:
-
-	//攻撃エフェクト
-    //1連撃目
-	EFFECT Sword_Effect_1;
-	EFFECTHANDLE handle_1;
-
-	//2連撃目
-	EFFECT Sword_Effect_2;
-	EFFECTHANDLE handle_2;
-
-	//3連撃目
-	EFFECT Sword_Effect_3;
-	EFFECTHANDLE handle_3;
-
-
 	//攻撃‐3連撃‐カウント
 	int attack_count;
 
