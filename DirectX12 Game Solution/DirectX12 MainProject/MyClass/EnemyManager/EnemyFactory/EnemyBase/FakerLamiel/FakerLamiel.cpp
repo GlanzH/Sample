@@ -44,7 +44,7 @@ void FakerLamiel::Attck(PlayerBase*player, const float deltaTime)
 	case Lami::SPREAD:
 
 		Recoil_count++;
-		if (Recoil_count == 10)
+		if (Recoil_count == 600)
 		{
 			Lami::TELEPORT;
 		}
