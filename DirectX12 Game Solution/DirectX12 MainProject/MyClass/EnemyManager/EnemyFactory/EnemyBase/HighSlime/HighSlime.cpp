@@ -8,9 +8,9 @@ int HighSlime::Update(PlayerBase* player, const float deltaTime)
     Move(player, deltaTime);
     Rotate(player, deltaTime);
 	Jump(deltaTime);
-    SetAnimation(model, WAIT);
+   // SetAnimation(model, WAIT);
 
-	model->AdvanceTime(deltaTime / 1.0f);
+	//model->AdvanceTime(deltaTime / 1.0f);
 
 	if (enemy_hp < 0)
 		return DEAD;

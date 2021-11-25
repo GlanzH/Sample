@@ -13,9 +13,9 @@ bool Slime::Initialize()
 int Slime::Update(PlayerBase* player, const float deltaTime) {
 	Rotate(player, deltaTime);
 	Move(player,deltaTime);
-	SetAnimation(model, WAIT);
+	//SetAnimation(model, WAIT);
 
-	model->AdvanceTime(deltaTime / 1.0f);
+//	model->AdvanceTime(deltaTime / 1.0f);
 
 	if (enemy_hp < 0)
 		return DEAD;

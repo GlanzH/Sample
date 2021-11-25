@@ -18,7 +18,8 @@ bool EnemyBase::Initialize(SimpleMath::Vector3 speed, int hp)
 void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
 	position = initial_position;
 
-	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
+	//model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
+	model = DX9::Model::CreateFromFile(DXTK->Device9, model_name);
 	model->SetPosition(position);
 	model->SetRotation(0.0f, XMConvertToRadians(90.0f), 0.0f);
 	
@@ -44,8 +45,8 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 }
 
 void EnemyBase::Damage(const float deltaTime,int damage) {
-	model->AdvanceTime(deltaTime / 1.0f);
-	SetAnimation(model, DAMAGE);
+	//model->AdvanceTime(deltaTime / 1.0f);
+	//SetAnimation(model, DAMAGE);
 	enemy_hp -= damage;
 }
 
