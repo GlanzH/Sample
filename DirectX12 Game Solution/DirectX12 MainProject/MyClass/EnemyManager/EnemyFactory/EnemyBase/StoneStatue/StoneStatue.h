@@ -10,18 +10,23 @@ public:
 	~StoneStatue() {}
 	bool Initialize();
 	int Update(PlayerManager* player, const float deltaTime) override;
-	void Attck();
+	void Attck(EnemyBase* base);
 
 private:
 	  /// ÅEçUåÇ  ÅEó≠Çﬂ    ÅEíÖíe
-	EFFECT attck, accumulate, landing;
-	EFFECTHANDLE handle;
+	EFFECT attack, charge, landing;
+	EFFECTHANDLE attack_h;
+	EFFECTHANDLE charge_h;
+	EFFECTHANDLE landing_h;
 	const float fit_collision_y    = 4.0f;
 	const float stop_enemy_pos     = 20.0f;
 	const float ground_collision_y = 100.0f;
-	enum STONEMOSION
+	int wait_count;
+	enum class stone
 	{
 		CHARGE,
-		ATTCK,
+		ATTACK,
+		WAIT
 	};
+	stone  attck_method;
 };
