@@ -28,7 +28,7 @@ EnemyFactory::EnemyFactory()
      enemy_model[SLIME]       = L"Model\\Enemy\\Slime\\slime_blue.X";
 	 enemy_model[HIGHSLIME]   = L"Model\\Enemy\\HighSlime\\slime_animatinonv02.X";
      enemy_model[FAKERLAMIEL] = L"Model\\Enemy\\Lamiel\\ramieru.X";
-     enemy_model[STONESTATUE] = L"Model\\Enemy\\Stone\\koteihou.X";
+     enemy_model[STONESTATUE] = L"Model\\Enemy\\Stone\\koteihoudai.X";
 }
 
 EnemyBase* EnemyFactory::Create(std::string tag, DirectX::SimpleMath::Vector3 position)

@@ -23,7 +23,7 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	model->SetPosition(position);
 	model->SetRotation(0.0f, XMConvertToRadians(90.0f), 0.0f);
 	
-
+	//model->SetScale(3.3);
 
 	//” ‚ðì‚é€”õ
 	box = model->GetBoundingBox();

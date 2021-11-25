@@ -9,6 +9,7 @@ bool StoneStatue::Initialize()
 	charge      = DX12Effect.Create(L"Effect//charge//charge.efk");;
 	landing     = DX12Effect.Create(L"Effect//landing//landing.efk");;
 	wait_count = 0;
+	model->SetRotation(45, 45, 0);
 	attack_efk_flg  = false;
 	charge_efk_flg  = false;
 	landing_efk_flg = false;
