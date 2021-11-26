@@ -6,8 +6,9 @@ using namespace DirectX;
 class Care : public EnemyBase
 {
 public:
-	Care();
+	Care() {}
 	~Care() {}
+    bool Initialize(SimpleMath::Vector3 speed, int hp);
 	int Update(PlayerBase* player, const float deltaTime) override;
 	void Attack(const float deltaTime);
 

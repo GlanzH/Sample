@@ -4,12 +4,14 @@
 
 
 
-Care::Care()
+bool Care::Initialize(SimpleMath::Vector3 speed, int hp)
 {
+	EnemyBase::Initialize(speed, hp);
 	DX12Effect.Create(L"Effect//shoot//shoot.efk", "shoot");
 	DX12Effect.Create(L"Effect//charge//charge.efk", "charge");
 	DX12Effect.Create(L"Effect//landing//landing.efk", "landing");
 	wait_count = 0;
+	return true;
 }
 
 int Care::Update(PlayerBase* player, const float deltaTime) {
@@ -31,7 +33,7 @@ void Care::Attack(const float deltaTime)
 	switch (attack_method)
 	{
 	case stone::STORAGE:
-		model->Move(0.05, 0,0);
+		model->Move(0, 0, 0);
 		if (position.z >= 50);
 		{
 			position.z = 50;
