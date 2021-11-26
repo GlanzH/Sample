@@ -8,7 +8,7 @@ class StoneStatue : public EnemyBase
 public:
 	StoneStatue()  {}
 	~StoneStatue() {}
-	bool Initialize();
+	virtual bool Initialize();
 	int Update(PlayerBase* player, const float deltaTime) override;
 	void Attck(const float deltaTime);
 	
@@ -23,6 +23,7 @@ private:
 	int wait_count;
 	enum class stone
 	{
+		STORAGE,
 		CHARGE,
 		ATTACK,
 		WAIT,

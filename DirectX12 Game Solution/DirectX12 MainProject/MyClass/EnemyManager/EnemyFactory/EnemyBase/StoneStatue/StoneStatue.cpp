@@ -27,18 +27,19 @@ int StoneStatue::Update(PlayerBase* player, const float deltaTime) {
 
 void StoneStatue::Attck(const float deltaTime)
 {
-
-
 	switch (attck_method)
 	{
+	case stone::STORAGE:
+		model->Move(-0.1,0,0);
+		if (model->SetPosition(-2,0,0));
+		{
+			stone::CHARGE;
+		}
 	case stone::CHARGE:
 
 		DX12Effect.SetPosition("charge", position);
 		DX12Effect.PlayOneShot("charge");
-		//else
-		//{
 			wait_count +=deltaTime;
-		//}
 		if (wait_count ==1)
 		{
 			stone::ATTACK;
@@ -69,10 +70,10 @@ void StoneStatue::Attck(const float deltaTime)
 		break;
 	case stone::INIT:
 		wait_count = 0;
-		stone::CHARGE;
+		stone::STORAGE;
 		break;
 	default:
-		attck_method = stone::CHARGE;
+		attck_method = stone::STORAGE;
 		break;
 	}
 }

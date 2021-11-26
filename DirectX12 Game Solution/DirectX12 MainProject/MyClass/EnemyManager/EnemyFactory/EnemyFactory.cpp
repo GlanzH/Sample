@@ -7,28 +7,33 @@
 
 EnemyFactory::EnemyFactory()
 {
-	///@各敵のステータス設定@///
+	//@各敵のステータス設定@//
 	Slime_speed.x = 3.0f;
 	HighSlime_speed.x = 7.0f;
 	FakerLamiel_speed.x = 1.0f;
 	Slime_hp       = 5;
 	HighSlime_hp   = 7;
 	FakerLamiel_hp = 30;
-	StoneStatue_hp = 60;
-	///@敵の種類のタグをプッシュバック@///
-	///　　スライム         ///
+	StoneStatueCare_hp = 60;
+	//@敵の種類のタグをプッシュバック@//
+	//@　　スライム         @//
 	enemy_tag.push_back("S");
-    /// 　ハイスライム     ///
+    //@　ハイスライム     @//
     enemy_tag.push_back("H");
-	///　フェイクラミエル  ///
+	//@　フェイクラミエル  @//
     enemy_tag.push_back("L");
-	/// 　巨大な古代兵器   ///
+	//@　巨大な古代兵器   @//
     enemy_tag.push_back("B");
+	//@  巨大な古代兵器のコア@//
+	enemy_tag.push_back("C");
+
 	///@敵のモデル@///
      enemy_model[SLIME]       = L"Model\\Enemy\\Slime\\slime_blue.X";
 	 enemy_model[HIGHSLIME]   = L"Model\\Enemy\\HighSlime\\slime_animatinonv02.X";
      enemy_model[FAKERLAMIEL] = L"Model\\Enemy\\Lamiel\\ramieru.X";
-     enemy_model[STONESTATUE] = L"Model\\Enemy\\Stone\\koteihoudai.X";
+     enemy_model[STONESTATUE] = L"Model\\Enemy\\Stone\\koteihoudai_dodai.X";
+	 enemy_model[STONECARE]   = L"Model\\Enemy\\Stone\\koteihoudai_core.X";
+
 }
 
 EnemyBase* EnemyFactory::Create(std::string tag, DirectX::SimpleMath::Vector3 position)
@@ -55,7 +60,7 @@ EnemyBase* EnemyFactory::CreateProduct(std::string tag, DirectX::SimpleMath::Vec
 
 LPCWSTR EnemyFactory::SetModel(std::string tag)
 {
-	LPCWSTR models[] = { enemy_model[SLIME] , enemy_model[HIGHSLIME],enemy_model[FAKERLAMIEL],enemy_model[STONESTATUE]};
+	LPCWSTR models[] = { enemy_model[SLIME] , enemy_model[HIGHSLIME],enemy_model[FAKERLAMIEL],enemy_model[STONESTATUE],enemy_model[STONECARE]};
 	for (int i = 0; i < enemy_tag.size(); ++i)
 	{
 		if (tag == enemy_tag[i]) { model_name = models[i]; }
@@ -75,7 +80,7 @@ DirectX::SimpleMath::Vector3 EnemyFactory::SetSpeed(std::string tag)
 
 int EnemyFactory::SetHP(std::string tag)
 {
-	int hps[] = { Slime_hp,HighSlime_hp,FakerLamiel_hp,StoneStatue_hp};
+	int hps[] = { Slime_hp,HighSlime_hp,FakerLamiel_hp,StoneStatueCare_hp};
 
 	for (int i = 0; i < enemy_tag.size(); ++i)
 	{

@@ -32,7 +32,7 @@ private:
 	char Slime_hp;
 	char HighSlime_hp;
 	char FakerLamiel_hp;
-	char StoneStatue_hp;
+	char StoneStatueCare_hp;
 	std::vector<std::string> enemy_tag;
 
 	DirectX::SimpleMath::Vector3 Slime_speed;
@@ -41,11 +41,11 @@ private:
 
 	DirectX::SimpleMath::Vector3 speed;
 
-	LPCWSTR enemy_model[3];
+	LPCWSTR enemy_model[4];
 	LPCWSTR model_name;
 	/**
 　　* @enum EnemyType
 　　* 敵の種類
 　　*/
-	enum EnemyType { SLIME, HIGHSLIME, FAKERLAMIEL, STONESTATUE };
+	enum EnemyType { SLIME, HIGHSLIME, FAKERLAMIEL, STONESTATUE,STONECARE };
 };
