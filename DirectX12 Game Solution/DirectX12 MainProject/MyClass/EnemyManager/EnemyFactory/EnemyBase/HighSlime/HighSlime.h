@@ -6,7 +6,7 @@ using namespace DirectX;
 class HighSlime : public EnemyBase
 {
 public:
-	HighSlime()  {}
+	HighSlime();
 	~HighSlime() {}
 
 	int Update(PlayerBase* player, const float deltaTime) override;

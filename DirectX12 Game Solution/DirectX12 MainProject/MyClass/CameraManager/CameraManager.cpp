@@ -19,12 +19,11 @@ void CameraManager::LoadAsset() {
 
 }
 
-int CameraManager::Update(PlayerBase* player) {
-	auto pos = player->GetModel()->GetPosition();
+int CameraManager::Update(SimpleMath::Vector3 pos) {
 	camera->SetPosition(pos.x,fixed_pos, - fixed_pos);
 	return 0;
 }
 
-void CameraManager::Render(SimpleMath::Vector3 player_position) {
+void CameraManager::Render() {
 	DXTK->Direct3D9->SetCamera(camera);
 }

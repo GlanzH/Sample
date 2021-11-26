@@ -3,6 +3,10 @@
 #include "MyClass/MyAlgorithm/MyAlgorithm.h"
 #include "HighSlime.h"
 
+HighSlime::HighSlime()
+{
+}
+
 int HighSlime::Update(PlayerBase* player, const float deltaTime)
 {
     Move(player, deltaTime);

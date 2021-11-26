@@ -3,6 +3,10 @@
 #include "MyClass/MyAlgorithm/MyAlgorithm.h"
 #include "Slime.h"
 
+Slime::Slime()
+{
+}
+
 bool Slime::Initialize()
 {
 	

@@ -3,6 +3,10 @@
 
 #include "EnemyBase.h"
 
+EnemyBase::EnemyBase()
+{
+}
+
 bool EnemyBase::Initialize(SimpleMath::Vector3 speed, int hp)
 {
 	retreat_flg = false;
@@ -42,6 +46,10 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 
 int EnemyBase::Update(PlayerBase* player, const float deltaTime)
 {
+	if (retreat_flg)
+	{
+		//position.x = ;
+	} 
 	return 0;
 }
 

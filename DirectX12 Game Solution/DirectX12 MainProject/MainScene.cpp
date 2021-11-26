@@ -65,8 +65,6 @@ void MainScene::LoadAssets()
 	DX12Effect.Initialize();
 	ground.LoadAsset();
 	player->LoadAssets();
-
-	DX12Effect.Initialize();
 }
 
 // Releasing resources required for termination.
@@ -98,7 +96,7 @@ NextScene MainScene::Update(const float deltaTime)
 	UNREFERENCED_PARAMETER(deltaTime);
 
 	// TODO: Add your game logic here.
-	camera.Update(player);
+	camera.Update(player->GetModel()->GetPosition());
 
 	DX12Effect.Update(deltaTime);
 	player->Update(deltaTime);
@@ -116,7 +114,7 @@ void MainScene::Render()
 	DXTK->Direct3D9->BeginScene();
 
 	//3D•`‰æ
-	camera.Render(player->GetModel()->GetPosition());
+	camera.Render();
 	ground.Render();
 	player->Render();
 	enemy->Render();

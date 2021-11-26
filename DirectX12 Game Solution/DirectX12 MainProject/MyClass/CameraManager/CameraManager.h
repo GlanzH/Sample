@@ -16,8 +16,8 @@ public:
 
 	bool Initialize();
 	void LoadAsset();
-	int  Update(PlayerBase* player);
-	void Render(SimpleMath::Vector3 player_position);
+	int  Update(SimpleMath::Vector3 pos);
+	void Render();
 
 private:
 	CAMERA  camera;

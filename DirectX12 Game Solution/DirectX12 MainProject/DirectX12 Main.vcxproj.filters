@@ -76,7 +76,7 @@
     <Filter Include="MyClass\PlayerManager\PlayerBase\PlayerAttack">
       <UniqueIdentifier>{80701191-cb24-4bf8-86c7-db30bf6aa28a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\care">
+    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core">
       <UniqueIdentifier>{28750e98-8606-4f84-b722-b840222e2497}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -177,8 +177,8 @@
     <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.h">
       <Filter>MyClass\PlayerManager\PlayerBase\PlayerAttack</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\care\Care.h">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\care</Filter>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core\Core.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -254,8 +254,8 @@
     <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.cpp">
       <Filter>MyClass\PlayerManager\PlayerBase\PlayerAttack</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\care\Care.cpp">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\care</Filter>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core\Core.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

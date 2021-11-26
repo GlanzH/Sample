@@ -1,10 +1,14 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
-#include "Care.h"
+#include "Core.h"
 
 
 
-bool Care::Initialize(SimpleMath::Vector3 speed, int hp)
+Core::Core()
+{
+}
+
+bool Core::Initialize(SimpleMath::Vector3 speed, int hp)
 {
 	EnemyBase::Initialize(speed, hp);
 	DX12Effect.Create(L"Effect//shoot//shoot.efk", "shoot");
@@ -14,7 +18,7 @@ bool Care::Initialize(SimpleMath::Vector3 speed, int hp)
 	return true;
 }
 
-int Care::Update(PlayerBase* player, const float deltaTime) {
+int Core::Update(PlayerBase* player, const float deltaTime) {
 	
 	player_pos = player->GetModel()->GetPosition();
 
@@ -28,12 +32,12 @@ int Care::Update(PlayerBase* player, const float deltaTime) {
 	return LIVE;
 }
 
-void Care::Attack(const float deltaTime)
+void Core::Attack(const float deltaTime)
 {
 	switch (attack_method)
 	{
 	case stone::STORAGE:
-		model->Move(0.1, 0, 0);
+		model->Move(0.0f, 0.01f, 0.0f);
 		if (position.z >= 50);
 		{
 			position.z = 50;
@@ -44,8 +48,9 @@ void Care::Attack(const float deltaTime)
 			}
 		}
 		break;
-	/*case stone::CHARGE:
+	case stone::CHARGE:
 
+		wait_count++;
 		DX12Effect.SetPosition("charge", position);
 		DX12Effect.PlayOneShot("charge");
 		wait_count += deltaTime;
@@ -54,7 +59,7 @@ void Care::Attack(const float deltaTime)
 			stone::ATTACK;
 		}
 		break;
-	case stone::ATTACK:
+	/*case stone::ATTACK:
 
 		wait_count = 0;
 		wait_count++;
@@ -66,18 +71,18 @@ void Care::Attack(const float deltaTime)
 		{
 			stone::WAIT;
 		}
-		break;
-	case stone::WAIT:
-		wait_count = 0;
-		DX12Effect.SetPosition("landing", position);
-		DX12Effect.PlayOneShot("landing");
-		wait_count++;
-		if (wait_count == 5)
-		{
-			stone::INIT;
-		}
-		break;
-	case stone::BACK:
+		break;*/
+	//case stone::WAIT:
+	//	wait_count = 0;
+	//	DX12Effect.SetPosition("landing", position);
+	//	DX12Effect.PlayOneShot("landing");
+	//	wait_count++;
+	//	if (wait_count == 5)
+	//	{
+	//		stone::INIT;
+	//	}
+	//	break;
+	/*case stone::BACK:
 	 
 	 model->Move(-0.1, 0, 0);
 	 if(position.z >=55)
@@ -89,19 +94,19 @@ void Care::Attack(const float deltaTime)
 		 stone::STORAGE;
 		 }
 	 }
-	 break;
-	case stone::INIT:
-		wait_count = 0;
-		position.x = 55;
-		stone::STORAGE;
-		break;*/
+	 break;*/
+	//case stone::INIT:
+	//	wait_count = 0;
+	//	position.x = 55;
+	//	stone::STORAGE;
+	//	break;
 	default:
 		attack_method = stone::STORAGE;
 		break;
 	}
 }
 
-void Care::Shot()
+void Core::Shot()
 {
 	SimpleMath::Vector3 bullet_pos;
 	bullet_pos.x -= 3.0f;
