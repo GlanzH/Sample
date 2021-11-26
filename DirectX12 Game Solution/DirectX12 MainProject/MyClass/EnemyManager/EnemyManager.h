@@ -14,7 +14,7 @@ public:
 	EnemyManager();
 	~EnemyManager();
 
-	bool Initialize();
+	bool Initialize(PlayerBase* player_base);
 	int  Update(SimpleMath::Vector3 player, const float deltaTime);
 	void Render();
 

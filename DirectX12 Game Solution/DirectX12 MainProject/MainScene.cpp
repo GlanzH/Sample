@@ -34,7 +34,7 @@ void MainScene::Initialize()
 	//•Ï”‚âŠÖ”‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 	player->Initialize();
 	camera->Initialize();
-	enemy->Initialize();
+	enemy->Initialize(player);
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.

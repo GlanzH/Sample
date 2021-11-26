@@ -25,10 +25,12 @@ EnemyManager::~EnemyManager() {
 	}
 }
 
-bool EnemyManager::Initialize()
+bool EnemyManager::Initialize(PlayerBase* player_base)
 {
 	DX12Effect.Initialize();
 	DX12Effect.Create(L"Effect/test/test.efk","hit_eff");
+
+	player_data = player_base;
 
 	LoadEnemyArrangement();
 	return true;

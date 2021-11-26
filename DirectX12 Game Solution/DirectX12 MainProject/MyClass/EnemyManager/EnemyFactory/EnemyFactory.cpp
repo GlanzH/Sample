@@ -9,11 +9,11 @@
 EnemyFactory::EnemyFactory()
 {
 	//@各敵のステータス設定@//
-	Slime_speed.x = 3.0f;
-	HighSlime_speed.x = 7.0f;
-	FakerLamiel_speed.x = 1.0f;
-	Stone_speed.z =0.0f ;
-	StoneCore_speed.z = 0.0f;
+	slime_speed.x = 3.0f;
+	high_slime_speed.x = 7.0f;
+	faker_lamiel_speed.x = 1.0f;
+	statue_speed.z =0.0f ;
+	stone_core_speed.z = 0.0f;
 	Slime_hp       = 5;
 	HighSlime_hp   = 7;
 	FakerLamiel_hp = 30;
@@ -33,10 +33,10 @@ EnemyFactory::EnemyFactory()
 
 	///@敵のモデル@///
      enemy_model[SLIME]       = L"Model\\Enemy\\Slime\\slime_blue.X";
-	 enemy_model[HIGHSLIME]   = L"Model\\Enemy\\HighSlime\\slime_animatinonv02.X";
-     enemy_model[FAKERLAMIEL] = L"Model\\Enemy\\Lamiel\\ramieru.X";
-     enemy_model[STONESTATUE] = L"Model\\Enemy\\Stone\\koteihoudai_dodai.X";
-	 enemy_model[STONECORE]   = L"Model\\Enemy\\Stone\\koteihoudai_core.X";
+	 enemy_model[HIGH_SLIME]   = L"Model\\Enemy\\HighSlime\\slime_animatinonv02.X";
+     enemy_model[FAKER_LAMIEL] = L"Model\\Enemy\\Lamiel\\ramieru.X";
+     enemy_model[STONE_STATUE] = L"Model\\Enemy\\Stone\\koteihoudai_dodai.X";
+	 enemy_model[STONE_CORE]   = L"Model\\Enemy\\Stone\\koteihoudai_core.X";
 
 }
 
@@ -64,7 +64,7 @@ EnemyBase* EnemyFactory::CreateProduct(std::string tag, DirectX::SimpleMath::Vec
 
 LPCWSTR EnemyFactory::SetModel(std::string tag)
 {
-	LPCWSTR models[] = { enemy_model[SLIME] , enemy_model[HIGHSLIME],enemy_model[FAKERLAMIEL],enemy_model[STONESTATUE],enemy_model[STONECORE]};
+	LPCWSTR models[] = { enemy_model[SLIME] , enemy_model[HIGH_SLIME],enemy_model[FAKER_LAMIEL],enemy_model[STONE_STATUE],enemy_model[STONE_CORE]};
 	for (int i = 0; i < enemy_tag.size(); ++i)
 	{
 		if (tag == enemy_tag[i]) { model_name = models[i]; }
@@ -74,7 +74,7 @@ LPCWSTR EnemyFactory::SetModel(std::string tag)
 
 DirectX::SimpleMath::Vector3 EnemyFactory::SetSpeed(std::string tag)
 {
-	DirectX::SimpleMath::Vector3 speeds[] = { Slime_speed,HighSlime_speed,FakerLamiel_speed ,Stone_speed,StoneCore_speed};
+	DirectX::SimpleMath::Vector3 speeds[] = { slime_speed,high_slime_speed,faker_lamiel_speed ,statue_speed,stone_core_speed};
 	for (int i = 0; i < enemy_tag.size(); ++i)
 	{
 		if (tag == enemy_tag[i]) { speed = speeds[i]; }
