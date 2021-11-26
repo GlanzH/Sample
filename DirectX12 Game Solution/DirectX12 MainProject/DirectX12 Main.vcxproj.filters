@@ -76,6 +76,9 @@
     <Filter Include="MyClass\PlayerManager\PlayerBase\PlayerAttack">
       <UniqueIdentifier>{80701191-cb24-4bf8-86c7-db30bf6aa28a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\RankJudgeManager">
+      <UniqueIdentifier>{5ea0a6f1-08f2-4884-bf65-79d62a7c7912}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -174,6 +177,9 @@
     <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.h">
       <Filter>MyClass\PlayerManager\PlayerBase\PlayerAttack</Filter>
     </ClInclude>
+    <ClInclude Include="MyClass\RankJudgeManager\RankJudgeManager.h">
+      <Filter>MyClass\RankJudgeManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -247,6 +253,9 @@
     </ClCompile>
     <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.cpp">
       <Filter>MyClass\PlayerManager\PlayerBase\PlayerAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\RankJudgeManager\RankJudgeManager.cpp">
+      <Filter>MyClass\RankJudgeManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
