@@ -27,8 +27,8 @@ EnemyFactory::EnemyFactory()
 	///@“G‚Ìƒ‚ƒfƒ‹@///
      enemy_model[SLIME]       = L"Model\\Enemy\\Slime\\slime_blue.X";
 	 enemy_model[HIGHSLIME]   = L"Model\\Enemy\\HighSlime\\slime_animatinonv02.X";
-  // enemy_model[FAKERLAMIEL] = L"Model\\Enemy\\slime.X";
-  // enemy_model[STONESTATUE] = L"Model\\Enemy\\slime.X";
+     enemy_model[FAKERLAMIEL] = L"Model\\Enemy\\Lamiel\\ramieru.X";
+     enemy_model[STONESTATUE] = L"Model\\Enemy\\Stone\\koteihou.X";
 }
 
 EnemyBase* EnemyFactory::Create(std::string tag, DirectX::SimpleMath::Vector3 position)
@@ -42,7 +42,7 @@ EnemyBase* EnemyFactory::Create(std::string tag, DirectX::SimpleMath::Vector3 po
 
 EnemyBase* EnemyFactory::CreateProduct(std::string tag, DirectX::SimpleMath::Vector3 position)
 {
-	EnemyBase* classes[] = { new Slime, new HighSlime};
+	EnemyBase* classes[] = { new Slime, new HighSlime, new FakerLamiel,new StoneStatue};
 
 
 	for (int i = 0; i < enemy_tag.size(); ++i)
@@ -55,7 +55,7 @@ EnemyBase* EnemyFactory::CreateProduct(std::string tag, DirectX::SimpleMath::Vec
 
 LPCWSTR EnemyFactory::SetModel(std::string tag)
 {
-	LPCWSTR models[] = { enemy_model[SLIME] , enemy_model[HIGHSLIME]};
+	LPCWSTR models[] = { enemy_model[SLIME] , enemy_model[HIGHSLIME],enemy_model[FAKERLAMIEL],enemy_model[STONESTATUE]};
 	for (int i = 0; i < enemy_tag.size(); ++i)
 	{
 		if (tag == enemy_tag[i]) { model_name = models[i]; }
@@ -65,7 +65,7 @@ LPCWSTR EnemyFactory::SetModel(std::string tag)
 
 DirectX::SimpleMath::Vector3 EnemyFactory::SetSpeed(std::string tag)
 {
-	DirectX::SimpleMath::Vector3 speeds[] = { Slime_speed,HighSlime_speed };
+	DirectX::SimpleMath::Vector3 speeds[] = { Slime_speed,HighSlime_speed,FakerLamiel_speed };
 	for (int i = 0; i < enemy_tag.size(); ++i)
 	{
 		if (tag == enemy_tag[i]) { speed = speeds[i]; }
@@ -75,7 +75,7 @@ DirectX::SimpleMath::Vector3 EnemyFactory::SetSpeed(std::string tag)
 
 int EnemyFactory::SetHP(std::string tag)
 {
-	int hps[] = { Slime_hp,HighSlime_hp};
+	int hps[] = { Slime_hp,HighSlime_hp,FakerLamiel_hp,StoneStatue_hp};
 
 	for (int i = 0; i < enemy_tag.size(); ++i)
 	{

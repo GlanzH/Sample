@@ -10,18 +10,23 @@ public:
 	~StoneStatue() {}
 	bool Initialize();
 	int Update(PlayerBase* player, const float deltaTime) override;
-	void Attck();
-
+	void Attck(const float deltaTime);
+	
+	
 private:
-	  /// ÅEçUåÇ  ÅEó≠Çﬂ    ÅEíÖíe
-	EFFECT attck, accumulate, landing;
-	EFFECTHANDLE handle;
+	void Shot();
+	SimpleMath::Vector3 player_pos;
+
 	const float fit_collision_y    = 4.0f;
 	const float stop_enemy_pos     = 20.0f;
 	const float ground_collision_y = 100.0f;
-	enum STONEMOSION
+	int wait_count;
+	enum class stone
 	{
 		CHARGE,
-		ATTCK,
+		ATTACK,
+		WAIT,
+		INIT,
 	};
+	stone  attck_method;
 };

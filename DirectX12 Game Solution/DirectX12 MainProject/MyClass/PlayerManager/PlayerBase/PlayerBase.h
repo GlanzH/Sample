@@ -12,7 +12,7 @@ class PlayerBase
 {
 public:
 
-	PlayerBase() {};
+	 PlayerBase() {};
 	~PlayerBase() {};
 
 	bool Initialize();
@@ -32,6 +32,8 @@ public:
 	bool IsAttack();
 
 	int GetDamage() { return damage; }
+
+	int GetCount() { return motion_count; }
 
 	void _2DRender();
 
@@ -54,20 +56,6 @@ private:
 	void Invincible(const float deltaTime);
 	//アピール
 	void Appeal(const float deltaTime);
-
-	//攻撃エフェクト
-	//1撃目
-	EFFECT Sword_Effect_1;
-	EFFECTHANDLE handle_1;
-
-	//2連撃目
-	EFFECT Sword_Effect_2;
-	EFFECTHANDLE handle_2;
-
-	//3連撃目
-	EFFECT Sword_Effect_3;
-	EFFECTHANDLE handle_3;
-
 
 	DX9::SPRITEFONT font;
 
@@ -97,8 +85,14 @@ private:
 	const float model_collision_detection_Z = 100.0f;
 
 	//当たり判定モデルの大きさ
-	const int player_box_size = 2;
-	const int box_size = 4;
+	const int player_box_size_y = 3;
+	const int player_box_size_x = 1.2;
+	const int player_box_size_z = 1;
+
+	const int box_size_x = 0.5;
+	const int box_size_y = 0.5;
+	const int box_size_z = 0.5;
+
 
 	//プレイヤーのスピード
 	const float player_speed_ = 40.0f;
@@ -151,11 +145,10 @@ private:
 	bool motion_attack_flag = false;
 
 	float motion_time = 0.0f;
-	float motion_time_max[3]{ 0.9f,0.9f,0.9f };
+	float motion_time_max[3]{ 0.617f,0.517f,0.583f };
 	int   motion_count = 0;
 
 	//攻撃中　ジャンプ不可
-
 	enum UNDER_ATTACK_STATE
 	{
 		NOMAL,
@@ -164,17 +157,23 @@ private:
 
 	UNDER_ATTACK_STATE under_attack_state_mode;
 
+	//エフェクトの発生タイミング等
+	bool  effect_generation = false;
+	float effect_generation_time = 0.0f;
+	float effect_generation_time_max[3]{ 0.317f,0.033f,0.183f };//フレーム(19f,2f,11f)
+
+
 	//無敵時間
 	bool  invincible_flag = false;
 	float		invincible_time = 0.0f;
-	const float invincible_time_max = 100.0f;//1.5f;
+	const float invincible_time_max = 1.5f;
 
 	//アピールする時間
-	float		appeal_time = 0.0f; //アピールする初期値
+	float		appeal_time = 0.0f;     //アピールする初期値
 	const float appeal_time_max = 2.0f; //アピールする時間の最大値
 
 	//ステータスアップの時間
-	float		focus_time = 0.0f;//ステータスアップの時間:初期値
+	float		focus_time = 0.0f;     //ステータスアップの時間:初期値
 	const float focus_time_max = 10.0f;//ステータスアップの時間:最大値
 
 	//モーションの名前

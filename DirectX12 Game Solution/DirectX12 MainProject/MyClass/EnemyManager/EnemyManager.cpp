@@ -28,7 +28,7 @@ EnemyManager::~EnemyManager() {
 bool EnemyManager::Initialize()
 {
 	DX12Effect.Initialize();
-	effect = DX12Effect.Create(L"Effect/test/test.efk");
+	DX12Effect.Create(L"Effect/test/test.efk","hit_eff");
 
 	LoadEnemyArrangement();
 	return true;
@@ -101,9 +101,10 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	if(StatusManager::Instance().GetCombo() == 3)
 	base->Retreat();
 
-	DX12Effect.SetPosition(handle,base->GetModel()->GetPosition());
-	handle = DX12Effect.Play(effect);
-	DX12Effect.SetPosition(handle, Vector3(6, -7, 0));
+	DX12Effect.SetPosition("hit_eff", base->GetModel()->GetPosition());
+	//
+	DX12Effect.PlayOneShot("hit_eff");
+	//DX12Effect.SetPosition("hit_eff", Vector3(6, -7, 0));
 }
 
 void EnemyManager::OnParryArea(EnemyBase* base) {
