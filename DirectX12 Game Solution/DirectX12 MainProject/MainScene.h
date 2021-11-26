@@ -12,6 +12,7 @@
 #include "MyClass/Observer/Observer.h"
 #include "MyClass/CameraManager/CameraManager.h"
 #include "MyClass/StatusManager/StatusManager.h"
+#include "MyClass/UIManager/UIManager.h"
 
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
@@ -48,10 +49,10 @@ private:
 
 	D3DLIGHT9 light{};
 
-	GroundManager  ground;
-	CameraManager  camera;
+	GroundManager* ground;
+	CameraManager* camera;
 	PlayerBase*    player;
 	EnemyManager*  enemy;
 	Observer*      observer;
-	StatusManager* status;
+	UIManager*     ui;
 };
