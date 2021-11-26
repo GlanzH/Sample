@@ -3,8 +3,6 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 
-class PlayerBase;
-
 using namespace DirectX;
 using namespace DX9;
 

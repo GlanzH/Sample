@@ -6,7 +6,7 @@ using namespace DirectX;
 class Slime : public EnemyBase
 {
 public:
-	Slime();
+	Slime() {};
 	~Slime() {}
 
 	int Update(PlayerBase* player, const float deltaTime) override;
