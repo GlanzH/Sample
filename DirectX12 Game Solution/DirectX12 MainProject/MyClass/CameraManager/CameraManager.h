@@ -3,8 +3,6 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 
-class PlayerBase;
-
 using namespace DirectX;
 using namespace DX9;
 
@@ -16,8 +14,8 @@ public:
 
 	bool Initialize();
 	void LoadAsset();
-	int  Update(PlayerBase* player);
-	void Render(SimpleMath::Vector3 player_position);
+	int  Update(SimpleMath::Vector3 pos);
+	void Render();
 
 private:
 	CAMERA  camera;

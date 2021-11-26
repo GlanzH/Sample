@@ -34,7 +34,7 @@ bool EnemyManager::Initialize()
 	return true;
 }
 
-int EnemyManager::Update(PlayerBase* player, const float deltaTime)
+int EnemyManager::Update(SimpleMath::Vector3 player, const float deltaTime)
 {
 	for (auto& enemies : enemy) {
 		enemies->Update(player,deltaTime);
@@ -61,7 +61,7 @@ int EnemyManager::Update(PlayerBase* player, const float deltaTime)
 	return 0;
 }
 
-void EnemyManager::Iterator(PlayerBase* player, const float deltaTime) {
+void EnemyManager::Iterator(SimpleMath::Vector3 player, const float deltaTime) {
 	auto itr = enemy.begin();
 
 	while (itr != enemy.end())
@@ -101,10 +101,11 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	if(StatusManager::Instance().GetCombo() == 3)
 	base->Retreat();
 
-	DX12Effect.SetPosition("hit_eff", base->GetModel()->GetPosition());
-	//
-	DX12Effect.PlayOneShot("hit_eff");
-	//DX12Effect.SetPosition("hit_eff", Vector3(6, -7, 0));
+	SimpleMath::Vector3 pos = base->GetModel()->GetPosition();
+
+	DX12Effect.SetPosition("hit_eff", SimpleMath::Vector3(pos.x - fix_pos,pos.y - fix_pos,-fix_pos));
+	DX12Effect.Play("hit_eff");
+
 }
 
 void EnemyManager::OnParryArea(EnemyBase* base) {

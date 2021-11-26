@@ -3,19 +3,12 @@
 #include "MyClass/MyAlgorithm/MyAlgorithm.h"
 #include "Slime.h"
 
-bool Slime::Initialize()
-{
-	
-	/*Damage(deleteTime/damage):*/
-	return true;
-}
-
-int Slime::Update(PlayerBase* player, const float deltaTime) {
+int Slime::Update(SimpleMath::Vector3 player, const float deltaTime) {
 	Rotate(player, deltaTime);
 	Move(player,deltaTime);
-	SetAnimation(model, WAIT);
+	//SetAnimation(model, WAIT);
 
-	model->AdvanceTime(deltaTime / 1.0f);
+//	model->AdvanceTime(deltaTime / 1.0f);
 
 	if (enemy_hp < 0)
 		return DEAD;
@@ -23,20 +16,15 @@ int Slime::Update(PlayerBase* player, const float deltaTime) {
 	return LIVE;
 }
 
-void Slime::Rotate(PlayerBase* player, const float deltaTime) {
+void Slime::Rotate(SimpleMath::Vector3 player, const float deltaTime) {
 	//!プレイヤーの座標 - 敵の座標でプレイヤーのいる方向に向く
-	SimpleMath::Vector3 player_pos = player->GetModel()->GetPosition();
-
-	float now_rotate = model->GetRotation().y;
-	float rotation = MathHelper_Atan2(-(player_pos.z - position.z), (player_pos.x - position.x)) - 45.0f;
+	float rotation = MathHelper_Atan2(-(player.z - position.z), (player.x - position.x)) - 45.0f;
 
 	model->SetRotation(0.0f, rotation, 0.0f);
 }
 
-void Slime::Move(PlayerBase* player, const float deltaTime) {
-	float player_pos = player->GetModel()->GetPosition().x;
-
-	if (player_pos < position.x)
+void Slime::Move(SimpleMath::Vector3 player, const float deltaTime) {
+	if (player.x < position.x)
 		position.x -= move_speed * deltaTime;
 	else
 		position.x += move_speed * deltaTime;
