@@ -33,7 +33,7 @@ private:
 	char HighSlime_hp;
 	char FakerLamiel_hp;
 	char StoneStatue_hp;
-	char StoneStatueCare_hp;
+	char StoneStatueCore_hp;
 	std::vector<std::string> enemy_tag;
 
 	DirectX::SimpleMath::Vector3 Slime_speed;
@@ -41,7 +41,7 @@ private:
 	DirectX::SimpleMath::Vector3 FakerLamiel_speed;
 	DirectX::SimpleMath::Vector3 Stone_speed;
 
-	DirectX::SimpleMath::Vector3 StoneCare_speed;
+	DirectX::SimpleMath::Vector3 StoneCore_speed;
 
 	DirectX::SimpleMath::Vector3 speed;
 
@@ -51,5 +51,5 @@ private:
 　　* @enum EnemyType
 　　* 敵の種類
 　　*/
-	enum EnemyType { SLIME, HIGHSLIME, FAKERLAMIEL, STONESTATUE,STONECARE };
+	enum EnemyType { SLIME, HIGHSLIME, FAKERLAMIEL, STONESTATUE,STONECORE };
 };
