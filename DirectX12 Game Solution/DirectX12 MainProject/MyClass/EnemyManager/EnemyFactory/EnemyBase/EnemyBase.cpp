@@ -3,13 +3,9 @@
 
 #include "EnemyBase.h"
 
-EnemyBase::EnemyBase()
-{
-
-}
-
 bool EnemyBase::Initialize(SimpleMath::Vector3 speed, int hp)
 {
+	retreat_flg = false;
 	enemy_speed = speed;
 	enemy_hp    = hp;
 	return true;
@@ -44,13 +40,20 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	box.Center = position;
 }
 
+int EnemyBase::Update(PlayerBase* player, const float deltaTime)
+{
+	return 0;
+}
+
 void EnemyBase::Damage(const float deltaTime,int damage) {
 	//model->AdvanceTime(deltaTime / 1.0f);
 	//SetAnimation(model, DAMAGE);
 	enemy_hp -= damage;
 }
 
-void EnemyBase::Retreat() {
+void EnemyBase::Retreat()
+{
+	retreat_flg = true;
 	model->SetPosition(position.x += 15.0f, position.y, position.z);
 
 	box.Center = model->GetPosition();

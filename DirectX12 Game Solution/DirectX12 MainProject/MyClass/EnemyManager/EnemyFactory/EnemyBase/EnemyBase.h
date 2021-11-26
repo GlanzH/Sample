@@ -14,7 +14,7 @@ public:
 
 	bool Initialize(SimpleMath::Vector3 speed,int hp);
 	void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
-	virtual int Update(PlayerBase* player, const float deltaTime) = 0;
+	virtual int Update(PlayerBase* player, const float deltaTime);
 	void Render();
 
 	void Retreat();
@@ -37,6 +37,7 @@ protected:
 	SimpleMath::Vector3  enemy_speed;
 	int count = 0;
 	int enemy_hp;
+	bool retreat_flg;
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack);
 	enum ENEMYMOSION
 	{

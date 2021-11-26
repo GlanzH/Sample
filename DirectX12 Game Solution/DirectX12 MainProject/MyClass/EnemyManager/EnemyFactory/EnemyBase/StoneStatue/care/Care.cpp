@@ -32,18 +32,18 @@ void Care::Attack(const float deltaTime)
 {
 	switch (attack_method)
 	{
-	/*case stone::STORAGE:
+	case stone::STORAGE:
 		model->Move(0.1, 0, 0);
 		if (position.z >= 50);
 		{
 			position.z = 50;
-			wait_count++
+			wait_count++;
 			if(wait_count ==1)
 			{
 			stone::CHARGE;
 			}
 		}
-		break;*/
+		break;
 	/*case stone::CHARGE:
 
 		DX12Effect.SetPosition("charge", position);
