@@ -32,52 +32,52 @@ void Care::Attack(const float deltaTime)
 {
 	switch (attack_method)
 	{
-	case stone::STORAGE:
-		model->Move(0, 0, 0);
-		if (position.z >= 50);
+	/*case stone::STORAGE:
+		model->Move(0.1, 0, 0);
+		if (position.z >= 55);
 		{
-			position.z = 50;
+			position.z = 55;
 			stone::CHARGE;
 		}
-		break;
-	case stone::CHARGE:
+		break;*/
+	//case stone::CHARGE:
 
-		DX12Effect.SetPosition("charge", position);
-		DX12Effect.PlayOneShot("charge");
-		wait_count += deltaTime;
-		if (wait_count == 1)
-		{
-			stone::ATTACK;
-		}
-		break;
-	case stone::ATTACK:
+	//	DX12Effect.SetPosition("charge", position);
+	//	DX12Effect.PlayOneShot("charge");
+	//	wait_count += deltaTime;
+	//	if (wait_count == 1)
+	//	{
+	//		stone::ATTACK;
+	//	}
+	//	break;
+	//case stone::ATTACK:
 
-		wait_count = 0;
-		wait_count++;
+	//	wait_count = 0;
+	//	wait_count++;
 
-		DX12Effect.SetPosition("shoot", position);
-		DX12Effect.PlayOneShot("shoot");
+	//	DX12Effect.SetPosition("shoot", position);
+	//	DX12Effect.PlayOneShot("shoot");
 
-		if (wait_count == 150)
-		{
-			stone::WAIT;
-		}
-		break;
-	case stone::WAIT:
-		wait_count = 0;
-		DX12Effect.SetPosition("landing", position);
-		DX12Effect.PlayOneShot("landing");
-		wait_count++;
-		if (wait_count == 600)
-		{
-			stone::INIT;
-		}
-		break;
-	case stone::INIT:
-		wait_count = 0;
-		position.x = 55;
-		stone::STORAGE;
-		break;
+	//	if (wait_count == 150)
+	//	{
+	//		stone::WAIT;
+	//	}
+	//	break;
+	//case stone::WAIT:
+	//	wait_count = 0;
+	//	DX12Effect.SetPosition("landing", position);
+	//	DX12Effect.PlayOneShot("landing");
+	//	wait_count++;
+	//	if (wait_count == 600)
+	//	{
+	//		stone::INIT;
+	//	}
+	//	break;
+	//case stone::INIT:
+	//	wait_count = 0;
+	//	position.x = 55;
+	//	stone::STORAGE;
+	//	break;
 	default:
 		attack_method = stone::STORAGE;
 		break;
