@@ -11,6 +11,9 @@ public:
 
 	int GetCombo() { return combo; }
 
+	float GetTime() { return combo_time; }
+
+
 	static StatusManager&Instance(){
 		static StatusManager instance;
 		return instance;

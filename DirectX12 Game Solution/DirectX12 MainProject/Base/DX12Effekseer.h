@@ -43,22 +43,21 @@ namespace DX12Effekseer
 
 		void SetCamera(DX12::CAMERA camera);
 
-		Effekseer::Effect* Create(LPCWSTR fileName,std::string name);
+		Effekseer::Effect* Create(LPCWSTR fileName,std::string effectName);
 		void Play(std::string effectName);
 		void PlayOneShot(std::string effectName);
-		void Stop(std::string handleName);
-		void Pause(std::string handleName);
+		void Stop(std::string effectName);
+		void Pause(std::string effectName);
 
-		void SetPosition(std::string handleName,Vector3 effectPosition);
-		void MoveEffect(std::string handleName, Vector3 position);
-		void SetRotation(std::string handleName, Vector3 rotation);
-		void SetScale(std::string handleName, Vector3 scale);
+		void SetPosition(std::string effectName,Vector3 effectPosition);
+		void MoveEffect(std::string effectName, Vector3 position);
+		void SetRotation(std::string effectName, Vector3 rotation);
+		void SetScale(std::string effectName, Vector3 scale);
 
-		void SetTarget(std::string handleName, Vector3 position);
+		void SetTarget(std::string effectName, Vector3 position);
 
-		float GetSpeed(std::string handleName);
-		void SetSpeed(std::string handleName,float speed);
-
+		float GetSpeed(std::string effectName);
+		void SetSpeed(std::string effectName,float speed);
 
 	private:
 		Effekseer::Manager*			m_manager;

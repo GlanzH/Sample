@@ -29,7 +29,7 @@ void PlayerBase::LoadAssets()
 	//プレイヤーの当たり判定
 	box = model->GetBoundingBox();
 
-	box.Extents = SimpleMath::Vector3(box.Extents); //*0.01f;
+	box.Extents = SimpleMath::Vector3(box.Extents)*0.00000000001f;
 
 	collision = DX9::Model::CreateBox(
 		DXTK->Device9,
@@ -48,7 +48,7 @@ void PlayerBase::LoadAssets()
 
 	sword_box = model->GetBoundingBox();
 
-	sword_box.Extents = SimpleMath::Vector3(sword_box.Extents);// * 0.001f;
+	sword_box.Extents = SimpleMath::Vector3(sword_box.Extents)* 0.001f;
 
 	sword_collision = DX9::Model::CreateBox(
 		DXTK->Device9,
@@ -96,6 +96,9 @@ int PlayerBase::Update(const float deltaTime)
 	//アピール
 	Appeal(deltaTime);
 
+	//必殺技
+	SpecialMove();
+
 
 	//無敵時間
 	Invincible(deltaTime);
@@ -138,7 +141,7 @@ void PlayerBase::Render()
 	model->Draw();
 
 	//collision->Draw();
-	sword_collision->Draw();
+	//sword_collision->Draw();
 }
 
 void PlayerBase::OnCollisionEnter() {
@@ -205,7 +208,7 @@ void PlayerBase::Player_move(const float deltaTime)
 {
 	if (!parry_flag) {
 		if (appeal_state_mode == Appeal_state::NORMAL|| appeal_state_mode == Appeal_state::FOCUS) {
-				//プレイヤー:移動(キーボード)
+				//プレイヤー:移動(キーボード) & ゲームパッド十字キー
 			if (DXTK->KeyState->Right || DXTK->KeyState->D || DXTK->GamePadState[0].dpad.right) {
 				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
 				model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
@@ -357,47 +360,53 @@ void PlayerBase::Player_attack(const float deltaTime) {
 			if (StatusManager::Instance().GetCombo() == 1 && motion_count == 0) {
 				if (direction_state_mode == Direction_State::RIGHT) {
 					DX12Effect.PlayOneShot("first");
+					DX12Effect.SetPosition("first", Vector3(6, -5, 0));
+					DX12Effect.SetScale("first", Vector3(1.5f, 1.5f, 1.5f));
 				}
-
-				if (direction_state_mode == Direction_State::LEFT) {
+				else if (direction_state_mode == Direction_State::LEFT) {
 					DX12Effect.PlayOneShot("first");
 					DX12Effect.SetRotation("first", Vector3(0.0f, 180.0f, 0.0f));
 				}
-				if (appeal_state_mode != Appeal_state::FOCUS)
-					damage = 2;
-				if (appeal_state_mode == Appeal_state::FOCUS)
-					damage = 2 * 2;
+				//if (appeal_state_mode != Appeal_state::FOCUS)
+				//	damage = 2;
+				//if (appeal_state_mode == Appeal_state::FOCUS)
+				//	damage = 2 * 2;
 			}
 			else if (StatusManager::Instance().GetCombo() == 2 && motion_count == 1) {
 
-				if (direction_state_mode == Direction_State::RIGHT)
+				if (direction_state_mode == Direction_State::RIGHT) {
 					DX12Effect.PlayOneShot("second");
-
-				if (direction_state_mode == Direction_State::LEFT) {
+					DX12Effect.SetPosition("second", Vector3(6, -2, 0));
+					DX12Effect.SetScale("second", Vector3(2.0f, 2.0f, 2.0f));
+				}
+				else if (direction_state_mode == Direction_State::LEFT) {
 					DX12Effect.PlayOneShot("second");
 					DX12Effect.SetRotation("second", Vector3(0.0f, 180.0f, 0.0f));
 
 				}
 
-				if (appeal_state_mode != Appeal_state::FOCUS)
-					damage = 3;
-				if (appeal_state_mode == Appeal_state::FOCUS)
-					damage = 3 * 2;
+				//if (appeal_state_mode != Appeal_state::FOCUS)
+				//	damage = 3;
+				//if (appeal_state_mode == Appeal_state::FOCUS)
+				//	damage = 3 * 2;
 
 			}
 			else if (StatusManager::Instance().GetCombo() == 3 && motion_count == 2) {
-				if (direction_state_mode == Direction_State::RIGHT)
+				if (direction_state_mode == Direction_State::RIGHT) {
 					DX12Effect.PlayOneShot("third");
+					DX12Effect.SetPosition("third", Vector3(9, -5, 0));
+					DX12Effect.SetScale("third", Vector3(1.5f, 1.5f, 1.5f));
 
-				if (direction_state_mode == Direction_State::LEFT) {
+				}
+				else if (direction_state_mode == Direction_State::LEFT) {
 					DX12Effect.PlayOneShot("third");
 					DX12Effect.SetRotation("third", Vector3(0.0f, 180.0f, 0.0f));
 
 				}
-				if (appeal_state_mode != Appeal_state::FOCUS)
-					damage = 5;
-				if (appeal_state_mode == Appeal_state::FOCUS)
-					damage = 5 * 2;
+				//if (appeal_state_mode != Appeal_state::FOCUS)
+				//	damage = 5;
+				//if (appeal_state_mode == Appeal_state::FOCUS)
+				//	damage = 5 * 2;
 
 			}
 		}
@@ -421,6 +430,17 @@ void PlayerBase::Player_attack(const float deltaTime) {
 
 }
 
+void PlayerBase::SpecialMove() {
+	if (!jump_flag_) {
+		if (DXTK->KeyEvent->pressed.L ||
+			DXTK->GamePadEvent[0].rightShoulder ||
+			DXTK->GamePadEvent[0].leftShoulder) {
+
+		}
+	}
+}
+
+
 bool PlayerBase::IsAttack() {
 
 	if (attack_flag) {
@@ -433,7 +453,7 @@ void PlayerBase::Appeal(const float deltaTime)
 {
 	//アピール
 	if (!jump_flag_) {
-		if (DXTK->KeyEvent->pressed.W) {
+		if (DXTK->KeyEvent->pressed.W||DXTK->GamePadEvent[0].y) {
 			appeal_state_mode = Appeal_state::APPEAL;
 
 		}
@@ -460,36 +480,57 @@ void PlayerBase::Appeal(const float deltaTime)
 
 void PlayerBase::_2DRender()
 {
-	if (!invincible_flag) {
-		DX9::SpriteBatch->DrawString(font.Get(),
-			SimpleMath::Vector2(1000.0f, 70.0f),
-			DX9::Colors::BlueViolet,
-			L"OFF"
-		);
-	}
-	else {
-		DX9::SpriteBatch->DrawString(font.Get(),
-			SimpleMath::Vector2(1000.0f, 70.0f),
-			DX9::Colors::BlueViolet,
-			L"ON"
-		);
-	}
+	//if (!invincible_flag) {
+	//	DX9::SpriteBatch->DrawString(font.Get(),
+	//		SimpleMath::Vector2(1000.0f, 70.0f),
+	//		DX9::Colors::BlueViolet,
+	//		L"OFF"
+	//	);
+	//}
+	//else {
+	//	DX9::SpriteBatch->DrawString(font.Get(),
+	//		SimpleMath::Vector2(1000.0f, 70.0f),
+	//		DX9::Colors::BlueViolet,
+	//		L"ON"
+	//	);
+	//}
 
-	DX9::SpriteBatch->DrawString(font.Get(),
-		SimpleMath::Vector2(1000.0f, 90.0f),
-		DX9::Colors::BlueViolet,
-		L"%f", invincible_time
-	);
+	//DX9::SpriteBatch->DrawString(font.Get(),
+	//	SimpleMath::Vector2(1000.0f, 90.0f),
+	//	DX9::Colors::BlueViolet,
+	//	L"%f", invincible_time
+	//);
 
-	DX9::SpriteBatch->DrawString(font.Get(),
-		SimpleMath::Vector2(1000.0f, 130.0f),
-		DX9::Colors::BlueViolet,
-		L"%f %f %f", box.Extents.x, box.Extents.y, box.Extents.z
-	);
+	//DX9::SpriteBatch->DrawString(font.Get(),
+	//	SimpleMath::Vector2(1000.0f, 190.0f),
+	//	DX9::Colors::BlueViolet,
+	//	L"%d",motion_count
+	//);
 
-	DX9::SpriteBatch->DrawString(font.Get(),
-		SimpleMath::Vector2(1000.0f, 150.0f),
-		DX9::Colors::BlueViolet,
-		L"%f %f %f", sword_box.Extents.x, sword_box.Extents.y, sword_box.Extents.z
-	);
+	//if (effect_generation){
+	//	DX9::SpriteBatch->DrawString(font.Get(),
+	//		SimpleMath::Vector2(1000.0f, 130.0f),
+	//		DX9::Colors::BlueViolet,
+	//		L"ON"
+	//	);
+	//} else {
+	//	DX9::SpriteBatch->DrawString(font.Get(),
+	//		SimpleMath::Vector2(1000.0f, 130.0f),
+	//		DX9::Colors::BlueViolet,
+	//		L"OFF"
+	//	);
+	//}
+
+	//DX9::SpriteBatch->DrawString(font.Get(),
+	//	SimpleMath::Vector2(1000.0f, 150.0f),
+	//	DX9::Colors::BlueViolet,
+	//	L"%d", StatusManager::Instance().GetCombo()
+	//);
+
+	//DX9::SpriteBatch->DrawString(font.Get(),
+	//	SimpleMath::Vector2(1000.0f, 170.0f),
+	//	DX9::Colors::BlueViolet,
+	//	L"%f", StatusManager::Instance().GetTime()
+	//);
+
 }

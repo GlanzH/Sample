@@ -37,6 +37,7 @@ public:
 
 	void _2DRender();
 
+	
 
 private:
 	//アニメーション
@@ -56,6 +57,8 @@ private:
 	void Invincible(const float deltaTime);
 	//アピール
 	void Appeal(const float deltaTime);
+	//必殺技
+	void SpecialMove();
 
 	DX9::SPRITEFONT font;
 
@@ -89,9 +92,9 @@ private:
 	const int player_box_size_x = 1.2;
 	const int player_box_size_z = 1;
 
-	const int box_size_x = 0.5;
-	const int box_size_y = 0.5;
-	const int box_size_z = 0.5;
+	const int box_size_x = 1;
+	const int box_size_y = 1;
+	const int box_size_z = 1;
 
 
 	//プレイヤーのスピード
@@ -166,7 +169,7 @@ private:
 	//無敵時間
 	bool  invincible_flag = false;
 	float		invincible_time = 0.0f;
-	const float invincible_time_max = 1.5f;
+	const float invincible_time_max = 100.0f;//1.5f;
 
 	//アピールする時間
 	float		appeal_time = 0.0f;     //アピールする初期値
