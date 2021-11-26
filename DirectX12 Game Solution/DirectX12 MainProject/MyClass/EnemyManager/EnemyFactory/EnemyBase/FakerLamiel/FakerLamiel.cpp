@@ -7,7 +7,7 @@ bool FakerLamiel::Initialize(SimpleMath::Vector3 speed, int hp) {
 	DX12Effect.Create(L"Effect/thunder/thunder.efk", "thunder");
 	attack_method = DOWN;
 	init_pos = position;
-	count = 0;
+	count = 100;
 	return true;
 }
 
@@ -19,19 +19,8 @@ int FakerLamiel::Update( PlayerBase* player, const float deltaTime) {
 	return LIVE;
 }
 
-void FakerLamiel::Move(PlayerBase* player, const float deltaTime) {
-	float player_pos = player->GetModel()->GetPosition().y;
-
-	//if (player_pos  > position.y)
-		position.y -= move_speed * deltaTime;
-
-	box.Center = model->GetPosition();
-	model->SetPosition(position);
-	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
-}
-
 int FakerLamiel::Counter() {
-	if (count < 300)
+	if (count < 600)
 		count++;
 	else
 		count = 0;
@@ -41,26 +30,42 @@ int FakerLamiel::Counter() {
 
 void FakerLamiel::Attack(PlayerBase*player, const float deltaTime)
 {
-	float player_pos = player->GetModel()->GetPosition().y;
+	SimpleMath::Vector3 player_pos = player->GetModel()->GetPosition();
 	
+	//if (attack_method == DOWN) {
+	//	if (player_pos.y + 15.0f < position.y)
+	//		position.y -= move_speed * deltaTime;
+	//	else
+	//		attack_method = TELEPORT;
+	//}
+	//else if (attack_method == TELEPORT) {
+	//	position.x = player_pos.x;
+	//}
+
 	switch (attack_method)
 	{
 	case DOWN:
-		if (player_pos + 15.0f < position.y)
-			Move(player, deltaTime);
+		if (player_pos.y + 10.0f < position.y)
+			position.y -= move_speed * deltaTime;
 		else
 			attack_method = TELEPORT;
 		break;
 
 	case TELEPORT:
-	//	if()
-		//attack_method = WAIT;
+		if (Counter() == 0) {
+			position.x = player_pos.x;
+			attack_method = ATTACK;
+		}
 		break;
 
 	case ATTACK:
-			//attack_method = TELEPORT;
+			attack_method = TELEPORT;
 		break;
 	}
+
+	box.Center = model->GetPosition();
+	model->SetPosition(position);
+	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 }
 
 

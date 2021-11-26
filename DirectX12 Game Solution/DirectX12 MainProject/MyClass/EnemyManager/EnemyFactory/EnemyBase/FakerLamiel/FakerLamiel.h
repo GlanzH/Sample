@@ -11,13 +11,13 @@ public:
 	bool Initialize(SimpleMath::Vector3 speed, int hp);
 	int Update(PlayerBase* player, const float deltaTime) override;
 private:
-	void Move(PlayerBase* player, const float deltaTime);
+	//void Move(PlayerBase* player, const float deltaTime);
 	void Attack(PlayerBase* player,const float deltaTime);
 	int Counter();
 
 	SimpleMath::Vector3 init_pos;
 
-	int count = 0;
+	int count = 100;
 
 	const float fit_collision_y    = 4.0f;
 	const float stop_enemy_pos     = 20.0f;
