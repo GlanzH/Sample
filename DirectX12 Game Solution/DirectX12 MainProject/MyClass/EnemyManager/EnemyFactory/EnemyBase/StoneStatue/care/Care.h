@@ -27,6 +27,7 @@ private:
 		CHARGE,
 		ATTACK,
 		WAIT,
+		BACK,
 		INIT,
 	};
 	stone  attack_method;
