@@ -44,7 +44,7 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	box.Center = position;
 }
 
-int EnemyBase::Update(PlayerBase* player, const float deltaTime)
+int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
 {
 	if (retreat_flg)
 	{

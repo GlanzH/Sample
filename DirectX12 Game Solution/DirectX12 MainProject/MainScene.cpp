@@ -106,7 +106,7 @@ NextScene MainScene::Update(const float deltaTime)
 	DX12Effect.Update(deltaTime);
 	player->Update(deltaTime);
 	camera->Update(player->GetModel()->GetPosition());
-	enemy->Update(player,deltaTime);
+	enemy->Update(player->GetModel()->GetPosition(),deltaTime);
 	observer->Update(player, enemy);
 	return NextScene::Continue;
 }

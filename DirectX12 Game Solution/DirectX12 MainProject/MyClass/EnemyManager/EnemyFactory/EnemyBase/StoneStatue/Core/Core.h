@@ -9,7 +9,7 @@ public:
 	Core();
 	~Core() {}
     bool Initialize(SimpleMath::Vector3 speed, int hp);
-	int Update(PlayerBase* player, const float deltaTime) override;
+	int Update(SimpleMath::Vector3 player, const float deltaTime) override;
 	void Attack(const float deltaTime);
 
 

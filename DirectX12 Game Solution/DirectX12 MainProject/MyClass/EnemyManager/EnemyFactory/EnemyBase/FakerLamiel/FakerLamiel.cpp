@@ -11,7 +11,7 @@ bool FakerLamiel::Initialize(SimpleMath::Vector3 speed, int hp) {
 	return true;
 }
 
-int FakerLamiel::Update( PlayerBase* player, const float deltaTime) {
+int FakerLamiel::Update(SimpleMath::Vector3 player, const float deltaTime) {
 	Attack(player,deltaTime);
 
 	if (enemy_hp < 0)
@@ -28,14 +28,12 @@ int FakerLamiel::Counter() {
 	return count;
 }
 
-void FakerLamiel::Attack(PlayerBase*player, const float deltaTime)
+void FakerLamiel::Attack(SimpleMath::Vector3 player, const float deltaTime)
 {
-	SimpleMath::Vector3 player_pos = player->GetModel()->GetPosition();
-	
 	switch (attack_method)
 	{
 	case DOWN:
-		if (player_pos.y + 10.0f < position.y)
+		if (player.y + 10.0f < position.y)
 			position.y -= move_speed * deltaTime;
 		else
 			attack_method = TELEPORT;
@@ -43,7 +41,7 @@ void FakerLamiel::Attack(PlayerBase*player, const float deltaTime)
 
 	case TELEPORT:
 		if (Counter() == 0) {
-			position.x = player_pos.x;
+			position.x = player.x;
 			attack_method = ATTACK;
 		}
 		break;

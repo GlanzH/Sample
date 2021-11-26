@@ -18,10 +18,8 @@ bool Core::Initialize(SimpleMath::Vector3 speed, int hp)
 	return true;
 }
 
-int Core::Update(PlayerBase* player, const float deltaTime) {
+int Core::Update(SimpleMath::Vector3 player, const float deltaTime) {
 	
-	player_pos = player->GetModel()->GetPosition();
-
 	//SetAnimesion(model, CHARGE);
 	 Attack(deltaTime);
 	/*model->AdvanceTime(deltaTime / 1.0f);*/

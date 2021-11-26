@@ -7,7 +7,7 @@ HighSlime::HighSlime()
 {
 }
 
-int HighSlime::Update(PlayerBase* player, const float deltaTime)
+int HighSlime::Update(SimpleMath::Vector3 player, const float deltaTime)
 {
     Move(player, deltaTime);
     Rotate(player, deltaTime);
@@ -22,21 +22,16 @@ int HighSlime::Update(PlayerBase* player, const float deltaTime)
 	return LIVE;
 }
 
-void HighSlime::Move(PlayerBase* player, const float deltaTime) {
-    float player_pos = player->GetModel()->GetPosition().x;
-
-    if (player_pos < position.x)
+void HighSlime::Move(SimpleMath::Vector3 player, const float deltaTime) {
+    if (player.x < position.x)
         position.x -= move_speed * deltaTime;
     else
         position.x += move_speed * deltaTime;
 }
 
-void HighSlime::Rotate(PlayerBase* player, const float deltaTime) {
+void HighSlime::Rotate(SimpleMath::Vector3 player, const float deltaTime) {
     //!プレイヤーの座標 - 敵の座標でプレイヤーのいる方向に向く
-    SimpleMath::Vector3 player_pos = player->GetModel()->GetPosition();
-
-    float now_rotate = model->GetRotation().y;
-    float rotation = MathHelper_Atan2(-(player_pos.z - position.z), (player_pos.x - position.x)) - 45.0f;
+    float rotation = MathHelper_Atan2(-(player.z - position.z), (player.x - position.x)) - 45.0f;
 
     model->SetRotation(0.0f,rotation, 0.0f);
 }

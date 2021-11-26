@@ -9,10 +9,10 @@ public:
 	FakerLamiel()  {}
 	~FakerLamiel() {}
 	bool Initialize(SimpleMath::Vector3 speed, int hp);
-	int Update(PlayerBase* player, const float deltaTime) override;
+	int Update(SimpleMath::Vector3 player, const float deltaTime) override;
 private:
-	//void Move(PlayerBase* player, const float deltaTime);
-	void Attack(PlayerBase* player,const float deltaTime);
+	//void Move(SimpleMath::Vector3 player, const float deltaTime);
+	void Attack(SimpleMath::Vector3 player,const float deltaTime);
 	int Counter();
 
 	SimpleMath::Vector3 init_pos;

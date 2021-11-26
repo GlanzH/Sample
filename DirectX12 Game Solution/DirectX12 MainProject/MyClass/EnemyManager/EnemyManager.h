@@ -15,7 +15,7 @@ public:
 	~EnemyManager();
 
 	bool Initialize();
-	int  Update(PlayerBase* player, const float deltaTime);
+	int  Update(SimpleMath::Vector3 player, const float deltaTime);
 	void Render();
 
 	std::list<EnemyBase*> GetEnemy() { return enemy; }
@@ -27,7 +27,7 @@ public:
 private:
 	void LoadEnemyArrangement();
 	void Generator();
-	void Iterator(PlayerBase* player, const float deltaTime);
+	void Iterator(SimpleMath::Vector3 player, const float deltaTime);
 	
 	int AppearTimer();
 
