@@ -3,13 +3,6 @@
 #include "MyClass/MyAlgorithm/MyAlgorithm.h"
 #include "Slime.h"
 
-bool Slime::Initialize()
-{
-	
-	/*Damage(deleteTime/damage):*/
-	return true;
-}
-
 int Slime::Update(PlayerBase* player, const float deltaTime) {
 	Rotate(player, deltaTime);
 	Move(player,deltaTime);

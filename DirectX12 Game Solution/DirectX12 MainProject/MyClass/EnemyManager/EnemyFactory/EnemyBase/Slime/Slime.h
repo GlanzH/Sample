@@ -9,7 +9,6 @@ public:
 	Slime()  {}
 	~Slime() {}
 
-	bool Initialize();
 	int Update(PlayerBase* player, const float deltaTime) override;
 
 private:

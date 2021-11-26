@@ -13,24 +13,24 @@ public:
 private:
 	void Move(PlayerBase* player, const float deltaTime);
 	void Attack(PlayerBase* player,const float deltaTime);
-
+	int Counter();
 
 	SimpleMath::Vector3 init_pos;
+
+	int count = 0;
 
 	const float fit_collision_y    = 4.0f;
 	const float stop_enemy_pos     = 20.0f;
 	const float ground_collision_y = 100.0f;
 	
-	const float move_speed = 2.5f;
+	const float move_speed = 5.0f;
 
-	int Recoil_count = 0;
 	 enum Lami
 	 {
-		 WAIT,
-		 ATTACK,
-		 SPREAD,
-		 TELEPORT
+		 DOWN,
+		 TELEPORT,
+		 ATTACK
 	 };
 
-	 int attack_method = WAIT;
+	 int attack_method = DOWN;
 };

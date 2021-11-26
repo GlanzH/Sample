@@ -3,6 +3,7 @@
 #include"EnemyBase/HighSlime/HighSlime.h"
 #include"EnemyBase/FakerLamiel/FakerLamiel.h"
 #include"EnemyBase/StoneStatue/StoneStatue.h"
+#include"EnemyBase/StoneStatue/care/Care.h"
 
 
 EnemyFactory::EnemyFactory()
@@ -11,9 +12,12 @@ EnemyFactory::EnemyFactory()
 	Slime_speed.x = 3.0f;
 	HighSlime_speed.x = 7.0f;
 	FakerLamiel_speed.x = 1.0f;
+	Stone_speed.z =0.0f ;
+	StoneCare_speed.z = 0.0f;
 	Slime_hp       = 5;
 	HighSlime_hp   = 7;
 	FakerLamiel_hp = 30;
+	StoneStatue_hp = 60;
 	StoneStatueCare_hp = 60;
 	//@敵の種類のタグをプッシュバック@//
 	//@　　スライム         @//
@@ -47,7 +51,7 @@ EnemyBase* EnemyFactory::Create(std::string tag, DirectX::SimpleMath::Vector3 po
 
 EnemyBase* EnemyFactory::CreateProduct(std::string tag, DirectX::SimpleMath::Vector3 position)
 {
-	EnemyBase* classes[] = { new Slime, new HighSlime, new FakerLamiel,new StoneStatue};
+	EnemyBase* classes[] = { new Slime, new HighSlime, new FakerLamiel,new StoneStatue,new Care};
 
 
 	for (int i = 0; i < enemy_tag.size(); ++i)
@@ -70,7 +74,7 @@ LPCWSTR EnemyFactory::SetModel(std::string tag)
 
 DirectX::SimpleMath::Vector3 EnemyFactory::SetSpeed(std::string tag)
 {
-	DirectX::SimpleMath::Vector3 speeds[] = { Slime_speed,HighSlime_speed,FakerLamiel_speed };
+	DirectX::SimpleMath::Vector3 speeds[] = { Slime_speed,HighSlime_speed,FakerLamiel_speed ,Stone_speed,StoneCare_speed};
 	for (int i = 0; i < enemy_tag.size(); ++i)
 	{
 		if (tag == enemy_tag[i]) { speed = speeds[i]; }
@@ -80,7 +84,7 @@ DirectX::SimpleMath::Vector3 EnemyFactory::SetSpeed(std::string tag)
 
 int EnemyFactory::SetHP(std::string tag)
 {
-	int hps[] = { Slime_hp,HighSlime_hp,FakerLamiel_hp,StoneStatueCare_hp};
+	int hps[] = { Slime_hp,HighSlime_hp,FakerLamiel_hp,StoneStatue_hp,StoneStatueCare_hp};
 
 	for (int i = 0; i < enemy_tag.size(); ++i)
 	{
