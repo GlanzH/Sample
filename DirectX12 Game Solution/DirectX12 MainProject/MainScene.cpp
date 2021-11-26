@@ -9,15 +9,21 @@
 // Initialize member variables.
 MainScene::MainScene() : dx9GpuDescriptor{}
 {
+	camera   = new CameraManager;
+	ground   = new GroundManager;
 	player   = new PlayerBase;
 	enemy    = new EnemyManager;
 	observer = new Observer;
+	ui       = new UIManager;
 }
 
 MainScene::~MainScene() {
+	delete camera;
+	delete ground;
 	delete player;
 	delete enemy;
 	delete observer;
+	delete ui;
 
 	Terminate();
 }
@@ -26,8 +32,8 @@ MainScene::~MainScene() {
 void MainScene::Initialize()
 {
 	//•Ï”‚âŠÖ”‚Ì‰Šú‰»‚Í‚±‚¿‚ç
-	camera.Initialize();
 	player->Initialize();
+	camera->Initialize();
 	enemy->Initialize();
 }
 
@@ -63,10 +69,8 @@ void MainScene::LoadAssets()
 
 	//‰æ‘œ‚âƒ‚ƒfƒ‹‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 	DX12Effect.Initialize();
-	ground.LoadAsset();
+	ground->LoadAsset();
 	player->LoadAssets();
-
-	DX12Effect.Initialize();
 }
 
 // Releasing resources required for termination.
@@ -99,11 +103,10 @@ NextScene MainScene::Update(const float deltaTime)
 
 	// TODO: Add your game logic here.
 
-	camera.Update(player);
-
 	DX12Effect.Update(deltaTime);
 	player->Update(deltaTime);
-	enemy->Update(player,deltaTime);
+	camera->Update(player->GetModel()->GetPosition());
+	enemy->Update(player->GetModel()->GetPosition(),deltaTime);
 	observer->Update(player, enemy);
 	return NextScene::Continue;
 }
@@ -117,15 +120,14 @@ void MainScene::Render()
 	DXTK->Direct3D9->BeginScene();
 
 	//3D•`‰æ
-	camera.Render(player->GetModel()->GetPosition());
-	ground.Render();
+	camera->Render();
+	ground->Render();
 	player->Render();
 	enemy->Render();
 
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ
-	player->_2DRender();
 
 	DX9::SpriteBatch->End();
 	DXTK->Direct3D9->EndScene();

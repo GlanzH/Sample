@@ -5,11 +5,11 @@
 
 EnemyBase::EnemyBase()
 {
-
 }
 
 bool EnemyBase::Initialize(SimpleMath::Vector3 speed, int hp)
 {
+	retreat_flg = false;
 	enemy_speed = speed;
 	enemy_hp    = hp;
 	return true;
@@ -18,11 +18,12 @@ bool EnemyBase::Initialize(SimpleMath::Vector3 speed, int hp)
 void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
 	position = initial_position;
 
-	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
+	//model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
+	model = DX9::Model::CreateFromFile(DXTK->Device9, model_name);
 	model->SetPosition(position);
 	model->SetRotation(0.0f, XMConvertToRadians(90.0f), 0.0f);
 	
-
+	//model->SetScale(3.3);
 
 	//” ‚ðì‚é€”õ
 	box = model->GetBoundingBox();
@@ -43,13 +44,24 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	box.Center = position;
 }
 
+int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
+{
+	if (retreat_flg)
+	{
+		//position.x = ;
+	} 
+	return 0;
+}
+
 void EnemyBase::Damage(const float deltaTime,int damage) {
-	model->AdvanceTime(deltaTime / 1.0f);
-	SetAnimation(model, DAMAGE);
+	//model->AdvanceTime(deltaTime / 1.0f);
+	//SetAnimation(model, DAMAGE);
 	enemy_hp -= damage;
 }
 
-void EnemyBase::Retreat() {
+void EnemyBase::Retreat()
+{
+	retreat_flg = true;
 	model->SetPosition(position.x += 15.0f, position.y, position.z);
 
 	box.Center = model->GetPosition();

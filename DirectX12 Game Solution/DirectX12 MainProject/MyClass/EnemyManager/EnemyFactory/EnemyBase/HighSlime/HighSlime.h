@@ -6,14 +6,14 @@ using namespace DirectX;
 class HighSlime : public EnemyBase
 {
 public:
-	HighSlime()  {}
+	HighSlime();
 	~HighSlime() {}
 
-	int Update(PlayerBase* player, const float deltaTime) override;
+	int Update(SimpleMath::Vector3 player, const float deltaTime) override;
 
 private:
-	void Move  (PlayerBase* player, const float deltaTime);
-	void Rotate(PlayerBase* player, const float deltaTime);
+	void Move  (SimpleMath::Vector3 player, const float deltaTime);
+	void Rotate(SimpleMath::Vector3 player, const float deltaTime);
 	void Jump(const float deltaTime);
 
 	const float fit_collision_y    =   4.0f;

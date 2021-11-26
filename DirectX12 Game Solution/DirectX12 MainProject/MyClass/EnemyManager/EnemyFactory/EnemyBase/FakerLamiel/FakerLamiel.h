@@ -6,33 +6,31 @@ using namespace DirectX;
 class FakerLamiel : public EnemyBase
 {
 public:
-	FakerLamiel() {}
+	FakerLamiel()  {}
 	~FakerLamiel() {}
-
-	int Update(PlayerBase* player, const float deltaTime) override;
+	bool Initialize(SimpleMath::Vector3 speed, int hp);
+	int Update(SimpleMath::Vector3 player, const float deltaTime) override;
 private:
-	void Move(PlayerBase* player, const float deltaTime);
-	void Attck(PlayerBase* player,const float deltaTime);
+	//void Move(SimpleMath::Vector3 player, const float deltaTime);
+	void Attack(SimpleMath::Vector3 player,const float deltaTime);
+	int Counter();
 
-	bool rush_flag = false;
-	char  count = 0;
+	SimpleMath::Vector3 init_pos;
+
+	int count = 100;
 
 	const float fit_collision_y    = 4.0f;
 	const float stop_enemy_pos     = 20.0f;
 	const float ground_collision_y = 100.0f;
 	
-	const int stop_count = 120;
-	const int accel_num  = 5;
-	int Recoil_count = 0;
-	 enum class Lami
+	const float move_speed = 5.0f;
+
+	 enum Lami
 	 {
-		 STAND,
-		 ATTCK,
-		 SPREAD,
-		 TELEPORT
+		 DOWN,
+		 TELEPORT,
+		 ATTACK
 	 };
 
-	 Lami attck_method;
-
-	
+	 int attack_method = DOWN;
 };
