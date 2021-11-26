@@ -128,6 +128,7 @@ void MainScene::Render()
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ
+	player->_2DRender();
 
 	DX9::SpriteBatch->End();
 	DXTK->Direct3D9->EndScene();

@@ -39,10 +39,10 @@ int EnemyManager::Update(SimpleMath::Vector3 player, const float deltaTime)
 	for (auto& enemies : enemy) {
 		enemies->Update(player,deltaTime);
 	}
-	player_data = player;
+
 	delta		= deltaTime;
 
-	Iterator(player_data,delta);
+	Iterator(player,delta);
 
 	if (frame < MAX_FRAME)
 		++frame;

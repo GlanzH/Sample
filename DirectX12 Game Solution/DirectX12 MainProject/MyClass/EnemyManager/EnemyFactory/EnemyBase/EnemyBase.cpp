@@ -19,7 +19,7 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	position = initial_position;
 
 	//model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
-	model = DX9::Model::CreateFromFile(DXTK->Device9, model_name);
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
 	model->SetPosition(position);
 	model->SetRotation(0.0f, XMConvertToRadians(90.0f), 0.0f);
 	
