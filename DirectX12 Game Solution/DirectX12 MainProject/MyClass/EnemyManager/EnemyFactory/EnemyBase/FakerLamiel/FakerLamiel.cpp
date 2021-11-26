@@ -7,8 +7,6 @@ int FakerLamiel::Update( PlayerBase* player, const float deltaTime) {
 
 	if (enemy_hp < 0)
 		return DEAD;
-	model->SetScale(1.0);
-	model->SetPosition(0 ,13, 50);
 	return LIVE;
 }
 
