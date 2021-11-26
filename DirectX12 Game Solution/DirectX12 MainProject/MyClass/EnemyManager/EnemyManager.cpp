@@ -101,10 +101,11 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	if(StatusManager::Instance().GetCombo() == 3)
 	base->Retreat();
 
-	DX12Effect.SetPosition("hit_eff", base->GetModel()->GetPosition());
-	//
-	DX12Effect.PlayOneShot("hit_eff");
-	//DX12Effect.SetPosition("hit_eff", Vector3(6, -7, 0));
+	SimpleMath::Vector3 pos = base->GetModel()->GetPosition();
+
+	DX12Effect.SetPosition("hit_eff", SimpleMath::Vector3(pos.x - fix_pos,pos.y - fix_pos,-fix_pos));
+	DX12Effect.Play("hit_eff");
+
 }
 
 void EnemyManager::OnParryArea(EnemyBase* base) {

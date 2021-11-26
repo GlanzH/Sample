@@ -1,7 +1,6 @@
 #include "PlayerBase.h"
 
 #include "MyClass/StatusManager/StatusManager.h"
-
 #include "MyClass/PlayerManager/PlayerBase/PlayerAttack/PlayerAttack.h"
 
 
@@ -14,6 +13,8 @@ bool PlayerBase::Initialize()
 	appeal_state_mode = Appeal_state::NORMAL;
 
 	direction_state_mode = Direction_State::RIGHT;
+
+	under_attack_state_mode = UNDER_ATTACK_STATE::NOMAL;
 
 	return 0;
 }
@@ -28,33 +29,32 @@ void PlayerBase::LoadAssets()
 	//プレイヤーの当たり判定
 	box = model->GetBoundingBox();
 
-	box.Extents = SimpleMath::Vector3(box.Extents) * 0.01f;
+	box.Extents = SimpleMath::Vector3(box.Extents); //*0.01f;
 
 	collision = DX9::Model::CreateBox(
 		DXTK->Device9,
-		box.Extents.x * player_box_size,
-		box.Extents.y * player_box_size,
-		box.Extents.z * player_box_size
+		box.Extents.x * player_box_size_x,
+		box.Extents.y * player_box_size_y,
+		box.Extents.z * player_box_size_z
 	);
 	collision->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
 
-	material.Diffuse = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.75f);
-	material.Ambient = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
+	material.Diffuse  = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.75f);
+	material.Ambient  = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	collision->SetMaterial(material);
 
-	box.Center = player_pos;
 
 
 	sword_box = model->GetBoundingBox();
 
-	sword_box.Extents = SimpleMath::Vector3(sword_box.Extents) * 0.001f;
+	sword_box.Extents = SimpleMath::Vector3(sword_box.Extents);// * 0.001f;
 
 	sword_collision = DX9::Model::CreateBox(
 		DXTK->Device9,
-		sword_box.Extents.x * box_size,
-		sword_box.Extents.y * box_size,
-		sword_box.Extents.z * box_size
+		sword_box.Extents.x * box_size_x,
+		sword_box.Extents.y * box_size_y,
+		sword_box.Extents.z * box_size_z
 	);
 
 
@@ -119,12 +119,11 @@ int PlayerBase::Update(const float deltaTime)
 		attack_flag = false;
 		attack_zeit = 0.0f;
 	}
-	//if(DXTK->KeyState->Left)
-		sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(-8, 6, 0));
-	//else if(DXTK->KeyState->Right)
+
+	sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(8, 6, 0));
 
 	box.Center = model->GetPosition();
-	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(-0.5, 4, 0));
+	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 6, 0));
 
 	model->AdvanceTime(deltaTime);
 
@@ -139,7 +138,7 @@ void PlayerBase::Render()
 	model->Draw();
 
 	//collision->Draw();
-	//sword_collision->Draw();
+	sword_collision->Draw();
 }
 
 void PlayerBase::OnCollisionEnter() {
@@ -157,15 +156,6 @@ void PlayerBase::OnCollisionEnter() {
 		box.Center = model->GetPosition();
 		model->SetPosition(player_pos);
 		collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
-		//SetAnimation(model, Damage);
-		//float dist = 0;
-		//if (ground->IntersectRay(
-		//	model->GetPosition() + SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
-		//	SimpleMath::Vector3::Up,
-		//	&dist
-		//)) {
-		//	model->Move(0.0f, dist, 0.0f);
-		//}
 	}
 }
 
@@ -179,7 +169,6 @@ void PlayerBase::Invincible(const float deltaTime)
 		invincible_time = 0.0f;
 	}
 }
-
 
 void PlayerBase::OnParryArea() {
 	//パリィ成功時の処理
@@ -211,7 +200,6 @@ void PlayerBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack)
 	}
 	model->SetTrackEnable(enableTrack, TRUE);
 }
-
 
 void PlayerBase::Player_move(const float deltaTime)
 {
@@ -253,13 +241,15 @@ void PlayerBase::Player_jump(const float deltaTime)
 {
 	//ジャンプ
 	if (!parry_flag) {
-		if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
-			if (!jump_flag_) {
-				if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent[0].a) {
-					jump_flag_ = true;
-					jump_time_ = 0;
-					jump_start_v_ = model->Position.y;
+		if(under_attack_state_mode==UNDER_ATTACK_STATE::NOMAL){
+			if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
+				if (!jump_flag_) {
+					if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent[0].a) {
+						jump_flag_ = true;
+						jump_time_ = 0;
+						jump_start_v_ = model->Position.y;
 
+					}
 				}
 			}
 		}
@@ -278,136 +268,158 @@ void PlayerBase::Player_jump(const float deltaTime)
 	}
 }
 
-
 void PlayerBase::Player_attack(const float deltaTime) {
 	//プレイヤー:攻撃
-	//if (!cool_time_flag_zwei) {
-	//	if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
-	//		if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
-	//			StatusManager::Instance().AddCombo(deltaTime);
-	//			count_time = 0.0f;
-	//			attack_flag = true;
-	//			if (IsAttack()) {
-	//				if (StatusManager::Instance().GetCombo() == 1) {
-	//					cool_time_flag_zwei = true;
-	//					if (appeal_state_mode != Appeal_state::FOCUS)
-	//						damage = 2;
-	//					else
-	//						damage = 2 * 2;
-	//					if (direction_state_mode == Direction_State::RIGHT) {
-	//						handle_1 = DX12Effect.Play(Sword_Effect_1);
-	//						DX12Effect.SetPosition(handle_1, Vector3(6, -7, 0));
-	//						DX12Effect.SetSpeed(handle_1, 1.0f);
-	//					}
+	if (!cool_time_flag_zwei) {
+		if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
+			if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
+				if (!first_attaack_flag) {
+					StatusManager::Instance().AddCombo(deltaTime);
+					first_attaack_flag = true;
+				}
+				under_attack_state_mode = UNDER_ATTACK_STATE::ATTACK;
 
-	//					if (direction_state_mode == Direction_State::LEFT) {
-	//						handle_1 = DX12Effect.Play(Sword_Effect_1);
-	//						DX12Effect.SetPosition(handle_1, Vector3(-7, -9, -2));
-	//						DX12Effect.SetSpeed(handle_1, 1.0f);
-	//						DX12Effect.SetRotation(handle_1, Vector3(0, XMConvertToRadians(180), 0));
-	//						DX12Effect.SetScale(handle_1, Vector3(1.5, 1.5, 1.5));
-
-	//					}
-	//				}
-	//				else if (StatusManager::Instance().GetCombo() == 2) {
-	//					//SetAnimation(model, ACT2);
-
-	//					cool_time_flag_zwei = true;
-	//					if (appeal_state_mode != Appeal_state::FOCUS)
-	//						damage = 3;
-	//					else
-	//						damage = 3 * 2;
-
-
-	//					if (direction_state_mode == Direction_State::RIGHT) {
-	//						handle_2 = DX12Effect.Play(Sword_Effect_2);
-	//						DX12Effect.SetPosition(handle_2, Vector3(6, -7, 0));
-	//						DX12Effect.SetSpeed(handle_2, 1.0f);
-	//					}
-
-	//					if (direction_state_mode == Direction_State::LEFT) {
-	//						handle_2 = DX12Effect.Play(Sword_Effect_2);
-	//						DX12Effect.SetPosition(handle_2, Vector3(-7, -9, -2));
-	//						DX12Effect.SetSpeed(handle_2, 1.0f);
-	//						DX12Effect.SetRotation(handle_2, Vector3(0, XMConvertToRadians(180), 0));
-	//						DX12Effect.SetScale(handle_2, Vector3(1.5, 1.5, 1.5));
-
-	//					}
-
-	//				}
-	//				else if (StatusManager::Instance().GetCombo() == 3) {
-	//					//SetAnimation(model, ACT3);
-	//					cool_time_flag_zwei = true;
-	//					if (appeal_state_mode != Appeal_state::FOCUS)
-	//						damage = 5;
-	//					else
-	//						damage = 5 * 2;
-
-	//					if (direction_state_mode == Direction_State::RIGHT) {
-	//						handle_3 = DX12Effect.Play(Sword_Effect_3);
-	//						DX12Effect.SetPosition(handle_3, Vector3(6, -7, 0));
-	//						DX12Effect.SetSpeed(handle_3, 1.5f);
-	//					}
-
-	//					if (direction_state_mode == Direction_State::LEFT) {
-	//						handle_3 = DX12Effect.Play(Sword_Effect_3);
-	//						DX12Effect.SetPosition(handle_3, Vector3(-7, -9, -2));
-	//						DX12Effect.SetSpeed(handle_3, 1.5f);
-	//						DX12Effect.SetRotation(handle_3, Vector3(0, XMConvertToRadians(180), 0));
-	//						DX12Effect.SetScale(handle_3, Vector3(1.5, 1.5, 1.5));
-
-	//					}
-
-	//				}
-
-	//			}
-	//		
-	//		}
-	//	}
-	//}
-	//if (cool_time_flag_zwei) {
-	//	cool_time_zwei += deltaTime;
-	//	if (cool_time_zwei >= cool_time_max_zwei[count]) {
-	//		cool_time_zwei = 0.0f;
-	//		count++;
-	//		cool_time_flag_zwei = false;
-	//	}
-	//}
-
-	//count_time += deltaTime;
-	//if (count >= 3 || count_time > count_time_max) {
-	//	count = 0;
-	//	count_time = 0.0f;
-	//}
-
-	if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
-		if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
-			if (!First_attack_flag) {
-				StatusManager::Instance().AddCombo(deltaTime);
-				First_attack_flag = true;
+				     if (StatusManager::Instance().GetCombo() == 1);
+				else if (StatusManager::Instance().GetCombo() == 2);
+				else if (StatusManager::Instance().GetCombo() == 3);
 			}
+		}
+	}
+	if (StatusManager::Instance().GetCombo() == 1) {
+		motion_time_start_flag = true;
+		effect_generation      = true;
+		SetAnimation(model, ACT1);
+	}
+	if (StatusManager::Instance().GetCombo() == 2) {
+		motion_time_start_flag = true;
+		effect_generation      = true;
+		SetAnimation(model, ACT2);
+	}
+	if (StatusManager::Instance().GetCombo() == 3) {
+		motion_time_start_flag = true;
+		effect_generation      = true;
+		SetAnimation(model, ACT3);
+	}
+	if (motion_time_start_flag == true) {
+		motion_time += deltaTime;
+	}
+	if (!motion_attack_flag) {
+		if (motion_time >= 0.1f && motion_time < motion_time_max[motion_count]) {
+			if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
+				motion_attack_flag = true;
+			}
+		}
+	} else {
+		if (motion_time >= motion_time_max[motion_count]) {
+			StatusManager::Instance().AddCombo(deltaTime);
+			motion_time = 0.0f;
+			motion_time_start_flag = false;
+			motion_attack_flag = false;
+			motion_count++;
+			if (StatusManager::Instance().GetCombo() == 3) {
+				cool_time_flag_zwei = true;
+			}
+		}
+	}
+	if (cool_time_flag_zwei == true) {
+		cool_time_zwei += deltaTime;
+	}
+	if (cool_time_zwei >= cool_time_max_zwei) {
+		first_attaack_flag = false;
+		cool_time_flag_zwei = false;
+		cool_time_zwei = 0.0f;
+	}
+	if (motion_count >= 3) {
+		motion_count = 0;
+		effect_generation_time = 0.0f;
+		effect_generation = false;
+		first_attaack_flag = false;
+		under_attack_state_mode = UNDER_ATTACK_STATE::NOMAL;
 
-			     if (StatusManager::Instance().GetCombo() == 1);
-			else if (StatusManager::Instance().GetCombo() == 2);
-			else if (StatusManager::Instance().GetCombo() == 3);
+	}
+	if (motion_time >= motion_time_max[motion_count] || StatusManager::Instance().GetCombo() == 0) {
+		motion_time = 0.0f;
+		effect_generation_time = 0.0f;
+		effect_generation = false;
+		motion_count = 0;
+		under_attack_state_mode = UNDER_ATTACK_STATE::NOMAL;
+		first_attaack_flag = false;
+	}
+
+	//エフェクト表示関係
+	if (effect_generation == true) {
+		effect_generation_time += deltaTime;
+	}
+
+	if (effect_generation_time >= effect_generation_time_max[motion_count]) {
+		attack_flag = true;
+		if (IsAttack()) {
+			if (StatusManager::Instance().GetCombo() == 1 && motion_count == 0) {
+				if (direction_state_mode == Direction_State::RIGHT) {
+					DX12Effect.PlayOneShot("first");
+				}
+
+				if (direction_state_mode == Direction_State::LEFT) {
+					DX12Effect.PlayOneShot("first");
+					DX12Effect.SetRotation("first", Vector3(0.0f, 180.0f, 0.0f));
+				}
+				if (appeal_state_mode != Appeal_state::FOCUS)
+					damage = 2;
+				if (appeal_state_mode == Appeal_state::FOCUS)
+					damage = 2 * 2;
+			}
+			else if (StatusManager::Instance().GetCombo() == 2 && motion_count == 1) {
+
+				if (direction_state_mode == Direction_State::RIGHT)
+					DX12Effect.PlayOneShot("second");
+
+				if (direction_state_mode == Direction_State::LEFT) {
+					DX12Effect.PlayOneShot("second");
+					DX12Effect.SetRotation("second", Vector3(0.0f, 180.0f, 0.0f));
+
+				}
+
+				if (appeal_state_mode != Appeal_state::FOCUS)
+					damage = 3;
+				if (appeal_state_mode == Appeal_state::FOCUS)
+					damage = 3 * 2;
+
+			}
+			else if (StatusManager::Instance().GetCombo() == 3 && motion_count == 2) {
+				if (direction_state_mode == Direction_State::RIGHT)
+					DX12Effect.PlayOneShot("third");
+
+				if (direction_state_mode == Direction_State::LEFT) {
+					DX12Effect.PlayOneShot("third");
+					DX12Effect.SetRotation("third", Vector3(0.0f, 180.0f, 0.0f));
+
+				}
+				if (appeal_state_mode != Appeal_state::FOCUS)
+					damage = 5;
+				if (appeal_state_mode == Appeal_state::FOCUS)
+					damage = 5 * 2;
+
+			}
 		}
 	}
 
 
-	if (StatusManager::Instance().GetCombo() == 1) {
-		SetAnimation(model, ACT1);
-	}
+	//auto motion_1 = model->GetTrackPosition(ACT1);
+	//if (motion_1 >= 0.617f) {
+	//	model->SetTrackPosition(ACT1, 0.0f);
+	//}
 
-	if (StatusManager::Instance().GetCombo() == 2) {
-		SetAnimation(model, ACT2);
-	}
+	//auto motion_2 = model->GetTrackPosition(ACT2);
+	//if (motion_2 >= 0.517f) {
+	//	model->SetTrackPosition(ACT2, 0.0f);
+	//}
 
-	if (StatusManager::Instance().GetCombo() == 3) {
-		SetAnimation(model, ACT3);
-	}
+	//auto motion_3 = model->GetTrackPosition(ACT3);
+	//if (motion_3 >= 0.583f) {
+	//	model->SetTrackPosition(ACT3, 0.0f);
+	//}
 
 }
-
 
 bool PlayerBase::IsAttack() {
 
@@ -444,5 +456,40 @@ void PlayerBase::Appeal(const float deltaTime)
 			appeal_state_mode = Appeal_state::NORMAL;
 		}
 	}
+}
 
+void PlayerBase::_2DRender()
+{
+	if (!invincible_flag) {
+		DX9::SpriteBatch->DrawString(font.Get(),
+			SimpleMath::Vector2(1000.0f, 70.0f),
+			DX9::Colors::BlueViolet,
+			L"OFF"
+		);
+	}
+	else {
+		DX9::SpriteBatch->DrawString(font.Get(),
+			SimpleMath::Vector2(1000.0f, 70.0f),
+			DX9::Colors::BlueViolet,
+			L"ON"
+		);
+	}
+
+	DX9::SpriteBatch->DrawString(font.Get(),
+		SimpleMath::Vector2(1000.0f, 90.0f),
+		DX9::Colors::BlueViolet,
+		L"%f", invincible_time
+	);
+
+	DX9::SpriteBatch->DrawString(font.Get(),
+		SimpleMath::Vector2(1000.0f, 130.0f),
+		DX9::Colors::BlueViolet,
+		L"%f %f %f", box.Extents.x, box.Extents.y, box.Extents.z
+	);
+
+	DX9::SpriteBatch->DrawString(font.Get(),
+		SimpleMath::Vector2(1000.0f, 150.0f),
+		DX9::Colors::BlueViolet,
+		L"%f %f %f", sword_box.Extents.x, sword_box.Extents.y, sword_box.Extents.z
+	);
 }

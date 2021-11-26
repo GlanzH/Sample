@@ -131,6 +131,7 @@ void MainScene::Render()
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ
+	player->_2DRender();
 	//ui->Render(StatusManager::Instance().GetVoltage());
 
 	DX9::SpriteBatch->End();

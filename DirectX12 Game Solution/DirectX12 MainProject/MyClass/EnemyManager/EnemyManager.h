@@ -41,6 +41,8 @@ private:
 	int dead_enemy_count = 0;
 	float delta;
 
+	const float fix_pos = 10.0f;
+
 	int frame = 0;
 	int timer = 0;
 
