@@ -32,16 +32,6 @@ void FakerLamiel::Attack(PlayerBase*player, const float deltaTime)
 {
 	SimpleMath::Vector3 player_pos = player->GetModel()->GetPosition();
 	
-	//if (attack_method == DOWN) {
-	//	if (player_pos.y + 15.0f < position.y)
-	//		position.y -= move_speed * deltaTime;
-	//	else
-	//		attack_method = TELEPORT;
-	//}
-	//else if (attack_method == TELEPORT) {
-	//	position.x = player_pos.x;
-	//}
-
 	switch (attack_method)
 	{
 	case DOWN:
