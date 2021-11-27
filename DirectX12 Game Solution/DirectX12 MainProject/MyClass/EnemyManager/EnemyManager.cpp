@@ -97,13 +97,18 @@ void EnemyManager::Render()
 	}
 }
 
-void EnemyManager::OnCollisionEnter(EnemyBase* base) {
+void EnemyManager::OnCollisionEnter(EnemyBase* base) {;
      base->Damage(delta,player_data->GetDamage());
 
 	if(StatusManager::Instance().GetCombo() == 3)
 	base->Retreat();
 
-	SimpleMath::Vector3 pos = base->GetModel()->GetPosition();
+	SimpleMath::Vector3 pos;
+
+	if(base->GetTag() == "S" || base->GetTag() == "H")
+	   pos = base->GetAnimModel()->GetPosition();
+	else
+		pos = base->Get
 
 	DX12Effect.SetPosition("hit_eff", SimpleMath::Vector3(pos.x - fix_pos,pos.y - fix_pos,-fix_pos));
 	DX12Effect.Play("hit_eff");

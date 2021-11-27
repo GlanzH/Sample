@@ -17,7 +17,7 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy) {
 			if (!player->GetParryFlag()) {
 				player->OnCollisionEnter();
 			}
-			else if (player->GetModel()->GetPosition().x < enemies_roop->GetModel()->GetPosition().x) {
+			else if (player->GetModel()->GetPosition().x < enemies_roop->GetAnimModel()->GetPosition().x) {
 				player->OnParryArea();
 				enemy->OnParryArea(enemies_roop);
 			}

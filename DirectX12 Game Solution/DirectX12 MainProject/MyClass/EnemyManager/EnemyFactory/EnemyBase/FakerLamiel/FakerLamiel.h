@@ -8,7 +8,7 @@ class FakerLamiel : public EnemyBase
 public:
 	FakerLamiel()  {}
 	~FakerLamiel() {}
-	bool Initialize(SimpleMath::Vector3 speed, int hp);
+	bool Initialize(std::string tag, SimpleMath::Vector3 speed, int hp);
 	int Update(SimpleMath::Vector3 player, const float deltaTime) override;
 private:
 	//void Move(SimpleMath::Vector3 player, const float deltaTime);

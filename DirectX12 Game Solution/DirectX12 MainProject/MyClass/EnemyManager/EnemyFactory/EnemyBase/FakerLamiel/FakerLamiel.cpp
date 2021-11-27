@@ -2,8 +2,8 @@
 #include "Base/dxtk.h"
 #include "FakerLamiel.h"
 
-bool FakerLamiel::Initialize(SimpleMath::Vector3 speed, int hp) {
-	EnemyBase::Initialize(speed,hp);
+bool FakerLamiel::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp) {
+	EnemyBase::Initialize(tag,speed,hp);
 	DX12Effect.Create(L"Effect/thunder/thunder.efk", "thunder");
 	attack_method = DOWN;
 	init_pos = position;
@@ -20,7 +20,7 @@ int FakerLamiel::Update(SimpleMath::Vector3 player, const float deltaTime) {
 }
 
 int FakerLamiel::Counter() {
-	if (count < 600)
+	if (count < 300)
 		count++;
 	else
 		count = 0;
@@ -33,7 +33,7 @@ void FakerLamiel::Attack(SimpleMath::Vector3 player, const float deltaTime)
 	switch (attack_method)
 	{
 	case DOWN:
-		if (player.y + 10.0f < position.y)
+		if (player.y + 15.0f < position.y)
 			position.y -= move_speed * deltaTime;
 		else
 			attack_method = TELEPORT;
