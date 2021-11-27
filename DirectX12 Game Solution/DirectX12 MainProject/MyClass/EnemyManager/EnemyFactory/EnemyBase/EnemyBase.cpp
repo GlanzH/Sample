@@ -24,7 +24,7 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	material.Ambient = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 
-	//model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
+	//!アニメーションモデルの作成
 	if (enemy_tag == "S" || enemy_tag == "H") {
 		anim_model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
 		anim_model->SetPosition(position);
@@ -46,6 +46,27 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 
 		anim_collision->SetScale(0.01);
 		anim_box.Center = position;
+	}
+	else {
+		//!モデルの作成
+		model = DX9::Model::CreateFromFile(DXTK->Device9, model_name);
+		model->SetPosition(position);
+		model->SetRotation(0.0f, XMConvertToRadians(90.0f), 0.0f);
+
+		//箱を作る準備
+		box = model->GetBoundingBox();
+
+		//コリジョンモデルの作成
+		collision = DX9::Model::CreateBox(
+			DXTK->Device9,
+			box.Extents.x * 2,
+			box.Extents.y * 2,
+			box.Extents.z * 2
+		);
+
+		collision->SetMaterial(material);
+
+		box.Center = position;
 	}
 }
 
@@ -78,6 +99,10 @@ void EnemyBase::Render() {
 	if (enemy_tag == "S" || enemy_tag == "H") {
 		anim_model->Draw();
 		anim_collision->Draw();
+	}
+	else {
+		model->Draw();
+		//collision->Draw();
 	}
 }
 void EnemyBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack)

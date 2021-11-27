@@ -14,6 +14,7 @@ bool Core::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
 	DX12Effect.Create(L"Effect//shoot//shoot.efk", "shoot");
 	DX12Effect.Create(L"Effect//charge//charge.efk", "charge");
 	DX12Effect.Create(L"Effect//landing//landing.efk", "landing");
+
 	wait_count = 0;
 	return true;
 }
@@ -26,6 +27,10 @@ int Core::Update(SimpleMath::Vector3 player, const float deltaTime) {
 
 	if (enemy_hp < 0)
 		return DEAD;
+
+	box.Center = model->GetPosition();
+	model->SetPosition(position);
+	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 
 	return LIVE;
 }

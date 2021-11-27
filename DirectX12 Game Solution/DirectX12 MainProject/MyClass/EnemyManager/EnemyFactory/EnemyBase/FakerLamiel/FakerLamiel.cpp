@@ -51,9 +51,9 @@ void FakerLamiel::Attack(SimpleMath::Vector3 player, const float deltaTime)
 		break;
 	}
 
-	//box.Center = model->GetPosition();
-	//model->SetPosition(position);
-	//collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
+	box.Center = model->GetPosition();
+	model->SetPosition(position);
+	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 }
 
 

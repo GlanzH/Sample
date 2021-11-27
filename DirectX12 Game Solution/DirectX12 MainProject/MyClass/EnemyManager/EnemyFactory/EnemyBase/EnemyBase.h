@@ -21,8 +21,9 @@ public:
 	virtual void Damage(const float deltaTime,int damage);
 
 	DX9::SKINNEDMODEL& GetAnimModel() { return anim_model; }
-	//DX9::MODEL& GetModel() { return model; }
+	DX9::MODEL& GetModel()			  { return model; }
 	BoundingBox GetAnimBox()		  { return anim_box; }
+	BoundingBox GetBox()			  { return box; }
 
 	std::string GetTag() { return enemy_tag; }
 
@@ -32,11 +33,11 @@ private:
 	
 protected:
 	DX9::SKINNEDMODEL anim_model;
-	//DX9::MODEL model;
+	DX9::MODEL model;
 	BoundingBox  anim_box;
-	//BoundingBox  box;
+	BoundingBox  box;
 	DX9::MODEL	 anim_collision;
-	//DX9::MODEL	 collision;
+	DX9::MODEL	 collision;
 	SimpleMath::Vector3  position;
 	SimpleMath::Vector3  enemy_speed;
 
