@@ -120,6 +120,7 @@ void MainScene::Render()
 	DXTK->Direct3D9->BeginScene();
 
 	//3D•`‰æ
+	DX12Effect.SetCamera((DX12::CAMERA)camera->GetCamera());
 	camera->Render();
 	ground->Render();
 	player->Render();

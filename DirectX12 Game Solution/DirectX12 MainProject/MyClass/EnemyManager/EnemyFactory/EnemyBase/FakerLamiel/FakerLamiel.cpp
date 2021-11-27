@@ -2,52 +2,82 @@
 #include "Base/dxtk.h"
 #include "FakerLamiel.h"
 
-bool FakerLamiel::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp) {
-	EnemyBase::Initialize(tag,speed,hp);
-	DX12Effect.Create(L"Effect/thunder/thunder.efk", "thunder");
-	attack_method = DOWN;
-	init_pos = position;
-	count = 100;
-	return true;
-}
-
 int FakerLamiel::Update(SimpleMath::Vector3 player, const float deltaTime) {
-	Attack(player,deltaTime);
+	delta = deltaTime;
+
+	Attack(player);
 
 	if (enemy_hp < 0)
 		return DEAD;
 	return LIVE;
 }
 
-int FakerLamiel::Counter() {
-	if (count < 600)
-		count++;
-	else
-		count = 0;
-
-	return count;
-}
-
-void FakerLamiel::Attack(SimpleMath::Vector3 player, const float deltaTime)
+void FakerLamiel::Attack(SimpleMath::Vector3 player)
 {
-	switch (attack_method)
+	switch (action)
 	{
 	case DOWN:
-		if (player.y + 10.0f < position.y)
-			position.y -= move_speed * deltaTime;
+		if (player.y + 15.0f < position.y)
+			position.y -= move_speed * delta;
 		else
-			attack_method = TELEPORT;
+			action = ATTACK_SIGH;
 		break;
 
-	case TELEPORT:
-		if (Counter() == 0) {
-			position.x = player.x;
-			attack_method = ATTACK;
+	case ATTACK_SIGH:
+		if (!omen_load_flag) {
+			DX12Effect.Create(L"Effect/LamielEffect/omen/omen.efk", "sigh");
+			omen_load_flag = true;
 		}
+		else if(omen_effect_frame < 3.0f) {
+			DX12Effect.SetRotation("sigh", SimpleMath::Vector3(0, 170, 0));
+			DX12Effect.SetPosition("sigh", SimpleMath::Vector3(0,0,0));
+			DX12Effect.PlayOneShot("sigh");
+			omen_effect_frame += delta;
+		}
+		else
+			action = ATTACK;
+
 		break;
 
 	case ATTACK:
-			attack_method = TELEPORT;
+		if (!fire_load_flag) {
+			DX12Effect.Create(L"Effect/LamielEffect/fire/fire.efk", "fire");
+			fire_load_flag = true;
+		}
+		else if (fire_effect_frame < 7.0f) {
+			DX12Effect.SetRotation("sigh", SimpleMath::Vector3(0, 0, 0));
+			DX12Effect.SetPosition("sigh", SimpleMath::Vector3(0, 0, 0));
+			DX12Effect.PlayOneShot("fire");
+			fire_effect_frame += delta;
+		}
+		else
+			action = TELEPORT;
+		break;
+
+	case TELEPORT:
+		if (teleport_frame > 60.0f) {
+			std::random_device teleport_seed;
+			random_device = std::mt19937(teleport_seed());
+			distribute = std::uniform_int_distribution<int>(-30, 40);
+			position.x = distribute(random_device);
+			
+			action = INIT_DATA;
+		}
+		else
+			teleport_frame += delta;
+
+		break;
+
+	case INIT_DATA:
+		teleport_frame    = 0;
+		omen_effect_frame = 0;
+		fire_effect_frame = 0;
+
+		action = ATTACK_SIGH;
+		break;
+
+	default:
+		action = DOWN;
 		break;
 	}
 
