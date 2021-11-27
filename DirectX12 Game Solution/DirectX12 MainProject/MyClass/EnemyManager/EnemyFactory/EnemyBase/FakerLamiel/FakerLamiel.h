@@ -10,9 +10,11 @@ public:
 	FakerLamiel()  {}
 	~FakerLamiel() {}
 
-	int Update(SimpleMath::Vector3 player, const float deltaTime) override;
+	bool Initialize(std::string tag, SimpleMath::Vector3 speed, int hp);
+	int Update(SimpleMath::Vector3 player, const float deltaTime);
+	void Render();
 private:
-	void Attack(SimpleMath::Vector3 player);
+	virtual void Attack(SimpleMath::Vector3 player);
 
 	SimpleMath::Vector3 init_pos;
 
@@ -33,6 +35,17 @@ private:
 		 ATTACK,
 		 TELEPORT,
 		 INIT_DATA
+	 };
+
+	 enum MaxFrame {
+		 MAX_OMEN_FRAME = 3,
+		 MAX_FIRE_FRAME = 7,
+		 MAX_TELEPORT_FRAME = 10
+	 };
+
+	 enum TeleportRenge {
+		 MIN_RANGE = -30,
+
 	 };
 
 	 int action = DOWN;

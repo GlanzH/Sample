@@ -9,7 +9,7 @@ public:
 	Core();
 	~Core() {}
     bool Initialize(std::string tag,SimpleMath::Vector3 speed, int hp);
-	int Update(SimpleMath::Vector3 player, const float deltaTime) override;
+	int Update(SimpleMath::Vector3 player, const float deltaTime);
 	void Attack(const float deltaTime);
 
 

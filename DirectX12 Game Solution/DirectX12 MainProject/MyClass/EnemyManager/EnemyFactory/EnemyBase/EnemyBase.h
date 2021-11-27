@@ -12,7 +12,7 @@ public:
 	EnemyBase();
 	~EnemyBase() {};
 
-	bool Initialize(std::string tag,SimpleMath::Vector3 speed,int hp);
+	virtual bool Initialize(std::string tag,SimpleMath::Vector3 speed,int hp);
 	void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 	virtual int Update(SimpleMath::Vector3 player, const float deltaTime);
 	void Render();

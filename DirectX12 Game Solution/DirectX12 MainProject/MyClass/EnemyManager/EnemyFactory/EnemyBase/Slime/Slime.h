@@ -9,7 +9,7 @@ public:
 	Slime() {};
 	~Slime() {}
 
-	int Update(SimpleMath::Vector3 player, const float deltaTime) override;
+	int Update(SimpleMath::Vector3 player, const float deltaTime);
 
 private:
 	void Move  (SimpleMath::Vector3 player, const float deltaTime);

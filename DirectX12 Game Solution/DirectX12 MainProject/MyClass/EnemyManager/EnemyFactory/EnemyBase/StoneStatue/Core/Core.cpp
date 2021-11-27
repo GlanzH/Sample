@@ -21,6 +21,8 @@ bool Core::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
 
 int Core::Update(SimpleMath::Vector3 player, const float deltaTime) {
 	
+	EnemyBase::Update(player, deltaTime);
+
 	//SetAnimesion(model, CHARGE);
 	 Attack(deltaTime);
 	/*model->AdvanceTime(deltaTime / 1.0f);*/

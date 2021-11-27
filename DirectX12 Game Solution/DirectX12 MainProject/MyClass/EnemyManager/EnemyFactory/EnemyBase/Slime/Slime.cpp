@@ -4,6 +4,8 @@
 #include "Slime.h"
 
 int Slime::Update(SimpleMath::Vector3 player, const float deltaTime) {
+	EnemyBase::Update(player, deltaTime);
+
 	Rotate(player, deltaTime);
 	Move(player,deltaTime);
 	//SetAnimation(model, WAIT);

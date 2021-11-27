@@ -9,6 +9,8 @@ HighSlime::HighSlime()
 
 int HighSlime::Update(SimpleMath::Vector3 player, const float deltaTime)
 {
+    EnemyBase::Update(player, deltaTime);
+
     Move(player, deltaTime);
     Rotate(player, deltaTime);
 	Jump(deltaTime);
