@@ -30,10 +30,6 @@ int Core::Update(SimpleMath::Vector3 player, const float deltaTime) {
 	if (enemy_hp < 0)
 		return DEAD;
 
-	box.Center = model->GetPosition();
-	model->SetPosition(position);
-	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
-
 	return LIVE;
 }
 
@@ -118,3 +114,6 @@ void Core::Shot()
 	bullet_pos.y -= 2.0f;
 }
 
+void Core::Render() {
+	EnemyBase::Render();
+}

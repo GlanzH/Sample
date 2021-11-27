@@ -16,7 +16,6 @@ private:
 	void Rotate(SimpleMath::Vector3 player, const float deltaTime);
 	void Jump(const float deltaTime);
 
-	const float fit_collision_y    =   4.0f;
 	
 	//ジャンプしてるかのフラグ。
 	bool jump_flag = true;

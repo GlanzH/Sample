@@ -14,7 +14,7 @@ int FakerLamiel::Update(SimpleMath::Vector3 player, const float deltaTime) {
 	EnemyBase::Update(player, deltaTime);
 
 	delta = deltaTime;
-
+	
 	Attack(player);
 
 	if (enemy_hp < 0)
@@ -58,7 +58,7 @@ void FakerLamiel::Attack(SimpleMath::Vector3 player)
 		if (teleport_frame > MAX_TELEPORT_FRAME) {
 			std::random_device teleport_seed;
 			random_device = std::mt19937(teleport_seed());
-			distribute = std::uniform_int_distribution<int>(-30, 40);
+			distribute = std::uniform_int_distribution<int>(MIN_RANGE, NAX_RANGE);
 			position.x = distribute(random_device);
 			
 			action = INIT_DATA;
@@ -80,10 +80,6 @@ void FakerLamiel::Attack(SimpleMath::Vector3 player)
 		action = DOWN;
 		break;
 	}
-
-	box.Center = model->GetPosition();
-	model->SetPosition(position);
-	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 }
 
 void FakerLamiel::Render() {

@@ -14,9 +14,9 @@ int HighSlime::Update(SimpleMath::Vector3 player, const float deltaTime)
     Move(player, deltaTime);
     Rotate(player, deltaTime);
 	Jump(deltaTime);
-   // SetAnimation(model, WAIT);
-
-	//model->AdvanceTime(deltaTime / 1.0f);
+     SetAnimation(anim_model, WAIT);
+    
+     anim_model->AdvanceTime(deltaTime / 1.0f);
 
 	if (enemy_hp < 0)
 		return DEAD;
@@ -55,8 +55,4 @@ void HighSlime::Jump(const float deltaTime)
         }
 
     }
-    
-    anim_box.Center = anim_model->GetPosition();
-    anim_model->SetPosition(position);
-    anim_collision->SetPosition(anim_model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 }
