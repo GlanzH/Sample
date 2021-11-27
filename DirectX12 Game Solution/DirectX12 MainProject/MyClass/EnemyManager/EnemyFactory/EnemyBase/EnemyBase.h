@@ -14,7 +14,7 @@ public:
 	virtual bool Initialize(std::string tag,SimpleMath::Vector3 speed,int hp);
 	void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 	virtual int Update(SimpleMath::Vector3 player, const float deltaTime);
-	void Render();
+	virtual void Render();
 
 	void Retreat();
 	virtual void Damage(const float deltaTime,int damage);
@@ -27,20 +27,22 @@ public:
 	std::string GetTag() { return enemy_tag; }
 
 private:
-	D3DMATERIAL9  material;
 
 	const float fit_collision_y = 4.0f;
 	
 protected:
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack);
 
+	D3DMATERIAL9  material;
 	DX9::SKINNEDMODEL anim_model;
 	BoundingBox		  anim_box;
 	DX9::MODEL		  anim_collision;
 
 	DX9::MODEL   model;
 	BoundingBox  box;
+	BoundingBox  obstacle_box;
 	DX9::MODEL	 collision;
+	DX9::MODEL	 obstacle_collision;
 
 	SimpleMath::Vector3  position;
 	SimpleMath::Vector3  enemy_speed;

@@ -7,6 +7,20 @@ bool FakerLamiel::Initialize(std::string tag, SimpleMath::Vector3 speed, int hp)
 	DX12Effect.Create(L"Effect/LamielEffect/omen/omen.efk", "sigh");
 	DX12Effect.Create(L"Effect/LamielEffect/fire/fire.efk", "fire");
 	action = DOWN;
+
+
+	obstacle_collision = DX9::Model::CreateBox(
+		DXTK->Device9,
+		1,1,1
+	);
+
+	obstacle_box = obstacle_collision->GetBoundingBox();
+
+	//obstacle_box.Center = position;
+	obstacle_collision->SetMaterial(material);
+
+	obstacle_collision->SetPosition(0, 0, 50);
+
 	return true;
 }
 
@@ -84,4 +98,6 @@ void FakerLamiel::Attack(SimpleMath::Vector3 player)
 
 void FakerLamiel::Render() {
 	EnemyBase::Render();
+	int a = 0;
+	obstacle_collision->Draw();
 }
