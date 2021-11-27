@@ -29,7 +29,7 @@ void PlayerBase::LoadAssets()
 	//ƒvƒŒƒCƒ„[‚Ì“–‚½‚è”»’è
 	box = model->GetBoundingBox();
 
-	box.Extents = SimpleMath::Vector3(box.Extents)*0.00000000001f;
+	box.Extents = SimpleMath::Vector3(box.Extents);
 
 	collision = DX9::Model::CreateBox(
 		DXTK->Device9,
@@ -44,11 +44,12 @@ void PlayerBase::LoadAssets()
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	collision->SetMaterial(material);
 
+	collision->SetScale(0.05f);
 
 
 	sword_box = model->GetBoundingBox();
 
-	sword_box.Extents = SimpleMath::Vector3(sword_box.Extents)* 0.001f;
+	sword_box.Extents = SimpleMath::Vector3(sword_box.Extents);
 
 	sword_collision = DX9::Model::CreateBox(
 		DXTK->Device9,
@@ -58,7 +59,7 @@ void PlayerBase::LoadAssets()
 	);
 
 
-	sword_collision->SetScale(10, 10, 1);
+	sword_collision->SetScale(3, 3, 5);
 	sword_box.Center = model->GetPosition() + SimpleMath::Vector3(15, 0, 0);
 
 
@@ -367,10 +368,10 @@ void PlayerBase::Player_attack(const float deltaTime) {
 					DX12Effect.PlayOneShot("first");
 					DX12Effect.SetRotation("first", Vector3(0.0f, 180.0f, 0.0f));
 				}
-				//if (appeal_state_mode != Appeal_state::FOCUS)
-				//	damage = 2;
-				//if (appeal_state_mode == Appeal_state::FOCUS)
-				//	damage = 2 * 2;
+				if (appeal_state_mode != Appeal_state::FOCUS)
+					damage = 2;
+				if (appeal_state_mode == Appeal_state::FOCUS)
+					damage = 2 * 2;
 			}
 			else if (StatusManager::Instance().GetCombo() == 2 && motion_count == 1) {
 
@@ -385,10 +386,10 @@ void PlayerBase::Player_attack(const float deltaTime) {
 
 				}
 
-				//if (appeal_state_mode != Appeal_state::FOCUS)
-				//	damage = 3;
-				//if (appeal_state_mode == Appeal_state::FOCUS)
-				//	damage = 3 * 2;
+				if (appeal_state_mode != Appeal_state::FOCUS)
+					damage = 3;
+				if (appeal_state_mode == Appeal_state::FOCUS)
+					damage = 3 * 2;
 
 			}
 			else if (StatusManager::Instance().GetCombo() == 3 && motion_count == 2) {
@@ -403,10 +404,10 @@ void PlayerBase::Player_attack(const float deltaTime) {
 					DX12Effect.SetRotation("third", Vector3(0.0f, 180.0f, 0.0f));
 
 				}
-				//if (appeal_state_mode != Appeal_state::FOCUS)
-				//	damage = 5;
-				//if (appeal_state_mode == Appeal_state::FOCUS)
-				//	damage = 5 * 2;
+				if (appeal_state_mode != Appeal_state::FOCUS)
+					damage = 5;
+				if (appeal_state_mode == Appeal_state::FOCUS)
+					damage = 5 * 2;
 
 			}
 		}
@@ -480,26 +481,26 @@ void PlayerBase::Appeal(const float deltaTime)
 
 void PlayerBase::_2DRender()
 {
-	//if (!invincible_flag) {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 70.0f),
-	//		DX9::Colors::BlueViolet,
-	//		L"OFF"
-	//	);
-	//}
-	//else {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 70.0f),
-	//		DX9::Colors::BlueViolet,
-	//		L"ON"
-	//	);
-	//}
+	if (!invincible_flag) {
+		DX9::SpriteBatch->DrawString(font.Get(),
+			SimpleMath::Vector2(1000.0f, 70.0f),
+			DX9::Colors::BlueViolet,
+			L"OFF"
+		);
+	}
+	else {
+		DX9::SpriteBatch->DrawString(font.Get(),
+			SimpleMath::Vector2(1000.0f, 70.0f),
+			DX9::Colors::BlueViolet,
+			L"ON"
+		);
+	}
 
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(1000.0f, 90.0f),
-	//	DX9::Colors::BlueViolet,
-	//	L"%f", invincible_time
-	//);
+	DX9::SpriteBatch->DrawString(font.Get(),
+		SimpleMath::Vector2(1000.0f, 90.0f),
+		DX9::Colors::BlueViolet,
+		L"%f", invincible_time
+	);
 
 	//DX9::SpriteBatch->DrawString(font.Get(),
 	//	SimpleMath::Vector2(1000.0f, 190.0f),
