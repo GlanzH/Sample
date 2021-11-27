@@ -25,10 +25,12 @@ EnemyManager::~EnemyManager() {
 	}
 }
 
-bool EnemyManager::Initialize()
+bool EnemyManager::Initialize(PlayerBase* player_base)
 {
 	DX12Effect.Initialize();
 	DX12Effect.Create(L"Effect/test/test.efk","hit_eff");
+
+	player_data = player_base;
 
 	LoadEnemyArrangement();
 	return true;
@@ -39,10 +41,10 @@ int EnemyManager::Update(SimpleMath::Vector3 player, const float deltaTime)
 	for (auto& enemies : enemy) {
 		enemies->Update(player,deltaTime);
 	}
-	player_data = player;
+
 	delta		= deltaTime;
 
-	Iterator(player_data,delta);
+	Iterator(player,delta);
 
 	if (frame < MAX_FRAME)
 		++frame;
