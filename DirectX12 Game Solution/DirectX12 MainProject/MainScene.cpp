@@ -34,7 +34,7 @@ void MainScene::Initialize()
 	//•Ï”‚âŠÖ”‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 	player->Initialize();
 	camera->Initialize();
-	enemy->Initialize();
+	enemy->Initialize(player);
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -128,6 +128,7 @@ void MainScene::Render()
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ
+	player->_2DRender();
 
 	DX9::SpriteBatch->End();
 	DXTK->Direct3D9->EndScene();
