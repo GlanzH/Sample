@@ -2,8 +2,8 @@
 #include "Base/dxtk.h"
 #include "FakerLamiel.h"
 
-bool FakerLamiel::Initialize(SimpleMath::Vector3 speed, int hp) {
-	EnemyBase::Initialize(speed,hp);
+bool FakerLamiel::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp) {
+	EnemyBase::Initialize(tag,speed,hp);
 	DX12Effect.Create(L"Effect/thunder/thunder.efk", "thunder");
 	attack_method = DOWN;
 	init_pos = position;

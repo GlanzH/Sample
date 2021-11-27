@@ -33,7 +33,7 @@ void HighSlime::Rotate(SimpleMath::Vector3 player, const float deltaTime) {
     //!プレイヤーの座標 - 敵の座標でプレイヤーのいる方向に向く
     float rotation = MathHelper_Atan2(-(player.z - position.z), (player.x - position.x)) - 45.0f;
 
-    model->SetRotation(0.0f,rotation, 0.0f);
+    anim_model->SetRotation(0.0f,rotation, 0.0f);
 }
 
 void HighSlime::Jump(const float deltaTime)
@@ -53,7 +53,8 @@ void HighSlime::Jump(const float deltaTime)
         }
 
     }
-    collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
-    box.Center = model->GetPosition();
-    model->SetPosition(position);
+    
+    anim_box.Center = anim_model->GetPosition();
+    anim_model->SetPosition(position);
+    anim_collision->SetPosition(anim_model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 }

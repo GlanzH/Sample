@@ -8,12 +8,13 @@ Core::Core()
 {
 }
 
-bool Core::Initialize(SimpleMath::Vector3 speed, int hp)
+bool Core::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
 {
-	EnemyBase::Initialize(speed, hp);
+	EnemyBase::Initialize(tag,speed, hp);
 	DX12Effect.Create(L"Effect//shoot//shoot.efk", "shoot");
 	DX12Effect.Create(L"Effect//charge//charge.efk", "charge");
 	DX12Effect.Create(L"Effect//landing//landing.efk", "landing");
+
 	wait_count = 0;
 	return true;
 }
@@ -27,6 +28,10 @@ int Core::Update(SimpleMath::Vector3 player, const float deltaTime) {
 	if (enemy_hp < 0)
 		return DEAD;
 
+	box.Center = model->GetPosition();
+	model->SetPosition(position);
+	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
+
 	return LIVE;
 }
 
@@ -35,7 +40,7 @@ void Core::Attack(const float deltaTime)
 	switch (attack_method)
 	{
 	case stone::STORAGE:
-		model->Move(0.0f, 0.01f, 0.0f);
+		//model->Move(0.0f, 0.01f, 0.0f);
 		if (position.z >= 50);
 		{
 			position.z = 50;
