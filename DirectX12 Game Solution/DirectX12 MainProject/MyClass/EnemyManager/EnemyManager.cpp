@@ -103,7 +103,11 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	if(StatusManager::Instance().GetCombo() == 3)
 	base->Retreat();
 
-	SimpleMath::Vector3 pos = base->GetModel()->GetPosition();
+	std::string tag = base->GetTag();
+
+	SimpleMath::Vector3 pos;
+	if(tag == "S" || tag == "H")
+		pos = base->GetAnimModel()->GetPosition();
 
 	DX12Effect.SetPosition("hit_eff", SimpleMath::Vector3(pos.x - fix_pos,pos.y - fix_pos,-fix_pos));
 	DX12Effect.Play("hit_eff");

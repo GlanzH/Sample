@@ -2,8 +2,8 @@
 #include "Base/dxtk.h"
 #include "FakerLamiel.h"
 
-bool FakerLamiel::Initialize(SimpleMath::Vector3 speed, int hp) {
-	EnemyBase::Initialize(speed,hp);
+bool FakerLamiel::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp) {
+	EnemyBase::Initialize(tag,speed,hp);
 	DX12Effect.Create(L"Effect/thunder/thunder.efk", "thunder");
 	attack_method = DOWN;
 	init_pos = position;
@@ -51,9 +51,9 @@ void FakerLamiel::Attack(SimpleMath::Vector3 player, const float deltaTime)
 		break;
 	}
 
-	box.Center = model->GetPosition();
-	model->SetPosition(position);
-	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
+	//box.Center = model->GetPosition();
+	//model->SetPosition(position);
+	//collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 }
 
 
