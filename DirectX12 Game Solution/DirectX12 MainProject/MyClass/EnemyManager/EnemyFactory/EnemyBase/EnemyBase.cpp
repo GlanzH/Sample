@@ -83,10 +83,14 @@ int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
 		collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 	}
 
-	if (retreat_flg)
-	{
-		//position.x = ;
+	if (retreat_flg && parry_count < 30){
+		position.x += 15.0f * deltaTime;
+		parry_count++;
 	} 
+	else {
+		retreat_flg = false;
+		parry_count = 0;
+	}
 	return 0;
 }
 

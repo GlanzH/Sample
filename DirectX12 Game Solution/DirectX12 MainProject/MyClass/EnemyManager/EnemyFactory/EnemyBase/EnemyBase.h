@@ -36,8 +36,8 @@ public:
 	std::string GetTag() { return enemy_tag; }
 
 private:
-
 	const float fit_collision_y = 4.0f;
+	float parry_count = 0;
 	
 protected:
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack);
