@@ -44,7 +44,7 @@ void FakerLamiel::Move(SimpleMath::Vector3 player)
 	switch (action)
 	{
 	case DOWN:
-		if (player.y + 15.0f < position.y)
+		if (position.y > 15.0f)
 			position.y -= move_speed * delta;
 		else
 			action = ATTACK_SIGH;
