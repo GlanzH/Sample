@@ -85,6 +85,10 @@ int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
 
 	if (retreat_flg && parry_count < 30){
 		position.x += 15.0f * deltaTime;
+		//if (enemy_tag == "S" || enemy_tag == "H") {
+
+		//}
+
 		parry_count++;
 	} 
 	else {
@@ -95,8 +99,8 @@ int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
 }
 
 void EnemyBase::Damage(const float deltaTime,int damage) {
-	//model->AdvanceTime(deltaTime / 1.0f);
-	//SetAnimation(model, DAMAGE);
+	anim_model->AdvanceTime(deltaTime / 1.0f);
+	SetAnimation(anim_model, DAMAGE);
 	enemy_hp -= damage;
 }
 

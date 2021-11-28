@@ -50,6 +50,7 @@ private:
 
 	 int action = DOWN;
 	 float delta;
+	 bool draw_flag = false;
 
 	 std::mt19937 random_device;
 	 std::uniform_int_distribution<int> distribute;
