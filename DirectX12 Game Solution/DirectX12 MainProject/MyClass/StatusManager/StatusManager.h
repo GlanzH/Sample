@@ -11,6 +11,9 @@ public:
 
 	int GetCombo() { return combo; }
 
+	float GetTime() { return combo_time; }
+
+
 	static StatusManager&Instance(){
 		static StatusManager instance;
 		return instance;
@@ -32,7 +35,7 @@ public:
 private:
 	//ƒRƒ“ƒ{
 	float combo_time = 0.0f;
-	const float combo_time_max =  1.0f;
+	const float combo_time_max = 1.0f;//[3]{ 0.617f,0.517f,0.583f };
 	int combo = 0;
 	const int combo_max = 4;
 

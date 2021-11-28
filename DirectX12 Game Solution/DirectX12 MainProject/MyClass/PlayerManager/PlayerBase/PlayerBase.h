@@ -33,10 +33,11 @@ public:
 
 	int GetDamage() { return damage; }
 
-	int GetCount() { return motion_count; }
+	int GetAttackCount() { return motion_count; }
 
 	void _2DRender();
 
+	
 
 private:
 	//アニメーション
@@ -56,6 +57,8 @@ private:
 	void Invincible(const float deltaTime);
 	//アピール
 	void Appeal(const float deltaTime);
+	//必殺技
+	void SpecialMove();
 
 	DX9::SPRITEFONT font;
 
@@ -89,9 +92,9 @@ private:
 	const int player_box_size_x = 1.2;
 	const int player_box_size_z = 1;
 
-	const int box_size_x = 0.5;
-	const int box_size_y = 0.5;
-	const int box_size_z = 0.5;
+	const int box_size_x = 1;
+	const int box_size_y = 1;
+	const int box_size_z = 1;
 
 
 	//プレイヤーのスピード
