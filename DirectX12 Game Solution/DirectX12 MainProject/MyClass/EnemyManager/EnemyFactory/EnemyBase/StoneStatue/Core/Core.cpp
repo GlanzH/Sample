@@ -15,6 +15,13 @@ bool Core::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
 	DX12Effect.Create(L"Effect//StatueEffect//charge//charge.efk",   "charge");
 	DX12Effect.Create(L"Effect//StatueEffect//landing//landing.efk","landing");
 
+	obstacle_collision = DX9::Model::CreateSphere(DXTK->Device9, 4, 8, 2);
+
+	obstacle_collision->SetMaterial(material);
+	obstacle_collision->SetScale(0.3f);
+
+	bull_pos = SimpleMath::Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
+	col.bullet.Center = position;
 	return true;
 }
 
@@ -30,6 +37,8 @@ int Core::Update(SimpleMath::Vector3 player, const float deltaTime) {
 		return DEAD;
 
 	collision->SetPosition(model->GetPosition());
+	col.bullet.Center = obstacle_collision->GetPosition();
+	obstacle_collision->SetPosition(bull_pos);
 
 	return LIVE;
 }
@@ -65,6 +74,9 @@ void Core::Move(SimpleMath::Vector3 player){
 		break;
 
 	case WAIT:
+		bullet_parry_flag = false;
+		bull_pos = SimpleMath::Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
+
 		if (wait_count < 5)
 			wait_count += delta;
 		else
@@ -91,7 +103,6 @@ void Core::Move(SimpleMath::Vector3 player){
 
 		wait_count = 0;
 		stop_count = 0;
-
 		shot_flag = false;
 		action = MOVE;
 		break;
@@ -109,8 +120,8 @@ void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 	else
 		bull_pos.x += 8.0f * delta;
 
-	if (bull_pos.y > init_bull_pos.y && !retreat_flg) {
-		bull_pos.y -= 2.5f * delta;
+	if (bull_pos.y > init_bull_pos.y && !bullet_parry_flag) {
+		bull_pos.y -= 4.0f * delta;
 
 		DX12Effect.SetPosition("shoot", bull_pos);
 		DX12Effect.Play("shoot");
@@ -121,11 +132,13 @@ void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 			DX12Effect.PlayOneShot("landing");
 			landing_effect_frame += delta;
 		}
-		else
+		else {
 			action = WAIT;
+		}
 	}
 }
 
 void Core::Render() {
 	EnemyBase::Render();
+	obstacle_collision->Draw();
 }

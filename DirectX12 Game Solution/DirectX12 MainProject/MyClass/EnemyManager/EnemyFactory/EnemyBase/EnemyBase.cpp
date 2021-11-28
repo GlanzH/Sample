@@ -100,13 +100,17 @@ void EnemyBase::Damage(const float deltaTime,int damage) {
 
 bool EnemyBase::IsDamage() {
 	if (damage_count < 30) {
-		count++;
+		damage_count++;
 		return true;
 	}
 	else {
-		count = 0;
+		damage_count = 0;
 		return false;
 	}
+}
+
+void EnemyBase::BulletParry() {
+	bullet_parry_flag = true;
 }
 
 void EnemyBase::Retreat()

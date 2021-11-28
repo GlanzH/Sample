@@ -118,7 +118,10 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 }
 
 void EnemyManager::OnParryArea(EnemyBase* base) {
-	base->Retreat();
+	if (base->GetTag() != "C")
+		base->Retreat();
+	else
+		base->BulletParry();
 }
 
 int EnemyManager::AppearTimer() {
