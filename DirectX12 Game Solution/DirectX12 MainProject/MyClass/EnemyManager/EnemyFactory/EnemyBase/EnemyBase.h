@@ -5,6 +5,15 @@
 
 using namespace DirectX;
 
+typedef struct Collision {
+	//“Gƒ‚ƒfƒ‹‚Ì“–‚½‚è”»’è
+	BoundingBox  box;
+	//‰Š‚Ì“–‚½‚è”»’è
+	BoundingBox  fire;
+	//’e‚Ì“–‚½‚è”»’è
+	BoundingBox  bullet;
+};
+
 class EnemyBase
 {
 public:
@@ -22,25 +31,24 @@ public:
 	DX9::SKINNEDMODEL& GetAnimModel() { return anim_model; }
 	DX9::MODEL& GetModel()			  { return model; }
 	BoundingBox GetAnimBox()		  { return anim_box; }
-	BoundingBox GetBox()			  { return box; }
+	Collision GetBox()			  { return col; }
 
 	std::string GetTag() { return enemy_tag; }
 
 private:
-
 	const float fit_collision_y = 4.0f;
+	float parry_count = 0;
+	int   damage_count = 0;
 	
 protected:
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack);
-
+	bool IsDamage();
 	D3DMATERIAL9  material;
 	DX9::SKINNEDMODEL anim_model;
 	BoundingBox		  anim_box;
 	DX9::MODEL		  anim_collision;
 
 	DX9::MODEL   model;
-	BoundingBox  box;
-	BoundingBox  obstacle_box;
 	DX9::MODEL	 collision;
 	DX9::MODEL	 obstacle_collision;
 
@@ -53,7 +61,7 @@ protected:
 	int enemy_hp;
 	bool retreat_flg;
 
-	//Collision col;
+	Collision col;
 
 	enum ENEMYMOSION
 	{
@@ -62,10 +70,3 @@ protected:
 		MAX_MOTION
 	};
 };
-
-//typedef struct Collision {
-//	//“Gƒ‚ƒfƒ‹‚Ì“–‚½‚è”»’è
-//	BoundingBox  box;
-//	//‰ŠE’e‚Ì“–‚½‚è”»’è
-//	BoundingBox  obstacle;
-//};

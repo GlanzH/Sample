@@ -6,21 +6,23 @@ bool FakerLamiel::Initialize(std::string tag, SimpleMath::Vector3 speed, int hp)
 	EnemyBase::Initialize(tag,speed,hp);
 	DX12Effect.Create(L"Effect/LamielEffect/omen/omen.efk", "sigh");
 	DX12Effect.Create(L"Effect/LamielEffect/fire/fire.efk", "fire");
+	teleport_frame = 0;
+	omen_effect_frame = 0;
+	fire_effect_frame = 0;
+
+	appear_collision_flag = false;
 	action = DOWN;
 
 
-	obstacle_collision = DX9::Model::CreateBox(
-		DXTK->Device9,
-		1,1,1
-	);
+	obstacle_collision = DX9::Model::CreateBox(DXTK->Device9,1,1,1);
 
-	obstacle_box = obstacle_collision->GetBoundingBox();
+	col.fire = obstacle_collision->GetBoundingBox();
 
-	//obstacle_box.Center = position;
 	obstacle_collision->SetMaterial(material);
+	obstacle_collision->SetScale(18,14,4);
 
-	obstacle_collision->SetPosition(0, 0, 50);
-
+	fire_pos = SimpleMath::Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
+	col.fire.Center = position;
 	return true;
 }
 
@@ -29,28 +31,36 @@ int FakerLamiel::Update(SimpleMath::Vector3 player, const float deltaTime) {
 
 	delta = deltaTime;
 	
-	Attack(player);
+	Move(player);
+	MoveFireCollision();
 
 	if (enemy_hp < 0)
 		return DEAD;
+
+
 	return LIVE;
 }
 
-void FakerLamiel::Attack(SimpleMath::Vector3 player)
+void FakerLamiel::Move(SimpleMath::Vector3 player)
 {
+
 	switch (action)
 	{
 	case DOWN:
-		if (player.y + 15.0f < position.y)
+		if (position.y > 15.0f)
 			position.y -= move_speed * delta;
 		else
 			action = ATTACK_SIGH;
 		break;
 
 	case ATTACK_SIGH:
-		if(omen_effect_frame < MAX_OMEN_FRAME) {
-			DX12Effect.SetPosition("sigh", SimpleMath::Vector3(position.x,position.y - 10.0f, position.z));
-			DX12Effect.PlayOneShot("sigh");
+		if(omen_effect_frame < 3.5f) {
+			DX12Effect.SetPosition("sigh", SimpleMath::Vector3(position.x, position.y - 10.0f, position.z));
+
+			//if (!draw_flag) {
+				DX12Effect.PlayOneShot("sigh");
+				draw_flag = true;
+			//}
 			omen_effect_frame += delta;
 		}
 		else
@@ -62,6 +72,12 @@ void FakerLamiel::Attack(SimpleMath::Vector3 player)
 		if (fire_effect_frame < MAX_FIRE_FRAME) {
 			DX12Effect.SetPosition("fire", SimpleMath::Vector3(position.x, position.y - 20.0f, position.z + 30.0f));
 			DX12Effect.PlayOneShot("fire");
+
+			if (!appear_collision_flag) {
+				fire_pos = SimpleMath::Vector3(position.x + 60.0f, position.y - 15.0f, position.z);
+				appear_collision_flag = true;
+			}
+
 			fire_effect_frame += delta;
 		}
 		else
@@ -87,6 +103,8 @@ void FakerLamiel::Attack(SimpleMath::Vector3 player)
 		omen_effect_frame = 0;
 		fire_effect_frame = 0;
 
+		appear_collision_flag = false;
+
 		action = ATTACK_SIGH;
 		break;
 
@@ -94,6 +112,16 @@ void FakerLamiel::Attack(SimpleMath::Vector3 player)
 		action = DOWN;
 		break;
 	}
+}
+
+void FakerLamiel::MoveFireCollision() {
+	if (fire_effect_frame < MAX_FIRE_FRAME -1)
+		fire_pos.x -= 22.f * delta;
+	else
+		fire_pos = SimpleMath::Vector3(FLT_MAX, FLT_MAX,FLT_MAX);
+
+	col.fire.Center = obstacle_collision->GetPosition();
+	obstacle_collision->SetPosition(fire_pos);
 }
 
 void FakerLamiel::Render() {

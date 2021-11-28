@@ -9,9 +9,9 @@
             <Value>20</Value>
           </MaxGeneration>
           <Life>
-            <Center>400</Center>
-            <Max>400</Max>
-            <Min>400</Min>
+            <Center>130</Center>
+            <Max>130</Max>
+            <Min>130</Min>
           </Life>
           <GenerationTime>
             <Center>1E-05</Center>
@@ -24,9 +24,9 @@
           <PVA>
             <Location>
               <X>
-                <Center>20</Center>
-                <Max>20</Max>
-                <Min>20</Min>
+                <Center>24.4</Center>
+                <Max>24.4</Max>
+                <Min>24.4</Min>
               </X>
             </Location>
             <Velocity>
@@ -65,6 +65,41 @@
               <Min>0.7</Min>
             </Scale>
           </SinglePVA>
+          <FCurve>
+            <FCurve>
+              <Keys>
+                <X>
+                  <Key0>
+                    <Frame>0</Frame>
+                    <Value>0</Value>
+                    <LeftX>0</LeftX>
+                    <LeftY>0</LeftY>
+                    <RightX>0.1666667</RightX>
+                    <RightY>0</RightY>
+                    <InterpolationType>0</InterpolationType>
+                  </Key0>
+                  <Key1>
+                    <Frame>11</Frame>
+                    <Value>0.7</Value>
+                    <LeftX>11</LeftX>
+                    <LeftY>0.7</LeftY>
+                    <RightX>11</RightX>
+                    <RightY>0.7</RightY>
+                    <InterpolationType>0</InterpolationType>
+                  </Key1>
+                  <Key2>
+                    <Frame>21</Frame>
+                    <Value>0</Value>
+                    <LeftX>21</LeftX>
+                    <LeftY>0</LeftY>
+                    <RightX>21</RightX>
+                    <RightY>0</RightY>
+                    <InterpolationType>0</InterpolationType>
+                  </Key2>
+                </X>
+              </Keys>
+            </FCurve>
+          </FCurve>
         </ScalingValues>
         <GenerationLocationValues>
           <Type>4</Type>
@@ -73,6 +108,12 @@
             <Type>1</Type>
           </Line>
         </GenerationLocationValues>
+        <RendererCommonValues>
+          <FadeOutType>1</FadeOutType>
+          <FadeOut>
+            <Frame>20</Frame>
+          </FadeOut>
+        </RendererCommonValues>
         <DrawingValues>
           <Type>0</Type>
         </DrawingValues>
@@ -134,9 +175,9 @@
                   <RotationEffectType>1</RotationEffectType>
                   <ScaleEffectType>1</ScaleEffectType>
                   <Life>
-                    <Center>60</Center>
-                    <Max>60</Max>
-                    <Min>60</Min>
+                    <Center>20</Center>
+                    <Max>20</Max>
+                    <Min>20</Min>
                   </Life>
                 </CommonValues>
                 <ScalingValues>
@@ -176,8 +217,8 @@
                         <Min>4</Min>
                       </Z>
                     </End>
-                    <StartSpeed>-30</StartSpeed>
-                    <EndSpeed>10</EndSpeed>
+                    <StartSpeed>30</StartSpeed>
+                    <EndSpeed>-10</EndSpeed>
                   </Easing>
                 </ScalingValues>
                 <DrawingValues>
@@ -262,6 +303,8 @@
                             <Min>1.25</Min>
                           </Y>
                         </End>
+                        <StartSpeed>30</StartSpeed>
+                        <EndSpeed>-10</EndSpeed>
                       </Easing>
                     </ScalingValues>
                     <RendererCommonValues>
@@ -399,6 +442,8 @@
                             <Min>1.25</Min>
                           </Y>
                         </End>
+                        <StartSpeed>30</StartSpeed>
+                        <EndSpeed>-10</EndSpeed>
                       </Easing>
                     </ScalingValues>
                     <RendererCommonValues>
@@ -539,6 +584,8 @@
                             <Min>1.25</Min>
                           </Y>
                         </End>
+                        <StartSpeed>30</StartSpeed>
+                        <EndSpeed>-10</EndSpeed>
                       </Easing>
                     </ScalingValues>
                     <RendererCommonValues>
@@ -679,6 +726,8 @@
                             <Min>1.25</Min>
                           </Y>
                         </End>
+                        <StartSpeed>30</StartSpeed>
+                        <EndSpeed>-10</EndSpeed>
                       </Easing>
                     </ScalingValues>
                     <RendererCommonValues>
@@ -753,9 +802,9 @@
             <Value>20</Value>
           </MaxGeneration>
           <Life>
-            <Center>400</Center>
-            <Max>400</Max>
-            <Min>400</Min>
+            <Center>130</Center>
+            <Max>130</Max>
+            <Min>130</Min>
           </Life>
           <GenerationTime>
             <Center>1E-05</Center>
@@ -763,21 +812,14 @@
             <Min>1E-05</Min>
           </GenerationTime>
           <GenerationTimeOffset>
-            <Center>65</Center>
-            <Max>65</Max>
-            <Min>65</Min>
+            <Center>66.9</Center>
+            <Max>66.9</Max>
+            <Min>66.9</Min>
           </GenerationTimeOffset>
         </CommonValues>
         <LocationValues>
           <Type>1</Type>
           <PVA>
-            <Location>
-              <X>
-                <Center>-3.4</Center>
-                <Max>-3.4</Max>
-                <Min>-3.4</Min>
-              </X>
-            </Location>
             <Velocity>
               <X>
                 <Center>-0.4</Center>
@@ -814,6 +856,41 @@
               <Min>0.7</Min>
             </Scale>
           </SinglePVA>
+          <FCurve>
+            <FCurve>
+              <Keys>
+                <X>
+                  <Key0>
+                    <Frame>0</Frame>
+                    <Value>0</Value>
+                    <LeftX>0</LeftX>
+                    <LeftY>0</LeftY>
+                    <RightX>0.1666667</RightX>
+                    <RightY>0</RightY>
+                    <InterpolationType>0</InterpolationType>
+                  </Key0>
+                  <Key1>
+                    <Frame>11</Frame>
+                    <Value>0.7</Value>
+                    <LeftX>11</LeftX>
+                    <LeftY>0.7</LeftY>
+                    <RightX>11</RightX>
+                    <RightY>0.7</RightY>
+                    <InterpolationType>0</InterpolationType>
+                  </Key1>
+                  <Key2>
+                    <Frame>21</Frame>
+                    <Value>0</Value>
+                    <LeftX>21</LeftX>
+                    <LeftY>0</LeftY>
+                    <RightX>21</RightX>
+                    <RightY>0</RightY>
+                    <InterpolationType>0</InterpolationType>
+                  </Key2>
+                </X>
+              </Keys>
+            </FCurve>
+          </FCurve>
         </ScalingValues>
         <GenerationLocationValues>
           <Type>4</Type>
@@ -822,6 +899,12 @@
             <Type>1</Type>
           </Line>
         </GenerationLocationValues>
+        <RendererCommonValues>
+          <FadeOutType>1</FadeOutType>
+          <FadeOut>
+            <Frame>20</Frame>
+          </FadeOut>
+        </RendererCommonValues>
         <DrawingValues>
           <Type>0</Type>
         </DrawingValues>
@@ -883,9 +966,9 @@
                   <RotationEffectType>1</RotationEffectType>
                   <ScaleEffectType>1</ScaleEffectType>
                   <Life>
-                    <Center>60</Center>
-                    <Max>60</Max>
-                    <Min>60</Min>
+                    <Center>20</Center>
+                    <Max>20</Max>
+                    <Min>20</Min>
                   </Life>
                 </CommonValues>
                 <ScalingValues>
@@ -925,8 +1008,8 @@
                         <Min>4</Min>
                       </Z>
                     </End>
-                    <StartSpeed>-30</StartSpeed>
-                    <EndSpeed>10</EndSpeed>
+                    <StartSpeed>30</StartSpeed>
+                    <EndSpeed>-10</EndSpeed>
                   </Easing>
                 </ScalingValues>
                 <DrawingValues>
@@ -1011,6 +1094,8 @@
                             <Min>1.25</Min>
                           </Y>
                         </End>
+                        <StartSpeed>30</StartSpeed>
+                        <EndSpeed>-10</EndSpeed>
                       </Easing>
                     </ScalingValues>
                     <RendererCommonValues>
@@ -1148,6 +1233,8 @@
                             <Min>1.25</Min>
                           </Y>
                         </End>
+                        <StartSpeed>30</StartSpeed>
+                        <EndSpeed>-10</EndSpeed>
                       </Easing>
                     </ScalingValues>
                     <RendererCommonValues>
@@ -1288,6 +1375,8 @@
                             <Min>1.25</Min>
                           </Y>
                         </End>
+                        <StartSpeed>30</StartSpeed>
+                        <EndSpeed>-10</EndSpeed>
                       </Easing>
                     </ScalingValues>
                     <RendererCommonValues>
@@ -1428,6 +1517,8 @@
                             <Min>1.25</Min>
                           </Y>
                         </End>
+                        <StartSpeed>30</StartSpeed>
+                        <EndSpeed>-10</EndSpeed>
                       </Easing>
                     </ScalingValues>
                     <RendererCommonValues>
