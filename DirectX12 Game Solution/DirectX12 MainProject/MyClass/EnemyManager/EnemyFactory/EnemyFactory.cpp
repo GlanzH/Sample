@@ -43,7 +43,7 @@ EnemyFactory::EnemyFactory()
 EnemyBase* EnemyFactory::Create(std::string tag, DirectX::SimpleMath::Vector3 position)
 {
 	EnemyBase* enemy_factory = CreateProduct(tag, position);
-	enemy_factory->Initialize(SetSpeed(tag), SetHP(tag));
+	enemy_factory->Initialize(tag,SetSpeed(tag), SetHP(tag));
 	enemy_factory->LoadAsset(SetModel(tag), position);
 	
 	return enemy_factory;

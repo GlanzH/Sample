@@ -103,11 +103,16 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	if(StatusManager::Instance().GetCombo() == 3)
 	base->Retreat();
 
-	SimpleMath::Vector3 pos = base->GetModel()->GetPosition();
+	std::string tag = base->GetTag();
 
-	DX12Effect.SetPosition("hit_eff", SimpleMath::Vector3(pos.x - fix_pos,pos.y - fix_pos,-fix_pos));
+	SimpleMath::Vector3 pos;
+	if (tag == "S" || tag == "H") 
+		pos = base->GetAnimModel()->GetPosition();
+	else 
+		pos = base->GetModel()->GetPosition();
+
+	DX12Effect.SetPosition("hit_eff", pos);
 	DX12Effect.Play("hit_eff");
-
 }
 
 void EnemyManager::OnParryArea(EnemyBase* base) {

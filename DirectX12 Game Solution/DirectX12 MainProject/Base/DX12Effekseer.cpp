@@ -127,6 +127,9 @@ void DX12Effekseer::CEffekseer::SetCamera(DX12::CAMERA camera)
 */
 void DX12Effekseer::CEffekseer::Play(std::string effectName)
 {
+	if (m_effects[effectName] == NULL)
+		return;
+
 	if (m_handles[effectName] == NULL) 
 	{
 		m_handles[effectName] = m_manager->Play(m_effects[effectName], 0, 0, 0);
@@ -144,14 +147,14 @@ void DX12Effekseer::CEffekseer::Play(std::string effectName)
 */
 void DX12Effekseer::CEffekseer::PlayOneShot(std::string effectName)
 {
-	if (m_handles[effectName] == NULL)
+	if (m_handles[effectName] == NULL || !m_manager->Exists(m_handles[effectName]))
 	{
 		m_handles[effectName] = m_manager->Play(m_effects[effectName], 0, 0, 0);
 	}
 }
 
 /**
-	@brief	エフェクトの停止
+	@brief	エフェクトを停止して最初から再生する
 	@param	effectName エフェクト名
 */
 void DX12Effekseer::CEffekseer::Stop(std::string effectName)
@@ -249,10 +252,10 @@ void DX12Effekseer::CEffekseer::SetSpeed(std::string effectName, float speed)
 	@param	fileName	ファイル名
 	@return	エフェクト
 */
-Effekseer::Effect* DX12Effekseer::CEffekseer::Create(LPCWSTR fileName, std::string name)
+Effekseer::Effect* DX12Effekseer::CEffekseer::Create(LPCWSTR fileName, std::string effectName)
 {
 	EFFECT effect = Effekseer::Effect::Create(m_manager, (const EFK_CHAR*)fileName, 1.0f);
-	m_effects[name] = effect;
+	m_effects[effectName] = effect;
 
 	return effect;
 }

@@ -8,18 +8,21 @@ Core::Core()
 {
 }
 
-bool Core::Initialize(SimpleMath::Vector3 speed, int hp)
+bool Core::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
 {
-	EnemyBase::Initialize(speed, hp);
+	EnemyBase::Initialize(tag,speed, hp);
 	DX12Effect.Create(L"Effect//shoot//shoot.efk", "shoot");
 	DX12Effect.Create(L"Effect//charge//charge.efk", "charge");
 	DX12Effect.Create(L"Effect//landing//landing.efk", "landing");
+
 	wait_count = 0;
 	return true;
 }
 
 int Core::Update(SimpleMath::Vector3 player, const float deltaTime) {
 	
+	EnemyBase::Update(player, deltaTime);
+
 	//SetAnimesion(model, CHARGE);
 	 Attack(deltaTime);
 	/*model->AdvanceTime(deltaTime / 1.0f);*/
@@ -35,7 +38,7 @@ void Core::Attack(const float deltaTime)
 	switch (attack_method)
 	{
 	case stone::STORAGE:
-		model->Move(0.0f, 0.01f, 0.0f);
+		//model->Move(0.0f, 0.01f, 0.0f);
 		if (position.z >= 50);
 		{
 			position.z = 50;
@@ -111,3 +114,6 @@ void Core::Shot()
 	bullet_pos.y -= 2.0f;
 }
 
+void Core::Render() {
+	EnemyBase::Render();
+}

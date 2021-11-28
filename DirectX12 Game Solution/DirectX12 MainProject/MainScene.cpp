@@ -120,6 +120,7 @@ void MainScene::Render()
 	DXTK->Direct3D9->BeginScene();
 
 	//3D•`‰æ
+	DX12Effect.SetCamera((DX12::CAMERA)camera->GetCamera());
 	camera->Render();
 	ground->Render();
 	player->Render();
@@ -128,6 +129,7 @@ void MainScene::Render()
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ
+	ui->Render(StatusManager::Instance().ReturnVolt());
 	player->_2DRender();
 
 	DX9::SpriteBatch->End();

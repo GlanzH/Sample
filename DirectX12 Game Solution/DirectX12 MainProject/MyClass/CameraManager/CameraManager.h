@@ -4,7 +4,6 @@
 #include "Base/dxtk.h"
 
 using namespace DirectX;
-using namespace DX9;
 
 class CameraManager
 {
@@ -17,8 +16,10 @@ public:
 	int  Update(SimpleMath::Vector3 pos);
 	void Render();
 
+	DX9::CAMERA GetCamera() { return camera; }
+
 private:
-	CAMERA  camera;
+	DX9::CAMERA  camera;
 
 	SimpleMath::Vector3 position;
 	

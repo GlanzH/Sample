@@ -9,12 +9,14 @@ HighSlime::HighSlime()
 
 int HighSlime::Update(SimpleMath::Vector3 player, const float deltaTime)
 {
+    EnemyBase::Update(player, deltaTime);
+
     Move(player, deltaTime);
     Rotate(player, deltaTime);
 	Jump(deltaTime);
-   // SetAnimation(model, WAIT);
-
-	//model->AdvanceTime(deltaTime / 1.0f);
+     SetAnimation(anim_model, WAIT);
+    
+     anim_model->AdvanceTime(deltaTime / 1.0f);
 
 	if (enemy_hp < 0)
 		return DEAD;
@@ -33,7 +35,7 @@ void HighSlime::Rotate(SimpleMath::Vector3 player, const float deltaTime) {
     //!プレイヤーの座標 - 敵の座標でプレイヤーのいる方向に向く
     float rotation = MathHelper_Atan2(-(player.z - position.z), (player.x - position.x)) - 45.0f;
 
-    model->SetRotation(0.0f,rotation, 0.0f);
+    anim_model->SetRotation(0.0f,rotation, 0.0f);
 }
 
 void HighSlime::Jump(const float deltaTime)
@@ -53,7 +55,4 @@ void HighSlime::Jump(const float deltaTime)
         }
 
     }
-    collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
-    box.Center = model->GetPosition();
-    model->SetPosition(position);
 }

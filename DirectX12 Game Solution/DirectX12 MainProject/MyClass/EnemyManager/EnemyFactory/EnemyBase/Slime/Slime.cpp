@@ -4,11 +4,13 @@
 #include "Slime.h"
 
 int Slime::Update(SimpleMath::Vector3 player, const float deltaTime) {
+	EnemyBase::Update(player, deltaTime);
+
 	Rotate(player, deltaTime);
 	Move(player,deltaTime);
-	//SetAnimation(model, WAIT);
+	SetAnimation(anim_model, WAIT);
 
-//	model->AdvanceTime(deltaTime / 1.0f);
+	anim_model->AdvanceTime(deltaTime / 1.0f);
 
 	if (enemy_hp < 0)
 		return DEAD;
@@ -20,7 +22,7 @@ void Slime::Rotate(SimpleMath::Vector3 player, const float deltaTime) {
 	//!プレイヤーの座標 - 敵の座標でプレイヤーのいる方向に向く
 	float rotation = MathHelper_Atan2(-(player.z - position.z), (player.x - position.x)) - 45.0f;
 
-	model->SetRotation(0.0f, rotation, 0.0f);
+	anim_model->SetRotation(0.0f, rotation, 0.0f);
 }
 
 void Slime::Move(SimpleMath::Vector3 player, const float deltaTime) {
@@ -28,8 +30,4 @@ void Slime::Move(SimpleMath::Vector3 player, const float deltaTime) {
 		position.x -= move_speed * deltaTime;
 	else
 		position.x += move_speed * deltaTime;
-
-	box.Center = model->GetPosition();
-	model->SetPosition(position);
-	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 }

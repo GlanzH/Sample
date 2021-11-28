@@ -9,14 +9,13 @@ public:
 	HighSlime();
 	~HighSlime() {}
 
-	int Update(SimpleMath::Vector3 player, const float deltaTime) override;
+	int Update(SimpleMath::Vector3 player, const float deltaTime);
 
 private:
 	void Move  (SimpleMath::Vector3 player, const float deltaTime);
 	void Rotate(SimpleMath::Vector3 player, const float deltaTime);
 	void Jump(const float deltaTime);
 
-	const float fit_collision_y    =   4.0f;
 	
 	//ジャンプしてるかのフラグ。
 	bool jump_flag = true;
