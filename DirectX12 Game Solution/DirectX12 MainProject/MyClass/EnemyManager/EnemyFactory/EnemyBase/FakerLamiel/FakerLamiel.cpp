@@ -37,6 +37,7 @@ int FakerLamiel::Update(SimpleMath::Vector3 player, const float deltaTime) {
 	if (enemy_hp < 0)
 		return DEAD;
 
+	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 
 	return LIVE;
 }

@@ -20,7 +20,7 @@ private:
 	int wait_count;
 	enum class stone
 	{
-		STORAGE,
+		MOVE,
 		CHARGE,
 		ATTACK,
 		WAIT,

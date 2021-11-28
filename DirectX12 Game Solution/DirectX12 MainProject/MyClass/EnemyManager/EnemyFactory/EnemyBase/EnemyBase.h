@@ -36,7 +36,7 @@ public:
 	std::string GetTag() { return enemy_tag; }
 
 private:
-	const float fit_collision_y = 4.0f;
+	float box_size;
 	float parry_count = 0;
 	int   damage_count = 0;
 	
@@ -57,6 +57,7 @@ protected:
 
 	std::string enemy_tag;
 
+	const float fit_collision_y = 4.0f;
 	int count = 0;
 	int enemy_hp;
 	bool retreat_flg;

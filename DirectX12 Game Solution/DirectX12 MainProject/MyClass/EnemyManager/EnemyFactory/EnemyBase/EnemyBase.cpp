@@ -59,9 +59,9 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 		//ƒRƒŠƒWƒ‡ƒ“ƒ‚ƒfƒ‹‚Ìì¬
 		collision = DX9::Model::CreateBox(
 			DXTK->Device9,
-			col.box.Extents.x * 2,
-			col.box.Extents.y * 2,
-			col.box.Extents.z * 2
+			col.box.Extents.x * 1.5,
+			col.box.Extents.y * 1.5,
+			col.box.Extents.z * 1.5
 		);
 
 		collision->SetMaterial(material);
@@ -80,15 +80,10 @@ int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
 	else {
 		col.box.Center = model->GetPosition();
 		model->SetPosition(position);
-		collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 	}
 
 	if (retreat_flg && parry_count < 30){
 		position.x += 15.0f * deltaTime;
-		//if (enemy_tag == "S" || enemy_tag == "H") {
-
-		//}
-
 		parry_count++;
 	} 
 	else {
@@ -117,11 +112,6 @@ bool EnemyBase::IsDamage() {
 void EnemyBase::Retreat()
 {
 	retreat_flg = true;
-	//model->SetPosition(position.x += 15.0f, position.y, position.z);
-
-	//box.Center = model->GetPosition();
-	//model->SetPosition(position);
-	//collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
 }
 
 void EnemyBase::Render() {
@@ -131,7 +121,7 @@ void EnemyBase::Render() {
 	}
 	else {
 		model->Draw();
-		//collision->Draw();
+		collision->Draw();
 	}
 }
 void EnemyBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack)
