@@ -95,19 +95,9 @@ int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
 
 void EnemyBase::Damage(const float deltaTime,int damage) {
 	enemy_hp -= damage;
-	IsDamage();
+	damage_flag = true;
 }
 
-bool EnemyBase::IsDamage() {
-	if (damage_count < 30) {
-		damage_count++;
-		return true;
-	}
-	else {
-		damage_count = 0;
-		return false;
-	}
-}
 
 void EnemyBase::BulletParry() {
 	bullet_parry_flag = true;

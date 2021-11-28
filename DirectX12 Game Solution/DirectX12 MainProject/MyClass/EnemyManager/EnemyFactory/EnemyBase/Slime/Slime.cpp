@@ -9,7 +9,7 @@ int Slime::Update(SimpleMath::Vector3 player, const float deltaTime) {
 	Rotate(player, deltaTime);
 	Move(player,deltaTime);
 
-	if (EnemyBase::IsDamage())
+	if (!damage_flag)
 		SetAnimation(anim_model, WAIT);
 	else
 		SetAnimation(anim_model, DAMAGE);
