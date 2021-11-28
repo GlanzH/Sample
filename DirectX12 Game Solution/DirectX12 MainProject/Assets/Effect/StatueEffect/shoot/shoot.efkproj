@@ -28,9 +28,8 @@
         <DrawingValues>
           <Sprite>
             <ColorAll_Fixed>
-              <R>67</R>
+              <R>0</R>
               <G>203</G>
-              <B>251</B>
             </ColorAll_Fixed>
           </Sprite>
         </DrawingValues>

@@ -28,7 +28,7 @@ EnemyManager::~EnemyManager() {
 bool EnemyManager::Initialize(PlayerBase* player_base)
 {
 	DX12Effect.Initialize();
-	DX12Effect.Create(L"Effect/test/test.efk","hit_eff");
+	DX12Effect.Create(L"Effect/EnemyHitEffect/hit/hit.efk","hit_eff");
 
 	player_data = player_base;
 

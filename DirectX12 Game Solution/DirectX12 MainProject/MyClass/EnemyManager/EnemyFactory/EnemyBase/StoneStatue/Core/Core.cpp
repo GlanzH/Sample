@@ -18,7 +18,7 @@ bool Core::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
 	obstacle_collision = DX9::Model::CreateSphere(DXTK->Device9, 4, 8, 2);
 
 	obstacle_collision->SetMaterial(material);
-	obstacle_collision->SetScale(0.3f);
+	obstacle_collision->SetScale(0.5f);
 
 	bull_pos = SimpleMath::Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
 	col.bullet.Center = position;
@@ -54,7 +54,10 @@ void Core::Move(SimpleMath::Vector3 player){
 		break;
 
 	case CHARGE:
-		if (charge_effect_frame < max_charge) {
+		if (wait_charge_frame < max_wait_charge) {
+			wait_charge_frame += delta;
+		}
+		else if (charge_effect_frame < max_charge) {
 			DX12Effect.SetPosition("charge", position);
 			DX12Effect.PlayOneShot("charge");
 			charge_effect_frame += delta;
@@ -69,6 +72,9 @@ void Core::Move(SimpleMath::Vector3 player){
 			bull_pos   = position;
 			shot_flag  = true;
 		}
+		else if (wait_shot_frame < max_wait_shot) {
+			wait_shot_frame += delta;
+		}
 		else
 			Shot(player_pos);
 		break;
@@ -77,8 +83,8 @@ void Core::Move(SimpleMath::Vector3 player){
 		bullet_parry_flag = false;
 		bull_pos = SimpleMath::Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
 
-		if (wait_count < 5)
-			wait_count += delta;
+		if (wait_frame < max_wait)
+			wait_frame += delta;
 		else
 		action = BACK;
 		break;
@@ -91,8 +97,8 @@ void Core::Move(SimpleMath::Vector3 player){
 		break;
 
 	case STOP:
-		if (stop_count < 10)
-			stop_count += delta;
+		if (stop_frame < max_stop)
+			stop_frame += delta;
 		else
 			action = INIT;
 		break;
@@ -100,9 +106,11 @@ void Core::Move(SimpleMath::Vector3 player){
 	case INIT:
 		charge_effect_frame  = 0;
 		landing_effect_frame = 0;
+		wait_charge_frame    = 0;
+		wait_shot_frame      = 0;
 
-		wait_count = 0;
-		stop_count = 0;
+		wait_frame = 0;
+		stop_frame = 0;
 		shot_flag = false;
 		action = MOVE;
 		break;
@@ -127,7 +135,7 @@ void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 		DX12Effect.Play("shoot");
 	}
 	else {
-		if (landing_effect_frame < max_landing) {
+		if (landing_effect_frame < max_landing && !bullet_parry_flag) {
 			DX12Effect.SetPosition("landing", bull_pos);
 			DX12Effect.PlayOneShot("landing");
 			landing_effect_frame += delta;
@@ -140,5 +148,5 @@ void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 
 void Core::Render() {
 	EnemyBase::Render();
-	obstacle_collision->Draw();
+	//obstacle_collision->Draw();
 }

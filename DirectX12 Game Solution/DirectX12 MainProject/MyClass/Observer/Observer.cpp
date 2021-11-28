@@ -32,7 +32,7 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy) {
 
 		//!ƒvƒŒƒCƒ„[MODELŒ^“–‚½‚è”»’è
 		if(player->GetBox().Intersects(enemies_roop->GetBox().box) ||
-			player->GetBox().Intersects(enemies_roop->GetBox().box)) {
+			player->GetBox().Intersects(enemies_roop->GetBox().bullet)) {
 			if (player->GetParryFlag()) {
 				player->OnParryArea();
 				enemy->OnParryArea(enemies_roop);
