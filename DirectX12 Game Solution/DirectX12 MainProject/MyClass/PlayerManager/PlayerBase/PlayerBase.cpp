@@ -149,17 +149,19 @@ void PlayerBase::OnCollisionEnter() {
 
 	//“G‚É“–‚½‚Á‚½‚Æ‚«‚Ìˆ—
 	if (!invincible_flag) {
-		model->SetPosition(player_pos.x -= 2.0f, player_pos.y, player_pos.z);
+		//model->SetPosition(player_pos.x -= 2.0f, player_pos.y, player_pos.z);
+
+		model->Move(0, 0, 2.0f);
 		
 		//–³“G
 		invincible_flag = true;
 
-		sword_box.Center = model->GetPosition() + SimpleMath::Vector3(6, 0, 0);
-		sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(8, 6, 0));
+		//sword_box.Center = model->GetPosition() + SimpleMath::Vector3(6, 0, 0);
+		//sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(8, 6, 0));
 
-		box.Center = model->GetPosition();
-		model->SetPosition(player_pos);
-		collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
+		//box.Center = model->GetPosition();
+		//model->SetPosition(player_pos);
+		//collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
 	}
 }
 
@@ -361,7 +363,7 @@ void PlayerBase::Player_attack(const float deltaTime) {
 			if (StatusManager::Instance().GetCombo() == 1 && motion_count == 0) {
 				if (direction_state_mode == Direction_State::RIGHT) {
 					DX12Effect.PlayOneShot("first");
-					DX12Effect.SetPosition("first", Vector3(6, -5, 50));
+					DX12Effect.SetPosition("first", Vector3(5, 2, 50));
 					DX12Effect.SetScale("first", Vector3(1.5f, 1.5f, 1.5f));
 				}
 				else if (direction_state_mode == Direction_State::LEFT) {
@@ -377,8 +379,8 @@ void PlayerBase::Player_attack(const float deltaTime) {
 
 				if (direction_state_mode == Direction_State::RIGHT) {
 					DX12Effect.PlayOneShot("second");
-					DX12Effect.SetPosition("second", Vector3(6, -2, 50));
-					DX12Effect.SetScale("second", Vector3(2.0f, 2.0f, 2.0f));
+					DX12Effect.SetPosition("second", Vector3(4, 6, 50));
+					DX12Effect.SetScale("second", Vector3(2.5f, 2.5f, 2.5f));
 				}
 				else if (direction_state_mode == Direction_State::LEFT) {
 					DX12Effect.PlayOneShot("second");
@@ -395,7 +397,7 @@ void PlayerBase::Player_attack(const float deltaTime) {
 			else if (StatusManager::Instance().GetCombo() == 3 && motion_count == 2) {
 				if (direction_state_mode == Direction_State::RIGHT) {
 					DX12Effect.PlayOneShot("third");
-					DX12Effect.SetPosition("third", Vector3(9, -5, 0));
+					DX12Effect.SetPosition("third", Vector3(7, 5, 50));
 					DX12Effect.SetScale("third", Vector3(1.5f, 1.5f, 1.5f));
 
 				}
