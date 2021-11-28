@@ -14,15 +14,17 @@ public:
 	int Update(SimpleMath::Vector3 player, const float deltaTime);
 	void Render();
 private:
-	virtual void Attack(SimpleMath::Vector3 player);
+	void Move(SimpleMath::Vector3 player);
+	void MoveFireCollision();
 
-	SimpleMath::Vector3 init_pos;
+	SimpleMath::Vector3 fire_pos;
+
 
 	float teleport_frame    = 0;
 	float omen_effect_frame = 0;
 	float fire_effect_frame = 0;
 
-	const float move_speed = 5.0f;
+	const float move_speed = 10.0f;
 
 	 enum LamielAction
 	 {
@@ -43,6 +45,8 @@ private:
 		 MIN_RANGE = -30,
 		 NAX_RANGE =  40
 	 };
+
+	 bool appear_collision_flag = false;
 
 	 int action = DOWN;
 	 float delta;

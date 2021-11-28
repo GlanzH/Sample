@@ -10,12 +10,13 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy) {
 	for (auto enemies_roop : enemy->GetEnemy()) {
 		if (player->IsAttack()) {
 			if (player->GetSwordBox().Intersects(enemies_roop->GetAnimBox()) ||
-				player->GetSwordBox().Intersects(enemies_roop->GetBox())) {
+				player->GetSwordBox().Intersects(enemies_roop->GetBox().box)) {
 				enemy->OnCollisionEnter(enemies_roop);
 			}
 		}
+
 		if (player->GetBox().Intersects(enemies_roop->GetAnimBox()) ||
-			player->GetBox().Intersects(enemies_roop->GetBox())) {
+			player->GetBox().Intersects(enemies_roop->GetBox().box)) {
 			if (!player->GetParryFlag()) {
 				player->OnCollisionEnter();
 			}
@@ -26,5 +27,8 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy) {
 			}
 		}
 
+		if (player->GetBox().Intersects(enemies_roop->GetBox().fire)) {
+			player->OnCollisionEnter();
+		}
 	}
 }
