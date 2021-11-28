@@ -33,7 +33,7 @@ public:
 
 	int GetDamage() { return damage; }
 
-	int GetCount() { return motion_count; }
+	int GetAttackCount() { return motion_count; }
 
 	void _2DRender();
 

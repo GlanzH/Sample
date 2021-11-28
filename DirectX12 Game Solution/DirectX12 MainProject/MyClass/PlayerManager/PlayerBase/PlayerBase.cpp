@@ -26,6 +26,8 @@ void PlayerBase::LoadAssets()
 	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
 
+
+
 	//ƒvƒŒƒCƒ„[‚Ì“–‚½‚è”»’è
 	box = model->GetBoundingBox();
 
@@ -127,6 +129,7 @@ int PlayerBase::Update(const float deltaTime)
 	sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(8, 6, 0));
 
 	box.Center = model->GetPosition();
+	player_pos = model->GetPosition();
 	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 6, 0));
 
 	model->AdvanceTime(deltaTime);
@@ -363,11 +366,12 @@ void PlayerBase::Player_attack(const float deltaTime) {
 			if (StatusManager::Instance().GetCombo() == 1 && motion_count == 0) {
 				if (direction_state_mode == Direction_State::RIGHT) {
 					DX12Effect.PlayOneShot("first");
-					DX12Effect.SetPosition("first", Vector3(5, 2, 50));
-					DX12Effect.SetScale("first", Vector3(1.5f, 1.5f, 1.5f));
+					DX12Effect.SetPosition("first", Vector3(player_pos.x + 5.0f, player_pos.y + 2.0f, player_pos.z));
+					
 				}
 				else if (direction_state_mode == Direction_State::LEFT) {
 					DX12Effect.PlayOneShot("first");
+					DX12Effect.SetPosition("first", Vector3(player_pos.x - 7.0f, player_pos.y + 2.0f, player_pos.z));
 					DX12Effect.SetRotation("first", Vector3(0.0f, 180.0f, 0.0f));
 				}
 				if (appeal_state_mode != Appeal_state::FOCUS)
@@ -379,11 +383,11 @@ void PlayerBase::Player_attack(const float deltaTime) {
 
 				if (direction_state_mode == Direction_State::RIGHT) {
 					DX12Effect.PlayOneShot("second");
-					DX12Effect.SetPosition("second", Vector3(4, 6, 50));
-					DX12Effect.SetScale("second", Vector3(2.5f, 2.5f, 2.5f));
+					DX12Effect.SetPosition("second", Vector3(player_pos.x + 4.0f, player_pos.y + 6.0f, player_pos.z));
 				}
 				else if (direction_state_mode == Direction_State::LEFT) {
 					DX12Effect.PlayOneShot("second");
+					DX12Effect.SetPosition("second", Vector3(player_pos.x - 4.0f, player_pos.y + 6.0f, player_pos.z));
 					DX12Effect.SetRotation("second", Vector3(0.0f, 180.0f, 0.0f));
 
 				}
@@ -397,12 +401,11 @@ void PlayerBase::Player_attack(const float deltaTime) {
 			else if (StatusManager::Instance().GetCombo() == 3 && motion_count == 2) {
 				if (direction_state_mode == Direction_State::RIGHT) {
 					DX12Effect.PlayOneShot("third");
-					DX12Effect.SetPosition("third", Vector3(7, 5, 50));
-					DX12Effect.SetScale("third", Vector3(1.5f, 1.5f, 1.5f));
-
+					DX12Effect.SetPosition("third", Vector3(player_pos.x + 7.0f, player_pos.y + 5.0f, player_pos.z));
 				}
 				else if (direction_state_mode == Direction_State::LEFT) {
 					DX12Effect.PlayOneShot("third");
+					DX12Effect.SetPosition("third", Vector3(player_pos.x - 7.0f, player_pos.y + 5.0f, player_pos.z));
 					DX12Effect.SetRotation("third", Vector3(0.0f, 180.0f, 0.0f));
 
 				}
@@ -530,10 +533,10 @@ void PlayerBase::_2DRender()
 	//	L"%d", StatusManager::Instance().GetCombo()
 	//);
 
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(1000.0f, 170.0f),
-	//	DX9::Colors::BlueViolet,
-	//	L"%f", StatusManager::Instance().GetTime()
-	//);
+	DX9::SpriteBatch->DrawString(font.Get(),
+		SimpleMath::Vector2(1000.0f, 170.0f),
+		DX9::Colors::BlueViolet,
+		L"%f %f %f", player_pos.x, player_pos.y, player_pos.z
+	);
 
 }
