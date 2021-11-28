@@ -361,7 +361,7 @@ void PlayerBase::Player_attack(const float deltaTime) {
 			if (StatusManager::Instance().GetCombo() == 1 && motion_count == 0) {
 				if (direction_state_mode == Direction_State::RIGHT) {
 					DX12Effect.PlayOneShot("first");
-					DX12Effect.SetPosition("first", Vector3(6, -5, 0));
+					DX12Effect.SetPosition("first", Vector3(6, -5, 50));
 					DX12Effect.SetScale("first", Vector3(1.5f, 1.5f, 1.5f));
 				}
 				else if (direction_state_mode == Direction_State::LEFT) {
@@ -377,7 +377,7 @@ void PlayerBase::Player_attack(const float deltaTime) {
 
 				if (direction_state_mode == Direction_State::RIGHT) {
 					DX12Effect.PlayOneShot("second");
-					DX12Effect.SetPosition("second", Vector3(6, -2, 0));
+					DX12Effect.SetPosition("second", Vector3(6, -2, 50));
 					DX12Effect.SetScale("second", Vector3(2.0f, 2.0f, 2.0f));
 				}
 				else if (direction_state_mode == Direction_State::LEFT) {
