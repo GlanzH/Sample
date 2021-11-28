@@ -72,6 +72,17 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 
 int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
 {
+	if (enemy_tag == "S" || enemy_tag == "H") {
+		anim_box.Center = anim_model->GetPosition();
+		anim_model->SetPosition(position);
+		anim_collision->SetPosition(anim_model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
+	}
+	else {
+		box.Center = model->GetPosition();
+		model->SetPosition(position);
+		collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
+	}
+
 	if (retreat_flg)
 	{
 		//position.x = ;

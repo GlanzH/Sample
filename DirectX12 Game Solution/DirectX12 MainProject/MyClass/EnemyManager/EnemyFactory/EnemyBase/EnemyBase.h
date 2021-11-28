@@ -1,6 +1,5 @@
 #pragma once
 
-#include "MyClass/GroundManager/GroundManager.h"
 #include"MyClass/EnumManager/EnumManager.h"
 #include "MyClass/PlayerManager/PlayerBase/PlayerBase.h"
 
@@ -12,10 +11,10 @@ public:
 	EnemyBase();
 	~EnemyBase() {};
 
-	bool Initialize(std::string tag,SimpleMath::Vector3 speed,int hp);
+	virtual bool Initialize(std::string tag,SimpleMath::Vector3 speed,int hp);
 	void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 	virtual int Update(SimpleMath::Vector3 player, const float deltaTime);
-	void Render();
+	virtual void Render();
 
 	void Retreat();
 	virtual void Damage(const float deltaTime,int damage);
@@ -28,25 +27,34 @@ public:
 	std::string GetTag() { return enemy_tag; }
 
 private:
-	D3DMATERIAL9  material;
-	GroundManager ground;
+
+	const float fit_collision_y = 4.0f;
 	
 protected:
+	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack);
+
+	D3DMATERIAL9  material;
 	DX9::SKINNEDMODEL anim_model;
-	DX9::MODEL model;
-	BoundingBox  anim_box;
+	BoundingBox		  anim_box;
+	DX9::MODEL		  anim_collision;
+
+	DX9::MODEL   model;
 	BoundingBox  box;
-	DX9::MODEL	 anim_collision;
+	BoundingBox  obstacle_box;
 	DX9::MODEL	 collision;
+	DX9::MODEL	 obstacle_collision;
+
 	SimpleMath::Vector3  position;
 	SimpleMath::Vector3  enemy_speed;
 
 	std::string enemy_tag;
+
 	int count = 0;
 	int enemy_hp;
 	bool retreat_flg;
 
-	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack);
+	//Collision col;
+
 	enum ENEMYMOSION
 	{
 		WAIT,
@@ -54,3 +62,10 @@ protected:
 		MAX_MOTION
 	};
 };
+
+//typedef struct Collision {
+//	//ìGÉÇÉfÉãÇÃìñÇΩÇËîªíË
+//	BoundingBox  box;
+//	//âäÅEíeÇÃìñÇΩÇËîªíË
+//	BoundingBox  obstacle;
+//};
