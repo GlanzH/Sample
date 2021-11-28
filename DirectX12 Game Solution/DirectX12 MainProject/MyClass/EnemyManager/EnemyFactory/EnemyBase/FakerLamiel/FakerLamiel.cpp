@@ -127,6 +127,5 @@ void FakerLamiel::MoveFireCollision() {
 
 void FakerLamiel::Render() {
 	EnemyBase::Render();
-	int a = 0;
-	obstacle_collision->Draw();
+	//obstacle_collision->Draw();
 }

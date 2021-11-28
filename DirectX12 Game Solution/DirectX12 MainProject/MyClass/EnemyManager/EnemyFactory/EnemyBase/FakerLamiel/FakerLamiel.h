@@ -48,8 +48,8 @@ private:
 
 	 bool appear_collision_flag = false;
 
-	 int action = DOWN;
 	 float delta;
+	 int action = DOWN;
 	 bool draw_flag = false;
 
 	 std::mt19937 random_device;

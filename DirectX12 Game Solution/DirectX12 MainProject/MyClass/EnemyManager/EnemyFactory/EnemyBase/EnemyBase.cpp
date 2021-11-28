@@ -117,11 +117,11 @@ void EnemyBase::Retreat()
 void EnemyBase::Render() {
 	if (enemy_tag == "S" || enemy_tag == "H") {
 		anim_model->Draw();
-		anim_collision->Draw();
+		//anim_collision->Draw();
 	}
 	else {
 		model->Draw();
-		collision->Draw();
+		//collision->Draw();
 	}
 }
 void EnemyBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack)

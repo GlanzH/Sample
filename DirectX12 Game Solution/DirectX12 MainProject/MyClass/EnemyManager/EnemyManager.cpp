@@ -100,10 +100,12 @@ void EnemyManager::Render()
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
      base->Damage(delta,player_data->GetDamage());
 
-	if(StatusManager::Instance().GetCombo() == 3)
-	base->Retreat();
+	 std::string tag = base->GetTag();
 
-	std::string tag = base->GetTag();
+	 if (tag != "C") {
+		 if (StatusManager::Instance().GetCombo() == 3)
+			 base->Retreat();
+	 }
 
 	SimpleMath::Vector3 pos;
 	if (tag == "S" || tag == "H") 
