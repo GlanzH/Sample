@@ -6,17 +6,21 @@ int Observer::Update(PlayerBase* player, EnemyManager* enemy) {
 }
 
 void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy) {
-	//プレイヤー・敵当たり判定
 	for (auto enemies_roop : enemy->GetEnemy()) {
 		if (player->IsAttack()) {
-			if (player->GetSwordBox().Intersects(enemies_roop->GetAnimBox()) ||
-				player->GetSwordBox().Intersects(enemies_roop->GetBox().box)) {
+			//!
+			if (player->GetSwordBox().Intersects(enemies_roop->GetAnimBox())) {
+				enemy->OnCollisionEnter(enemies_roop);
+			}
+
+			if (player->GetSwordBox().Intersects(enemies_roop->GetBox().box)) {
 				enemy->OnCollisionEnter(enemies_roop);
 			}
 		}
 
-		if (player->GetBox().Intersects(enemies_roop->GetAnimBox()) ||
-			player->GetBox().Intersects(enemies_roop->GetBox().box)) {
+
+		//!プレイヤーSKINNEDMODEL型当たり判定
+		if (player->GetBox().Intersects(enemies_roop->GetAnimBox())) {
 			if (!player->GetParryFlag()) {
 				player->OnCollisionEnter();
 			}
@@ -26,6 +30,18 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy) {
 			}
 		}
 
+		//!プレイヤーMODEL型当たり判定
+		if(player->GetBox().Intersects(enemies_roop->GetBox().box)) {
+			if (!player->GetParryFlag()) {
+				player->OnCollisionEnter();
+			}
+			else {
+				player->OnParryArea();
+					enemy->OnParryArea(enemies_roop);
+			}
+		}
+
+		//!炎の当たり判定
 		if (player->GetBox().Intersects(enemies_roop->GetBox().fire)) {
 			player->OnCollisionEnter();
 		}

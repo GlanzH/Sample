@@ -38,10 +38,11 @@ public:
 private:
 	const float fit_collision_y = 4.0f;
 	float parry_count = 0;
+	int   damage_count = 0;
 	
 protected:
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack);
-
+	bool IsDamage();
 	D3DMATERIAL9  material;
 	DX9::SKINNEDMODEL anim_model;
 	BoundingBox		  anim_box;

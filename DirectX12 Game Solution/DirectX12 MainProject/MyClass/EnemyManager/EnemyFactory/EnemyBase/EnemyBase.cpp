@@ -99,9 +99,19 @@ int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
 }
 
 void EnemyBase::Damage(const float deltaTime,int damage) {
-	anim_model->AdvanceTime(deltaTime / 1.0f);
-	SetAnimation(anim_model, DAMAGE);
 	enemy_hp -= damage;
+	IsDamage();
+}
+
+bool EnemyBase::IsDamage() {
+	if (damage_count < 30) {
+		count++;
+		return true;
+	}
+	else {
+		count = 0;
+		return false;
+	}
 }
 
 void EnemyBase::Retreat()
