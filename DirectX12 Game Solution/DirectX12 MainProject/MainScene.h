@@ -13,6 +13,7 @@
 #include "MyClass/CameraManager/CameraManager.h"
 #include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/UIManager/UIManager.h"
+#include "MyClass/Shader/MultiLighting.h"
 
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
@@ -42,6 +43,7 @@ public:
 	NextScene Update(const float deltaTime) override;
 	void Render() override;
 
+
 private:
 	DX12::DESCRIPTORHEAP descriptorHeap;
 	DX12::SPRITEBATCH    spriteBatch;
@@ -49,10 +51,14 @@ private:
 
 	D3DLIGHT9 light{};
 
+	DX9::SHADER shader;
+
 	GroundManager* ground;
 	CameraManager* camera;
 	PlayerBase*    player;
 	EnemyManager*  enemy;
 	Observer*      observer;
 	UIManager*     ui;
+
+	MultiPointLighting point;
 };

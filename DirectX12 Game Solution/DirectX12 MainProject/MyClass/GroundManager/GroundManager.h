@@ -13,6 +13,7 @@ public:
 	void LoadAsset();
 	void Render();
 
+	DX9::MODEL& GetModel() { return model; }
 	BoundingBox GetBox() { return box; }
 
 private:

@@ -79,6 +79,9 @@
     <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core">
       <UniqueIdentifier>{28750e98-8606-4f84-b722-b840222e2497}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\Shader">
+      <UniqueIdentifier>{c77963d0-7184-491d-86ec-712fe37dec65}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -181,6 +184,9 @@
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core</Filter>
     </ClInclude>
     <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\EffectBase\EffectBase.h" />
+    <ClInclude Include="MyClass\Shader\MultiLighting.h">
+      <Filter>MyClass\Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -259,6 +265,9 @@
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core</Filter>
     </ClCompile>
     <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\EffectBase\EffectBase.cpp" />
+    <ClCompile Include="MyClass\Shader\MultiLighting.cpp">
+      <Filter>MyClass\Shader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resource\directx.ico">

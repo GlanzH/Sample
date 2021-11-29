@@ -85,5 +85,5 @@ namespace DX9
 		SHADERMATERIAL m_material;
 	};
 
-	typedef Microsoft::WRL::ComPtr<ID3DXFont> SHADER;
+	typedef std::unique_ptr<Shader> SHADER;
 };
