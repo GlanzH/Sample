@@ -23,6 +23,8 @@ private:
 	
 	float delta;
 
+	float max_move;
+	float max_back;
 	//!ATTACK‘Ò‹@ŽžŠÔ
 	float wait_shot_frame = 0;
 	const float max_wait_shot = 0.5f;
