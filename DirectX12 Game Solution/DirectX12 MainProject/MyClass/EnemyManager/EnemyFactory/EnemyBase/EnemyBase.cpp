@@ -72,6 +72,8 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 
 int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
 {
+	delta = deltaTime;
+
 	if (enemy_tag == "S" || enemy_tag == "H") {
 		EnemyAnimation();
 		anim_box.Center = anim_model->GetPosition();
@@ -103,7 +105,7 @@ void EnemyBase::EnemyAnimation() {
 	else
 		SetAnimation(anim_model, DAMAGE);
 
-	anim_model->AdvanceTime(deltaTime / 1.0f);
+	anim_model->AdvanceTime(delta / 1.0f);
 
 	if (damage_flag && damage_count < 15) {
 		damage_count++;
@@ -115,7 +117,7 @@ void EnemyBase::EnemyAnimation() {
 
 }
 
-void EnemyBase::Damage(const float deltaTime,int damage) {
+void EnemyBase::Damage(int damage) {
 	enemy_hp -= damage;
 	damage_flag = true;
 }
