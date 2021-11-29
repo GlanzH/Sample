@@ -19,7 +19,7 @@ bool FakerLamiel::Initialize(std::string tag, SimpleMath::Vector3 speed, int hp)
 	col.fire = obstacle_collision->GetBoundingBox();
 
 	obstacle_collision->SetMaterial(material);
-	obstacle_collision->SetScale(18,14,4);
+	obstacle_collision->SetScale(collision_scale);
 
 	fire_pos = SimpleMath::Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
 	col.fire.Center = position;

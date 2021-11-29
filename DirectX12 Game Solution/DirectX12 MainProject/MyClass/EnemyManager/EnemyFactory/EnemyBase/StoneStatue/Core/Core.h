@@ -24,6 +24,7 @@ private:
 	float delta;
 
 	const float move_core = 2.0f;
+	const float collision_scale = 0.5f;
 
 	const float move_bull_x = 8.0f;
 	const float move_bull_y = 4.0f;

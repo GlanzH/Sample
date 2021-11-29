@@ -8,7 +8,7 @@ bool CameraManager::Initialize() {
 
 	//ƒJƒƒ‰‚ÌŒü‚«E‰f‚·‹——£
 	camera->SetPerspectiveFieldOfView(
-		XMConvertToRadians(40.0f), 16.0f / 9.0f, 1.0f, 10000.0f
+		XMConvertToRadians(rotate_degrees), aspect, min_screen_range, max_screen_range
 	);
 	
 

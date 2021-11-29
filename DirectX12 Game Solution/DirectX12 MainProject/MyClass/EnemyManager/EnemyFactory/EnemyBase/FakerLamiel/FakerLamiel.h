@@ -18,7 +18,7 @@ private:
 	void MoveFireCollision();
 
 	SimpleMath::Vector3 fire_pos;
-
+	const SimpleMath::Vector3 collision_scale = SimpleMath::Vector3(18, 14, 4);
 
 	float teleport_frame    = 0;
 	float omen_effect_frame = 0;

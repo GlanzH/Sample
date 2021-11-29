@@ -18,7 +18,7 @@ bool Core::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
 	obstacle_collision = DX9::Model::CreateSphere(DXTK->Device9, 4, 8, 2);
 
 	obstacle_collision->SetMaterial(material);
-	obstacle_collision->SetScale(0.5f);
+	obstacle_collision->SetScale(collision_scale);
 
 	bull_pos = SimpleMath::Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
 	col.bullet.Center = position;
