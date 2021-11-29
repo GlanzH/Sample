@@ -11,7 +11,7 @@ public:
 
 	void GetVoltage();
 
-	void JudgeRnak();
+	int JudgeRnak();
 
 private:
 	float now_score;

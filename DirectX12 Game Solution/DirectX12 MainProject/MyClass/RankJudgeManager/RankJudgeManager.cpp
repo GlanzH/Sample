@@ -13,7 +13,7 @@ void RankJudgeManager::GetVoltage() {
 	now_score = StatusManager::Instance().ReturnVolt();
 }
 
-void RankJudgeManager::JudgeRnak() {
+int RankJudgeManager::JudgeRnak() {
 
 	if (now_score <= 0.0f) {
 		now_rank = D;
@@ -31,7 +31,7 @@ void RankJudgeManager::JudgeRnak() {
 		now_rank = S;
 	}
 
-	return;
+	return now_rank;
 }
 
 cppcoro::generator<int> RankJudgeManager::ReleaseRank()
