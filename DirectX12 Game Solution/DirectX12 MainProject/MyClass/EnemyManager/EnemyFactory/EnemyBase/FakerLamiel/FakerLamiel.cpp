@@ -35,17 +35,13 @@ int FakerLamiel::Update(SimpleMath::Vector3 player, const float deltaTime) {
 	Move(player);
 	MoveFireCollision();
 
-	if (enemy_hp < 0)
-		return DEAD;
-
 	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 
-	return LIVE;
+	return 0;
 }
 
 void FakerLamiel::Move(SimpleMath::Vector3 player)
 {
-
 	switch (action)
 	{
 	case DOWN:

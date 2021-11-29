@@ -27,7 +27,7 @@ public:
 private:
 	void LoadEnemyArrangement();
 	void Generator();
-	void Iterator(SimpleMath::Vector3 player, const float deltaTime);
+	void Iterator();
 	
 	int AppearTimer();
 

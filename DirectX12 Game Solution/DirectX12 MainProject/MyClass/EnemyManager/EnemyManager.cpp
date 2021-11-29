@@ -42,9 +42,9 @@ int EnemyManager::Update(SimpleMath::Vector3 player, const float deltaTime)
 		enemies->Update(player,deltaTime);
 	}
 
-	delta		= deltaTime;
+	Iterator();
+	delta = deltaTime;
 
-	Iterator(player,delta);
 
 	if (frame < MAX_FRAME)
 		++frame;
@@ -63,12 +63,12 @@ int EnemyManager::Update(SimpleMath::Vector3 player, const float deltaTime)
 	return 0;
 }
 
-void EnemyManager::Iterator(SimpleMath::Vector3 player, const float deltaTime) {
+void EnemyManager::Iterator() {
 	auto itr = enemy.begin();
 
 	while (itr != enemy.end())
 	{
-		if ((*itr)->Update(player,deltaTime) == LIVE)
+		if ((*itr)->LifeDeathDecision() == LIVE)
 			itr++;
 		else {
 			//“G‚ª€–S‚µ‚½‚Æ‚«‚Ìˆ—

@@ -29,6 +29,7 @@ public:
 	void Retreat();
 	
 	virtual void Damage(const float deltaTime,int damage);
+	bool LifeDeathDecision();
 
 	DX9::SKINNEDMODEL& GetAnimModel() { return anim_model; }
 	DX9::MODEL& GetModel()			  { return model; }
