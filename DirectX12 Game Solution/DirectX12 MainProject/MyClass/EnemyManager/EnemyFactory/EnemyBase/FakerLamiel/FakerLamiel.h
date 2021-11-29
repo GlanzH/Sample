@@ -37,7 +37,7 @@ private:
 
 	 enum MaxFrame {
 		 MAX_OMEN_FRAME = 3,
-		 MAX_FIRE_FRAME = 7,
+		 MAX_FIRE_FRAME = 3,
 		 MAX_TELEPORT_FRAME = 10
 	 };
 

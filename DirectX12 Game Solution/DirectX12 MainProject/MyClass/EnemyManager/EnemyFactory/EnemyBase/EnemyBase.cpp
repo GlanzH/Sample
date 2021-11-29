@@ -90,6 +90,9 @@ int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
 		retreat_flg = false;
 		parry_count = 0;
 	}
+
+	LifeDeathDecision();
+
 	return 0;
 }
 
@@ -98,6 +101,12 @@ void EnemyBase::Damage(const float deltaTime,int damage) {
 	damage_flag = true;
 }
 
+bool EnemyBase::LifeDeathDecision() {
+	if (enemy_hp < 0)
+		return DEAD;
+
+	return LIVE;
+}
 
 void EnemyBase::BulletParry() {
 	bullet_parry_flag = true;
