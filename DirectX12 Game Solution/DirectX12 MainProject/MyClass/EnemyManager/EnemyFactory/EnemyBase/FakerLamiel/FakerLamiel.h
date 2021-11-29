@@ -7,7 +7,7 @@ using namespace DirectX;
 class FakerLamiel : public EnemyBase
 {
 public:
-	FakerLamiel()  {}
+	FakerLamiel() {}
 	~FakerLamiel() {}
 
 	bool Initialize(std::string tag, SimpleMath::Vector3 speed, int hp);
@@ -20,38 +20,38 @@ private:
 	SimpleMath::Vector3 fire_pos;
 
 
-	float teleport_frame    = 0;
+	float teleport_frame = 0;
 	float omen_effect_frame = 0;
 	float fire_effect_frame = 0;
 
 	const float move_speed = 10.0f;
 
-	 enum LamielAction
-	 {
-		 DOWN,
-		 ATTACK_SIGH,
-		 ATTACK,
-		 TELEPORT,
-		 INIT_DATA
-	 };
+	enum LamielAction
+	{
+		DOWN,
+		ATTACK_SIGH,
+		ATTACK,
+		TELEPORT,
+		INIT_DATA
+	};
 
-	 enum MaxFrame {
-		 MAX_OMEN_FRAME = 3,
-		 MAX_FIRE_FRAME = 7,
-		 MAX_TELEPORT_FRAME = 10
-	 };
+	enum MaxFrame {
+		MAX_OMEN_FRAME = 3,
+		MAX_FIRE_FRAME = 7,
+		MAX_TELEPORT_FRAME = 10
+	};
 
-	 enum TeleportRenge {
-		 MIN_RANGE = -30,
-		 NAX_RANGE =  40
-	 };
+	enum TeleportRenge {
+		MIN_RANGE = -30,
+		NAX_RANGE = 40
+	};
 
-	 bool appear_collision_flag = false;
+	bool appear_collision_flag = false;
 
-	 float delta;
-	 int action = DOWN;
-	 bool draw_flag = false;
+	float delta;
+	int action = DOWN;
+	bool draw_flag = false;
 
-	 std::mt19937 random_device;
-	 std::uniform_int_distribution<int> distribute;
+	std::mt19937 random_device;
+	std::uniform_int_distribution<int> distribute;
 };

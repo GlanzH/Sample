@@ -7,7 +7,7 @@
 #include "SceneFactory.h"
 
 // Initialize member variables.
-MainScene::MainScene() : dx9GpuDescriptor{}
+MainScene::MainScene(): dx9GpuDescriptor{}
 {
 	camera   = new CameraManager;
 	ground   = new GroundManager;
