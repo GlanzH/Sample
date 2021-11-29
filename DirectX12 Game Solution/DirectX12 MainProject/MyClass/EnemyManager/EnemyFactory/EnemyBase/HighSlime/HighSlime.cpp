@@ -7,6 +7,12 @@ HighSlime::HighSlime()
 {
 }
 
+bool HighSlime::Initialize()
+{
+   
+    return false;
+}
+
 int HighSlime::Update(SimpleMath::Vector3 player, const float deltaTime)
 {
     EnemyBase::Update(player, deltaTime);
@@ -38,7 +44,6 @@ void HighSlime::Move(SimpleMath::Vector3 player, const float deltaTime) {
 void HighSlime::Rotate(SimpleMath::Vector3 player, const float deltaTime) {
     //!プレイヤーの座標 - 敵の座標でプレイヤーのいる方向に向く
     float rotation = MathHelper_Atan2(-(player.z - position.z), (player.x - position.x)) - 45.0f;
-
     anim_model->SetRotation(0.0f,rotation, 0.0f);
 }
 
