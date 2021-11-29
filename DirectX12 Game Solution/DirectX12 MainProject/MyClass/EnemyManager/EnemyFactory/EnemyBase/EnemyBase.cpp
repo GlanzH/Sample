@@ -107,7 +107,7 @@ void EnemyBase::EnemyAnimation() {
 
 	anim_model->AdvanceTime(delta / 1.0f);
 
-	if (damage_flag && damage_count < 15) {
+	if (damage_flag && damage_count < max_damage_count) {
 		damage_count++;
 	}
 	else {

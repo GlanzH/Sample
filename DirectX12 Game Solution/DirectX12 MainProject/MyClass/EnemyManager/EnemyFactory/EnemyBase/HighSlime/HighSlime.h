@@ -20,6 +20,8 @@ private:
 	bool jump_flag = true;
 	float jump_time = 0.0f;
 
+	const float adjust_y = 45.0f;
+
 	const float move_speed =  5.0f;
 	const float jump_power = -0.3f;
 	const float jump_speed = 15.0f;

@@ -33,7 +33,7 @@ void HighSlime::Move(SimpleMath::Vector3 player, const float deltaTime) {
 
 void HighSlime::Rotate(SimpleMath::Vector3 player, const float deltaTime) {
     //!プレイヤーの座標 - 敵の座標でプレイヤーのいる方向に向く
-    float rotation = MathHelper_Atan2(-(player.z - position.z), (player.x - position.x)) - 45.0f;
+    float rotation = MathHelper_Atan2(-(player.z - position.z), (player.x - position.x)) - adjust_y;
     anim_model->SetRotation(0.0f,rotation, 0.0f);
 }
 

@@ -24,7 +24,28 @@ private:
 	float omen_effect_frame = 0;
 	float fire_effect_frame = 0;
 
+	const float min_down_pos = 15.0f;
+
+	const float max_omen_frame = 3.5f;
+
+	const float adjust_sigh_y = 10.0f;
+	const float adjust_fire_effect_y = 20.0f;
+	const float adjust_fire_effect_z = 30.0f;
+
+	const float adjust_fire_x = 60.0f;
+	const float adjust_fire_y = 15.0f;
+
+	const float move_fire  = 22.0f;
 	const float move_speed = 10.0f;
+
+	 bool appear_collision_flag = false;
+
+	 float delta;
+
+	 bool draw_flag = false;
+
+	 std::mt19937 random_device;
+	 std::uniform_int_distribution<int> distribute;
 
 	 enum LamielAction
 	 {
@@ -37,21 +58,14 @@ private:
 
 	 enum MaxFrame {
 		 MAX_OMEN_FRAME = 3,
-		 MAX_FIRE_FRAME = 3,
+		 MAX_FIRE_FRAME = 2,
 		 MAX_TELEPORT_FRAME = 10
 	 };
 
 	 enum TeleportRenge {
 		 MIN_RANGE = -30,
-		 NAX_RANGE =  40
+		 NAX_RANGE = 40
 	 };
 
-	 bool appear_collision_flag = false;
-
-	 float delta;
 	 int action = DOWN;
-	 bool draw_flag = false;
-
-	 std::mt19937 random_device;
-	 std::uniform_int_distribution<int> distribute;
 };

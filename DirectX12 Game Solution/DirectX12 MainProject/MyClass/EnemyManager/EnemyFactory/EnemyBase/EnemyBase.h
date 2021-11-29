@@ -41,7 +41,10 @@ public:
 private:
 	void EnemyAnimation();
 	bool damage_flag = false;
+	
 	int damage_count = 0;
+	const int max_damage_count = 15;
+
 
 	float box_size;
 	float parry_count = 0;

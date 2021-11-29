@@ -15,5 +15,6 @@ private:
 	void Move  (SimpleMath::Vector3 player, const float deltaTime);
 	void Rotate(SimpleMath::Vector3 player, const float deltaTime);
 
-	const float move_speed      = 2.5f;
+	const float adjust_y   = 45.0f;
+	const float move_speed = 2.5f;
 };

@@ -22,8 +22,7 @@ bool Core::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
 
 	bull_pos = SimpleMath::Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
 	col.bullet.Center = position;
-	max_move = 50;
-	max_back = 60;
+
 	return true;
 }
 
@@ -50,7 +49,7 @@ void Core::Move(SimpleMath::Vector3 player){
 	{
 	case MOVE:
 		if (position.z > max_move)
-			position.z -= 2.0f * delta;
+			position.z -= move_core * delta;
 		else
 			action = CHARGE;
 		break;
@@ -93,7 +92,7 @@ void Core::Move(SimpleMath::Vector3 player){
 
 	case BACK:
 		if (position.z < max_back)
-			position.z += 2.0f * delta;
+			position.z += move_core * delta;
 		else
 		action = STOP;
 		break;
@@ -126,12 +125,12 @@ void Core::Move(SimpleMath::Vector3 player){
 void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 {
 	if(bull_pos.x > init_bull_pos.x)
-		bull_pos.x -= 8.0f * delta;
+		bull_pos.x -= move_bull_x * delta;
 	else
-		bull_pos.x += 8.0f * delta;
+		bull_pos.x += move_bull_x * delta;
 
 	if (bull_pos.y > init_bull_pos.y && !bullet_parry_flag) {
-		bull_pos.y -= 4.0f * delta;
+		bull_pos.y -= move_bull_y * delta;
 
 		DX12Effect.SetPosition("shoot", bull_pos);
 		DX12Effect.Play("shoot");

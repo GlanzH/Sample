@@ -23,8 +23,14 @@ private:
 	
 	float delta;
 
-	float max_move;
-	float max_back;
+	const float move_core = 2.0f;
+
+	const float move_bull_x = 8.0f;
+	const float move_bull_y = 4.0f;
+
+	const float max_move = 50.0f;
+	const float max_back = 60.0f;
+
 	//!ATTACK‘Ò‹@ŽžŠÔ
 	float wait_shot_frame = 0;
 	const float max_wait_shot = 0.5f;
