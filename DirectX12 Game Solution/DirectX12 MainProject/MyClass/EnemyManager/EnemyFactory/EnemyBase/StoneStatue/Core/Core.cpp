@@ -22,6 +22,8 @@ bool Core::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
 
 	bull_pos = SimpleMath::Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
 	col.bullet.Center = position;
+	max_move = 50;
+	max_back = 60;
 	return true;
 }
 
@@ -47,7 +49,7 @@ void Core::Move(SimpleMath::Vector3 player){
 	switch (action)
 	{
 	case MOVE:
-		if (position.z > 50)
+		if (position.z > max_move)
 			position.z -= 2.0f * delta;
 		else
 			action = CHARGE;
@@ -90,7 +92,7 @@ void Core::Move(SimpleMath::Vector3 player){
 		break;
 
 	case BACK:
-		if (position.z < 60)
+		if (position.z < max_back)
 			position.z += 2.0f * delta;
 		else
 		action = STOP;
