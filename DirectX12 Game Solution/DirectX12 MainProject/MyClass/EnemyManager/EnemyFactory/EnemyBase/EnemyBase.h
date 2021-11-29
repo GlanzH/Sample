@@ -39,6 +39,10 @@ public:
 	std::string GetTag() { return enemy_tag; }
 
 private:
+	void EnemyAnimation();
+	bool damage_flag = false;
+	int damage_count = 0;
+
 	float box_size;
 	float parry_count = 0;
 	
@@ -60,7 +64,6 @@ protected:
 
 	const float fit_collision_y = 4.0f;
 	int enemy_hp;
-	bool damage_flag = false;
 	bool retreat_flg;
 	bool bullet_parry_flag = false;
 

@@ -7,7 +7,7 @@
 #include "SceneFactory.h"
 
 // Initialize member variables.
-MainScene::MainScene() : dx9GpuDescriptor{}
+MainScene::MainScene(): dx9GpuDescriptor{}
 {
 	camera   = new CameraManager;
 	ground   = new GroundManager;
@@ -115,9 +115,9 @@ NextScene MainScene::Update(const float deltaTime)
 	enemy->Update(player->GetModel()->GetPosition(),deltaTime);
 	observer->Update(player, enemy);
 
-	auto light_pos = ground->GetModel()->GetPosition();
+	//auto light_pos = ground->GetModel()->GetPosition();
 
-	point.SetLightPos(SimpleMath::Vector4(light_pos.x, 30, light_pos.z,1), 0);
+	//point.SetLightPos(SimpleMath::Vector4(light_pos.x, 30, light_pos.z,1), 0);
 
 	return NextScene::Continue;
 }
@@ -133,9 +133,9 @@ void MainScene::Render()
 	//3D•`‰æ
 	DX12Effect.SetCamera((DX12::CAMERA)camera->GetCamera());
 	camera->Render();
-	point.Begin(camera->GetCamera(), ground->GetModel());
+	//point.Begin(camera->GetCamera(), ground->GetModel());
 	ground->Render();
-	point.End();
+	//point.End();
 
 	player->Render();
 	enemy->Render();

@@ -73,6 +73,7 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
 {
 	if (enemy_tag == "S" || enemy_tag == "H") {
+		EnemyAnimation();
 		anim_box.Center = anim_model->GetPosition();
 		anim_model->SetPosition(position);
 		anim_collision->SetPosition(anim_model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
@@ -94,6 +95,24 @@ int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
 	LifeDeathDecision();
 
 	return 0;
+}
+
+void EnemyBase::EnemyAnimation() {
+	if (!damage_flag)
+		SetAnimation(anim_model, WAIT);
+	else
+		SetAnimation(anim_model, DAMAGE);
+
+	anim_model->AdvanceTime(deltaTime / 1.0f);
+
+	if (damage_flag && damage_count < 15) {
+		damage_count++;
+	}
+	else {
+		damage_count = 0;
+		damage_flag  = false;
+	}
+
 }
 
 void EnemyBase::Damage(const float deltaTime,int damage) {

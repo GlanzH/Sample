@@ -2,7 +2,8 @@
 #include "Base/dxtk.h"
 #include "FakerLamiel.h"
 
-bool FakerLamiel::Initialize(std::string tag, SimpleMath::Vector3 speed, int hp) {
+bool FakerLamiel::Initialize(std::string tag, SimpleMath::Vector3 speed, int hp) 
+{
 	EnemyBase::Initialize(tag,speed,hp);
 	DX12Effect.Create(L"Effect/LamielEffect/omen/omen.efk", "sigh");
 	DX12Effect.Create(L"Effect/LamielEffect/fire/fire.efk", "fire");
