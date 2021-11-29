@@ -25,4 +25,10 @@ private:
 	
 	const float position_y = 30.0f;
 	const float fixed_pos  = 10.0f;
+
+	const float rotate_degrees = 40.0f;
+	const float aspect = 16.0f / 9.0f;
+
+	const float min_screen_range = 1.0f;
+	const float max_screen_range = 10000.0f;
 };

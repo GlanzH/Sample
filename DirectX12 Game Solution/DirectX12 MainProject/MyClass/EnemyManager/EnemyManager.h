@@ -27,7 +27,7 @@ public:
 private:
 	void LoadEnemyArrangement();
 	void Generator();
-	void Iterator(SimpleMath::Vector3 player, const float deltaTime);
+	void Iterator();
 	
 	int AppearTimer();
 
@@ -41,16 +41,17 @@ private:
 	int dead_enemy_count = 0;
 	float delta;
 
-	const float fix_pos = 10.0f;
+	const float max_frame = 60.0f;
+	const float fix_pos   = 10.0f;
 
 	int frame = 0;
 	int timer = 0;
 
-	enum Frame {MAX_FRAME = 60};
+	const int max_combo = 3;
 
 	enum LoadFile  { DUMMY_LINE = 5, ENEMY_NUM = 250 };
 
-	int count = 0;                   //!敵の累計出現数カウント 
+	int count = 0;                        //!敵の累計出現数カウント 
 	std::string  tag[ENEMY_NUM];          //!敵の種類         
 	Vector3		 appear_pos[ENEMY_NUM];   //!敵の出現座標  
 	double		 appear_time[ENEMY_NUM];  //!敵の出現時間

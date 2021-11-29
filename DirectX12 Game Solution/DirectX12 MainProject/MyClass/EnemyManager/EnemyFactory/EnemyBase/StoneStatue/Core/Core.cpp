@@ -18,10 +18,11 @@ bool Core::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
 	obstacle_collision = DX9::Model::CreateSphere(DXTK->Device9, 4, 8, 2);
 
 	obstacle_collision->SetMaterial(material);
-	obstacle_collision->SetScale(0.5f);
+	obstacle_collision->SetScale(collision_scale);
 
 	bull_pos = SimpleMath::Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
 	col.bullet.Center = position;
+
 	return true;
 }
 
@@ -47,8 +48,8 @@ void Core::Move(SimpleMath::Vector3 player){
 	switch (action)
 	{
 	case MOVE:
-		if (position.z > 50)
-			position.z -= 2.0f * delta;
+		if (position.z > max_move)
+			position.z -= move_core * delta;
 		else
 			action = CHARGE;
 		break;
@@ -90,8 +91,8 @@ void Core::Move(SimpleMath::Vector3 player){
 		break;
 
 	case BACK:
-		if (position.z < 60)
-			position.z += 2.0f * delta;
+		if (position.z < max_back)
+			position.z += move_core * delta;
 		else
 		action = STOP;
 		break;
@@ -124,12 +125,12 @@ void Core::Move(SimpleMath::Vector3 player){
 void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 {
 	if(bull_pos.x > init_bull_pos.x)
-		bull_pos.x -= 8.0f * delta;
+		bull_pos.x -= move_bull_x * delta;
 	else
-		bull_pos.x += 8.0f * delta;
+		bull_pos.x += move_bull_x * delta;
 
 	if (bull_pos.y > init_bull_pos.y && !bullet_parry_flag) {
-		bull_pos.y -= 4.0f * delta;
+		bull_pos.y -= move_bull_y * delta;
 
 		DX12Effect.SetPosition("shoot", bull_pos);
 		DX12Effect.Play("shoot");

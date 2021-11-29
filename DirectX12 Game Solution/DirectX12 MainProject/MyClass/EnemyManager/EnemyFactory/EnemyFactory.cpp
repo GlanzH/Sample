@@ -32,7 +32,7 @@ EnemyFactory::EnemyFactory()
 	enemy_tag.push_back("C");
 
 	///@“G‚Ìƒ‚ƒfƒ‹@///
-     enemy_model[SLIME]       = L"Model\\Enemy\\Slime\\slime_blue.X";
+     enemy_model[SLIME]        = L"Model\\Enemy\\Slime\\slime_blue.X";
 	 enemy_model[HIGH_SLIME]   = L"Model\\Enemy\\HighSlime\\slime_animatinonv02.X";
      enemy_model[FAKER_LAMIEL] = L"Model\\Enemy\\Lamiel\\ramieru.X";
      enemy_model[STONE_STATUE] = L"Model\\Enemy\\Stone\\koteihoudai_dodai.X";

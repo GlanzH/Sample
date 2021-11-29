@@ -13,13 +13,10 @@ public:
 	void LoadAsset();
 	void Render();
 
-	BoundingBox GetBox() { return box; }
+	DX9::MODEL& GetModel() { return model; }
 
 private:
 	DX9::MODEL model;
-	DX9::MODEL collision;
-
-	BoundingBox box;
 
 	const float box_size =   2.0f;
 	const float pos_y	 = -25.0f;
