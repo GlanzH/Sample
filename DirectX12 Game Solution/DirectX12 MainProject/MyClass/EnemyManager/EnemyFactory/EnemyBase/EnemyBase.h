@@ -11,7 +11,7 @@ typedef struct Collision {
 	//‰Š‚Ì“–‚½‚è”»’è
 	BoundingBox  fire;
 	//’e‚Ì“–‚½‚è”»’è
-	BoundingBox  bullet;
+	BoundingSphere bullet;
 };
 
 class EnemyBase
@@ -25,7 +25,9 @@ public:
 	virtual int Update(SimpleMath::Vector3 player, const float deltaTime);
 	virtual void Render();
 
+	void BulletParry();
 	void Retreat();
+	
 	virtual void Damage(const float deltaTime,int damage);
 
 	DX9::SKINNEDMODEL& GetAnimModel() { return anim_model; }
@@ -36,12 +38,11 @@ public:
 	std::string GetTag() { return enemy_tag; }
 
 private:
-
-	const float fit_collision_y = 4.0f;
+	float box_size;
+	float parry_count = 0;
 	
 protected:
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack);
-
 	D3DMATERIAL9  material;
 	DX9::SKINNEDMODEL anim_model;
 	BoundingBox		  anim_box;
@@ -56,9 +57,11 @@ protected:
 
 	std::string enemy_tag;
 
-	int count = 0;
+	const float fit_collision_y = 4.0f;
 	int enemy_hp;
+	bool damage_flag = false;
 	bool retreat_flg;
+	bool bullet_parry_flag = false;
 
 	Collision col;
 

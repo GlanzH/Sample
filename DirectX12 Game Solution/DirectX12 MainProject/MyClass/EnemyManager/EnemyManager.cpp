@@ -28,7 +28,7 @@ EnemyManager::~EnemyManager() {
 bool EnemyManager::Initialize(PlayerBase* player_base)
 {
 	DX12Effect.Initialize();
-	DX12Effect.Create(L"Effect/test/test.efk","hit_eff");
+	DX12Effect.Create(L"Effect/EnemyHitEffect/hit/hit.efk","hit_eff");
 
 	player_data = player_base;
 
@@ -100,10 +100,12 @@ void EnemyManager::Render()
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
      base->Damage(delta,player_data->GetDamage());
 
-	if(StatusManager::Instance().GetCombo() == 3)
-	base->Retreat();
+	 std::string tag = base->GetTag();
 
-	std::string tag = base->GetTag();
+	 if (tag != "C") {
+		 if (StatusManager::Instance().GetCombo() == 3)
+			 base->Retreat();
+	 }
 
 	SimpleMath::Vector3 pos;
 	if (tag == "S" || tag == "H") 
@@ -116,7 +118,10 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 }
 
 void EnemyManager::OnParryArea(EnemyBase* base) {
-	base->Retreat();
+	if (base->GetTag() != "C")
+		base->Retreat();
+	else
+		base->BulletParry();
 }
 
 int EnemyManager::AppearTimer() {

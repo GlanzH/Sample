@@ -59,9 +59,9 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 		//ƒRƒŠƒWƒ‡ƒ“ƒ‚ƒfƒ‹‚Ìì¬
 		collision = DX9::Model::CreateBox(
 			DXTK->Device9,
-			col.box.Extents.x * 2,
-			col.box.Extents.y * 2,
-			col.box.Extents.z * 2
+			col.box.Extents.x * 1.5,
+			col.box.Extents.y * 1.5,
+			col.box.Extents.z * 1.5
 		);
 
 		collision->SetMaterial(material);
@@ -80,36 +80,38 @@ int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
 	else {
 		col.box.Center = model->GetPosition();
 		model->SetPosition(position);
-		collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 	}
 
-	if (retreat_flg)
-	{
-		//position.x = ;
+	if (retreat_flg && parry_count < 30){
+		position.x += 15.0f * deltaTime;
+		parry_count++;
 	} 
+	else {
+		retreat_flg = false;
+		parry_count = 0;
+	}
 	return 0;
 }
 
 void EnemyBase::Damage(const float deltaTime,int damage) {
-	//model->AdvanceTime(deltaTime / 1.0f);
-	//SetAnimation(model, DAMAGE);
 	enemy_hp -= damage;
+	damage_flag = true;
+}
+
+
+void EnemyBase::BulletParry() {
+	bullet_parry_flag = true;
 }
 
 void EnemyBase::Retreat()
 {
 	retreat_flg = true;
-	//model->SetPosition(position.x += 15.0f, position.y, position.z);
-
-	//box.Center = model->GetPosition();
-	//model->SetPosition(position);
-	//collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
 }
 
 void EnemyBase::Render() {
 	if (enemy_tag == "S" || enemy_tag == "H") {
 		anim_model->Draw();
-		anim_collision->Draw();
+		//anim_collision->Draw();
 	}
 	else {
 		model->Draw();

@@ -14,8 +14,12 @@ int HighSlime::Update(SimpleMath::Vector3 player, const float deltaTime)
     Move(player, deltaTime);
     Rotate(player, deltaTime);
 	Jump(deltaTime);
+
+    if(!damage_flag)
      SetAnimation(anim_model, WAIT);
-    
+    else
+        SetAnimation(anim_model, DAMAGE);
+
      anim_model->AdvanceTime(deltaTime / 1.0f);
 
 	if (enemy_hp < 0)
