@@ -24,6 +24,7 @@ public:
 
 	BoundingBox GetSwordBox() { return sword_box; }
 	BoundingBox GetBox() { return  box; }
+	BoundingBox GetParryBox() { return parry_box; }
 
 	void OnCollisionEnter();
 	void OnParryArea();
@@ -58,7 +59,7 @@ private:
 	//アピール
 	void Appeal(const float deltaTime);
 	//必殺技
-	void SpecialMove();
+	void Player_Special_Move(const float deltaTime);
 
 	DX9::SPRITEFONT font;
 
@@ -117,6 +118,14 @@ private:
 	float		 parry_count = 0.0f;
 	bool	     parry_flag = false;
 
+	BoundingBox parry_box;
+	DX9::MODEL  parry_collision;
+
+	float parry_box_size_x = 0.6f;
+	float parry_box_size_y = 2.0f;
+	float parry_box_size_z = 2.0f;
+
+
 	//攻撃‐3連撃‐カウント
 	int attack_count;
 
@@ -159,6 +168,15 @@ private:
 	};
 
 	UNDER_ATTACK_STATE under_attack_state_mode;
+
+	//攻撃中　移動不可
+	enum CANNOT_MOVE_STATE
+	{
+		MOVE,
+		CANNOT_MOVE
+	};
+
+	CANNOT_MOVE_STATE canot_move_state_mode;
 
 	//エフェクトの発生タイミング等
 	bool  effect_generation = false;
@@ -234,5 +252,16 @@ private:
 
 	Appeal_state appeal_state_mode;
 
+	//必殺技!!
+	enum SPECIALMOVE
+	{
+		NOMAL_MOVE,
+		DEATHBLOW
+	};
+
+	SPECIALMOVE specialmove_state;
+
+	float specialmove_time = 0.0f;
+	float specialmove_time_max = 5.0f;
 
 };
