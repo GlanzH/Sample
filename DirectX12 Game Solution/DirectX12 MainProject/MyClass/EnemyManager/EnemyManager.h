@@ -31,6 +31,8 @@ private:
 	
 	int AppearTimer();
 
+	SimpleMath::Vector3 effect_pos;
+
 	std::list<EnemyBase*> enemy;
 
 	PlayerBase* player_data;

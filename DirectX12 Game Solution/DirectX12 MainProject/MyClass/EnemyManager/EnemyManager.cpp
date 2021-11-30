@@ -28,8 +28,8 @@ EnemyManager::~EnemyManager() {
 bool EnemyManager::Initialize(PlayerBase* player_base)
 {
 	DX12Effect.Initialize();
-	DX12Effect.Create(L"Effect/EnemyHitEffect/hit/hit.efk","hit_eff");
-
+	DX12Effect.Create(L"Effect/EnemyEffect/hit/hit.efk","hit_eff");
+	DX12Effect.Create(L"Effect/EnemyEffect/die/die.efk","die");
 	player_data = player_base;
 
 	LoadEnemyArrangement();
@@ -65,6 +65,16 @@ void EnemyManager::Iterator() {
 		else {
 			//“G‚ªŽ€–S‚µ‚½‚Æ‚«‚Ìˆ—
 			dead_enemy_count++;
+			
+			//auto tag = (*itr)->GetTag();
+
+			//if (tag == "S" || tag == "H")
+			//	effect_pos = (*itr)->GetAnimModel()->GetPosition();
+			//else
+			//	effect_pos = (*itr)->GetModel()->GetPosition();
+
+			//DX12Effect.SetPosition("die", SimpleMath::Vector3(effect_pos.x, effect_pos.y, effect_pos.z  + 20));
+			//DX12Effect.Play("die");
 			itr = enemy.erase(itr);
 		}
 	}

@@ -5,8 +5,8 @@
 bool FakerLamiel::Initialize(std::string tag, SimpleMath::Vector3 speed, int hp) 
 {
 	EnemyBase::Initialize(tag,speed,hp);
-	DX12Effect.Create(L"Effect/LamielEffect/omen/omen.efk", "sigh");
-	DX12Effect.Create(L"Effect/LamielEffect/fire/fire.efk", "fire");
+	DX12Effect.Create(L"Effect/EnemyEffect/LamielEffect/omen/omen.efk", "sigh");
+	DX12Effect.Create(L"Effect/EnemyEffect/LamielEffect/fire/fire.efk", "fire");
 	teleport_frame    = 0;
 	omen_effect_frame = 0;
 	fire_effect_frame = 0;

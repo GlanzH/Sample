@@ -28,7 +28,7 @@ private:
 
 	const float max_omen_frame = 3.5f;
 
-	const float adjust_sigh_y = 10.0f;
+	const float adjust_sigh_y = 5.0f;
 	const float adjust_fire_effect_y = 20.0f;
 	const float adjust_fire_effect_z = 30.0f;
 
