@@ -113,6 +113,13 @@ private:
 	//初速
 	const float V0 = 50.0f;
 
+	//ジャンプタイミング
+	bool  jump_start_flag     = false;
+	float jump_start_time     = 0.0f;
+	float jump_start_time_max = 0.133f;
+	
+	bool jump_end_flag = false;
+
 	//パリィ
 	const float  max_parry_count = 0.5f;
 	float		 parry_count = 0.0f;

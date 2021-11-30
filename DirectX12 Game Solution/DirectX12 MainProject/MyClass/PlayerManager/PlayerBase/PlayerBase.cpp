@@ -25,7 +25,7 @@ bool PlayerBase::Initialize()
 
 void PlayerBase::LoadAssets()
 {
-	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\character_motion_v1122b_.X");
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v1130b_.X");
 	model->SetScale(model_scale);
 	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
@@ -207,6 +207,7 @@ void PlayerBase::Invincible(const float deltaTime)
 
 void PlayerBase::OnParryArea() {
 	//パリィ成功時の処理
+	//パリィカウントを増やす
 
 }
 
@@ -286,9 +287,11 @@ void PlayerBase::Player_jump(const float deltaTime)
 				if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
 					if (!jump_flag_) {
 						if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent[0].a) {
+							jump_start_flag = true;
 							jump_flag_ = true;
 							jump_time_ = 0;
 							jump_start_v_ = model->Position.y;
+
 
 						}
 					}
@@ -297,7 +300,12 @@ void PlayerBase::Player_jump(const float deltaTime)
 		}
 	}
 
-	if (jump_flag_) {
+	if (jump_start_flag) {
+		SetAnimation(model, JUMP);
+		jump_start_time += deltaTime;
+	}
+
+	if (jump_flag_ && jump_start_time >= jump_start_time_max) {
 
 		jump_time_ += deltaTime;
 		auto pos = model->GetPosition();
@@ -306,8 +314,15 @@ void PlayerBase::Player_jump(const float deltaTime)
 
 		if (model->GetPosition().y <= 0.5f) {
 			jump_flag_ = false;
+			jump_start_flag = false;
+			jump_start_time = 0.0f;
+
 		}
 	}
+
+
+
+
 }
 
 void PlayerBase::Player_attack(const float deltaTime) {
@@ -578,8 +593,4 @@ void PlayerBase::_2DRender()
 	//	DX9::Colors::BlueViolet,
 	//	L"%f %f %f", box.Extents.x, box.Extents.y, box.Extents.z
 	//);
-
-
-
-
 }
