@@ -168,12 +168,13 @@
     <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.h">
       <Filter>MyClass\PlayerManager\PlayerBase\PlayerAttack</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\RankJudgeManager\RankJudgeManager.h">
-      <Filter>MyClass\RankJudgeManager</Filter>
-    </ClInclude>
     <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\EffectBase\EffectBase.h" />
     <ClInclude Include="MyClass\Shader\MultiLighting.h">
       <Filter>MyClass\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core\Core.h" />
+    <ClInclude Include="MyClass\RankJudgeManager\RankJudgeManager.h">
+      <Filter>MyClass\RankJudgeManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -243,12 +244,13 @@
     <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.cpp">
       <Filter>MyClass\PlayerManager\PlayerBase\PlayerAttack</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\RankJudgeManager\RankJudgeManager.cpp">
-      <Filter>MyClass\RankJudgeManager</Filter>
-    </ClCompile>
     <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\EffectBase\EffectBase.cpp" />
     <ClCompile Include="MyClass\Shader\MultiLighting.cpp">
       <Filter>MyClass\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core\Core.cpp" />
+    <ClCompile Include="MyClass\RankJudgeManager\RankJudgeManager.cpp">
+      <Filter>MyClass\RankJudgeManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
