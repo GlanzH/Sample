@@ -70,8 +70,8 @@
     <Filter Include="MyClass\PlayerManager\PlayerBase\PlayerAttack">
       <UniqueIdentifier>{80701191-cb24-4bf8-86c7-db30bf6aa28a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core">
-      <UniqueIdentifier>{28750e98-8606-4f84-b722-b840222e2497}</UniqueIdentifier>
+    <Filter Include="MyClass\RankJudgeManager">
+      <UniqueIdentifier>{5ea0a6f1-08f2-4884-bf65-79d62a7c7912}</UniqueIdentifier>
     </Filter>
     <Filter Include="MyClass\Shader">
       <UniqueIdentifier>{c77963d0-7184-491d-86ec-712fe37dec65}</UniqueIdentifier>
@@ -168,12 +168,13 @@
     <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.h">
       <Filter>MyClass\PlayerManager\PlayerBase\PlayerAttack</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core\Core.h">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core</Filter>
-    </ClInclude>
     <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\EffectBase\EffectBase.h" />
     <ClInclude Include="MyClass\Shader\MultiLighting.h">
       <Filter>MyClass\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core\Core.h" />
+    <ClInclude Include="MyClass\RankJudgeManager\RankJudgeManager.h">
+      <Filter>MyClass\RankJudgeManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -243,12 +244,13 @@
     <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.cpp">
       <Filter>MyClass\PlayerManager\PlayerBase\PlayerAttack</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core\Core.cpp">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core</Filter>
-    </ClCompile>
     <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\EffectBase\EffectBase.cpp" />
     <ClCompile Include="MyClass\Shader\MultiLighting.cpp">
       <Filter>MyClass\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core\Core.cpp" />
+    <ClCompile Include="MyClass\RankJudgeManager\RankJudgeManager.cpp">
+      <Filter>MyClass\RankJudgeManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

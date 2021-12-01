@@ -20,7 +20,7 @@ void CameraManager::LoadAsset() {
 }
 
 int CameraManager::Update(SimpleMath::Vector3 pos) {
-	camera->SetPosition(pos.x,fixed_pos, - fixed_pos);
+	camera->SetPosition(pos.x,fixed_pos, - 20);
 	return 0;
 }
 
