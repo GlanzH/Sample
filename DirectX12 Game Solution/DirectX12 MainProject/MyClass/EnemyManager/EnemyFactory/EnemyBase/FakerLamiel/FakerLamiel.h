@@ -18,7 +18,7 @@ private:
 	void MoveFireCollision();
 
 	SimpleMath::Vector3 fire_pos;
-	const SimpleMath::Vector3 collision_scale = SimpleMath::Vector3(18, 14, 4);
+	const SimpleMath::Vector3 collision_scale = SimpleMath::Vector3(25, 14, 10);
 
 	float teleport_frame    = 0;
 	float omen_effect_frame = 0;
@@ -28,14 +28,14 @@ private:
 
 	const float max_omen_frame = 3.5f;
 
-	const float adjust_sigh_y = 5.0f;
-	const float adjust_fire_effect_y = 20.0f;
-	const float adjust_fire_effect_z = 30.0f;
+	const float adjust_sigh_y = 6.0f;
+	const float fire_effect_y = 15.0f;
+	const float fire_effect_z = 150.0f;
 
 	const float adjust_fire_x = 60.0f;
 	const float adjust_fire_y = 15.0f;
 
-	const float move_fire  = 22.0f;
+	const float move_fire  = 53.95f;
 	const float move_speed = 10.0f;
 
 	 bool appear_collision_flag = false;
