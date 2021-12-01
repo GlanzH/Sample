@@ -25,7 +25,7 @@ bool PlayerBase::Initialize()
 
 void PlayerBase::LoadAssets()
 {
-	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v1130b_.X");
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v1201_.X");
 	model->SetScale(model_scale);
 	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
@@ -81,10 +81,18 @@ void PlayerBase::LoadAssets()
 
 	font = DX9::SpriteFont::CreateDefaultFont(DXTK->Device9);
 
+	deathbrow_sprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"DeathBrowBG\\deathbrow_bg.png");
+
 	DX12Effect.Initialize();
 	DX12Effect.Create(L"Effect\\SwordEffect\\one\\first_attack.efk","first");
 	DX12Effect.Create(L"Effect\\SwordEffect\\two\\second_attack.efk","second");
 	DX12Effect.Create(L"Effect\\SwordEffect\\three\\third_attack.efk","third");
+
+	//•KŽE‹Z‚ÌƒGƒtƒFƒNƒg
+	DX12Effect.Create(L"Effect\\DeathBlow_Effect\\deathblow\\deathblow.efk", "deathblow_effect");
+
+	//ƒpƒŠƒB‚ÌƒGƒtƒFƒNƒg
+	DX12Effect.Create(L"Effect\\Parry_Effect\\parry\\parry.efk", "parry_effect");
 
 }
 
@@ -113,8 +121,8 @@ int PlayerBase::Update(const float deltaTime)
 	//ƒAƒs[ƒ‹
 	Appeal(deltaTime);
 
-	//•KŽE‹Z
-	Player_Special_Move(deltaTime);
+	////•KŽE‹Z
+	//Player_Special_Move(deltaTime);
 
 
 	//–³“GŽžŠÔ
@@ -203,6 +211,7 @@ void PlayerBase::Invincible(const float deltaTime)
 		invincible_flag = false;
 		invincible_time = 0.0f;
 	}
+
 }
 
 void PlayerBase::OnParryArea() {
@@ -319,10 +328,6 @@ void PlayerBase::Player_jump(const float deltaTime)
 
 		}
 	}
-
-
-
-
 }
 
 void PlayerBase::Player_attack(const float deltaTime) {
@@ -503,11 +508,49 @@ void PlayerBase::Player_Special_Move(const float deltaTime) {
 
 	if (specialmove_state == SPECIALMOVE::DEATHBLOW) {
 		specialmove_time += deltaTime;
+		Blackout_flag = true;
+
 	}
 
+	//ˆÃ“]
+	if (Blackout_flag) {
+		Transparency += Blackout;
+		if (Transparency >= Blackout_max) {
+			Transparency = Blackout_max;
+			
+		}
+	}
+
+	if (specialmove_time >= 2.0f) {
+		//attack_flag = true;
+		//if (IsAttack()) {
+		Blackout_flag = false;
+		DX12Effect.PlayOneShot("deathblow_effect");
+		DX12Effect.SetPosition("deathblow_effect", Vector3(0, 0, player_pos.z));
+		damage = 20;
+
+	}
+	//–¾“]
+	if (specialmove_time >= 4.0f)
+		bright_flag = true;
+
+	if (bright_flag) {
+		Transparency -= Ming_Turn;
+		if (Transparency <= 0) {
+			Transparency = 0;
+			bright_flag = false;
+		}
+	}
+
+	//•KŽE‹ZI—¹
 	if (specialmove_time >= specialmove_time_max) {
 		specialmove_state = SPECIALMOVE::NOMAL_MOVE;
+		specialmove_time = 0.0f;
 	}
+
+
+
+
 }
 
 
@@ -550,6 +593,12 @@ void PlayerBase::Appeal(const float deltaTime)
 
 void PlayerBase::_2DRender()
 {
+
+	DX9::SpriteBatch->DrawSimple(deathbrow_sprite.Get(),
+		SimpleMath::Vector3(0, 0, 0),
+		nullptr,
+		DX9::Colors::RGBA(0, 0, 0, Transparency)
+	);
 	//if (effect_generation){
 	//	DX9::SpriteBatch->DrawString(font.Get(),
 	//		SimpleMath::Vector2(1000.0f, 0.0f),
@@ -585,12 +634,12 @@ void PlayerBase::_2DRender()
 	//DX9::SpriteBatch->DrawString(font.Get(),
 	//	SimpleMath::Vector2(1000.0f, 100.0f),
 	//	DX9::Colors::BlueViolet,
-	//	L"%f", motion_time
+	//	L"%f", specialmove_time
 	//);
 
 	//DX9::SpriteBatch->DrawString(font.Get(),
 	//	SimpleMath::Vector2(1000.0f, 120.0f),
 	//	DX9::Colors::BlueViolet,
-	//	L"%f %f %f", box.Extents.x, box.Extents.y, box.Extents.z
+	//	L"%d", Transparency
 	//);
 }

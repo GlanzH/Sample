@@ -28,16 +28,24 @@ public:
 	void BulletParry();
 	void Retreat();
 	
-	virtual void Damage(const float deltaTime,int damage);
+	virtual void Damage(int damage);
+	bool LifeDeathDecision();
 
 	DX9::SKINNEDMODEL& GetAnimModel() { return anim_model; }
 	DX9::MODEL& GetModel()			  { return model; }
 	BoundingBox GetAnimBox()		  { return anim_box; }
-	Collision GetBox()			  { return col; }
+	Collision GetBox()				  { return col; }
 
 	std::string GetTag() { return enemy_tag; }
 
 private:
+	void EnemyAnimation();
+	bool damage_flag = false;
+	
+	int damage_count = 0;
+	const int max_damage_count = 15;
+
+
 	float box_size;
 	float parry_count = 0;
 	
@@ -59,7 +67,8 @@ protected:
 
 	const float fit_collision_y = 4.0f;
 	int enemy_hp;
-	bool damage_flag = false;
+	float delta;
+
 	bool retreat_flg;
 	bool bullet_parry_flag = false;
 

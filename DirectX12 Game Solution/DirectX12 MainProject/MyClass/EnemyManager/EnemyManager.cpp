@@ -28,8 +28,8 @@ EnemyManager::~EnemyManager() {
 bool EnemyManager::Initialize(PlayerBase* player_base)
 {
 	DX12Effect.Initialize();
-	DX12Effect.Create(L"Effect/EnemyHitEffect/hit/hit.efk","hit_eff");
-
+	DX12Effect.Create(L"Effect/EnemyEffect/hit/hit.efk","hit_eff");
+	DX12Effect.Create(L"Effect/EnemyEffect/die/die.efk","die");
 	player_data = player_base;
 
 	LoadEnemyArrangement();
@@ -42,19 +42,11 @@ int EnemyManager::Update(SimpleMath::Vector3 player, const float deltaTime)
 		enemies->Update(player,deltaTime);
 	}
 
-	delta		= deltaTime;
-
-	Iterator(player,delta);
-
-	if (frame < MAX_FRAME)
-		++frame;
-	else {
-		frame = 0;
-		++timer;
-	}
+	Iterator();
+	delta = deltaTime;
 
 	if (count < ENEMY_NUM) {
-		if (timer > appear_time[count] || dead_enemy_count >= destract_num[count]) {
+		if (AppearTimer() > appear_time[count] || dead_enemy_count >= destract_num[count]) {
 			Generator();
 			count++;
 		}
@@ -63,16 +55,26 @@ int EnemyManager::Update(SimpleMath::Vector3 player, const float deltaTime)
 	return 0;
 }
 
-void EnemyManager::Iterator(SimpleMath::Vector3 player, const float deltaTime) {
+void EnemyManager::Iterator() {
 	auto itr = enemy.begin();
 
 	while (itr != enemy.end())
 	{
-		if ((*itr)->Update(player,deltaTime) == LIVE)
+		if ((*itr)->LifeDeathDecision() == LIVE)
 			itr++;
 		else {
 			//“G‚ªŽ€–S‚µ‚½‚Æ‚«‚Ìˆ—
 			dead_enemy_count++;
+			
+			//auto tag = (*itr)->GetTag();
+
+			//if (tag == "S" || tag == "H")
+			//	effect_pos = (*itr)->GetAnimModel()->GetPosition();
+			//else
+			//	effect_pos = (*itr)->GetModel()->GetPosition();
+
+			//DX12Effect.SetPosition("die", SimpleMath::Vector3(effect_pos.x, effect_pos.y, effect_pos.z  + 20));
+			//DX12Effect.Play("die");
 			itr = enemy.erase(itr);
 		}
 	}
@@ -98,12 +100,12 @@ void EnemyManager::Render()
 }
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
-     base->Damage(delta,player_data->GetDamage());
+     base->Damage(player_data->GetDamage());
 
 	 std::string tag = base->GetTag();
 
 	 if (tag != "C") {
-		 if (StatusManager::Instance().GetCombo() == 3)
+		 if (StatusManager::Instance().GetCombo() == max_combo)
 			 base->Retreat();
 	 }
 
@@ -125,7 +127,7 @@ void EnemyManager::OnParryArea(EnemyBase* base) {
 }
 
 int EnemyManager::AppearTimer() {
-	if (frame < MAX_FRAME) 
+	if (frame < max_frame) 
 		++frame;
 	else {
 		frame = 0;

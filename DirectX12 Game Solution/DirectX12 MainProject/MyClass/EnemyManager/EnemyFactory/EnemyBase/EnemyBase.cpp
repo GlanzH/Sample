@@ -72,7 +72,10 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 
 int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
 {
+	delta = deltaTime;
+
 	if (enemy_tag == "S" || enemy_tag == "H") {
+		EnemyAnimation();
 		anim_box.Center = anim_model->GetPosition();
 		anim_model->SetPosition(position);
 		anim_collision->SetPosition(anim_model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
@@ -90,14 +93,41 @@ int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
 		retreat_flg = false;
 		parry_count = 0;
 	}
+
+	LifeDeathDecision();
+
 	return 0;
 }
 
-void EnemyBase::Damage(const float deltaTime,int damage) {
+void EnemyBase::EnemyAnimation() {
+	if (!damage_flag)
+		SetAnimation(anim_model, WAIT);
+	else
+		SetAnimation(anim_model, DAMAGE);
+
+	anim_model->AdvanceTime(delta / 1.0f);
+
+	if (damage_flag && damage_count < max_damage_count) {
+		damage_count++;
+	}
+	else {
+		damage_count = 0;
+		damage_flag  = false;
+	}
+
+}
+
+void EnemyBase::Damage(int damage) {
 	enemy_hp -= damage;
 	damage_flag = true;
 }
 
+bool EnemyBase::LifeDeathDecision() {
+	if (enemy_hp < 0)
+		return DEAD;
+
+	return LIVE;
+}
 
 void EnemyBase::BulletParry() {
 	bullet_parry_flag = true;

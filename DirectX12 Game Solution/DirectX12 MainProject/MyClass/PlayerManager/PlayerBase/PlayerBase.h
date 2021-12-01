@@ -259,7 +259,7 @@ private:
 
 	Appeal_state appeal_state_mode;
 
-	//•KŽE‹Z!!
+	//•KŽE‹Z
 	enum SPECIALMOVE
 	{
 		NOMAL_MOVE,
@@ -269,6 +269,18 @@ private:
 	SPECIALMOVE specialmove_state;
 
 	float specialmove_time = 0.0f;
-	float specialmove_time_max = 5.0f;
+	float specialmove_time_max = 4.0f;
 
+	//float invincible_time_max_sp = 5.0f;
+
+	//ˆÃ“]
+	DX9::SPRITE deathbrow_sprite;
+	int Transparency = 0;
+	int Blackout = 5;
+	int Blackout_max = 255;
+	bool Blackout_flag = false;
+
+	//–¾“]
+	bool bright_flag   = false;
+	int  Ming_Turn = 55;
 };
