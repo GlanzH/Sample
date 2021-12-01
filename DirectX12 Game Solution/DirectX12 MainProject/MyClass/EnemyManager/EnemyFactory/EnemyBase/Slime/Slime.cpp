@@ -8,7 +8,7 @@ int Slime::Update(SimpleMath::Vector3 player, const float deltaTime) {
 
 	delta      = deltaTime;
 	player_pos = player;
-
+	//ExitRotate();
 	Action();
    
 	return 0;
@@ -19,28 +19,50 @@ void Slime::Action() {
 	case ENTRY:
 		if (position.z > ENTRY_POS) {
 			jump_dist = ENTRY_DIST;
-			EntryJump();
+			EntryExitJump();
 		}
 		else
 			action = MOVE;
 		break;
 
 	case MOVE:
-		action = EXIT;
-		//Rotate();
-		//Move();
+		is_move_frame += delta;
+
+		if (is_move_frame < max_is_move) {
+			Rotate();
+			Move();
+		}
+		else {
+			ExitRotate();
+		}
 		break;
 
 	case EXIT:
 		if (position.z > EXIT_POS) {
 			jump_dist = EXIT_DIST;
-			EntryJump();
+			EntryExitJump();
 		}
 		break;
 	}
 }
 
-void Slime::EntryJump() {
+void Slime::Rotate() {
+	const float rotate = 45.0f;
+
+	if (player_pos.x > position.x)
+		anim_model->SetRotation(0.0f, -rotate, 0.0f);
+	else
+		anim_model->SetRotation(0.0f,  rotate, 0.0f);
+}
+
+void Slime::Move() {
+	if (player_pos.x < position.x)
+		position.x -= move_speed * delta;
+	else
+		position.x += move_speed * delta;
+}
+
+void Slime::EntryExitJump() {
 
 	if (!jump_flag) {
 		jump_time = 0;
@@ -59,16 +81,15 @@ void Slime::EntryJump() {
 	}
 }
 
-void Slime::Rotate() {
-	 if(player_pos.x > position.x)
-		 anim_model->SetRotation(0.0f, -45.0f, 0.0f);
-	 else
-		 anim_model->SetRotation(0.0f,  45.0f, 0.0f);
-}
-
-void Slime::Move() {
-	if (player_pos.x < position.x)
-		position.x -= move_speed * delta;
+void Slime::ExitRotate() {
+	const float rotate_speed = 1.0f;
+	if (anim_model->GetRotation().z > 0)
+		anim_model->Rotate(0, -rotate_speed * delta, 0);
 	else
-		position.x += move_speed * delta;
+		anim_model->Rotate(0, rotate_speed * delta, 0);
+	
+	if (exit_frame < max_exit)
+		exit_frame += delta;
+	else
+		action = EXIT;
 }
