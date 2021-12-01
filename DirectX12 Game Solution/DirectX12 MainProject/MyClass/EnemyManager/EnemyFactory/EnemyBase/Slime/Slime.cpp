@@ -1,6 +1,5 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
-#include "MyClass/MyAlgorithm/MyAlgorithm.h"
 #include "Slime.h"
 
 int Slime::Update(SimpleMath::Vector3 player, const float deltaTime) {
@@ -8,7 +7,7 @@ int Slime::Update(SimpleMath::Vector3 player, const float deltaTime) {
 
 	delta      = deltaTime;
 	player_pos = player;
-	//ExitRotate();
+
 	Action();
    
 	return 0;

@@ -203,7 +203,6 @@
     <ClInclude Include="MyClass\EnemyManager\EnemyManager.h" />
     <ClInclude Include="MyClass\EnumManager\EnumManager.h" />
     <ClInclude Include="MyClass\GroundManager\GroundManager.h" />
-    <ClInclude Include="MyClass\MyAlgorithm\MyAlgorithm.h" />
     <ClInclude Include="MyClass\Observer\Observer.h" />
     <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\EffectBase\EffectBase.h" />
     <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.h" />

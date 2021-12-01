@@ -2,8 +2,6 @@
 #include "Base/dxtk.h"
 #include "Core.h"
 
-
-
 Core::Core()
 {
 }
@@ -135,19 +133,17 @@ void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 		DX12Effect.SetPosition("shoot", bull_pos);
 		DX12Effect.Play("shoot");
 	}
-	else {
-		if (landing_effect_frame < max_landing && !bullet_parry_flag) {
+	else if (landing_effect_frame < max_landing && !bullet_parry_flag){ 
 			DX12Effect.SetPosition("landing", bull_pos);
 			DX12Effect.PlayOneShot("landing");
 			landing_effect_frame += delta;
-		}
-		else {
-			action = WAIT;
-		}
+	}
+	else {
+		action = WAIT;
 	}
 }
 
 void Core::Render() {
 	EnemyBase::Render();
-	//obstacle_collision->Draw();
+	obstacle_collision->Draw();
 }

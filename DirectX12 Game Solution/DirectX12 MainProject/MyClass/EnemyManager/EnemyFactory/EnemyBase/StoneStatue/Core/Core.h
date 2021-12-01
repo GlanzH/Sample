@@ -1,5 +1,6 @@
 #pragma once
 #include "../../EnemyBase.h"
+#include "MyClass/PlayerManager/PlayerBase/PlayerBase.h"
 
 using namespace DirectX;
 
@@ -15,6 +16,8 @@ public:
 private:
 	void Move(SimpleMath::Vector3 player);
 	void Shot(SimpleMath::Vector3 init_bull_pos);
+
+	PlayerBase* player;
 
 	SimpleMath::Vector3 player_pos;
 	SimpleMath::Vector3 bull_pos;
@@ -65,10 +68,6 @@ private:
 		BACK,
 		STOP,
 		INIT,
-	};
-
-	enum EffectFrame {
-
 	};
 
 	int  action = MOVE;
