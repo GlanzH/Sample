@@ -9,13 +9,23 @@
           <PVA>
             <Rotation>
               <X>
-                <Center>135</Center>
-                <Max>135</Max>
-                <Min>135</Min>
+                <Center>122.4</Center>
+                <Max>122.4</Max>
+                <Min>122.4</Min>
               </X>
             </Rotation>
           </PVA>
         </RotationValues>
+        <ScalingValues>
+          <Type>3</Type>
+          <SinglePVA>
+            <Scale>
+              <Center>2.5</Center>
+              <Max>2.5</Max>
+              <Min>2.5</Min>
+            </Scale>
+          </SinglePVA>
+        </ScalingValues>
         <DrawingValues>
           <Type>0</Type>
           <Sprite>
@@ -117,7 +127,7 @@
                   </Line>
                 </GenerationLocationValues>
                 <RendererCommonValues>
-                  <ColorTexture>../../effekseer/パーティクル/kari.png</ColorTexture>
+                  <ColorTexture>../../effekseer/パーティクル/sword.png</ColorTexture>
                 </RendererCommonValues>
                 <DrawingValues>
                   <Type>3</Type>
@@ -149,14 +159,10 @@
                       <Start>
                         <R>
                           <Center>58</Center>
-                          <Max>86</Max>
-                          <Min>31</Min>
                           <DrawnAs>0</DrawnAs>
                         </R>
                         <G>
                           <Center>23</Center>
-                          <Max>23</Max>
-                          <Min>23</Min>
                           <DrawnAs>0</DrawnAs>
                         </G>
                         <B>
@@ -169,13 +175,204 @@
                       <End>
                         <R>
                           <Center>0</Center>
-                          <Max>0</Max>
-                          <Min>0</Min>
+                          <Max>111</Max>
+                          <Min>109</Min>
                           <DrawnAs>0</DrawnAs>
                         </R>
                         <G>
                           <Center>243</Center>
-                          <Min>231</Min>
+                          <Max>127</Max>
+                          <Min>129</Min>
+                          <DrawnAs>0</DrawnAs>
+                        </G>
+                        <B>
+                          <Max>254</Max>
+                          <Min>209</Min>
+                          <DrawnAs>0</DrawnAs>
+                        </B>
+                        <A>
+                          <DrawnAs>0</DrawnAs>
+                        </A>
+                      </End>
+                    </ColorAll_Easing>
+                    <Color>1</Color>
+                    <Color_Fixed_L>
+                      <G>254</G>
+                      <B>254</B>
+                    </Color_Fixed_L>
+                    <Color_Fixed_R>
+                      <R>35</R>
+                      <G>35</G>
+                      <B>176</B>
+                    </Color_Fixed_R>
+                    <SplineDivision>134</SplineDivision>
+                  </Ribbon>
+                </DrawingValues>
+                <Name>粒子</Name>
+                <Children />
+              </Node>
+            </Children>
+          </Node>
+        </Children>
+      </Node>
+      <Node>
+        <RotationValues>
+          <Type>1</Type>
+          <PVA>
+            <Rotation>
+              <X>
+                <Center>122.4</Center>
+                <Max>122.4</Max>
+                <Min>122.4</Min>
+              </X>
+            </Rotation>
+          </PVA>
+        </RotationValues>
+        <ScalingValues>
+          <Type>3</Type>
+          <SinglePVA>
+            <Scale>
+              <Center>2.5</Center>
+              <Max>2.5</Max>
+              <Min>2.5</Min>
+            </Scale>
+          </SinglePVA>
+        </ScalingValues>
+        <DrawingValues>
+          <Type>0</Type>
+          <Sprite>
+            <Billboard>2</Billboard>
+          </Sprite>
+        </DrawingValues>
+        <Name>親</Name>
+        <Children>
+          <Node>
+            <CommonValues>
+              <Life>
+                <Center>8</Center>
+                <Max>8</Max>
+                <Min>8</Min>
+              </Life>
+            </CommonValues>
+            <RotationValues>
+              <Type>1</Type>
+              <PVA>
+                <Rotation>
+                  <X>
+                    <Center>119.3</Center>
+                    <Max>119.3</Max>
+                    <Min>119.3</Min>
+                  </X>
+                  <Z>
+                    <Center>-112.1</Center>
+                    <Max>-112.1</Max>
+                    <Min>-112.1</Min>
+                  </Z>
+                </Rotation>
+                <Velocity>
+                  <Z>
+                    <Center>-26.6</Center>
+                    <Max>-26.6</Max>
+                    <Min>-26.6</Min>
+                  </Z>
+                </Velocity>
+              </PVA>
+            </RotationValues>
+            <DrawingValues>
+              <Sprite>
+                <Billboard>2</Billboard>
+                <Position>1</Position>
+                <Position_Fixed_LL>
+                  <X>-3.5</X>
+                  <Y>-0.3</Y>
+                </Position_Fixed_LL>
+                <Position_Fixed_LR>
+                  <Y>-0.3</Y>
+                </Position_Fixed_LR>
+                <Position_Fixed_UL>
+                  <X>-3.5</X>
+                  <Y>0.3</Y>
+                </Position_Fixed_UL>
+                <Position_Fixed_UR>
+                  <Y>0.3</Y>
+                </Position_Fixed_UR>
+              </Sprite>
+            </DrawingValues>
+            <IsRendered>False</IsRendered>
+            <Name>剣</Name>
+            <Children>
+              <Node>
+                <CommonValues>
+                  <MaxGeneration>
+                    <Infinite>True</Infinite>
+                  </MaxGeneration>
+                  <LocationEffectType>1</LocationEffectType>
+                  <RotationEffectType>1</RotationEffectType>
+                  <ScaleEffectType>1</ScaleEffectType>
+                  <Life>
+                    <Center>7</Center>
+                    <Max>7</Max>
+                    <Min>7</Min>
+                  </Life>
+                </CommonValues>
+                <LocationValues>
+                  <Fixed>
+                    <Location>
+                      <X>-2.1</X>
+                    </Location>
+                  </Fixed>
+                </LocationValues>
+                <RotationValues>
+                  <Type>1</Type>
+                </RotationValues>
+                <ScalingValues>
+                  <Fixed>
+                    <Scale>
+                      <X>1.9</X>
+                    </Scale>
+                  </Fixed>
+                </ScalingValues>
+                <GenerationLocationValues>
+                  <Type>4</Type>
+                  <Line>
+                    <Division>10</Division>
+                  </Line>
+                </GenerationLocationValues>
+                <RendererCommonValues>
+                  <ColorTexture>../../effekseer/パーティクル/sword.png</ColorTexture>
+                </RendererCommonValues>
+                <DrawingValues>
+                  <Type>3</Type>
+                  <Sprite>
+                    <Billboard>2</Billboard>
+                    <Position>1</Position>
+                    <Position_Fixed_LL>
+                      <X>-3.5</X>
+                      <Y>-0.3</Y>
+                    </Position_Fixed_LL>
+                    <Position_Fixed_LR>
+                      <Y>-0.3</Y>
+                    </Position_Fixed_LR>
+                    <Position_Fixed_UL>
+                      <X>-3.5</X>
+                      <Y>0.3</Y>
+                    </Position_Fixed_UL>
+                    <Position_Fixed_UR>
+                      <Y>0.3</Y>
+                    </Position_Fixed_UR>
+                  </Sprite>
+                  <Ribbon>
+                    <ColorAll>2</ColorAll>
+                    <ColorAll_Fixed>
+                      <R>254</R>
+                      <G>254</G>
+                    </ColorAll_Fixed>
+                    <ColorAll_Easing>
+                      <Start>
+                        <R>
+                          <DrawnAs>0</DrawnAs>
+                        </R>
+                        <G>
                           <DrawnAs>0</DrawnAs>
                         </G>
                         <B>
@@ -184,8 +381,41 @@
                         <A>
                           <DrawnAs>0</DrawnAs>
                         </A>
+                      </Start>
+                      <End>
+                        <R>
+                          <Center>110</Center>
+                          <Max>111</Max>
+                          <Min>109</Min>
+                          <DrawnAs>0</DrawnAs>
+                        </R>
+                        <G>
+                          <Center>129</Center>
+                          <Max>129</Max>
+                          <Min>129</Min>
+                          <DrawnAs>0</DrawnAs>
+                        </G>
+                        <B>
+                          <Center>231</Center>
+                          <Max>254</Max>
+                          <Min>209</Min>
+                          <DrawnAs>0</DrawnAs>
+                        </B>
+                        <A>
+                          <DrawnAs>0</DrawnAs>
+                        </A>
                       </End>
                     </ColorAll_Easing>
+                    <Color>1</Color>
+                    <Color_Fixed_L>
+                      <G>254</G>
+                      <B>254</B>
+                    </Color_Fixed_L>
+                    <Color_Fixed_R>
+                      <R>35</R>
+                      <G>35</G>
+                      <B>176</B>
+                    </Color_Fixed_R>
                     <SplineDivision>134</SplineDivision>
                   </Ribbon>
                 </DrawingValues>
