@@ -55,10 +55,12 @@ void Core::Move(SimpleMath::Vector3 player){
 		break;
 
 	case CHARGE:
-		if (wait_charge_frame < max_wait_charge) {
+		if (wait_charge_frame < max_wait_charge)
+		{
 			wait_charge_frame += delta;
 		}
-		else if (charge_effect_frame < max_charge) {
+		else if (charge_effect_frame < max_charge) 
+		{
 			DX12Effect.SetPosition("charge", position);
 			DX12Effect.PlayOneShot("charge");
 			charge_effect_frame += delta;
@@ -68,8 +70,6 @@ void Core::Move(SimpleMath::Vector3 player){
 		break;
 
 	case ATTACK:
-		for (int attack_count = 0; attack_count < MAX_COUNT; attack_count++)
-		{
 			if (!shot_flag)
 			{
 				player_pos = player;
@@ -79,12 +79,10 @@ void Core::Move(SimpleMath::Vector3 player){
 			}
 			else if (wait_shot_frame < max_wait_shot)
 			{
-				wait_shot_frame += delta >=0.75;
+				wait_shot_frame += delta;
 			}
 			else
 				Shot(player_pos);
-		}
-		
 		break;
 
 	case WAIT:
@@ -131,27 +129,44 @@ void Core::Move(SimpleMath::Vector3 player){
 
 void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 {
-	if(bull_pos.x > init_bull_pos.x)
-		bull_pos.x -= move_bull_x * delta;
-	else
-		bull_pos.x += move_bull_x * delta;
+	for (attack_count= 0; attack_count < MAX_COUNT; attack_count++)
+	{
+		if (bull_pos.x > init_bull_pos.x)
+			bull_pos.x -= move_bull_x * delta;
+		else
+			bull_pos.x += move_bull_x * delta;
 
-	if (bull_pos.y > init_bull_pos.y && !bullet_parry_flag) {
-		bull_pos.y -= move_bull_y * delta;
+		if (bull_pos.y > init_bull_pos.y && !bullet_parry_flag) 
+		{
+			bull_pos.y -= move_bull_y * delta;
 
-		DX12Effect.SetPosition("shoot", bull_pos);
-		DX12Effect.Play("shoot");
-	}
-	else {
-		if (landing_effect_frame < max_landing && !bullet_parry_flag) {
-			DX12Effect.SetPosition("landing", bull_pos);
-			DX12Effect.PlayOneShot("landing");
-			landing_effect_frame += delta;
+			DX12Effect.SetPosition("shoot", bull_pos);
+			DX12Effect.Play("shoot");
+			if (wait_shot_frame+=delta<=0.75)
+			{
+				attack_count++;
+			}
+			
 		}
 		else {
-			action = WAIT;
+			if (landing_effect_frame < max_landing && !bullet_parry_flag) 
+			{
+				DX12Effect.SetPosition("landing", bull_pos);
+				DX12Effect.PlayOneShot("landing");
+				landing_effect_frame += delta;
+			}
+			else 
+			{
+
+				if (attack_count == 3)
+				{
+					action = WAIT;
+				}
+				
+			}
 		}
 	}
+	
 }
 
 void Core::Render() {
