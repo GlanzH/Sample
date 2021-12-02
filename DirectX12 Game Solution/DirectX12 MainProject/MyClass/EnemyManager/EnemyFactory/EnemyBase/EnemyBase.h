@@ -76,7 +76,6 @@ protected:
 	float delta;
 
 	bool retreat_flg;
-	bool bullet_parry_flag = false;
 
 	Collision col;
 

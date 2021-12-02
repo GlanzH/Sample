@@ -93,7 +93,6 @@ void Core::Move(SimpleMath::Vector3 player){
 		break;
 
 	case WAIT:
-		bullet_parry_flag = false;
 		bull_pos = SimpleMath::Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
 
 		if (wait_frame < max_wait)
@@ -141,7 +140,7 @@ void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 	else
 		bull_pos.x += move_bull_x * delta;
 
-	if (bull_pos.y > init_bull_pos.y && !bullet_parry_flag)
+	if (bull_pos.y > init_bull_pos.y)
 	{
 		bull_pos.y -= move_bull_y * delta;
 
@@ -150,7 +149,7 @@ void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 	}
 	else
 	{
-		if (landing_effect_frame < max_landing && !bullet_parry_flag)
+		if (landing_effect_frame < max_landing)
 		{
 			DX12Effect.SetPosition("landing", bull_pos);
 			DX12Effect.PlayOneShot("landing");
