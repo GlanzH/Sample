@@ -80,7 +80,7 @@ void EnemyManager::Iterator() {
 				}
 
 				DX12Effect.SetPosition("die", effect_pos);
-				//DX12Effect.Play("die");
+				DX12Effect.Play("die");
 				death_frame += delta;
 			}
 			else {
