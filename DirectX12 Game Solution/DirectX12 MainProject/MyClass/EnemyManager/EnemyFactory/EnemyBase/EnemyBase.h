@@ -26,7 +26,6 @@ public:
 	virtual int Update(SimpleMath::Vector3 player, const float deltaTime);
 	virtual void Render();
 
-	void BulletParry();
 	void Retreat();
 	
 	virtual void Damage(int damage);

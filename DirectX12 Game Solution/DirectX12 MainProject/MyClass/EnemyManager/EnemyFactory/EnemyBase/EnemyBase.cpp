@@ -132,10 +132,6 @@ bool EnemyBase::LifeDeathDecision() {
 	return LIVE;
 }
 
-void EnemyBase::BulletParry() {
-	bullet_parry_flag = true;
-}
-
 void EnemyBase::Retreat()
 {
 	retreat_flg = true;
