@@ -31,6 +31,8 @@ private:
 
 	const float max_move = 50.0f;
 	const float max_back = 60.0f;
+	int attack_count;
+	const int MAX_COUNT=3;
 
 	//!ATTACK‘Ò‹@ŽžŠÔ
 	float wait_shot_frame = 0;
