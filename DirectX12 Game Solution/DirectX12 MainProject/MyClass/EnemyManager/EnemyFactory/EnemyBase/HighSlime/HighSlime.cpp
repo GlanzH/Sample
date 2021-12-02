@@ -1,6 +1,5 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
-#include "MyClass/MyAlgorithm/MyAlgorithm.h"
 #include "HighSlime.h"
 
 HighSlime::HighSlime()
@@ -17,36 +16,105 @@ int HighSlime::Update(SimpleMath::Vector3 player, const float deltaTime)
 {
     EnemyBase::Update(player, deltaTime);
 
-    Move(player, deltaTime);
-    Rotate(player, deltaTime);
-	Jump(deltaTime);
+	delta = deltaTime;
+	player_pos = player;
+
+	Action();
 
 	return 0;
 }
 
-void HighSlime::Move(SimpleMath::Vector3 player, const float deltaTime) {
-    if (player.x < position.x)
-        position.x -= move_speed * deltaTime;
+void HighSlime::Move() {
+    if (player_pos.x < position.x)
+        position.x -= move_speed * delta;
     else
-        position.x += move_speed * deltaTime;
+        position.x += move_speed * delta;
 }
 
-void HighSlime::Rotate(SimpleMath::Vector3 player, const float deltaTime) {
-    //!プレイヤーの座標 - 敵の座標でプレイヤーのいる方向に向く
-    float rotation = MathHelper_Atan2(-(player.z - position.z), (player.x - position.x)) - adjust_y;
-    anim_model->SetRotation(0.0f,rotation, 0.0f);
+void HighSlime::Action() {
+	switch (action) {
+	case ENTRY:
+		if (position.z > ENTRY_POS) {
+			jump_dist = ENTRY_DIST;
+			EntryExitJump();
+		}
+		else
+			action = MOVE;
+		break;
+
+	case MOVE:
+		is_move_frame += delta;
+
+		if (is_move_frame < max_is_move) {
+			Move();
+			Rotate();
+			Jump();
+		}
+		else {
+			ExitRotate();
+		}
+		break;
+
+	case EXIT:
+		if (position.z > EXIT_POS) {
+			jump_dist = EXIT_DIST;
+			EntryExitJump();
+		}
+		break;
+	}
 }
 
-void HighSlime::Jump(const float deltaTime)
+void HighSlime::Rotate() {
+	const float rotate = 45.0f;
+
+	if (player_pos.x > position.x)
+		anim_model->SetRotation(0.0f, -rotate, 0.0f);
+	else
+		anim_model->SetRotation(0.0f, rotate, 0.0f);
+}
+
+void HighSlime::EntryExitJump() {
+
+	if (!jump_flag) {
+		jump_time = 0;
+		jump_flag = true;
+	}
+	else {
+		position.z -= jump_dist * delta;
+		jump_time += delta;
+		position.y += jump_speed * delta;
+		position.y = position.y + (jump_speed * jump_time * jump_power * gravity * jump_time * jump_time * delta);
+
+		if (position.y < 0.0f) {
+			position.y = 0.0f;
+			jump_flag = false;
+		}
+	}
+}
+
+void HighSlime::ExitRotate() {
+	const float rotate_speed = 1.0f;
+	if (anim_model->GetRotation().z > 0)
+		anim_model->Rotate(0, -rotate_speed * delta, 0);
+	else
+		anim_model->Rotate(0, rotate_speed * delta, 0);
+
+	if (exit_frame < max_exit)
+		exit_frame += delta;
+	else
+		action = EXIT;
+}
+
+void HighSlime::Jump()
 {
     if (!jump_flag) {
         jump_time = 0;
         jump_flag = true;
     }
     else{
-        jump_time  += deltaTime;
-        position.y += jump_speed * deltaTime;
-        position.y  = position.y + (jump_speed * jump_time * jump_power * gravity * jump_time * jump_time * deltaTime);
+        jump_time  += delta;
+        position.y += jump_speed * delta;
+        position.y  = position.y + (jump_speed * jump_time * jump_power * gravity * jump_time * jump_time * delta);
 
         if (position.y < 0.0f) {
             position.y = 0.0f;

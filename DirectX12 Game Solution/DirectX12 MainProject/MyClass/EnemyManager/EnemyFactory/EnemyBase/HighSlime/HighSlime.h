@@ -12,13 +12,26 @@ public:
 	int Update(SimpleMath::Vector3 player, const float deltaTime);
 
 private:
-	void Move  (SimpleMath::Vector3 player, const float deltaTime);
-	void Rotate(SimpleMath::Vector3 player, const float deltaTime);
-	void Jump(const float deltaTime);
+	void Action();
+	void EntryExitJump();
+	void ExitRotate();
+	void Move  ();
+	void Rotate();
+	void Jump();
+
+	float delta;
+	SimpleMath::Vector3 player_pos;
 
 	//ジャンプしてるかのフラグ。
 	bool jump_flag = true;
 	float jump_time = 0.0f;
+	float jump_dist;
+
+	float is_move_frame = 0.0f;
+	const float max_is_move = 10.0f;
+
+	float exit_frame = 0.0f;
+	const float max_exit = 1.0f;
 
 	const float adjust_y = 45.0f;
 
@@ -26,4 +39,22 @@ private:
 	const float jump_power = -0.3f;
 	const float jump_speed = 15.0f;
 	const float gravity	   = 9.80665f;
+
+	enum JumpPosition {
+		ENTRY_POS = 50,
+		EXIT_POS = -30
+	};
+
+	enum JumpDistance {
+		ENTRY_DIST = 27,
+		EXIT_DIST = 60
+	};
+
+	enum SlimeAction {
+		ENTRY,
+		MOVE,
+		EXIT
+	};
+
+	int action = ENTRY;
 };

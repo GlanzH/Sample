@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include "cppcoro/generator.h"
 
 #include "Scene.h"
 
@@ -41,4 +42,14 @@ private:
 
 private:
 	DX9::SPRITE title;
+	DX9::SPRITE title_ui;
+
+	SimpleMath::Vector3 title_pos;
+
+	float ui_alpha;
+	float time_delta;
+	// コルーチンのプロトタイプ宣言
+	cppcoro::generator<int> Opening();
+	cppcoro::generator<int>                  co_opening;
+	cppcoro::detail::generator_iterator<int> co_opening_it;
 };

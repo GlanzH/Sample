@@ -15,7 +15,10 @@ TitleScene::TitleScene()
 // Initialize a variable and audio resources.
 void TitleScene::Initialize()
 {
-
+    title_pos.x = 0.0f;
+    title_pos.y = 0.0f;
+    title_pos.z = 1.0f;
+    ui_alpha = 255.0f;
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -42,7 +45,7 @@ void TitleScene::LoadAssets()
 
     // グラフィックリソースの初期化処理
     title = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Title.png");
-
+    title_ui = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/title_ui.png");
 
 }
 
@@ -76,10 +79,24 @@ NextScene TitleScene::Update(const float deltaTime)
 
 	// TODO: Add your game logic here.
 
+    time_delta = deltaTime;
+
     if (DXTK->KeyEvent->pressed.Enter ||
         DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
         return NextScene::MainScene;
     }
+
+
+    //co_opening = Opening();        // コルーチンの生成
+    //co_opening_it = co_opening.begin(); // コルーチンの実行開始
+
+    //if (co_opening_it != co_opening.end()) {
+    //    co_opening_it++;
+    //}
+
+    //if (co_opening_it != co_opening.end()) {
+    //    co_opening.begin();
+    //}
 
 	return NextScene::Continue;
 }
@@ -93,7 +110,15 @@ void TitleScene::Render()
     DXTK->Direct3D9->BeginScene();
     DX9::SpriteBatch->Begin();
 
-    DX9::SpriteBatch->DrawSimple(title.Get(), SimpleMath::Vector3(0.0f, 0.0f, 0.0f));
+    DX9::SpriteBatch->DrawSimple(title.Get(), title_pos);
+    
+    DX9::SpriteBatch->DrawSimple(
+        title_ui.Get(),
+        SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
+        RectWH(0, 0, 1280, 720),
+        DX9::Colors::RGBA(255, 255, 255, ui_alpha)
+    );
+
 
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();
@@ -116,4 +141,27 @@ void TitleScene::Render()
 
     DXTK->Direct3D9->WaitUpdate();
     DXTK->ExecuteCommandList();
+}
+
+
+cppcoro::generator<int> TitleScene::Opening() {
+    co_yield 0;
+
+    while (ui_alpha > 0) {
+        ui_alpha -= 100.0f * time_delta;
+        co_yield 1;
+    }
+    ui_alpha = 0;
+
+
+    while (title_pos.y > -720.0f) {
+        title_pos.y -= 100.0f * time_delta;
+        co_yield 2;
+    }
+
+    if (title_pos.y = -720.0f) {
+        NextScene::MainScene;
+    }
+
+    co_return;
 }
