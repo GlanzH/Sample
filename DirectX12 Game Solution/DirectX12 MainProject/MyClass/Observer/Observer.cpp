@@ -18,7 +18,6 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy) {
 			}
 		}
 
-
 		//!ƒvƒŒƒCƒ„[SKINNEDMODELŒ^“–‚½‚è”»’è
 		if (player->GetBox().Intersects(enemies_roop->GetAnimBox())) {
 			if (player->GetParryFlag()) {

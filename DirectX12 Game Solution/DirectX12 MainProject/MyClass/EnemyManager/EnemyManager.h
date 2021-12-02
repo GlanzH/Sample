@@ -51,7 +51,7 @@ private:
 
 	const int max_combo = 3;
 
-	enum LoadFile  { DUMMY_LINE = 5, ENEMY_NUM = 250 };
+	enum LoadFile  { DUMMY_LINE = 6, ENEMY_NUM = 250 };
 
 	int count = 0;                        //!敵の累計出現数カウント 
 	std::string  tag[ENEMY_NUM];          //!敵の種類         

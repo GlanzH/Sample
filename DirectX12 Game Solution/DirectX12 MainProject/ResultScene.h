@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Scene.h"
+#include "MyClass/RankJudgeManager/RankJudgeManager.h"
 
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
@@ -41,4 +42,7 @@ private:
 
 private:
 	DX9::SPRITE result;
+
+	RankJudgeManager rankjudge;
+
 };

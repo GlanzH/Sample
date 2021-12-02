@@ -372,25 +372,26 @@ void DX9::SkinnedModel::ComputeBoundingBoxPoint(D3DXFRAME* frame, D3DXVECTOR3& p
 {
 	DX9MESHCONTAINER* mesh_container = (DX9MESHCONTAINER*)frame->pMeshContainer;
 	while (mesh_container) {
-		BYTE* vertices;
-		if (mesh_container->MeshData.pMesh->LockVertexBuffer(0, (LPVOID*)&vertices) != D3D_OK)
-			return;
+		if (mesh_container->MeshData.pMesh) {
+			BYTE* vertices;
+			if (mesh_container->MeshData.pMesh->LockVertexBuffer(0, (LPVOID*)&vertices) != D3D_OK)
+				return;
 
-		const int NumVertices = mesh_container->MeshData.pMesh->GetNumVertices();
-		const int STRIDE      = mesh_container->MeshData.pMesh->GetNumBytesPerVertex();
-		for (int i = 0; i < NumVertices; ++i) {
-			D3DXVECTOR3& pos = *(D3DXVECTOR3*)vertices;
-			if (pos.x < ptmin.x)	ptmin.x = pos.x;
-			if (pos.x > ptmax.x)	ptmax.x = pos.x;
-			if (pos.y < ptmin.y)	ptmin.y = pos.y;
-			if (pos.y > ptmax.y)	ptmax.y = pos.y;
-			if (pos.z < ptmin.z)	ptmin.z = pos.z;
-			if (pos.z > ptmax.z)	ptmax.z = pos.z;
-			vertices += STRIDE;
+			const int NumVertices = mesh_container->MeshData.pMesh->GetNumVertices();
+			const int STRIDE = mesh_container->MeshData.pMesh->GetNumBytesPerVertex();
+			for (int i = 0; i < NumVertices; ++i) {
+				D3DXVECTOR3& pos = *(D3DXVECTOR3*)vertices;
+				if (pos.x < ptmin.x)	ptmin.x = pos.x;
+				if (pos.x > ptmax.x)	ptmax.x = pos.x;
+				if (pos.y < ptmin.y)	ptmin.y = pos.y;
+				if (pos.y > ptmax.y)	ptmax.y = pos.y;
+				if (pos.z < ptmin.z)	ptmin.z = pos.z;
+				if (pos.z > ptmax.z)	ptmax.z = pos.z;
+				vertices += STRIDE;
+			}
+
+			mesh_container->MeshData.pMesh->UnlockVertexBuffer();
 		}
-
-		mesh_container->MeshData.pMesh->UnlockVertexBuffer();
-
 		mesh_container = (DX9MESHCONTAINER*)mesh_container->pNextMeshContainer;
 	}
 

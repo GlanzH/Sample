@@ -35,9 +35,13 @@ public:
 private:
 	//コンボ
 	float combo_time = 0.0f;
-	const float combo_time_max = 1.0f;//[3]{ 0.617f,0.517f,0.583f };
+	const float combo_time_max[3]{ 0.617f,0.517f,0.583f };
 	int combo = 0;
 	const int combo_max = 4;
+	
+	bool combo_flag = false;
+	int  combo_count = 0;
+	
 
 	//ボルテージ
 	float voltage  = 50.0f;		//初期値設定

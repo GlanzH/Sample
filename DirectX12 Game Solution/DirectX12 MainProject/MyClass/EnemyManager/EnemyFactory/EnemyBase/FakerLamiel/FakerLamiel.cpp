@@ -70,16 +70,13 @@ void FakerLamiel::Move(SimpleMath::Vector3 player)
 	case ATTACK:
 		if (fire_effect_frame < MAX_FIRE_FRAME) {
 			DX12Effect.SetPosition("fire",
-				SimpleMath::Vector3(
-					position.x,
-					position.y - adjust_fire_effect_y,
-					position.z + adjust_fire_effect_z)
-			);
-
+				SimpleMath::Vector3(6, -fire_effect_y,fire_effect_z));
+			DX12Effect.SetScale("fire",SimpleMath::Vector3(0.8, 1.3, 1));
+			DX12Effect.SetSpeed("fire", 1.4f);
 			DX12Effect.PlayOneShot("fire");
 
 			if (!appear_collision_flag) {
-				fire_pos = SimpleMath::Vector3(position.x + adjust_fire_x, position.y - adjust_fire_y, position.z);
+				fire_pos = SimpleMath::Vector3(80,0,position.z);
 				appear_collision_flag = true;
 			}
 
@@ -131,5 +128,5 @@ void FakerLamiel::MoveFireCollision() {
 
 void FakerLamiel::Render() {
 	EnemyBase::Render();
-	//obstacle_collision->Draw();
+	obstacle_collision->Draw();
 }

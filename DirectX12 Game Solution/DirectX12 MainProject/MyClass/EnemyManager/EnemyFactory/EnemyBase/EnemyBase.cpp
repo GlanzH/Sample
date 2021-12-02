@@ -28,7 +28,7 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	if (enemy_tag == "S" || enemy_tag == "H") {
 		anim_model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
 		anim_model->SetPosition(position);
-		anim_model->SetRotation(0.0f, XMConvertToRadians(90.0f), 0.0f);
+		anim_model->SetRotation(0.0f, XMConvertToRadians(10.0f), 0.0f);
 
 		//” ‚ðì‚é€”õ
 		anim_box = anim_model->GetBoundingBox();

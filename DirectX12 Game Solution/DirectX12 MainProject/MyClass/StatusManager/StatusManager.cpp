@@ -1,12 +1,18 @@
 #include"MyClass/StatusManager/StatusManager.h"
 #include"MyClass/PlayerManager/PlayerManager.h"
+#include "MyClass/PlayerManager/PlayerBase/PlayerBase.h"
 
 int StatusManager::Update(const float deltaTime) {
-	combo_time += deltaTime;
-	if (combo_time > combo_time_max || combo >= combo_max) {
-		combo_time = 0.0f;
+	if (combo_time > combo_time_max[combo_count] || combo >= combo_max) {
+		combo_time  = 0.0f;
+		combo_flag  = false;
+		combo_count = 0;
 		combo = 0;
 		
+	}
+
+	if (combo_flag) {
+		combo_time += deltaTime;
 	}
 
 	return 0;
@@ -16,6 +22,7 @@ void StatusManager::AddCombo(const float deltaTime) {
 
 	combo++;
 	combo_time = 0.0f;
+	combo_flag = true;
 
 	return;
 }
@@ -68,11 +75,15 @@ void StatusManager::DownVoltage(const float deltaTime) {
 }
 
 void StatusManager::ParryCount() {
-	parry++;
+	if (parry < 6.0f) {
+		parry++;
+	}
 	return;
 }
 
 void StatusManager::ParryReset() {
-	parry = 0.0f;
+	if (parry >= 5.0f) {
+		parry = 0.0f;
+	}
 	return;
 }
