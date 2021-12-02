@@ -76,6 +76,9 @@
     <Filter Include="MyClass\Shader">
       <UniqueIdentifier>{c77963d0-7184-491d-86ec-712fe37dec65}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\EffectBase">
+      <UniqueIdentifier>{8504fa30-35ff-4096-a7c9-79b2de24a2d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -171,9 +174,11 @@
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core\Core.h">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\EffectBase\EffectBase.h" />
     <ClInclude Include="MyClass\Shader\MultiLighting.h">
       <Filter>MyClass\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\EffectBase\EffectBase.h">
+      <Filter>MyClass\PlayerManager\PlayerBase\PlayerAttack\EffectBase</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -246,9 +251,11 @@
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core\Core.cpp">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\EffectBase\EffectBase.cpp" />
     <ClCompile Include="MyClass\Shader\MultiLighting.cpp">
       <Filter>MyClass\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\EffectBase\EffectBase.cpp">
+      <Filter>MyClass\PlayerManager\PlayerBase\PlayerAttack\EffectBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

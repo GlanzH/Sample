@@ -61,6 +61,9 @@ private:
 	//必殺技
 	void Player_Special_Move(const float deltaTime);
 
+	//プレイヤーの攻撃(修正)
+	void Player_Attack_two(const float deltaTime);
+
 	DX9::SPRITEFONT font;
 
 	D3DMATERIAL9 material;
@@ -218,6 +221,23 @@ private:
 		MOTION_MAX
 	};
 
+	//変更*2
+	bool motion_flag_1 = false;
+	bool motion_flag_2 = false;
+	bool motion_flag_3 = false;
+
+	bool motion_start_time_1 = false;
+	bool motion_start_time_2 = false;
+	bool motion_start_time_3 = false;
+
+
+	float motion_time_1 = 0.0f;
+	float motion_time_2 = 0.0f;
+	float motion_time_3 = 0.0f;
+
+	float motion_time_max_1 = 0.6f;
+	float motion_time_max_2 = 0.5f;
+	float motion_time_max_3 = 0.583f;
 
 	//入力受付時間までの時間 & エフェクト表示までの時間
 	bool  input_wait_flag = false;
@@ -283,4 +303,6 @@ private:
 	//明転
 	bool bright_flag   = false;
 	int  Ming_Turn = 55;
+
+
 };

@@ -109,8 +109,8 @@ int PlayerBase::Update(const float deltaTime)
 	Player_jump(deltaTime);
 
 
-	//プレイヤー:攻撃
-	Player_attack(deltaTime);
+	////プレイヤー:攻撃
+	//Player_attack(deltaTime);
 
 	//ランバージャック(移動制限)
 	Player_limit();
@@ -123,6 +123,11 @@ int PlayerBase::Update(const float deltaTime)
 
 	////必殺技
 	//Player_Special_Move(deltaTime);
+
+		//プレイヤーの攻撃(修正)
+	Player_Attack_two(deltaTime);
+
+
 
 
 	//無敵時間
@@ -222,7 +227,7 @@ void PlayerBase::OnParryArea() {
 
 void PlayerBase::Parry(const float deltaTime) {
 	if (!parry_flag) {
-		if (DXTK->KeyEvent->pressed.P || DXTK->GamePadEvent[0].b) {
+		if (DXTK->KeyEvent->pressed.P || DXTK->GamePadEvent[0].leftShoulder) {
 			parry_flag = true;
 		}
 	}
@@ -254,7 +259,7 @@ void PlayerBase::Player_move(const float deltaTime)
 			if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
 				if (canot_move_state_mode == CANNOT_MOVE_STATE::MOVE) {
 					//プレイヤー:移動(キーボード) & ゲームパッド十字キー
-					if (DXTK->KeyState->Right || DXTK->KeyState->D || DXTK->GamePadState[0].dpad.right) {
+					if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
 						model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
 						model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
 						sword_box.Center = model->GetRotation();
@@ -262,7 +267,7 @@ void PlayerBase::Player_move(const float deltaTime)
 						SetAnimation(model, RUN);
 
 					}
-					if (DXTK->KeyState->Left || DXTK->KeyState->A || DXTK->GamePadState[0].dpad.left) {
+					if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left) {
 						model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
 						model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
 						sword_box.Center = model->GetRotation();
@@ -287,8 +292,7 @@ void PlayerBase::Player_limit()
 	model->SetPosition(p_pos);
 }
 
-void PlayerBase::Player_jump(const float deltaTime)
-{
+void PlayerBase::Player_jump(const float deltaTime) {
 	//ジャンプ
 	if (!parry_flag) {
 		if (specialmove_state == SPECIALMOVE::NOMAL_MOVE) {
@@ -300,8 +304,6 @@ void PlayerBase::Player_jump(const float deltaTime)
 							jump_flag_ = true;
 							jump_time_ = 0;
 							jump_start_v_ = model->Position.y;
-
-
 						}
 					}
 				}
@@ -499,6 +501,188 @@ void PlayerBase::Player_attack(const float deltaTime) {
 
 }
 
+//プレイヤーの攻撃(修正)
+void PlayerBase::Player_Attack_two(const float deltaTime) {
+	if (!cool_time_flag_zwei) {
+		if (!parry_flag) {
+			if (specialmove_state == SPECIALMOVE::NOMAL_MOVE) {
+				if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
+
+					//1撃目
+					if (DXTK->KeyEvent->pressed.J || DXTK->GamePadEvent[0].x) {
+						motion_flag_1 = true;
+						//移動不可
+						canot_move_state_mode = CANNOT_MOVE_STATE::CANNOT_MOVE;
+
+					}
+
+
+					//2撃目
+					if (DXTK->KeyEvent->pressed.K || DXTK->GamePadEvent[0].y) {
+						motion_flag_2 = true;
+						//移動不可
+						canot_move_state_mode = CANNOT_MOVE_STATE::CANNOT_MOVE;
+
+					}
+
+					//3撃目
+					if (DXTK->KeyEvent->pressed.L || DXTK->GamePadEvent[0].b) {
+						motion_flag_3 = true;
+						//移動不可
+						canot_move_state_mode = CANNOT_MOVE_STATE::CANNOT_MOVE;
+
+					}
+
+				}
+			}
+		}
+	}
+
+
+	if (motion_flag_1) {
+		effect_generation = true;
+		motion_start_time_1 = true;
+		motion_count = 0;
+		SetAnimation(model, ACT1);
+	}
+
+	if (motion_start_time_1) {
+		motion_time_1 += deltaTime;
+	}
+
+	if (motion_time_1 >= motion_time_max_1) {
+		motion_start_time_1 = false;
+		motion_time_1 = 0.0f;
+		motion_flag_1 = false;
+
+	}
+
+
+
+	if (motion_flag_2) {
+		effect_generation = true;
+		motion_start_time_2 = true;
+		motion_count = 1;
+		SetAnimation(model, ACT2);
+	}
+
+	if (motion_start_time_2) {
+		motion_time_2 += deltaTime;
+	}
+
+	if (motion_time_2 >= motion_time_max_2) {
+		motion_start_time_2 = false;
+		motion_time_2 = 0.0f;
+		motion_flag_2 = false;
+	}
+
+
+	if (motion_flag_3) {
+		effect_generation = true;
+		motion_start_time_3 = true;
+		motion_count = 2;
+		SetAnimation(model, ACT3);
+	}
+
+	if (motion_start_time_3) {
+		motion_time_3 += deltaTime;
+	}
+
+	if (motion_time_3 >= motion_time_max_3) {
+		motion_start_time_3 = false;
+		motion_time_3 = 0.0f;
+		motion_flag_3 = false;
+
+	}
+
+
+
+	//エフェクト表示関係
+	if (effect_generation == true) {
+		effect_generation_time += deltaTime;
+	}
+
+	if (effect_generation_time >= effect_generation_time_max[motion_count]) {
+		attack_flag = true;
+		if (IsAttack()) {
+			if (motion_flag_1) {
+				if (direction_state_mode == Direction_State::RIGHT) {
+					DX12Effect.PlayOneShot("first");
+					DX12Effect.SetPosition("first", Vector3(player_pos.x + 5.0f, player_pos.y + 2.0f, player_pos.z));
+
+				}
+				else if (direction_state_mode == Direction_State::LEFT) {
+					DX12Effect.PlayOneShot("first");
+					DX12Effect.SetPosition("first", Vector3(player_pos.x - 7.0f, player_pos.y + 2.0f, player_pos.z));
+					DX12Effect.SetRotation("first", Vector3(0.0f, 180.0f, 0.0f));
+				}
+				if (appeal_state_mode != Appeal_state::FOCUS)
+					damage = 2;
+				if (appeal_state_mode == Appeal_state::FOCUS)
+					damage = 2 * 2;
+			}
+		}
+	}
+
+
+	if (effect_generation_time >= effect_generation_time_max[motion_count]) {
+		attack_flag = true;
+		if (IsAttack()) {
+			if (motion_flag_2) {
+				if (direction_state_mode == Direction_State::RIGHT) {
+					DX12Effect.PlayOneShot("second");
+					DX12Effect.SetPosition("second", Vector3(player_pos.x + 4.0f, player_pos.y + 6.0f, player_pos.z));
+				}
+				else if (direction_state_mode == Direction_State::LEFT) {
+					DX12Effect.PlayOneShot("second");
+					DX12Effect.SetPosition("second", Vector3(player_pos.x - 4.0f, player_pos.y + 6.0f, player_pos.z));
+					DX12Effect.SetRotation("second", Vector3(0.0f, 180.0f, 0.0f));
+
+				}
+
+				if (appeal_state_mode != Appeal_state::FOCUS)
+					damage = 3;
+				if (appeal_state_mode == Appeal_state::FOCUS)
+					damage = 3 * 2;
+			}
+		}
+	}
+
+	if (effect_generation_time >= effect_generation_time_max[motion_count]) {
+		attack_flag = true;
+		if (IsAttack()) {
+			if (motion_flag_3) {
+				if (direction_state_mode == Direction_State::RIGHT) {
+					DX12Effect.PlayOneShot("third");
+					DX12Effect.SetPosition("third", Vector3(player_pos.x + 7.0f, player_pos.y + 5.0f, player_pos.z));
+				}
+				else if (direction_state_mode == Direction_State::LEFT) {
+					DX12Effect.PlayOneShot("third");
+					DX12Effect.SetPosition("third", Vector3(player_pos.x - 7.0f, player_pos.y + 5.0f, player_pos.z));
+					DX12Effect.SetRotation("third", Vector3(0.0f, 180.0f, 0.0f));
+
+				}
+				if (appeal_state_mode != Appeal_state::FOCUS)
+					damage = 5;
+				if (appeal_state_mode == Appeal_state::FOCUS)
+					damage = 5 * 2;
+			}
+		}
+	}
+
+	if (effect_generation_time >= motion_time_max_1 ||
+		effect_generation_time >= motion_time_max_2 ||
+		effect_generation_time >= motion_time_max_3) {
+		effect_generation = false;
+		effect_generation_time = 0.0f;
+		//移動不可
+		canot_move_state_mode = CANNOT_MOVE_STATE::MOVE;
+
+	}
+}
+
+
+
 void PlayerBase::Player_Special_Move(const float deltaTime) {
 	if (!jump_flag_) {
 		if (DXTK->KeyEvent->pressed.L || DXTK->GamePadEvent[0].rightShoulder || DXTK->GamePadEvent[0].leftShoulder) {
@@ -566,7 +750,7 @@ void PlayerBase::Appeal(const float deltaTime)
 {
 	//アピール
 	if (!jump_flag_) {
-		if (DXTK->KeyEvent->pressed.W||DXTK->GamePadEvent[0].y) {
+		if (DXTK->KeyEvent->pressed.W||DXTK->GamePadEvent[0].leftTrigger) {
 			appeal_state_mode = Appeal_state::APPEAL;
 
 		}
@@ -599,7 +783,8 @@ void PlayerBase::_2DRender()
 		nullptr,
 		DX9::Colors::RGBA(0, 0, 0, Transparency)
 	);
-	//if (effect_generation){
+
+	//if (canot_move_state_mode == CANNOT_MOVE_STATE::MOVE){
 	//	DX9::SpriteBatch->DrawString(font.Get(),
 	//		SimpleMath::Vector2(1000.0f, 0.0f),
 	//		DX9::Colors::BlueViolet,
@@ -619,11 +804,11 @@ void PlayerBase::_2DRender()
 	//	L"%d", StatusManager::Instance().GetCombo()
 	//);
 
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(1000.0f, 40.0f),
-	//	DX9::Colors::BlueViolet,
-	//	L"%f ", StatusManager::Instance().GetTime()
-	//);
+	DX9::SpriteBatch->DrawString(font.Get(),
+		SimpleMath::Vector2(1000.0f, 40.0f),
+		DX9::Colors::BlueViolet,
+		L"%f ", effect_generation_time
+	);
 
 	//DX9::SpriteBatch->DrawString(font.Get(),
 	//	SimpleMath::Vector2(1000.0f, 80.0f),
