@@ -31,6 +31,7 @@ bool EnemyManager::Initialize(PlayerBase* player_base)
 	DX12Effect.Create(L"Effect/EnemyEffect/hit/hit.efk","hit_eff");
 	DX12Effect.Create(L"Effect/EnemyEffect/die/die.efk","die");
 	player_data = player_base;
+	effect_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 
 	LoadEnemyArrangement();
 	return true;
@@ -60,22 +61,32 @@ void EnemyManager::Iterator() {
 
 	while (itr != enemy.end())
 	{
-		if ((*itr)->LifeDeathDecision() == LIVE)
+		if ((*itr)->LifeDeathDecision() == LIVE) {
 			itr++;
+			effect_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
+		}
 		else {
 			//“G‚ªŽ€–S‚µ‚½‚Æ‚«‚Ìˆ—
 			dead_enemy_count++;
-			
-			//auto tag = (*itr)->GetTag();
 
-			//if (tag == "S" || tag == "H")
-			//	effect_pos = (*itr)->GetAnimModel()->GetPosition();
-			//else
-			//	effect_pos = (*itr)->GetModel()->GetPosition();
+			auto tag = (*itr)->GetTag();
 
-			//DX12Effect.SetPosition("die", SimpleMath::Vector3(effect_pos.x, effect_pos.y, effect_pos.z  + 20));
-			//DX12Effect.Play("die");
-			itr = enemy.erase(itr);
+			if (death_frame < max_death_frame) {
+				if (tag == "S" || tag == "H") {
+					effect_pos = (*itr)->GetAnimModel()->GetPosition();
+				}
+				else {
+					effect_pos = (*itr)->GetModel()->GetPosition();
+				}
+
+				DX12Effect.SetPosition("die", effect_pos);
+				DX12Effect.Play("die");
+				death_frame += delta;
+			}
+			else {
+				death_frame = 0;
+				itr = enemy.erase(itr);
+			}
 		}
 	}
 }

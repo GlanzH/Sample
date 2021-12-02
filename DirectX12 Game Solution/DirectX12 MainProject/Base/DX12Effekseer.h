@@ -59,6 +59,8 @@ namespace DX12Effekseer
 		float GetSpeed(std::string effectName);
 		void SetSpeed(std::string effectName,float speed);
 
+		bool CheckLive(std::string effectName) { return m_manager->Exists(m_handles[effectName]); }
+
 	private:
 		Effekseer::Manager*			m_manager;
 		EffekseerRenderer::Renderer*	m_renderer;

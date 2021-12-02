@@ -2,6 +2,7 @@
 
 #include"MyClass/EnumManager/EnumManager.h"
 #include "MyClass/PlayerManager/PlayerBase/PlayerBase.h"
+#include "Base/DX12Effekseer.h"
 
 using namespace DirectX;
 
@@ -40,17 +41,23 @@ public:
 
 private:
 	void EnemyAnimation();
-	bool damage_flag = false;
 	
-	int damage_count = 0;
-	const int max_damage_count = 15;
-
-
 	float box_size;
 	float parry_count = 0;
+
+	bool damage_flag = false;
+
+	//!ダメージモーション再生用変数
+	int is_damage = 0;
+	const int max_is_damage = 5;
+
+	//!ダメージ受けたときに止まる用
+	float damage_frame = 0.0f;
+	const float max_damage_frame = 1.0f;
 	
 protected:
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack);
+	bool IsDamage();
 	D3DMATERIAL9  material;
 	DX9::SKINNEDMODEL anim_model;
 	BoundingBox		  anim_box;
