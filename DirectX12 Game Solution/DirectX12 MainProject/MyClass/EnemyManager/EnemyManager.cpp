@@ -130,13 +130,6 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	DX12Effect.Play("hit_eff");
 }
 
-void EnemyManager::OnParryArea(EnemyBase* base) {
-	if (base->GetTag() != "C")
-		base->Retreat();
-	else
-		base->BulletParry();
-}
-
 int EnemyManager::AppearTimer() {
 	if (frame < max_frame) 
 		++frame;
