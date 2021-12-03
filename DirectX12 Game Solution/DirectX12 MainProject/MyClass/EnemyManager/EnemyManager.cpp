@@ -31,6 +31,8 @@ bool EnemyManager::Initialize(PlayerBase* player_base)
 	DX12Effect.Create(L"Effect/EnemyEffect/hit/hit.efk","hit_eff");
 	DX12Effect.Create(L"Effect/EnemyEffect/die/die.efk","die");
 	player_data = player_base;
+	death_effect_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
+	hit_effect_pos   = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 
 	LoadEnemyArrangement();
 	return true;
@@ -60,22 +62,29 @@ void EnemyManager::Iterator() {
 
 	while (itr != enemy.end())
 	{
-		if ((*itr)->LifeDeathDecision() == LIVE)
+		if ((*itr)->LifeDeathDecision() == LIVE) {
 			itr++;
+		}
 		else {
 			//“G‚ªŽ€–S‚µ‚½‚Æ‚«‚Ìˆ—
 			dead_enemy_count++;
-			
-			//auto tag = (*itr)->GetTag();
 
-			//if (tag == "S" || tag == "H")
-			//	effect_pos = (*itr)->GetAnimModel()->GetPosition();
-			//else
-			//	effect_pos = (*itr)->GetModel()->GetPosition();
+			auto tag = (*itr)->GetTag();
 
-			//DX12Effect.SetPosition("die", SimpleMath::Vector3(effect_pos.x, effect_pos.y, effect_pos.z  + 20));
-			//DX12Effect.Play("die");
-			itr = enemy.erase(itr);
+			if (death_frame < max_death_frame) {
+				if (tag == "S" || tag == "H")
+					death_effect_pos = (*itr)->GetAnimModel()->GetPosition();
+				else
+					death_effect_pos = (*itr)->GetModel()->GetPosition();
+
+				DX12Effect.SetPosition("die", death_effect_pos);
+				DX12Effect.Play("die");
+				death_frame += delta;
+			}
+			else {
+				death_frame = 0;
+				itr = enemy.erase(itr);
+			}
 		}
 	}
 }
@@ -109,21 +118,18 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 			 base->Retreat();
 	 }
 
-	SimpleMath::Vector3 pos;
-	if (tag == "S" || tag == "H") 
-		pos = base->GetAnimModel()->GetPosition();
-	else 
-		pos = base->GetModel()->GetPosition();
-
-	DX12Effect.SetPosition("hit_eff", pos);
-	DX12Effect.Play("hit_eff");
-}
-
-void EnemyManager::OnParryArea(EnemyBase* base) {
-	if (base->GetTag() != "C")
-		base->Retreat();
-	else
-		base->BulletParry();
+	// if (hit_frame < max_hit_frame) {
+		 if (tag == "S" || tag == "H")
+			 hit_effect_pos = base->GetAnimModel()->GetPosition();
+		 else
+			 hit_effect_pos = base->GetModel()->GetPosition();
+		// hit_frame += delta;
+	 //}
+	 //else {
+		//DX12Effect.SetPosition("hit_eff", SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX));
+		// DX12Effect.SetPosition("hit_eff", hit_effect_pos);
+		//DX12Effect.PlayOneShot("hit_eff");
+	// }
 }
 
 int EnemyManager::AppearTimer() {

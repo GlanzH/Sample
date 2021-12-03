@@ -28,30 +28,33 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	if (enemy_tag == "S" || enemy_tag == "H") {
 		anim_model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
 		anim_model->SetPosition(position);
-		anim_model->SetRotation(0.0f, XMConvertToRadians(10.0f), 0.0f);
+		anim_model->SetRotation(0.0f, XMConvertToRadians(anim_init_rotate), 0.0f);
+
+		anim_model->SetScale(0.01f);
 
 		//箱を作る準備
 		anim_box = anim_model->GetBoundingBox();
-		anim_box.Extents = SimpleMath::Vector3(anim_box.Extents) * 0.01f;
+		anim_box.Extents = SimpleMath::Vector3(anim_box.Extents);
+		//anim_box.Extents = SimpleMath::Vector3(anim_box.Extents) * anim_adjust_extents_col;
 
 		//コリジョンモデルの作成
 		anim_collision = DX9::Model::CreateBox(
 			DXTK->Device9,
-			anim_box.Extents.x * 2,
-			anim_box.Extents.y * 2,
-			anim_box.Extents.z * 2
+			anim_box.Extents.x * anim_box_size,
+			anim_box.Extents.y * anim_box_size,
+			anim_box.Extents.z * anim_box_size
 		);
 
 		anim_collision->SetMaterial(material);
 
-		anim_collision->SetScale(0.01);
+		//anim_collision->SetScale(anim_adjust_extents_col);
 		anim_box.Center = position;
 	}
 	else {
 		//!モデルの作成
 		model = DX9::Model::CreateFromFile(DXTK->Device9, model_name);
 		model->SetPosition(position);
-		model->SetRotation(0.0f, XMConvertToRadians(90.0f), 0.0f);
+		model->SetRotation(0.0f, XMConvertToRadians(init_rotate), 0.0f);
 
 		//箱を作る準備
 		col.box = model->GetBoundingBox();
@@ -59,9 +62,9 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 		//コリジョンモデルの作成
 		collision = DX9::Model::CreateBox(
 			DXTK->Device9,
-			col.box.Extents.x * 1.5,
-			col.box.Extents.y * 1.5,
-			col.box.Extents.z * 1.5
+			col.box.Extents.x * box_size,
+			col.box.Extents.y * box_size,
+			col.box.Extents.z * box_size
 		);
 
 		collision->SetMaterial(material);
@@ -85,13 +88,17 @@ int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
 		model->SetPosition(position);
 	}
 
-	if (retreat_flg && parry_count < 30){
-		position.x += 15.0f * deltaTime;
-		parry_count++;
+	if (retreat_flg && retreat_count < max_retreat){
+		if(player.x < position.x)
+			position.x += retreat_dist * deltaTime;
+		else
+			position.x -= retreat_dist * deltaTime;
+
+		retreat_count++;
 	} 
 	else {
-		retreat_flg = false;
-		parry_count = 0;
+		retreat_flg   = false;
+		retreat_count = 0;
 	}
 
 	LifeDeathDecision();
@@ -100,21 +107,12 @@ int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
 }
 
 void EnemyBase::EnemyAnimation() {
-	if (!damage_flag)
+	if (!IsDamage())
 		SetAnimation(anim_model, WAIT);
 	else
 		SetAnimation(anim_model, DAMAGE);
 
 	anim_model->AdvanceTime(delta / 1.0f);
-
-	if (damage_flag && damage_count < max_damage_count) {
-		damage_count++;
-	}
-	else {
-		damage_count = 0;
-		damage_flag  = false;
-	}
-
 }
 
 void EnemyBase::Damage(int damage) {
@@ -122,15 +120,23 @@ void EnemyBase::Damage(int damage) {
 	damage_flag = true;
 }
 
+bool EnemyBase::IsDamage() {
+	if (damage_flag && damage_frame < max_damage_frame) {
+		damage_frame += delta;
+		return true;
+	}
+	else {
+		damage_frame = 0.0f;
+		damage_flag = false;
+		return false;
+	}
+}
+
 bool EnemyBase::LifeDeathDecision() {
 	if (enemy_hp < 0)
 		return DEAD;
 
 	return LIVE;
-}
-
-void EnemyBase::BulletParry() {
-	bullet_parry_flag = true;
 }
 
 void EnemyBase::Retreat()

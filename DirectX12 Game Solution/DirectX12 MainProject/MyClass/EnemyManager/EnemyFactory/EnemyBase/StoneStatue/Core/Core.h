@@ -21,23 +21,25 @@ private:
 
 	SimpleMath::Vector3 player_pos;
 	SimpleMath::Vector3 bull_pos;
-
+	
 	bool shot_flag = false;
 	
 	float delta;
+	
+	SimpleMath::Vector3 shot_pos;
 
+	float oblique_shooting;
+	float spead;
 	const float move_core = 2.0f;
 	const float collision_scale = 0.5f;
-
-	const float move_bull_x = 8.0f;
-	const float move_bull_y = 4.0f;
-
 	const float max_move = 50.0f;
 	const float max_back = 60.0f;
-
+	int attack_count =0;
+	const int MAX_COUNT=3;
+	int landing_count;
 	//!ATTACK‘Ò‹@ŽžŠÔ
 	float wait_shot_frame = 0;
-	const float max_wait_shot = 0.5f;
+	const float max_wait_shot = 0.75f;
 
 	//!WAIT‚Ì‘Ò‹@ŽžŠÔ
 	float wait_frame = 0;
@@ -59,6 +61,8 @@ private:
 	float landing_effect_frame = 0;
 	const float max_landing    = 0.8f;
 
+	bool launch_permit;
+	char launch_count_count;
 	enum StatueAction
 	{
 		MOVE,

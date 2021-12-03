@@ -22,7 +22,6 @@ public:
 	int  GetDeathEnemyCount()		 { return dead_enemy_count; }
 
 	void OnCollisionEnter(EnemyBase* base);
-	void OnParryArea(EnemyBase* base);
 	
 private:
 	void LoadEnemyArrangement();
@@ -31,7 +30,8 @@ private:
 	
 	int AppearTimer();
 
-	SimpleMath::Vector3 effect_pos;
+	SimpleMath::Vector3 death_effect_pos;
+	SimpleMath::Vector3 hit_effect_pos;
 
 	std::list<EnemyBase*> enemy;
 
@@ -50,6 +50,12 @@ private:
 	int timer = 0;
 
 	const int max_combo = 3;
+
+	float death_frame = 0.0f;
+	const  float max_death_frame = 0.5f;
+
+	float hit_frame = 0.0f;
+	const  float max_hit_frame = 0.17f;
 
 	enum LoadFile  { DUMMY_LINE = 6, ENEMY_NUM = 250 };
 

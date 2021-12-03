@@ -2,6 +2,7 @@
 
 #include"MyClass/EnumManager/EnumManager.h"
 #include "MyClass/PlayerManager/PlayerBase/PlayerBase.h"
+#include "Base/DX12Effekseer.h"
 
 using namespace DirectX;
 
@@ -25,7 +26,6 @@ public:
 	virtual int Update(SimpleMath::Vector3 player, const float deltaTime);
 	virtual void Render();
 
-	void BulletParry();
 	void Retreat();
 	
 	virtual void Damage(int damage);
@@ -40,17 +40,33 @@ public:
 
 private:
 	void EnemyAnimation();
-	bool damage_flag = false;
 	
-	int damage_count = 0;
-	const int max_damage_count = 15;
+	int   retreat_count = 0;
+	const int max_retreat   = 30;
 
+	const float retreat_dist = 15.0f;
 
-	float box_size;
-	float parry_count = 0;
+	bool damage_flag = false;
+
+	//!ダメージモーション再生用変数
+	int is_damage = 0;
+	const int max_is_damage = 5;
+
+	//!ダメージ受けたときに止まる用
+	float damage_frame = 0.0f;
+	const float max_damage_frame = 1.0f;
+
+	const float anim_box_size = 2.0f;
+	const float box_size      = 1.5f;
+
+	const float anim_adjust_extents_col = 0.01f;
+
+	const float anim_init_rotate = 10.0f;
+	const float init_rotate      = 90.0f;
 	
 protected:
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack);
+	bool IsDamage();
 	D3DMATERIAL9  material;
 	DX9::SKINNEDMODEL anim_model;
 	BoundingBox		  anim_box;
@@ -70,14 +86,14 @@ protected:
 	float delta;
 
 	bool retreat_flg;
-	bool bullet_parry_flag = false;
 
 	Collision col;
 
 	enum ENEMYMOSION
 	{
-		WAIT,
+		EXIT_JUMP,
 		DAMAGE,
+		WAIT,
 		MAX_MOTION
 	};
 };

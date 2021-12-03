@@ -530,6 +530,13 @@ void PlayerBase::Player_Attack_two(const float deltaTime) {
 			}
 		}
 	}
+	if (DXTK->KeyEvent->pressed.D || DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED ||
+		DXTK->KeyEvent->pressed.A || DXTK->GamePadEvent->x == GamePad::ButtonStateTracker::PRESSED ||
+		DXTK->KeyEvent->pressed.S || DXTK->GamePadEvent->y == GamePad::ButtonStateTracker::PRESSED)
+	{
+		Attack(deltaTime);
+	}
+
 
 	if (motion_flag_1) {
 		effect_generation = true;
@@ -602,26 +609,46 @@ void PlayerBase::Player_Attack_two(const float deltaTime) {
 		effect_generation_time += deltaTime;
 	}
 
-	if (effect_generation_time >= effect_generation_time_max[motion_count]) {
-		attack_flag = true;
-		if (IsAttack()) {
-			if (motion_flag_1) {
-				if (direction_state_mode == Direction_State::RIGHT) {
-					DX12Effect.PlayOneShot("first");
-					DX12Effect.SetPosition("first", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
+	//if (effect_generation_time >= effect_generation_time_max[motion_count]) {
+	//	attack_flag = true;
+	//	if (IsAttack()) {
 
-				}
-				else if (direction_state_mode == Direction_State::LEFT) {
-					DX12Effect.PlayOneShot("first");
-					DX12Effect.SetPosition("first", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
-					DX12Effect.SetRotation("first", Vector3(0.0f, 180.0f, 0.0f));
-				}
-				if (appeal_state_mode != Appeal_state::FOCUS)
-					damage = 2;
-				if (appeal_state_mode == Appeal_state::FOCUS)
-					damage = 2 * 2;
+	
+}
+
+void PlayerBase::Attack(const float deltaTime)
+{
+	if (motion_flag_1) {
+		if (direction_state_mode == Direction_State::RIGHT) {
+			if (DX12Effect.CheckAlive("first")) {
+				DX12Effect.Stop("first");
+				DX12Effect.PlayOneShot("first", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
+
 			}
+			else
+			{
+				DX12Effect.PlayOneShot("first", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
+
+			}
+
 		}
+		else if (direction_state_mode == Direction_State::LEFT) {
+			if (DX12Effect.CheckAlive("first")) {
+				DX12Effect.Stop("first");
+				DX12Effect.PlayOneShot("first", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
+			}
+			else
+			{
+				DX12Effect.PlayOneShot("first", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
+			}
+			DX12Effect.SetRotation("first", Vector3(0.0f, 180.0f, 0.0f));
+	
+			
+		}
+		if (appeal_state_mode != Appeal_state::FOCUS)
+			damage = 2;
+		if (appeal_state_mode == Appeal_state::FOCUS)
+			damage = 2 * 2;
 	}
 
 
@@ -630,12 +657,25 @@ void PlayerBase::Player_Attack_two(const float deltaTime) {
 		if (IsAttack()) {
 			if (motion_flag_2) {
 				if (direction_state_mode == Direction_State::RIGHT) {
-					DX12Effect.PlayOneShot("second");
-					DX12Effect.SetPosition("second", Vector3(player_pos.x + 4.0f, player_pos.y + 6.0f, player_pos.z));
+					if (DX12Effect.CheckAlive("second")) {
+						DX12Effect.Stop("second");
+						DX12Effect.PlayOneShot("second", Vector3(player_pos.x + 4.0f, player_pos.y + 6.0f, player_pos.z));
+					}
+					else
+					{
+						DX12Effect.PlayOneShot("second", Vector3(player_pos.x + 4.0f, player_pos.y + 6.0f, player_pos.z));
+					}
 				}
 				else if (direction_state_mode == Direction_State::LEFT) {
-					DX12Effect.PlayOneShot("second");
-					DX12Effect.SetPosition("second", Vector3(player_pos.x - 4.0f, player_pos.y + 6.0f, player_pos.z));
+					if (DX12Effect.CheckAlive("second")) {
+						DX12Effect.Stop("second");
+						DX12Effect.PlayOneShot("second", Vector3(player_pos.x - 4.0f, player_pos.y + 6.0f, player_pos.z));
+					}
+					else
+					{
+						DX12Effect.PlayOneShot("second", Vector3(player_pos.x + 4.0f, player_pos.y + 6.0f, player_pos.z));
+					}
+
 					DX12Effect.SetRotation("second", Vector3(0.0f, 180.0f, 0.0f));
 
 				}
@@ -653,12 +693,24 @@ void PlayerBase::Player_Attack_two(const float deltaTime) {
 		if (IsAttack()) {
 			if (motion_flag_3) {
 				if (direction_state_mode == Direction_State::RIGHT) {
-					DX12Effect.PlayOneShot("third");
-					DX12Effect.SetPosition("third", Vector3(player_pos.x + 7.0f, player_pos.y + 5.0f, player_pos.z));
+					if (DX12Effect.CheckAlive("third")) {
+						DX12Effect.Stop("third");
+						DX12Effect.PlayOneShot("third", Vector3(player_pos.x + 7.0f, player_pos.y + 5.0f, player_pos.z));
+					}
+					else
+					{
+						DX12Effect.PlayOneShot("third", Vector3(player_pos.x + 7.0f, player_pos.y + 5.0f, player_pos.z));
+					}
 				}
 				else if (direction_state_mode == Direction_State::LEFT) {
-					DX12Effect.PlayOneShot("third");
-					DX12Effect.SetPosition("third", Vector3(player_pos.x - 7.0f, player_pos.y + 5.0f, player_pos.z));
+					if (DX12Effect.CheckAlive("third")) {
+						DX12Effect.Stop("third");
+						DX12Effect.PlayOneShot("third", Vector3(player_pos.x - 7.0f, player_pos.y + 5.0f, player_pos.z));
+					}
+					else
+					{
+						DX12Effect.PlayOneShot("third", Vector3(player_pos.x - 7.0f, player_pos.y + 5.0f, player_pos.z));
+					}
 					DX12Effect.SetRotation("third", Vector3(0.0f, 180.0f, 0.0f));
 
 				}
@@ -776,19 +828,19 @@ void PlayerBase::_2DRender()
 		DX9::Colors::RGBA(0, 0, 0, Transparency)
 	);
 
-	if (effect_generation){
-		DX9::SpriteBatch->DrawString(font.Get(),
-			SimpleMath::Vector2(1000.0f, 0.0f),
-			DX9::Colors::Black,
-			L"ON"
-		);
-	} else {
-		DX9::SpriteBatch->DrawString(font.Get(),
-			SimpleMath::Vector2(1000.0f, 0.0f),
-			DX9::Colors::Black,
-			L"OFF"
-		);
-	}
+	//if (effect_generation){
+	//	DX9::SpriteBatch->DrawString(font.Get(),
+	//		SimpleMath::Vector2(1000.0f, 0.0f),
+	//		DX9::Colors::Black,
+	//		L"ON"
+	//	);
+	//} else {
+	//	DX9::SpriteBatch->DrawString(font.Get(),
+	//		SimpleMath::Vector2(1000.0f, 0.0f),
+	//		DX9::Colors::Black,
+	//		L"OFF"
+	//	);
+	//}
 
 	//DX9::SpriteBatch->DrawString(font.Get(),
 	//	SimpleMath::Vector2(1000.0f, 20.0f),
@@ -796,11 +848,11 @@ void PlayerBase::_2DRender()
 	//	L"%f", effect_generation_time
 	//);
 
-	DX9::SpriteBatch->DrawString(font.Get(),
-		SimpleMath::Vector2(600.0f, 40.0f),
-		DX9::Colors::White,
-		L"エフェクト時間: %f エフェクトMAX: %f", effect_generation_time
-	);
+	//DX9::SpriteBatch->DrawString(font.Get(),
+	//	SimpleMath::Vector2(600.0f, 40.0f),
+	//	DX9::Colors::White,
+	//	L"エフェクト時間: %f エフェクトMAX: %f", effect_generation_time
+	//);
 
 	//DX9::SpriteBatch->DrawString(font.Get(),
 	//	SimpleMath::Vector2(1000.0f, 80.0f),

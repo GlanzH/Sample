@@ -64,6 +64,8 @@ private:
 	//プレイヤーの攻撃(ボタン変更ver)
 	void Player_Attack_two(const float deltaTime);
 
+	void Attack(const float deltaTime);
+
 	DX9::SPRITEFONT font;
 
 	D3DMATERIAL9 material;
@@ -222,6 +224,9 @@ private:
 	};
 
 	//変更*2
+
+	int  motion_flag = 0;
+
 	bool motion_flag_1 = false;
 	bool motion_flag_2 = false;
 	bool motion_flag_3 = false;

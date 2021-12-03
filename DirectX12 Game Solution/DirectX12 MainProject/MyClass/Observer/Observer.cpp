@@ -20,29 +20,13 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy) {
 
 		//!プレイヤーSKINNEDMODEL型当たり判定
 		if (player->GetBox().Intersects(enemies_roop->GetAnimBox())) {
-			if (player->GetParryFlag()) {
-				player->OnParryArea();
-				enemy->OnParryArea(enemies_roop);
-			}
-			else  {
 				player->OnCollisionEnter();
-			}
 		}
 
 		//!プレイヤーMODEL型当たり判定
-		if(player->GetBox().Intersects(enemies_roop->GetBox().box) ||
-			player->GetBox().Intersects(enemies_roop->GetBox().bullet)) {
-			if (player->GetParryFlag()) {
-				player->OnParryArea();
-				enemy->OnParryArea(enemies_roop);
-			}
-			else {
-				player->OnCollisionEnter();
-			}
-		}
-
-		//!炎の当たり判定
-		if (player->GetBox().Intersects(enemies_roop->GetBox().fire)) {
+		if(player->GetBox().Intersects(enemies_roop->GetBox().box)    ||
+		   player->GetBox().Intersects(enemies_roop->GetBox().bullet) ||
+			player->GetBox().Intersects(enemies_roop->GetBox().fire)) {
 			player->OnCollisionEnter();
 		}
 	}

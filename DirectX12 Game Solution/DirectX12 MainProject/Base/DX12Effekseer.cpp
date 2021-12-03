@@ -141,6 +141,22 @@ void DX12Effekseer::CEffekseer::Play(std::string effectName)
 	}	
 }
 
+void DX12Effekseer::CEffekseer::Play(std::string effectName, Vector3 pos)
+{
+	if (m_effects[effectName] == NULL)
+		return;
+
+	if (m_handles[effectName] == NULL)
+	{
+		m_handles[effectName] = m_manager->Play(m_effects[effectName], pos.x, pos.y, pos.z);
+	}
+
+	if (!m_manager->Exists(m_handles[effectName]))
+	{
+		m_handles[effectName] = m_manager->Play(m_effects[effectName], pos.x, pos.y, pos.z);
+	}
+}
+
 /**
 	@brief	エフェクト一度だけ再生
 	@param	effectName エフェクト名
@@ -150,6 +166,14 @@ void DX12Effekseer::CEffekseer::PlayOneShot(std::string effectName)
 	if (m_handles[effectName] == NULL || !m_manager->Exists(m_handles[effectName]))
 	{
 		m_handles[effectName] = m_manager->Play(m_effects[effectName], 0, 0, 0);
+	}
+}
+
+void DX12Effekseer::CEffekseer::PlayOneShot(std::string effectName, Vector3 pos)
+{
+	if (m_handles[effectName] == NULL || !m_manager->Exists(m_handles[effectName]))
+	{
+		m_handles[effectName] = m_manager->Play(m_effects[effectName], pos.x, pos.y, pos.z);
 	}
 }
 
