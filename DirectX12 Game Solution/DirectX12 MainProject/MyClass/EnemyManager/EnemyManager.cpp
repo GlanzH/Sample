@@ -63,7 +63,7 @@ void EnemyManager::Iterator() {
 	{
 		if ((*itr)->LifeDeathDecision() == LIVE) {
 			itr++;
-			effect_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
+			//effect_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 		}
 		else {
 			//“G‚ªŽ€–S‚µ‚½‚Æ‚«‚Ìˆ—
@@ -72,12 +72,10 @@ void EnemyManager::Iterator() {
 			auto tag = (*itr)->GetTag();
 
 			if (death_frame < max_death_frame) {
-				if (tag == "S" || tag == "H") {
+				if (tag == "S" || tag == "H")
 					effect_pos = (*itr)->GetAnimModel()->GetPosition();
-				}
-				else {
+				else
 					effect_pos = (*itr)->GetModel()->GetPosition();
-				}
 
 				DX12Effect.SetPosition("die", effect_pos);
 				DX12Effect.Play("die");
@@ -121,13 +119,18 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	 }
 
 	SimpleMath::Vector3 pos;
-	if (tag == "S" || tag == "H") 
-		pos = base->GetAnimModel()->GetPosition();
-	else 
-		pos = base->GetModel()->GetPosition();
+	if (hit_frame < max_hit_frame) {
+		if (tag == "S" || tag == "H")
+			pos = base->GetAnimModel()->GetPosition();
+		else
+			pos = base->GetModel()->GetPosition();
 
-	DX12Effect.SetPosition("hit_eff", pos);
-	DX12Effect.Play("hit_eff");
+		hit_frame += delta;
+	}
+	else {
+		DX12Effect.SetPosition("hit_eff", pos);
+		DX12Effect.Play("hit_eff");
+	}
 }
 
 int EnemyManager::AppearTimer() {

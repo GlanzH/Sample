@@ -53,6 +53,9 @@ private:
 	float death_frame = 0.0f;
 	const  float max_death_frame = 0.5f;
 
+	float hit_frame = 0.0f;
+	const  float max_hit_frame = 0.5f;
+
 	enum LoadFile  { DUMMY_LINE = 6, ENEMY_NUM = 250 };
 
 	int count = 0;                        //!敵の累計出現数カウント 
