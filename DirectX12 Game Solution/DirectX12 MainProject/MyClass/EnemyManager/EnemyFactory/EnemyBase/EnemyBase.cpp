@@ -100,21 +100,12 @@ int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
 }
 
 void EnemyBase::EnemyAnimation() {
-	if (!damage_flag)
+	if (!IsDamage())
 		SetAnimation(anim_model, WAIT);
 	else
 		SetAnimation(anim_model, DAMAGE);
 
 	anim_model->AdvanceTime(delta / 1.0f);
-
-	if (damage_flag && damage_count < max_damage_count) {
-		damage_count++;
-	}
-	else {
-		damage_count = 0;
-		damage_flag  = false;
-	}
-
 }
 
 void EnemyBase::Damage(int damage) {
@@ -122,15 +113,23 @@ void EnemyBase::Damage(int damage) {
 	damage_flag = true;
 }
 
+bool EnemyBase::IsDamage() {
+	if (damage_flag && damage_frame < max_damage_frame) {
+		damage_frame += delta;
+		return true;
+	}
+	else {
+		damage_frame = 0.0f;
+		damage_flag = false;
+		return false;
+	}
+}
+
 bool EnemyBase::LifeDeathDecision() {
 	if (enemy_hp < 0)
 		return DEAD;
 
 	return LIVE;
-}
-
-void EnemyBase::BulletParry() {
-	bullet_parry_flag = true;
 }
 
 void EnemyBase::Retreat()

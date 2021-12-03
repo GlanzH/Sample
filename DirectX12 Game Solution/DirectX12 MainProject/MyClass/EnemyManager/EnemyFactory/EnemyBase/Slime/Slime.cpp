@@ -9,6 +9,7 @@ int Slime::Update(SimpleMath::Vector3 player, const float deltaTime) {
 	player_pos = player;
 
 	Action();
+
    
 	return 0;
 }
@@ -28,8 +29,10 @@ void Slime::Action() {
 		is_move_frame += delta;
 
 		if (is_move_frame < max_is_move) {
-			Rotate();
-			Move();
+			if (!EnemyBase::IsDamage()) {
+				Rotate();
+				Move();
+			}
 		}
 		else {
 			ExitRotate();
