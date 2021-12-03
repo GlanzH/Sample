@@ -61,7 +61,7 @@ private:
 	//必殺技
 	void Player_Special_Move(const float deltaTime);
 
-	//プレイヤーの攻撃(修正)
+	//プレイヤーの攻撃(ボタン変更ver)
 	void Player_Attack_two(const float deltaTime);
 
 	DX9::SPRITEFONT font;
@@ -86,25 +86,25 @@ private:
 	float model_rotetion = -90.0f;
 
 	//プレイヤーの移動制限(幅)
-	const float model_collision_detection_X = 70.0f;
+	const float model_collision_detection_X = 67.0f;
 	const float model_collision_detection_Y_MAX = 1000.0f;
 	const float model_collision_detection_Y_MIN = -5.0f;
 	const float model_collision_detection_Z = 100.0f;
 
 	//当たり判定モデルの大きさ
-	const int player_box_size_y = 3;
-	const int player_box_size_x = 1.2;
-	const int player_box_size_z = 1;
+	const int player_box_size_y = 7;
+	const int player_box_size_x = 5;
+	const int player_box_size_z = 3;
 
-	const int box_size_x = 1;
-	const int box_size_y = 1;
-	const int box_size_z = 1;
+	const int box_size_x = 30;
+	const int box_size_y = 15;
+	const int box_size_z = 3;
 
 
 	//プレイヤーのスピード
 	const float player_speed_ = 40.0f;
 
-	//ジャンプしてるかのフラグ。
+	//ジャンプしてるかのフラグ
 	bool jump_flag_ = false;
 	float jump_time_ = 0.0f;
 	float jump_start_v_;
@@ -131,8 +131,8 @@ private:
 	BoundingBox parry_box;
 	DX9::MODEL  parry_collision;
 
-	float parry_box_size_x = 0.6f;
-	float parry_box_size_y = 2.0f;
+	float parry_box_size_x = 3.0f;
+	float parry_box_size_y = 10.0f;
 	float parry_box_size_z = 2.0f;
 
 
@@ -191,12 +191,12 @@ private:
 	//エフェクトの発生タイミング等
 	bool  effect_generation = false;
 	float effect_generation_time = 0.0f;
-	float effect_generation_time_max[3]{ 0.317f,0.033f,0.183f };//フレーム(19f,2f,11f)
+	float effect_generation_time_max[3]{ 0.04f,0.033f,0.005f };//フレーム(19f,2f,11f)
 
 
 	//無敵時間
-	bool  invincible_flag = false;
-	float		invincible_time = 0.0f;
+	bool        invincible_flag     = false;
+	float		invincible_time     = 0.0f;
 	const float invincible_time_max = 1.5f;
 
 	//アピールする時間
