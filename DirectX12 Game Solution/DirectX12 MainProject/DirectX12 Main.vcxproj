@@ -218,9 +218,7 @@
     <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Base\DX12Effekseer.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="Base\DX12Effekseer.cpp" />
     <ClCompile Include="Base\GameBase.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>
