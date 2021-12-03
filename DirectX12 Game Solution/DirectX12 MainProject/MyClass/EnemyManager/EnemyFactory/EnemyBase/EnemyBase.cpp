@@ -106,6 +106,15 @@ int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
 	return 0;
 }
 
+void EnemyBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack)
+{
+	for (int i = 0; i < MAX_MOTION; i++)
+	{
+		model->SetTrackEnable(i, FALSE);
+		model->SetTrackEnable(enabletack, TRUE);
+	}
+}
+
 void EnemyBase::EnemyAnimation() {
 	if (!IsDamage())
 		SetAnimation(anim_model, WAIT);
@@ -152,14 +161,6 @@ void EnemyBase::Render() {
 	else {
 		model->Draw();
 		//collision->Draw();
-	}
-}
-void EnemyBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack)
-{
-	for (int i = 0; i < MAX_MOTION; i++)
-	{
-		model->SetTrackEnable(i, FALSE);
-		model->SetTrackEnable(enabletack, TRUE);
 	}
 }
 

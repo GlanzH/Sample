@@ -123,9 +123,6 @@
     <ClInclude Include="MyClass\EnumManager\EnumManager.h">
       <Filter>MyClass\EnumManager</Filter>
     </ClInclude>
-    <ClInclude Include="Base\DX12Effekseer.h">
-      <Filter>MyClass\Effekseer</Filter>
-    </ClInclude>
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyFactory.h">
       <Filter>MyClass\EnemyManager\EnemyFactory</Filter>
     </ClInclude>
@@ -175,6 +172,9 @@
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core\Core.h">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Base\DX12Effekseer.h">
+      <Filter>MyClass\Effekseer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -200,9 +200,6 @@
     </ClCompile>
     <ClCompile Include="MyClass\GroundManager\GroundManager.cpp">
       <Filter>MyClass\GroundManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Base\DX12Effekseer.cpp">
-      <Filter>MyClass\Effekseer</Filter>
     </ClCompile>
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyFactory.cpp">
       <Filter>MyClass\EnemyManager\EnemyFactory</Filter>
@@ -252,6 +249,9 @@
     </ClCompile>
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core\Core.cpp">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\DX12Effekseer.cpp">
+      <Filter>MyClass\Effekseer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

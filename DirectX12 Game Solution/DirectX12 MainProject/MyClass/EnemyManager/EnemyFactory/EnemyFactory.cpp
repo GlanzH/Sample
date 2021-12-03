@@ -14,7 +14,7 @@ EnemyFactory::EnemyFactory()
 	faker_lamiel_speed.x = 1.0f;
 	statue_speed.z =0.0f ;
 	stone_core_speed.z = 0.0f;
-	Slime_hp       = INT_MAX;
+	Slime_hp       = 2;
 	HighSlime_hp   = 7;
 	FakerLamiel_hp = 2;
 	StoneStatue_hp = 60;
