@@ -137,6 +137,78 @@ void DX9::SkinnedModel::DrawMeshContainerIndexed(DX9MESHCONTAINER* meshContainer
 		m_device->SetSoftwareVertexProcessing(FALSE);
 }
 
+void DX9::SkinnedModel::DrawFrameShadow(D3DXFRAME* frame)
+{
+	D3DXMESHCONTAINER* mesh_container = frame->pMeshContainer;
+
+	while (mesh_container) {
+		DrawMeshContainerShadow(mesh_container, frame);
+		mesh_container = mesh_container->pNextMeshContainer;
+	}
+
+	if (frame->pFrameSibling)
+		DrawFrameShadow(frame->pFrameSibling);
+
+	if (frame->pFrameFirstChild)
+		DrawFrameShadow(frame->pFrameFirstChild);
+}
+
+void DX9::SkinnedModel::DrawMeshContainerShadow(D3DXMESHCONTAINER* meshContainerBase, D3DXFRAME* frameBase)
+{
+	DX9MESHCONTAINER* meshContainer = (DX9MESHCONTAINER*)meshContainerBase;
+	DX9FRAME* frame = (DX9FRAME*)frameBase;
+
+	if (meshContainer->pSkinInfo) {
+		DrawMeshContainerIndexedShadow(meshContainer, frame);
+	}
+	else {
+		ID3DXMesh* mesh = meshContainer->MeshData.pMesh;
+		m_device->SetTransform(D3DTS_WORLD, &frame->CombinedTransformationMatrix);
+		for (DWORD i = 0; i < meshContainer->NumMaterials; i++) {
+			mesh->DrawSubset(i);
+		}
+	}
+}
+
+void DX9::SkinnedModel::DrawMeshContainerIndexedShadow(DX9MESHCONTAINER* meshContainer, DX9FRAME* frame)
+{
+	if (meshContainer->useSoftwareVP)
+		m_device->SetSoftwareVertexProcessing(TRUE);
+
+	if (meshContainer->numInfl == 1)
+		m_device->SetRenderState(D3DRS_VERTEXBLEND, D3DVBF_0WEIGHTS);
+	else
+		m_device->SetRenderState(D3DRS_VERTEXBLEND, meshContainer->numInfl - 1);
+
+	if (meshContainer->numInfl > 0)
+		m_device->SetRenderState(D3DRS_INDEXEDVERTEXBLENDENABLE, TRUE);
+
+	D3DXMATRIXA16        mat;
+	D3DXBONECOMBINATION* bone_comb = (D3DXBONECOMBINATION*)meshContainer->boneCombinationBuf->GetBufferPointer();
+	ID3DXMesh* mesh = meshContainer->MeshData.pMesh;
+	for (UINT iAttrib = 0; iAttrib < meshContainer->numAttributeGroups; iAttrib++) {
+		for (UINT iPaletteEntry = 0; iPaletteEntry < meshContainer->numPaletteEntries; iPaletteEntry++) {
+			const UINT matrix_index = bone_comb[iAttrib].BoneId[iPaletteEntry];
+			if (matrix_index != UINT_MAX) {
+				D3DXMatrixMultiply(
+					&mat,
+					&meshContainer->boneOffsetMatrices.at(matrix_index),
+					meshContainer->boneMatrixPtrs.at(matrix_index)
+				);
+				m_device->SetTransform(D3DTS_WORLDMATRIX(iPaletteEntry), &mat);
+			}
+		}
+
+		mesh->DrawSubset(iAttrib);
+	}
+
+	m_device->SetRenderState(D3DRS_INDEXEDVERTEXBLENDENABLE, FALSE);
+	m_device->SetRenderState(D3DRS_VERTEXBLEND, D3DVBF_DISABLE);
+
+	if (meshContainer->useSoftwareVP)
+		m_device->SetSoftwareVertexProcessing(FALSE);
+}
+
 void DX9::SkinnedModel::SetMaterial(D3DXFRAME* frame, const D3DMATERIAL9& material)
 {
 	DX9MESHCONTAINER* mesh_container = (DX9MESHCONTAINER*)frame->pMeshContainer;
@@ -372,26 +444,25 @@ void DX9::SkinnedModel::ComputeBoundingBoxPoint(D3DXFRAME* frame, D3DXVECTOR3& p
 {
 	DX9MESHCONTAINER* mesh_container = (DX9MESHCONTAINER*)frame->pMeshContainer;
 	while (mesh_container) {
-		if (mesh_container->MeshData.pMesh) {
-			BYTE* vertices;
-			if (mesh_container->MeshData.pMesh->LockVertexBuffer(0, (LPVOID*)&vertices) != D3D_OK)
-				return;
+		BYTE* vertices;
+		if (mesh_container->MeshData.pMesh->LockVertexBuffer(0, (LPVOID*)&vertices) != D3D_OK)
+			return;
 
-			const int NumVertices = mesh_container->MeshData.pMesh->GetNumVertices();
-			const int STRIDE = mesh_container->MeshData.pMesh->GetNumBytesPerVertex();
-			for (int i = 0; i < NumVertices; ++i) {
-				D3DXVECTOR3& pos = *(D3DXVECTOR3*)vertices;
-				if (pos.x < ptmin.x)	ptmin.x = pos.x;
-				if (pos.x > ptmax.x)	ptmax.x = pos.x;
-				if (pos.y < ptmin.y)	ptmin.y = pos.y;
-				if (pos.y > ptmax.y)	ptmax.y = pos.y;
-				if (pos.z < ptmin.z)	ptmin.z = pos.z;
-				if (pos.z > ptmax.z)	ptmax.z = pos.z;
-				vertices += STRIDE;
-			}
-
-			mesh_container->MeshData.pMesh->UnlockVertexBuffer();
+		const int NumVertices = mesh_container->MeshData.pMesh->GetNumVertices();
+		const int STRIDE      = mesh_container->MeshData.pMesh->GetNumBytesPerVertex();
+		for (int i = 0; i < NumVertices; ++i) {
+			D3DXVECTOR3& pos = *(D3DXVECTOR3*)vertices;
+			if (pos.x < ptmin.x)	ptmin.x = pos.x;
+			if (pos.x > ptmax.x)	ptmax.x = pos.x;
+			if (pos.y < ptmin.y)	ptmin.y = pos.y;
+			if (pos.y > ptmax.y)	ptmax.y = pos.y;
+			if (pos.z < ptmin.z)	ptmin.z = pos.z;
+			if (pos.z > ptmax.z)	ptmax.z = pos.z;
+			vertices += STRIDE;
 		}
+
+		mesh_container->MeshData.pMesh->UnlockVertexBuffer();
+
 		mesh_container = (DX9MESHCONTAINER*)mesh_container->pNextMeshContainer;
 	}
 

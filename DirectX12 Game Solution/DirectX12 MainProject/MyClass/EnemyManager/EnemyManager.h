@@ -30,7 +30,8 @@ private:
 	
 	int AppearTimer();
 
-	SimpleMath::Vector3 effect_pos;
+	SimpleMath::Vector3 death_effect_pos;
+	SimpleMath::Vector3 hit_effect_pos;
 
 	std::list<EnemyBase*> enemy;
 
@@ -54,7 +55,7 @@ private:
 	const  float max_death_frame = 0.5f;
 
 	float hit_frame = 0.0f;
-	const  float max_hit_frame = 0.5f;
+	const  float max_hit_frame = 0.17f;
 
 	enum LoadFile  { DUMMY_LINE = 6, ENEMY_NUM = 250 };
 
