@@ -24,6 +24,11 @@ bool Core::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
 	col.bullet.Center = position;
 	launch_count_count = 0;
 	landing_count = 0;
+
+
+
+
+
 	return true;
 }
 
@@ -76,7 +81,6 @@ void Core::Move(SimpleMath::Vector3 player){
 				player_pos = player;
 				bull_pos = position;
 				shot_flag = true;
-				
 			}
 			else if (wait_shot_frame < max_wait_shot)
 			{
@@ -136,6 +140,11 @@ void Core::Move(SimpleMath::Vector3 player){
 
 void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 {
+	auto distance_x = SimpleMath::Vector3::Distance(bull_pos, player_pos);
+	auto distance_y = SimpleMath::Vector3::Distance(bull_pos,SimpleMath::Vector3(0.0,0.5f,50.0f));
+	Vector3 a =SimpleMath::Vector3(distance_x, distance_y,50);
+	a.Normalize();
+
 	if (bull_pos.x > init_bull_pos.x)
 		bull_pos.x -= move_bull_x * delta;
 	else
@@ -143,21 +152,25 @@ void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 
 	if (bull_pos.y > init_bull_pos.y && !bullet_parry_flag)
 	{
+	  c =sqrt(distance_y * distance_y + distance_x * distance_x);
+		//shot_pos* shot_pos / shot_pos bull_pos.y* bull_pos.y + bull_pos.x * bull_pos.x ;
 		bull_pos.y -= move_bull_y * delta;
 
-		DX12Effect.SetPosition("shoot", bull_pos);
+		DX12Effect.SetPosition("shoot", bull_pos);	
 		DX12Effect.Play("shoot");
 	}
 	else
 	{
 		if (landing_effect_frame < max_landing && !bullet_parry_flag)
 		{
-			DX12Effect.SetPosition("landing", bull_pos);
+			DX12Effect.SetPosition("landing", bull_pos); 
 			DX12Effect.PlayOneShot("landing");
+			
 			landing_effect_frame += delta;
 		}
 		else
 		{
+			landing_effect_frame = 0;
 			wait_shot_frame = 0;
 			launch_count_count++;
 			shot_flag = false;

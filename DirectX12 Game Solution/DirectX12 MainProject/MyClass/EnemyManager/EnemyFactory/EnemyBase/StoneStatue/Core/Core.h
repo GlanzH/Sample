@@ -21,16 +21,20 @@ private:
 
 	SimpleMath::Vector3 player_pos;
 	SimpleMath::Vector3 bull_pos;
-
+	
 	bool shot_flag = false;
 	
 	float delta;
+	
+	SimpleMath::Vector3 shot_pos;
+
+	float c;
 
 	const float move_core = 2.0f;
 	const float collision_scale = 0.5f;
 
-	const float move_bull_x = 8.0f;
-	const float move_bull_y = 4.0f;
+	 float move_bull_x = 8.0f;
+	 float move_bull_y = 4.0f;
 
 	const float max_move = 50.0f;
 	const float max_back = 60.0f;
