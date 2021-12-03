@@ -28,30 +28,30 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	if (enemy_tag == "S" || enemy_tag == "H") {
 		anim_model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
 		anim_model->SetPosition(position);
-		anim_model->SetRotation(0.0f, XMConvertToRadians(10.0f), 0.0f);
+		anim_model->SetRotation(0.0f, XMConvertToRadians(anim_init_rotate), 0.0f);
 
 		//箱を作る準備
 		anim_box = anim_model->GetBoundingBox();
-		anim_box.Extents = SimpleMath::Vector3(anim_box.Extents) * 0.01f;
+		anim_box.Extents = SimpleMath::Vector3(anim_box.Extents) * anim_adjust_extents_col;
 
 		//コリジョンモデルの作成
 		anim_collision = DX9::Model::CreateBox(
 			DXTK->Device9,
-			anim_box.Extents.x * 2,
-			anim_box.Extents.y * 2,
-			anim_box.Extents.z * 2
+			anim_box.Extents.x * anim_box_size,
+			anim_box.Extents.y * anim_box_size,
+			anim_box.Extents.z * anim_box_size
 		);
 
 		anim_collision->SetMaterial(material);
 
-		anim_collision->SetScale(0.01);
+		anim_collision->SetScale(anim_adjust_extents_col);
 		anim_box.Center = position;
 	}
 	else {
 		//!モデルの作成
 		model = DX9::Model::CreateFromFile(DXTK->Device9, model_name);
 		model->SetPosition(position);
-		model->SetRotation(0.0f, XMConvertToRadians(90.0f), 0.0f);
+		model->SetRotation(0.0f, XMConvertToRadians(init_rotate), 0.0f);
 
 		//箱を作る準備
 		col.box = model->GetBoundingBox();
@@ -59,9 +59,9 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 		//コリジョンモデルの作成
 		collision = DX9::Model::CreateBox(
 			DXTK->Device9,
-			col.box.Extents.x * 1.5,
-			col.box.Extents.y * 1.5,
-			col.box.Extents.z * 1.5
+			col.box.Extents.x * box_size,
+			col.box.Extents.y * box_size,
+			col.box.Extents.z * box_size
 		);
 
 		collision->SetMaterial(material);
@@ -85,13 +85,17 @@ int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
 		model->SetPosition(position);
 	}
 
-	if (retreat_flg && parry_count < 30){
-		position.x += 15.0f * deltaTime;
-		parry_count++;
+	if (retreat_flg && retreat_count < max_retreat){
+		if(player.x < position.x)
+			position.x += retreat_dist * deltaTime;
+		else
+			position.x -= retreat_dist * deltaTime;
+
+		retreat_count++;
 	} 
 	else {
 		retreat_flg = false;
-		parry_count = 0;
+		retreat_count = 0;
 	}
 
 	LifeDeathDecision();

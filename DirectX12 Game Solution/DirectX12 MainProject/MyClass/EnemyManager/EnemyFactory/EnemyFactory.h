@@ -28,12 +28,12 @@ public:
 
 private:
 	EnemyBase* enemy;
-	char hp{};
-	char Slime_hp;
-	char HighSlime_hp;
-	char FakerLamiel_hp;
-	char StoneStatue_hp;
-	char StoneStatueCore_hp;
+	int hp;
+	int Slime_hp;
+	int HighSlime_hp;
+	int FakerLamiel_hp;
+	int StoneStatue_hp;
+	int StoneStatueCore_hp;
 	std::vector<std::string> enemy_tag;
 
 	DirectX::SimpleMath::Vector3 slime_speed;

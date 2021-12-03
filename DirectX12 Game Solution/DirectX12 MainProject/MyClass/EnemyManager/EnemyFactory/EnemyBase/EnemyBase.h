@@ -41,8 +41,10 @@ public:
 private:
 	void EnemyAnimation();
 	
-	float box_size;
-	float parry_count = 0;
+	int   retreat_count = 0;
+	const int max_retreat   = 30;
+
+	const float retreat_dist = 15.0f;
 
 	bool damage_flag = false;
 
@@ -53,6 +55,14 @@ private:
 	//!ダメージ受けたときに止まる用
 	float damage_frame = 0.0f;
 	const float max_damage_frame = 1.0f;
+
+	const float anim_box_size = 2.0f;
+	const float box_size      = 1.5f;
+
+	const float anim_adjust_extents_col = 0.01f;
+
+	const float anim_init_rotate = 10.0f;
+	const float init_rotate      = 90.0f;
 	
 protected:
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack);
