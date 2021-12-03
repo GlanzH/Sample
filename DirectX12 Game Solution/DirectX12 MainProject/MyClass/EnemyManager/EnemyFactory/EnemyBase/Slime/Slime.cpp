@@ -85,6 +85,10 @@ void Slime::EntryExitJump() {
 
 void Slime::ExitRotate() {
 	const float rotate_speed = 1.0f;
+
+	SetAnimation(anim_model, EXIT_JUMP);
+	anim_model->AdvanceTime(delta / 1.0f);
+
 	if (anim_model->GetRotation().z > 0)
 		anim_model->Rotate(0, -rotate_speed * delta, 0);
 	else

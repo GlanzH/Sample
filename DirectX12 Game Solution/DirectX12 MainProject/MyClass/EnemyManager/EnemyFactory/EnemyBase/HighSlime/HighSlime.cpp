@@ -95,9 +95,10 @@ void HighSlime::EntryExitJump() {
 }
 
 void HighSlime::ExitRotate() {
+	position.y = 0.0f;
 	const float rotate_speed = 1.0f;
 
-	SetAnimation(anim_model, WAIT);
+	SetAnimation(anim_model, EXIT_JUMP);
 	anim_model->AdvanceTime(delta / 1.0f);
 
 	if (anim_model->GetRotation().z > 0)

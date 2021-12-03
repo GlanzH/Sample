@@ -31,7 +31,8 @@ bool EnemyManager::Initialize(PlayerBase* player_base)
 	DX12Effect.Create(L"Effect/EnemyEffect/hit/hit.efk","hit_eff");
 	DX12Effect.Create(L"Effect/EnemyEffect/die/die.efk","die");
 	player_data = player_base;
-	effect_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
+	death_effect_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
+	hit_effect_pos   = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 
 	LoadEnemyArrangement();
 	return true;
@@ -63,7 +64,6 @@ void EnemyManager::Iterator() {
 	{
 		if ((*itr)->LifeDeathDecision() == LIVE) {
 			itr++;
-			//effect_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 		}
 		else {
 			//ìGÇ™éÄñSÇµÇΩÇ∆Ç´ÇÃèàóù
@@ -73,11 +73,11 @@ void EnemyManager::Iterator() {
 
 			if (death_frame < max_death_frame) {
 				if (tag == "S" || tag == "H")
-					effect_pos = (*itr)->GetAnimModel()->GetPosition();
+					death_effect_pos = (*itr)->GetAnimModel()->GetPosition();
 				else
-					effect_pos = (*itr)->GetModel()->GetPosition();
+					death_effect_pos = (*itr)->GetModel()->GetPosition();
 
-				DX12Effect.SetPosition("die", effect_pos);
+				DX12Effect.SetPosition("die", death_effect_pos);
 				DX12Effect.Play("die");
 				death_frame += delta;
 			}
@@ -118,21 +118,18 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 			 base->Retreat();
 	 }
 
-	SimpleMath::Vector3 pos;
-
-	if (tag == "S" || tag == "H")
-		pos = base->GetAnimModel()->GetPosition();
-	else
-		pos = base->GetModel()->GetPosition();
-
-	DX12Effect.SetPosition("hit_eff", pos);
-	DX12Effect.PlayOneShot("hit_eff");
-
-	if (hit_frame < max_hit_frame) {
-		hit_frame += delta;
-	}
-	else
-		hit_frame = 0;
+	// if (hit_frame < max_hit_frame) {
+		 if (tag == "S" || tag == "H")
+			 hit_effect_pos = base->GetAnimModel()->GetPosition();
+		 else
+			 hit_effect_pos = base->GetModel()->GetPosition();
+		// hit_frame += delta;
+	 //}
+	 //else {
+		//DX12Effect.SetPosition("hit_eff", SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX));
+		// DX12Effect.SetPosition("hit_eff", hit_effect_pos);
+		//DX12Effect.PlayOneShot("hit_eff");
+	// }
 }
 
 int EnemyManager::AppearTimer() {

@@ -15,19 +15,19 @@ public:
 	~MultiPointLighting() {};
 
 	void Init();
-	void SetLightPos(SimpleMath::Vector4 pos,int numLight);
-	void SetLightColor(SimpleMath::Vector4 color, int numLight);
-	void SetLightPower(float pow, int numLight);
+	void SetLightPos(SimpleMath::Vector4 pos,int number);
+	//void SetLightColor(SimpleMath::Vector4 color, int numLight);
+	void SetLightPower(float pow, int number);
 	void SetMax(int maxLight);
-	void Begin(DX9::CAMERA,DX9::MODEL&);
-	void Begin(DX9::CAMERA, DX9::SKINNEDMODEL&);
-	void End();
+	void PointRender(DX9::CAMERA,DX9::MODEL&,DX9::SKINNEDMODEL&);
+	//void Begin(DX9::CAMERA, DX9::SKINNEDMODEL);;
+	void ShadeRender(DX9::SKINNEDMODEL& model,SimpleMath::Vector4 color);
 private:
 
 	DX9::SHADER shader;
 
 	int m_maxLight;
-	SimpleMath::Vector4 m_lightsPos[10];
-	SimpleMath::Vector4 m_lightsColor[10];
-	float m_lightsPower[10];
+	SimpleMath::Vector4 m_lightsPos;
+	SimpleMath::Vector4 m_lightsColor;
+	float m_lightsPower;
 };

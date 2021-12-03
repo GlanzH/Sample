@@ -74,9 +74,7 @@ void MainScene::LoadAssets()
 	ground->LoadAsset();
 	player->LoadAssets();
 
-	point.SetLightColor(SimpleMath::Vector4(1, 1, 1, 1), 0);
-	point.SetLightPower(0.02f,0);
-	point.SetMax(1);
+	
 }
 
 // Releasing resources required for termination.
@@ -115,10 +113,6 @@ NextScene MainScene::Update(const float deltaTime)
 	enemy->Update(player->GetModel()->GetPosition(),deltaTime);
 	observer->Update(player, enemy);
 
-	//auto light_pos = ground->GetModel()->GetPosition();
-
-	//point.SetLightPos(SimpleMath::Vector4(light_pos.x, 30, light_pos.z,1), 0);
-
 	return NextScene::Continue;
 }
 
@@ -133,12 +127,14 @@ void MainScene::Render()
 	//3D•`‰æ
 	DX12Effect.SetCamera((DX12::CAMERA)camera->GetCamera());
 	camera->Render();
-	//point.Begin(camera->GetCamera(), ground->GetModel());
-	ground->Render();
-	//point.End();
+	point.SetLightPower(200.0f,0);
+	point.PointRender(camera->GetCamera(), ground->GetModel(), player->GetModel());
+
+	point.ShadeRender(player->GetModel(),SimpleMath::Vector4(0,0,1,0.3f));
 
 	player->Render();
 	enemy->Render();
+
 
 
 

@@ -30,7 +30,8 @@ private:
 	
 	int AppearTimer();
 
-	SimpleMath::Vector3 effect_pos;
+	SimpleMath::Vector3 death_effect_pos;
+	SimpleMath::Vector3 hit_effect_pos;
 
 	std::list<EnemyBase*> enemy;
 

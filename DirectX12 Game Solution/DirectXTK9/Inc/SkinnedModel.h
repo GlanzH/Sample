@@ -21,6 +21,11 @@ namespace DX9 {
 		virtual ~SkinnedModel();
 
 		void Draw();
+		void DrawShadow(const DirectX::XMMATRIX& shadow)
+		{
+			UpdateFrameMatrices(m_frameRoot, (D3DXMATRIX*)&shadow);
+			DrawFrameShadow(m_frameRoot);
+		}
 
 		inline void AdvanceTime(const double elapsedTime) const
 		{ m_animationController->AdvanceTime(elapsedTime, nullptr); }
@@ -131,7 +136,7 @@ namespace DX9 {
 		void SetTrackPosition(const UINT track, const double position) const
 		{ m_animationController->SetTrackPosition(track, position); }
 
-		void SetTrackLoopMode(const UINT track, const D3DXPLAYBACK_TYPE loopType) const;
+		//void SetTrackLoopMode(const UINT track, const D3DXPLAYBACK_TYPE loopType) const;
 
 		void ChangeAnimation(
 			const UINT track1, const UINT track2,
@@ -188,6 +193,10 @@ namespace DX9 {
 		void DrawFrame(D3DXFRAME* frame);
 		void DrawMeshContainer(D3DXMESHCONTAINER* meshContainerBase, D3DXFRAME* frameBase);
 		void DrawMeshContainerIndexed(DX9MESHCONTAINER* meshContainer, DX9FRAME* frame);
+
+		void DrawFrameShadow(D3DXFRAME* frame);
+		void DrawMeshContainerShadow(D3DXMESHCONTAINER* meshContainerBase, D3DXFRAME* frameBase);
+		void DrawMeshContainerIndexedShadow(DX9MESHCONTAINER* meshContainer, DX9FRAME* frame);
 
 		void SetMaterial(D3DXFRAME* frame, const D3DMATERIAL9& material);
 		void ComputeBoundingBoxPoint(D3DXFRAME* frame, D3DXVECTOR3& ptmin, D3DXVECTOR3& ptmax);

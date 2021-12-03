@@ -92,8 +92,9 @@ protected:
 
 	enum ENEMYMOSION
 	{
-		WAIT,
+		EXIT_JUMP,
 		DAMAGE,
+		WAIT,
 		MAX_MOTION
 	};
 };
