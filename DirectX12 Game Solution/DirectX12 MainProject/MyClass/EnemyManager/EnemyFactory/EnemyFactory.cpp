@@ -14,11 +14,11 @@ EnemyFactory::EnemyFactory()
 	faker_lamiel_speed.x = 1.0f;
 	statue_speed.z =0.0f ;
 	stone_core_speed.z = 0.0f;
-	Slime_hp       = 2;
-	HighSlime_hp   = 7;
-	FakerLamiel_hp = 2;
-	StoneStatue_hp = 60;
-	StoneStatueCore_hp = 2;
+	slime_hp       = 2;
+	high_slime_hp   = 7;
+	faker_lamiel_hp = 2;
+	stone_statue_hp = 60;
+	stone_statue_core_hp = 2;
 	//@敵の種類のタグをプッシュバック@//
 	//@　　スライム         @//
 	enemy_tag.push_back("S");
@@ -84,7 +84,7 @@ DirectX::SimpleMath::Vector3 EnemyFactory::SetSpeed(std::string tag)
 
 int EnemyFactory::SetHP(std::string tag)
 {
-	int hps[] = { Slime_hp,HighSlime_hp,FakerLamiel_hp,StoneStatue_hp,StoneStatueCore_hp};
+	int hps[] = { slime_hp,high_slime_hp,faker_lamiel_hp,stone_statue_hp,stone_statue_core_hp};
 
 	for (int i = 0; i < enemy_tag.size(); ++i)
 	{
