@@ -54,7 +54,7 @@ private:
 	const  float max_death_frame = 0.5f;
 
 	float hit_frame = 0.0f;
-	const  float max_hit_frame = 0.5f;
+	const  float max_hit_frame = 0.17f;
 
 	enum LoadFile  { DUMMY_LINE = 6, ENEMY_NUM = 250 };
 

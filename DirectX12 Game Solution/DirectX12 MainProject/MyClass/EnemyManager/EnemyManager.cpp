@@ -119,18 +119,20 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	 }
 
 	SimpleMath::Vector3 pos;
-	if (hit_frame < max_hit_frame) {
-		if (tag == "S" || tag == "H")
-			pos = base->GetAnimModel()->GetPosition();
-		else
-			pos = base->GetModel()->GetPosition();
 
+	if (tag == "S" || tag == "H")
+		pos = base->GetAnimModel()->GetPosition();
+	else
+		pos = base->GetModel()->GetPosition();
+
+	DX12Effect.SetPosition("hit_eff", pos);
+	DX12Effect.PlayOneShot("hit_eff");
+
+	if (hit_frame < max_hit_frame) {
 		hit_frame += delta;
 	}
-	else {
-		DX12Effect.SetPosition("hit_eff", pos);
-		DX12Effect.Play("hit_eff");
-	}
+	else
+		hit_frame = 0;
 }
 
 int EnemyManager::AppearTimer() {
