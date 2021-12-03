@@ -28,14 +28,10 @@ private:
 	
 	SimpleMath::Vector3 shot_pos;
 
-	float c;
-
+	float oblique_shooting;
+	float spead;
 	const float move_core = 2.0f;
 	const float collision_scale = 0.5f;
-
-	 float move_bull_x = 8.0f;
-	 float move_bull_y = 4.0f;
-
 	const float max_move = 50.0f;
 	const float max_back = 60.0f;
 	int attack_count =0;

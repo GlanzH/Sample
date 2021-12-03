@@ -140,29 +140,38 @@ void Core::Move(SimpleMath::Vector3 player){
 void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 {
 	auto distance_x = SimpleMath::Vector3::Distance(bull_pos, player_pos);
-	auto distance_y = SimpleMath::Vector3::Distance(bull_pos,SimpleMath::Vector3(0.0,0.5f,50.0f));
+	auto distance_y = SimpleMath::Vector3::Distance(bull_pos,SimpleMath::Vector3(0.0,-10.0f,50.0f)) /3;
 	Vector3 a =SimpleMath::Vector3(distance_x, distance_y,50);
 	a.Normalize();
+	oblique_shooting = sqrt(distance_y * distance_y + distance_x * distance_x);
+	
+	
+	//bull_pos.x = distance_x * delta;
+	bull_pos.y -= distance_y  * delta;
 
 	if (bull_pos.x > init_bull_pos.x)
-		bull_pos.x -= move_bull_x * delta;
+		bull_pos.x -= distance_x * delta;
 	else
-		bull_pos.x += move_bull_x * delta;
+		bull_pos.x += distance_x * delta;
+	//if (bull_pos.y > init_bull_pos.y)
+	//{
+	//	//bull_pos.y = oblique_shooting;
+	//	bull_pos.y -= move_bull_y * delta;
 
+	//	DX12Effect.SetPosition("shoot", bull_pos);	
+	//	DX12Effect.Play("shoot");
+	//}
 	if (bull_pos.y > init_bull_pos.y)
 	{
-	  c =sqrt(distance_y * distance_y + distance_x * distance_x);
-		//shot_pos* shot_pos / shot_pos bull_pos.y* bull_pos.y + bull_pos.x * bull_pos.x ;
-		bull_pos.y -= move_bull_y * delta;
 
-		DX12Effect.SetPosition("shoot", bull_pos);	
+		DX12Effect.SetPosition("shoot", bull_pos);
 		DX12Effect.Play("shoot");
 	}
 	else
 	{
 		if (landing_effect_frame < max_landing)
 		{
-			DX12Effect.SetPosition("landing", bull_pos); 
+			DX12Effect.SetPosition("landing", bull_pos);
 			DX12Effect.PlayOneShot("landing");
 			
 			landing_effect_frame += delta;
