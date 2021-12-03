@@ -127,8 +127,8 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	 //}
 	 //else {
 		//DX12Effect.SetPosition("hit_eff", SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX));
-		// DX12Effect.SetPosition("hit_eff", hit_effect_pos);
-		//DX12Effect.PlayOneShot("hit_eff");
+		 DX12Effect.SetPosition("hit_eff", hit_effect_pos);
+		DX12Effect.PlayOneShot("hit_eff");
 	// }
 }
 
