@@ -73,7 +73,7 @@ void MainScene::LoadAssets()
 	DX12Effect.Initialize();
 	ground->LoadAsset();
 	player->LoadAssets();
-
+	ui->LoadAsset();
 	
 }
 
@@ -127,7 +127,8 @@ void MainScene::Render()
 	//3D•`‰æ
 	DX12Effect.SetCamera((DX12::CAMERA)camera->GetCamera());
 	camera->Render();
-	point.SetLightPower(200.0f,0);
+
+	point.SetLightPower(100.0f,0);
 	point.PointRender(camera->GetCamera(), ground->GetModel(), player->GetModel());
 
 	point.ShadeRender(player->GetModel(),SimpleMath::Vector4(0,0,1,0.3f));
@@ -141,7 +142,7 @@ void MainScene::Render()
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ
-	//ui->Render(StatusManager::Instance().ReturnVolt());
+	//ui->Render(StatusManager::Instance().ReturnVolt(),StatusManager::Instance().ReturnParry());
 	player->_2DRender();
 
 	DX9::SpriteBatch->End();

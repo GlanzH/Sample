@@ -69,8 +69,8 @@
           <Sprite>
             <Billboard>3</Billboard>
             <ColorAll_Fixed>
-              <R>69</R>
-              <G>96</G>
+              <G>69</G>
+              <B>69</B>
             </ColorAll_Fixed>
           </Sprite>
         </DrawingValues>
@@ -125,9 +125,9 @@
                 <DrawingValues>
                   <Sprite>
                     <ColorAll_Fixed>
-                      <R>3</R>
+                      <R>248</R>
                       <G>0</G>
-                      <B>248</B>
+                      <B>0</B>
                     </ColorAll_Fixed>
                   </Sprite>
                 </DrawingValues>
@@ -197,9 +197,9 @@
           <Sprite>
             <Billboard>1</Billboard>
             <ColorAll_Fixed>
-              <R>140</R>
+              <R>252</R>
               <G>140</G>
-              <B>252</B>
+              <B>140</B>
             </ColorAll_Fixed>
             <Position>1</Position>
             <Position_Fixed_LL>
