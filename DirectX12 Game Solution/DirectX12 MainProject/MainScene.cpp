@@ -142,7 +142,7 @@ void MainScene::Render()
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ
-	//ui->Render(StatusManager::Instance().ReturnVolt(),StatusManager::Instance().ReturnParry());
+	ui->Render(StatusManager::Instance().ReturnAudience(),StatusManager::Instance().ReturnHeart());
 	player->_2DRender();
 
 	DX9::SpriteBatch->End();
