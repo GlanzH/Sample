@@ -48,6 +48,17 @@ private:
 
 	float ui_alpha;
 	float time_delta;
+	float time_stop;
+
+	bool opening_flag;
+	bool start_flag;
+
+	const float ALPHA_SPEED = 200.0f;
+	
+	const float CURTAIN_UP_SPEED = 130.0f;
+
+	float audience;
+
 	// コルーチンのプロトタイプ宣言
 	cppcoro::generator<int> Opening();
 	cppcoro::generator<int>                  co_opening;

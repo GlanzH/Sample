@@ -1,19 +1,35 @@
 #include "MyClass/UIManager/UIManager.h"
 
 void UIManager::LoadAsset() {
-	volt_empty = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/ui_empty.png");
-	volt_max   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/ui_max.png"  );
-	sword_empty = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/empty_sword.png");
-	sword_max	= DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/sword.png"	  );
+	audience_empty = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/audience_ui_empty.png");
+	audience_max   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/audience_ui_max.png"  );
+	heart_empty = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/heart_empty.png");
+	heart_max	= DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/heart_max.png"  );
 }
 
-void UIManager::Render(float voltage, float parry) {
-	DX9::SpriteBatch->DrawSimple(volt_empty.Get(), SimpleMath::Vector3(0.0f, 0.0f, 0.0f));
-	DX9::SpriteBatch->DrawSimple(volt_max.Get(), SimpleMath::Vector3(0.0f, 0.0f, 0.0f), RectWH(0, 0, (int)voltage, 86));
-	DX9::SpriteBatch->DrawSimple(sword_empty.Get(), SimpleMath::Vector3(0.0f, 590.0f, 1.0f));
+int UIManager::Update(const float deltaTime){
+
+	return 0;
+}
+
+void UIManager::Render(float audience, float parry) {
 	DX9::SpriteBatch->DrawSimple(
-		sword_max.Get(),
-		SimpleMath::Vector3(0.0f + 95.0f, 590.0f, 0.0f),
-		RectWH(0, 0, (int)32.8 * parry, 124)
+		audience_empty.Get(),
+		SimpleMath::Vector3(AUDIENCE_UI_POS_X, AUDIENCE_UI_POS_y, 1.0f)
+	);
+	DX9::SpriteBatch->DrawSimple(
+		audience_max.Get(),
+		SimpleMath::Vector3(AUDIENCE_UI_POS_X + 44.0f, AUDIENCE_UI_POS_y, 0.0f),
+		RectWH(0, 0, (int)audience, AUDIENCE_MAX_HIGH)
+	);
+
+	DX9::SpriteBatch->DrawSimple(
+		heart_empty.Get(),
+		SimpleMath::Vector3(HEART_UI_POS_X, HEART_UI_POS_Y, 0.0f),
+		RectWH(0, 0, HEART_MAX_WIDTH, 91 + (int)-4.55 * parry)
+	);
+	DX9::SpriteBatch->DrawSimple(
+		heart_max.Get(),
+		SimpleMath::Vector3(HEART_UI_POS_X, HEART_UI_POS_Y , 1.0f)
 	);
 }

@@ -18,7 +18,12 @@ void TitleScene::Initialize()
     title_pos.x = 0.0f;
     title_pos.y = 0.0f;
     title_pos.z = 1.0f;
+
+    opening_flag = false;
+    start_flag = false;
+
     ui_alpha = 255.0f;
+    time_stop = 0.0f;
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -81,23 +86,36 @@ NextScene TitleScene::Update(const float deltaTime)
 
     time_delta = deltaTime;
 
-    if (DXTK->KeyEvent->pressed.Enter ||
-        DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
-        return NextScene::MainScene;
+    if (opening_flag == false) {
+        if (DXTK->KeyEvent->pressed.Enter ||
+            DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
+
+            co_opening = Opening();        // コルーチンの生成
+            co_opening_it = co_opening.begin(); // コルーチンの実行開始
+            
+            opening_flag = true;
+        }
     }
 
 
-    //co_opening = Opening();        // コルーチンの生成
-    //co_opening_it = co_opening.begin(); // コルーチンの実行開始
 
-    //if (co_opening_it != co_opening.end()) {
-    //    co_opening_it++;
-    //}
 
-    //if (co_opening_it != co_opening.end()) {
-    //    co_opening.begin();
-    //}
 
+    if (co_opening_it != co_opening.end()) {
+        co_opening_it++;
+    }
+
+    if (co_opening_it != co_opening.end()) {
+        co_opening.begin();
+    }
+
+    if (start_flag == true) {
+        return NextScene::MainScene;
+
+    }
+
+
+    
 	return NextScene::Continue;
 }
 
@@ -118,6 +136,7 @@ void TitleScene::Render()
         RectWH(0, 0, 1280, 720),
         DX9::Colors::RGBA(255, 255, 255, ui_alpha)
     );
+
 
 
     DX9::SpriteBatch->End();
@@ -147,21 +166,23 @@ void TitleScene::Render()
 cppcoro::generator<int> TitleScene::Opening() {
     co_yield 0;
 
-    while (ui_alpha > 0) {
-        ui_alpha -= 100.0f * time_delta;
+    while (ui_alpha > 0.0f) {
+        ui_alpha = std::max(ui_alpha - ALPHA_SPEED * time_delta, 0.0f);
         co_yield 1;
     }
-    ui_alpha = 0;
 
-
-    while (title_pos.y > -720.0f) {
-        title_pos.y -= 100.0f * time_delta;
+    while (time_stop < 1.0f) {
+        time_stop += time_delta;
         co_yield 2;
     }
+    time_stop = 0.0f;
 
-    if (title_pos.y = -720.0f) {
-        NextScene::MainScene;
+    while (title_pos.y > -730.0f) {
+        title_pos.y -= CURTAIN_UP_SPEED * time_delta;
+        co_yield 3;
     }
+    
+    start_flag = true;
 
     co_return;
 }
