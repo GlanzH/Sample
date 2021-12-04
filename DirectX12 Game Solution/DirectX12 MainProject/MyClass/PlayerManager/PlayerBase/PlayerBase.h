@@ -36,6 +36,8 @@ public:
 
 	int GetAttackCount() { return motion_count; }
 
+	float GetAppielTime() { return appeil_time; }
+
 	void _2DRender();
 
 	
@@ -201,13 +203,6 @@ private:
 	float		invincible_time     = 0.0f;
 	const float invincible_time_max = 1.5f;
 
-	//アピールする時間
-	float		appeal_time = 0.0f;     //アピールする初期値
-	const float appeal_time_max = 2.0f; //アピールする時間の最大値
-
-	//ステータスアップの時間
-	float		focus_time = 0.0f;     //ステータスアップの時間:初期値
-	const float focus_time_max = 10.0f;//ステータスアップの時間:最大値
 
 	//モーションの名前
 	enum
@@ -283,6 +278,14 @@ private:
 	};
 
 	Appeal_state appeal_state_mode;
+
+	float appeil_time;
+	float appeil_time_max;
+
+	float appeil_cool_time;
+	float appeil_cool_time_max;
+
+	bool appeil_cool_flag = false;
 
 	//必殺技
 	enum SPECIALMOVE
