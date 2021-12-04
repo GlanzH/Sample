@@ -120,8 +120,8 @@ int PlayerBase::Update(const float deltaTime)
 	//アピール
 	Appeal(deltaTime);
 
-	////必殺技
-	//Player_Special_Move(deltaTime);
+	//必殺技
+	Player_Special_Move(deltaTime);
 
 	//プレイヤーの攻撃(修正)
 	Player_Attack_two(deltaTime);
@@ -158,6 +158,10 @@ int PlayerBase::Update(const float deltaTime)
 		effect_generation = false;
 		effect_generation_time = 0.0f;
 
+	}
+
+	if (DXTK->KeyEvent->pressed.P) {
+		Deathblow_count++;
 	}
 
 
@@ -316,7 +320,7 @@ void PlayerBase::Player_jump(const float deltaTime) {
 		pos.y = jump_start_v_ + V0 * jump_time_ - 0.5f * gravity_ * jump_time_ * jump_time_;
 		model->SetPosition(pos);
 
-		if (model->GetPosition().y <= 0.5f) {
+		if (model->GetPosition().y <= 0.8f) {
 			jump_flag_ = false;
 			jump_start_flag = false;
 			jump_start_time = 0.0f;
@@ -618,39 +622,44 @@ void PlayerBase::Player_Attack_two(const float deltaTime) {
 
 void PlayerBase::Attack(const float deltaTime)
 {
-	if (motion_flag_1) {
-		if (direction_state_mode == Direction_State::RIGHT) {
-			if (DX12Effect.CheckAlive("first")) {
-				DX12Effect.Stop("first");
-				DX12Effect.PlayOneShot("first", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
+	if (effect_generation_time >= effect_generation_time_max[motion_count]) {
+		attack_flag = true;
+		if (IsAttack()) {
 
+			if (motion_flag_1) {
+				if (direction_state_mode == Direction_State::RIGHT) {
+					if (DX12Effect.CheckAlive("first")) {
+						DX12Effect.Stop("first");
+						DX12Effect.PlayOneShot("first", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
+
+					}
+					else
+					{
+						DX12Effect.PlayOneShot("first", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
+
+					}
+
+				}
+				else if (direction_state_mode == Direction_State::LEFT) {
+					if (DX12Effect.CheckAlive("first")) {
+						DX12Effect.Stop("first");
+						DX12Effect.PlayOneShot("first", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
+					}
+					else
+					{
+						DX12Effect.PlayOneShot("first", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
+					}
+					DX12Effect.SetRotation("first", Vector3(0.0f, 180.0f, 0.0f));
+
+
+				}
+				if (appeal_state_mode != Appeal_state::FOCUS)
+					damage = 2;
+				if (appeal_state_mode == Appeal_state::FOCUS)
+					damage = 2 * 2;
 			}
-			else
-			{
-				DX12Effect.PlayOneShot("first", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
-
-			}
-
 		}
-		else if (direction_state_mode == Direction_State::LEFT) {
-			if (DX12Effect.CheckAlive("first")) {
-				DX12Effect.Stop("first");
-				DX12Effect.PlayOneShot("first", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
-			}
-			else
-			{
-				DX12Effect.PlayOneShot("first", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
-			}
-			DX12Effect.SetRotation("first", Vector3(0.0f, 180.0f, 0.0f));
-	
-			
-		}
-		if (appeal_state_mode != Appeal_state::FOCUS)
-			damage = 2;
-		if (appeal_state_mode == Appeal_state::FOCUS)
-			damage = 2 * 2;
 	}
-
 
 	if (effect_generation_time >= effect_generation_time_max[motion_count]) {
 		attack_flag = true;
@@ -729,8 +738,10 @@ void PlayerBase::Attack(const float deltaTime)
 
 void PlayerBase::Player_Special_Move(const float deltaTime) {
 	if (!jump_flag_) {
-		if (DXTK->KeyEvent->pressed.L || DXTK->GamePadEvent[0].rightShoulder || DXTK->GamePadEvent[0].leftShoulder) {
-			specialmove_state = SPECIALMOVE::DEATHBLOW;
+		if (Deathblow_count >= 20) {
+			if (DXTK->KeyEvent->pressed.L || DXTK->GamePadEvent->rightShoulder == GamePad::ButtonStateTracker::PRESSED) {
+				specialmove_state = SPECIALMOVE::DEATHBLOW;
+			}
 		}
 	}
 
@@ -749,17 +760,16 @@ void PlayerBase::Player_Special_Move(const float deltaTime) {
 		}
 	}
 
-	if (specialmove_time >= 2.0f) {
+	if (specialmove_time >= 0.1f) {
 		//attack_flag = true;
 		//if (IsAttack()) {
 		Blackout_flag = false;
-		DX12Effect.PlayOneShot("deathblow_effect");
-		DX12Effect.SetPosition("deathblow_effect", Vector3(0, 0, player_pos.z));
+		DX12Effect.PlayOneShot("deathblow_effect", Vector3(0, 10, 0));
 		damage = 20;
 
 	}
 	//明転
-	if (specialmove_time >= 4.0f)
+	if (specialmove_time >= 3.666f)
 		bright_flag = true;
 
 	if (bright_flag) {
@@ -774,11 +784,10 @@ void PlayerBase::Player_Special_Move(const float deltaTime) {
 	if (specialmove_time >= specialmove_time_max) {
 		specialmove_state = SPECIALMOVE::NOMAL_MOVE;
 		specialmove_time = 0.0f;
+
+		//必殺技ゲージリセット呼び出し
+		Deathblow_count = 0;
 	}
-
-
-
-
 }
 
 
@@ -795,28 +804,30 @@ void PlayerBase::Appeal(const float deltaTime)
 	//アピール
 	if (!jump_flag_) {
 		if (DXTK->KeyState->W||DXTK->GamePadState->triggers.left) {
-			appeal_state_mode = Appeal_state::APPEAL;
+			SetAnimation(model, APPEIL);
 
 		}
 	}
-	if (appeal_state_mode == Appeal_state::APPEAL) {
-		SetAnimation(model, APPEIL);
 
-		appeal_time += deltaTime;
-		if (appeal_time >= appeal_time_max) {
-			appeal_time = 0.0f;
-			appeal_state_mode = Appeal_state::FOCUS;
-		}
-	}
 
-	//ステータスアップ
-	if (appeal_state_mode == Appeal_state::FOCUS) {
-		focus_time += deltaTime;
-		if (focus_time >= focus_time_max) {
-			focus_time = 0.0f;
-			appeal_state_mode = Appeal_state::NORMAL;
-		}
-	}
+	//if (appeal_state_mode == Appeal_state::APPEAL) {
+	//	SetAnimation(model, APPEIL);
+
+	//	appeal_time += deltaTime;
+	//	if (appeal_time >= appeal_time_max) {
+	//		appeal_time = 0.0f;
+	//		appeal_state_mode = Appeal_state::FOCUS;
+	//	}
+	//}
+
+	////ステータスアップ
+	//if (appeal_state_mode == Appeal_state::FOCUS) {
+	//	focus_time += deltaTime;
+	//	if (focus_time >= focus_time_max) {
+	//		focus_time = 0.0f;
+	//		appeal_state_mode = Appeal_state::NORMAL;
+	//	}
+	//}
 }
 
 void PlayerBase::_2DRender()
@@ -854,11 +865,11 @@ void PlayerBase::_2DRender()
 	//	L"エフェクト時間: %f エフェクトMAX: %f", effect_generation_time
 	//);
 
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(1000.0f, 80.0f),
-	//	DX9::Colors::BlueViolet,
-	//	L"%d", motion_count
-	//);
+	DX9::SpriteBatch->DrawString(font.Get(),
+		SimpleMath::Vector2(1000.0f, 80.0f),
+		DX9::Colors::White,
+		L"%d", Deathblow_count
+	);
 
 	//DX9::SpriteBatch->DrawString(font.Get(),
 	//	SimpleMath::Vector2(1000.0f, 100.0f),
