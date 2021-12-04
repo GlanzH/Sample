@@ -10,6 +10,13 @@ bool PlayerBase::Initialize()
 	jump_time_ = 0.0f;
 	jump_start_v_ = 0.0f;
 
+	appeil_time = 0.0f;
+	appeil_time_max = 5.0f;
+
+	appeil_cool_time     = 0.0f;
+	appeil_cool_time_max = 0.5f;
+
+
 	appeal_state_mode = Appeal_state::NORMAL;
 
 	direction_state_mode = Direction_State::RIGHT;
@@ -803,31 +810,37 @@ void PlayerBase::Appeal(const float deltaTime)
 {
 	//アピール
 	if (!jump_flag_) {
-		if (DXTK->KeyState->W||DXTK->GamePadState->triggers.left) {
-			SetAnimation(model, APPEIL);
+		if (!appeil_cool_flag) {
+			if (DXTK->KeyState->W || DXTK->GamePadState->triggers.left) {
+				appeal_state_mode = Appeal_state::APPEAL;
 
+
+			}
+		}
+	}
+	if (appeal_state_mode == Appeal_state::APPEAL) {
+		SetAnimation(model, APPEIL);
+		appeil_time += deltaTime;
+	}
+
+	if (appeil_time >= appeil_time_max) {
+		appeil_cool_flag = true;
+		appeal_state_mode = Appeal_state::NORMAL;
+	}
+
+	if (appeil_cool_flag) {
+		appeil_cool_time += deltaTime;
+		if (appeil_cool_time >= appeil_cool_time_max) {
+			appeil_cool_flag = false;
+			appeil_cool_time = 0.0f;
 		}
 	}
 
 
-	//if (appeal_state_mode == Appeal_state::APPEAL) {
-	//	SetAnimation(model, APPEIL);
 
-	//	appeal_time += deltaTime;
-	//	if (appeal_time >= appeal_time_max) {
-	//		appeal_time = 0.0f;
-	//		appeal_state_mode = Appeal_state::FOCUS;
-	//	}
-	//}
-
-	////ステータスアップ
-	//if (appeal_state_mode == Appeal_state::FOCUS) {
-	//	focus_time += deltaTime;
-	//	if (focus_time >= focus_time_max) {
-	//		focus_time = 0.0f;
-	//		appeal_state_mode = Appeal_state::NORMAL;
-	//	}
-	//}
+	//アピール　リセット
+	if (appeal_state_mode == Appeal_state::NORMAL )
+		model->SetTrackPosition(APPEIL, 0.0);
 }
 
 void PlayerBase::_2DRender()
@@ -839,19 +852,19 @@ void PlayerBase::_2DRender()
 		DX9::Colors::RGBA(0, 0, 0, Transparency)
 	);
 
-	//if (effect_generation){
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 0.0f),
-	//		DX9::Colors::Black,
-	//		L"ON"
-	//	);
-	//} else {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 0.0f),
-	//		DX9::Colors::Black,
-	//		L"OFF"
-	//	);
-	//}
+	if (appeal_state_mode == Appeal_state::APPEAL){
+		DX9::SpriteBatch->DrawString(font.Get(),
+			SimpleMath::Vector2(1000.0f, 0.0f),
+			DX9::Colors::Black,
+			L"ON"
+		);
+	} else {
+		DX9::SpriteBatch->DrawString(font.Get(),
+			SimpleMath::Vector2(1000.0f, 0.0f),
+			DX9::Colors::Black,
+			L"OFF"
+		);
+	}
 
 	//DX9::SpriteBatch->DrawString(font.Get(),
 	//	SimpleMath::Vector2(1000.0f, 20.0f),
