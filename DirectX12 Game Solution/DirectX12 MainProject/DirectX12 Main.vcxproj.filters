@@ -76,6 +76,9 @@
     <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core">
       <UniqueIdentifier>{5987d9f7-1833-4ea4-92a8-3971b7442bd8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\AudianceManager">
+      <UniqueIdentifier>{c73b9d16-015d-4ff2-8e17-fe45e1349e79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -175,6 +178,9 @@
     <ClInclude Include="Base\DX12Effekseer.h">
       <Filter>MyClass\Effekseer</Filter>
     </ClInclude>
+    <ClInclude Include="MyClass\AudianceManager\AudianceManager.h">
+      <Filter>MyClass\AudianceManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -252,6 +258,9 @@
     </ClCompile>
     <ClCompile Include="Base\DX12Effekseer.cpp">
       <Filter>MyClass\Effekseer</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\AudianceManager\AudianceManager.cpp">
+      <Filter>MyClass\AudianceManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

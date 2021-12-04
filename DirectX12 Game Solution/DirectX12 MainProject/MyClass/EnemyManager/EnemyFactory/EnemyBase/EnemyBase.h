@@ -41,8 +41,8 @@ public:
 private:
 	void EnemyAnimation();
 	
-	int   retreat_count = 0;
-	const int max_retreat   = 30;
+	int   retreat_count   = 0;
+	const int max_retreat = 30;
 
 	const float retreat_dist = 15.0f;
 
