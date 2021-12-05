@@ -13,7 +13,6 @@ bool PlayerBase::Initialize()
 
 
 
-	appeal_state_mode = Appeal_state::NORMAL;
 
 	direction_state_mode = Direction_State::RIGHT;
 
@@ -255,7 +254,7 @@ void PlayerBase::Player_move(const float deltaTime)
 {
 	if (!parry_flag) {
 		if(!deathbrow_flag){
-			if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
+			if (!appeil_flag) {
 				if (canot_move_state_mode == CANNOT_MOVE_STATE::MOVE) {
 					//プレイヤー:移動(キーボード) & ゲームパッド十字キー
 					if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
@@ -296,7 +295,7 @@ void PlayerBase::Player_jump(const float deltaTime) {
 	if (!parry_flag) {
 		if (!deathbrow_flag) {
 			if (under_attack_state_mode == UNDER_ATTACK_STATE::NOMAL) {
-				if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
+				if (!appeil_flag) {
 					if (!jump_flag_) {
 						if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a==GamePad::ButtonStateTracker::PRESSED) {
 							jump_start_flag = true;
@@ -336,7 +335,7 @@ void PlayerBase::Player_attack(const float deltaTime) {
 	if (!cool_time_flag_zwei) {
 		if (!parry_flag) {
 			if (!deathbrow_flag) {
-				if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
+				if (!appeil_flag) {
 					if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
 						//移動不可
 						canot_move_state_mode = CANNOT_MOVE_STATE::CANNOT_MOVE;
@@ -440,10 +439,7 @@ void PlayerBase::Player_attack(const float deltaTime) {
 					DX12Effect.SetPosition("first", Vector3(player_pos.x - 7.0f, player_pos.y + 2.0f, player_pos.z));
 					DX12Effect.SetRotation("first", Vector3(0.0f, 180.0f, 0.0f));
 				}
-				if (appeal_state_mode != Appeal_state::FOCUS)
 					damage = 2;
-				if (appeal_state_mode == Appeal_state::FOCUS)
-					damage = 2 * 2;
 			}
 			else if (StatusManager::Instance().GetCombo() == 2 && motion_count == 1) {
 
@@ -457,11 +453,7 @@ void PlayerBase::Player_attack(const float deltaTime) {
 					DX12Effect.SetRotation("second", Vector3(0.0f, 180.0f, 0.0f));
 
 				}
-
-				if (appeal_state_mode != Appeal_state::FOCUS)
 					damage = 3;
-				if (appeal_state_mode == Appeal_state::FOCUS)
-					damage = 3 * 2;
 
 			}
 			else if (StatusManager::Instance().GetCombo() == 3 && motion_count == 2) {
@@ -475,10 +467,7 @@ void PlayerBase::Player_attack(const float deltaTime) {
 					DX12Effect.SetRotation("third", Vector3(0.0f, 180.0f, 0.0f));
 
 				}
-				if (appeal_state_mode != Appeal_state::FOCUS)
 					damage = 5;
-				if (appeal_state_mode == Appeal_state::FOCUS)
-					damage = 5 * 2;
 
 			}
 		}
@@ -505,7 +494,7 @@ void PlayerBase::Player_Attack_two(const float deltaTime) {
 	if (!cool_time_flag_zwei) {
 		if (!parry_flag) {
 			if (!deathbrow_flag) {
-				if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
+				if (!appeil_flag) {
 
 					//1撃目
 					if (DXTK->KeyEvent->pressed.A || DXTK->GamePadEvent->x == GamePad::ButtonStateTracker::PRESSED) {
@@ -655,10 +644,7 @@ void PlayerBase::Attack(const float deltaTime)
 
 
 				}
-				if (appeal_state_mode != Appeal_state::FOCUS)
-					damage = 2;
-				if (appeal_state_mode == Appeal_state::FOCUS)
-					damage = 2 * 2;
+				damage = 2;
 			}
 		}
 	}
@@ -690,11 +676,7 @@ void PlayerBase::Attack(const float deltaTime)
 					DX12Effect.SetRotation("second", Vector3(0.0f, 180.0f, 0.0f));
 
 				}
-
-				if (appeal_state_mode != Appeal_state::FOCUS)
-					damage = 3;
-				if (appeal_state_mode == Appeal_state::FOCUS)
-					damage = 3 * 2;
+				damage = 3;
 			}
 		}
 	}
@@ -725,10 +707,7 @@ void PlayerBase::Attack(const float deltaTime)
 					DX12Effect.SetRotation("third", Vector3(0.0f, 180.0f, 0.0f));
 
 				}
-				if (appeal_state_mode != Appeal_state::FOCUS)
-					damage = 5;
-				if (appeal_state_mode == Appeal_state::FOCUS)
-					damage = 5 * 2;
+				damage = 5;
 
 
 			}
@@ -807,24 +786,24 @@ void PlayerBase::Appeal(const float deltaTime)
 	if (!jump_flag_) {
 		if (!appeil_cool_flag) {
 			if (DXTK->KeyState->W || DXTK->GamePadState->triggers.left) {
-				appeal_state_mode = Appeal_state::APPEAL;
+				appeil_flag = true;
 			}
 			else
 			{
-				appeal_state_mode = Appeal_state::NORMAL;
+				appeil_flag = false;
 				appeil_time = 0.0f;
 				model->SetTrackPosition(APPEIL, 0.0);
 				
 			}
 		}
 	}
-	if (appeal_state_mode == Appeal_state::APPEAL) {
+	if (appeil_flag) {
 		SetAnimation(model, APPEIL);
 		appeil_time += deltaTime;
 	}
 
 	if (appeil_time >= appeil_time_max) {//ボタン話したときもNOMALに戻す
-		appeal_state_mode = Appeal_state::NORMAL;
+		appeil_flag = false;
 		appeil_time = 0.0f;
 		model->SetTrackPosition(APPEIL, 0.0);
 		appeil_cool_flag = true;
@@ -849,7 +828,7 @@ void PlayerBase::_2DRender()
 		DX9::Colors::RGBA(0, 0, 0, Transparency)
 	);
 
-	if (appeal_state_mode == Appeal_state::APPEAL){
+	if (appeil_flag){
 		DX9::SpriteBatch->DrawString(font.Get(),
 			SimpleMath::Vector2(1000.0f, 0.0f),
 			DX9::Colors::White,

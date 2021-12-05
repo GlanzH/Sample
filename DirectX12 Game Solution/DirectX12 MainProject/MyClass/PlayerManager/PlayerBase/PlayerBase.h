@@ -274,14 +274,7 @@ private:
 	Direction_State direction_state_mode;
 
 	//ÉAÉsÅ[Éã
-	enum Appeal_state
-	{
-		NORMAL,
-		APPEAL,
-		FOCUS
-	};
-
-	Appeal_state appeal_state_mode;
+	bool appeil_flag = false;
 
 	float appeil_time = 0.0f;
 	float appeil_time_max = 5.0f;
