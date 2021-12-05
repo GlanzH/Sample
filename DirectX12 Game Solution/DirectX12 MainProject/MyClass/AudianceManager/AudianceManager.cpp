@@ -3,14 +3,13 @@
 void AudienceManager::LoadAssets() {
 	audience = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Audience\\StandingMan\\audience_stand.X");
 	throw_things_lv2 = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Audience\\ThrowThings\\throw_lv2b.X");
-	man = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Audience\\ExplodingMan\\audience_damege_bone.X");
+
 	//audience->SetTexture(0,L"audience.png");
 
 	//material.Diffuse = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 0.0f);
 	//material.Ambient = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 0.0f);
 	//material.Specular = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 0.0f);
 
-	man->SetPosition(0, 0, 25);
 
 	throw_things_lv2->SetPosition(0, -12.0f, 25);
 
@@ -52,6 +51,5 @@ void AudienceManager::Render() {
 		
 	}
 
-	//man->Draw();
 	//throw_things_lv2->Draw();
 }

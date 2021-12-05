@@ -79,6 +79,9 @@
     <Filter Include="MyClass\AudianceManager">
       <UniqueIdentifier>{c73b9d16-015d-4ff2-8e17-fe45e1349e79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\AudianceManager\ExplodeMan">
+      <UniqueIdentifier>{2e8b76d3-b30b-4091-b1e9-a7aa82c3cf8d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -181,6 +184,9 @@
     <ClInclude Include="MyClass\AudianceManager\AudianceManager.h">
       <Filter>MyClass\AudianceManager</Filter>
     </ClInclude>
+    <ClInclude Include="MyClass\AudianceManager\ExplodeMan\ExplodeMan.h">
+      <Filter>MyClass\AudianceManager\ExplodeMan</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -261,6 +267,9 @@
     </ClCompile>
     <ClCompile Include="MyClass\AudianceManager\AudianceManager.cpp">
       <Filter>MyClass\AudianceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\AudianceManager\ExplodeMan\ExplodeMan.cpp">
+      <Filter>MyClass\AudianceManager\ExplodeMan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

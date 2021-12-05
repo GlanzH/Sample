@@ -81,6 +81,8 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 
 		col.box.Center = position;
 	}
+
+	explode.LoadAssets(initial_position.x);
 }
 
 int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime)
@@ -110,6 +112,9 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool
 		retreat_flg   = false;
 		retreat_count = 0;
 	}
+
+	if (position.z < 15.0f)
+		explode.Update(position, delta);
 
 	return 0;
 }
@@ -166,8 +171,12 @@ bool EnemyBase::LifeDeathDecision() {
 	if (enemy_hp < 0)
 		return DEAD;
 
-	if (position.z <= 15.0f)
+	 if (position.z <= 15.0f && auto_destroy_frame < max_auto_destroy) {
+		 auto_destroy_frame += delta;
+	}
+else if (position.z <= 15.0f && auto_destroy_frame > max_auto_destroy) {
 		return AUTO;
+	}
 
 	return LIVE;
 }
@@ -180,6 +189,9 @@ void EnemyBase::Retreat()
 void EnemyBase::Render() {
 	if (enemy_tag == "S" || enemy_tag == "H") {
 		anim_model->Draw();
+
+		if (position.z < 15.0f)
+			explode.Render();
 		//anim_collision->Draw();
 	}
 	else {

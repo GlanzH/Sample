@@ -51,6 +51,7 @@ int EnemyManager::Update(SimpleMath::Vector3 player,bool special_attack_flag, bo
 		}
 	}
 
+	StatusManager::Instance().DownAudience(delta);
 	return 0;
 }
 
@@ -70,6 +71,7 @@ void EnemyManager::Iterator() {
 				(*itr)->DeathEffect();
 			}
 			else {
+				StatusManager::Instance().AddAudience(10);
 				itr = enemy.erase(itr);
 				continue;
 			}

@@ -2,6 +2,7 @@
 
 #include"MyClass/EnumManager/EnumManager.h"
 #include "MyClass/PlayerManager/PlayerBase/PlayerBase.h"
+#include "MyClass/AudianceManager/ExplodeMan/ExplodeMan.h"
 #include "Base/DX12Effekseer.h"
 
 using namespace DirectX;
@@ -45,11 +46,16 @@ public:
 private:
 	void EnemyAnimation();
 	
+	ExplodeMan explode;
+
 	SimpleMath::Vector3 death_effect_pos;
 	SimpleMath::Vector3 hit_effect_pos;
 
 	int   retreat_count   = 0;
 	const int max_retreat = 30;
+
+	float auto_destroy_frame = 0.0f;
+	const float max_auto_destroy = 1.5f;
 
 	const float retreat_dist = 15.0f;
 
