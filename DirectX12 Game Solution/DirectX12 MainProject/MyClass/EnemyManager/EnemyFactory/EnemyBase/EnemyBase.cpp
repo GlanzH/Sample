@@ -7,6 +7,15 @@ EnemyBase::EnemyBase()
 {
 }
 
+bool EnemyBase::EffectInit() {
+	DX12Effect.Initialize();
+	DX12Effect.Create(L"Effect/EnemyEffect/hit/hit.efk", "hit_eff");
+	DX12Effect.Create(L"Effect/EnemyEffect/die/die.efk", "die");
+	death_effect_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
+	hit_effect_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
+	return true;
+}
+
 bool EnemyBase::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
 {
 	enemy_tag   = tag;
@@ -121,6 +130,19 @@ void EnemyBase::EnemyAnimation() {
 		SetAnimation(anim_model, DAMAGE);
 
 	anim_model->AdvanceTime(delta / 1.0f);
+}
+
+void EnemyBase::HitEffect() {
+	hit_effect_pos = position;
+
+	DX12Effect.PlayOneShot("hit_eff", hit_effect_pos);
+}
+
+void EnemyBase::DeathEffect() {
+	death_effect_pos = position;
+
+	if (death_effect_pos.z > 40)
+		DX12Effect.PlayOneShot("die", death_effect_pos);
 }
 
 void EnemyBase::Damage(int damage) {

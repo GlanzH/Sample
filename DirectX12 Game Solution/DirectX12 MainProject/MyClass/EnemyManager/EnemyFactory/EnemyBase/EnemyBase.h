@@ -27,7 +27,11 @@ public:
 	virtual void Render();
 
 	void Retreat();
-	
+
+	bool EffectInit();
+	void HitEffect();
+	void DeathEffect();
+
 	virtual void Damage(int damage);
 	bool LifeDeathDecision();
 
@@ -41,6 +45,9 @@ public:
 private:
 	void EnemyAnimation();
 	
+	SimpleMath::Vector3 death_effect_pos;
+	SimpleMath::Vector3 hit_effect_pos;
+
 	int   retreat_count   = 0;
 	const int max_retreat = 30;
 
