@@ -68,6 +68,7 @@ void EnemyManager::Iterator() {
 
 			if ((*itr)->LifeDeathDecision() == DEAD) {
 				(*itr)->DeathEffect();
+				StatusManager::Instance().HeartCount();
 			}
 			else {
 				itr = enemy.erase(itr);

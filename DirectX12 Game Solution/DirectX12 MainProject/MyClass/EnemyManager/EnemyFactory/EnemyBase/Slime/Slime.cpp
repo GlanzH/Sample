@@ -29,7 +29,7 @@ void Slime::Action() {
 	case MOVE:
 		is_move_frame += delta;
 
-		if (is_move_frame < 1) {
+		if (is_move_frame < max_is_move) {
 			if (!EnemyBase::IsDamage()) {
 				Rotate();
 				Move();
