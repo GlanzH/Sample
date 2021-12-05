@@ -32,11 +32,13 @@ bool Core::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
 	return true;
 }
 
-int Core::Update(SimpleMath::Vector3 player, const float deltaTime) {
+int Core::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime) {
 	
 	delta = deltaTime;
 	
-	EnemyBase::Update(player, deltaTime);
+	EnemyBase::Update(player,special_attack_flag,thorow_things_flag, deltaTime);
+
+	if(!special_attack_flag && !thorow_things_flag)
 	Move(player);
 
 

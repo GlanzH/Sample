@@ -26,13 +26,15 @@ bool FakerLamiel::Initialize(std::string tag, SimpleMath::Vector3 speed, int hp)
 	return true;
 }
 
-int FakerLamiel::Update(SimpleMath::Vector3 player, const float deltaTime) {
-	EnemyBase::Update(player, deltaTime);
+int FakerLamiel::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime) {
+	EnemyBase::Update(player,special_attack_flag,thorow_things_flag, deltaTime);
 
 	delta = deltaTime;
 	
-	Move(player);
-	MoveFireCollision();
+	if (!special_attack_flag && !thorow_things_flag) {
+		Move(player);
+		MoveFireCollision();
+	}
 
 	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 
@@ -128,5 +130,5 @@ void FakerLamiel::MoveFireCollision() {
 
 void FakerLamiel::Render() {
 	EnemyBase::Render();
-	obstacle_collision->Draw();
+	//obstacle_collision->Draw();
 }

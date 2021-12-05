@@ -38,10 +38,10 @@ bool EnemyManager::Initialize(PlayerBase* player_base)
 	return true;
 }
 
-int EnemyManager::Update(SimpleMath::Vector3 player, const float deltaTime)
+int EnemyManager::Update(SimpleMath::Vector3 player,bool special_attack_flag, bool thorow_things_flag, const float deltaTime)
 {
 	for (auto& enemies : enemy) {
-		enemies->Update(player,deltaTime);
+		enemies->Update(player, special_attack_flag, thorow_things_flag,deltaTime);
 	}
 
 	Iterator();

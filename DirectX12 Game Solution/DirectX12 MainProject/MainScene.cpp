@@ -13,6 +13,7 @@ MainScene::MainScene(): dx9GpuDescriptor{}
 	ground   = new GroundManager;
 	player   = new PlayerBase;
 	enemy    = new EnemyManager;
+	audience = new AudienceManager;
 	observer = new Observer;
 	ui       = new UIManager;
 }
@@ -22,6 +23,7 @@ MainScene::~MainScene() {
 	delete ground;
 	delete player;
 	delete enemy;
+	delete audience;
 	delete observer;
 	delete ui;
 
@@ -73,8 +75,8 @@ void MainScene::LoadAssets()
 	DX12Effect.Initialize();
 	ground->LoadAsset();
 	player->LoadAssets();
+	audience->LoadAssets();
 	ui->LoadAsset();
-	
 }
 
 // Releasing resources required for termination.
@@ -110,7 +112,8 @@ NextScene MainScene::Update(const float deltaTime)
 	DX12Effect.Update(deltaTime);
 	player->Update(deltaTime);
 	camera->Update(player->GetModel()->GetPosition());
-	enemy->Update(player->GetModel()->GetPosition(),deltaTime);
+	enemy->Update(player->GetModel()->GetPosition(),false,false,deltaTime);
+	audience->Update(deltaTime);
 	observer->Update(player, enemy);
 
 	return NextScene::Continue;
@@ -135,14 +138,12 @@ void MainScene::Render()
 
 	player->Render();
 	enemy->Render();
-
-
-
+	audience->Render();
 
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ
-	ui->Render(StatusManager::Instance().ReturnAudience(),StatusManager::Instance().ReturnHeart());
+	//ui->Render(StatusManager::Instance().ReturnAudience(),StatusManager::Instance().ReturnHeart());
 	player->_2DRender();
 
 	DX9::SpriteBatch->End();

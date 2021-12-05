@@ -10,7 +10,7 @@ public:
 	Core();
 	~Core() {}
     bool Initialize(std::string tag,SimpleMath::Vector3 speed, int hp);
-	int Update(SimpleMath::Vector3 player, const float deltaTime);
+	int Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 	void Render();
 
 private:
