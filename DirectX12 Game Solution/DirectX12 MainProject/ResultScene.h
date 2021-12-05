@@ -6,6 +6,7 @@
 
 #include "Scene.h"
 #include "MyClass/RankJudgeManager/RankJudgeManager.h"
+#include "MyClass/UIManager/UIManager.h"
 
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
@@ -45,4 +46,5 @@ private:
 
 	RankJudgeManager rankjudge;
 
+	UIManager ui;
 };

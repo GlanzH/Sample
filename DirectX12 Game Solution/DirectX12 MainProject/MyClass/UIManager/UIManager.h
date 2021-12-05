@@ -15,12 +15,22 @@ public:
 	int Update(const float deltaTime);
 	int GetTensionCount(int count) { return 0; }
 	void Render(float distance ,float heart);
+	void RankRnder(int rank);
 
 private:
 	DX9::SPRITE audience_empty;
 	DX9::SPRITE audience_max;
+	
 	DX9::SPRITE heart_empty;
 	DX9::SPRITE heart_max;
+
+	DX9::SPRITE rank_s;
+	DX9::SPRITE rank_a;
+	DX9::SPRITE rank_b;
+	DX9::SPRITE rank_c;
+	DX9::SPRITE rank_d;
+	DX9::SPRITE rank_e;
+	
 
 	const float AUDIENCE_UI_POS_X = 40.0f;
 	const float AUDIENCE_UI_POS_y = 600.0f;

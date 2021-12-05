@@ -82,7 +82,7 @@ NextScene ResultScene::Update(const float deltaTime)
     }
 
     rankjudge.GetVoltage();
-    int a = rankjudge.JudgeRnak();
+    rankjudge.JudgeRnak();
 
 	return NextScene::Continue;
 }
