@@ -3,13 +3,25 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 
-class AudianceManager {
+class AudienceManager {
 public:
-	AudianceManager() {}
-	~AudianceManager() {}
+	AudienceManager() {}
+	~AudienceManager() {}
 	void LoadAssets();
-	int  Update();
+	int  Update(const float deltaTime);
 	void Render();
+	bool GetThrowThingsFlag() { return throw_things_flag; }
 private:
-	DX9::MODEL audiance;
+	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack);
+
+	DX9::MODEL		  audience;
+	DX9::SKINNEDMODEL model;
+	DX9::SKINNEDMODEL throw_things_lv2;
+
+	bool throw_things_flag = false;
+
+	enum {
+		FIRST,
+		MAX_MOTION
+	};
 };

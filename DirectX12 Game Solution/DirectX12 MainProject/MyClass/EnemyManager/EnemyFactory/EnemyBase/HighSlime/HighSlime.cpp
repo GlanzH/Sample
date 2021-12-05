@@ -12,13 +12,14 @@ bool HighSlime::Initialize()
     return false;
 }
 
-int HighSlime::Update(SimpleMath::Vector3 player, const float deltaTime)
+int HighSlime::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime)
 {
-    EnemyBase::Update(player, deltaTime);
+    EnemyBase::Update(player,special_attack_flag,thorow_things_flag, deltaTime);
 
 	delta = deltaTime;
 	player_pos = player;
 
+	if (!special_attack_flag && !thorow_things_flag)
 	Action();
 
 	return 0;

@@ -73,7 +73,7 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	}
 }
 
-int EnemyBase::Update(SimpleMath::Vector3 player, const float deltaTime)
+int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime)
 {
 	delta = deltaTime;
 

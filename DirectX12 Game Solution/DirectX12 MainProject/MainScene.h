@@ -58,7 +58,7 @@ private:
 	CameraManager*   camera;
 	PlayerBase*      player;
 	EnemyManager*    enemy;
-	AudianceManager* audiance;
+	AudienceManager* audience;
 	Observer*        observer;
 	UIManager*       ui;
 

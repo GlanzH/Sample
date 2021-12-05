@@ -9,7 +9,7 @@ public:
 	Slime() {};
 	~Slime() {}
 
-	int Update(SimpleMath::Vector3 player, const float deltaTime);
+	int Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 
 private:
 	void Action();
@@ -33,6 +33,8 @@ private:
 	 bool jump_flag = true;
 	float jump_time = 0.0f;
 	float jump_dist;
+
+	bool flag = false;
 
 	const float jump_power = -0.3f;
 	const float jump_speed = 25.0f;
