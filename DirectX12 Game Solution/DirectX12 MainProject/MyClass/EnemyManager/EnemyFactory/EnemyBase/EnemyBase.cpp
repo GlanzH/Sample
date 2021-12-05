@@ -102,8 +102,6 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool
 		retreat_count = 0;
 	}
 
-	LifeDeathDecision();
-
 	return 0;
 }
 
@@ -145,6 +143,9 @@ bool EnemyBase::IsDamage() {
 bool EnemyBase::LifeDeathDecision() {
 	if (enemy_hp < 0)
 		return DEAD;
+
+	if (position.z <= 15.0f)
+		return AUTO;
 
 	return LIVE;
 }

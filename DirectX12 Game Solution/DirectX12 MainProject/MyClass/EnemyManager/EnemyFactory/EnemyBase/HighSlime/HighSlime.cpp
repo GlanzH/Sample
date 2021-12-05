@@ -46,7 +46,7 @@ void HighSlime::Action() {
 	case MOVE:
 		is_move_frame += delta;
 
-		if (is_move_frame < max_is_move) {
+		if (is_move_frame < 1) {
 			if (!EnemyBase::IsDamage()) {
 				Move();
 				Rotate();
@@ -85,8 +85,8 @@ void HighSlime::EntryExitJump() {
 	else {
 		position.z -= jump_dist * delta;
 		jump_time += delta;
-		position.y += jump_speed * delta;
-		position.y = position.y + (jump_speed * jump_time * jump_power * gravity * jump_time * jump_time * delta);
+		position.y += exit_jump_speed * delta;
+		position.y = position.y + (exit_jump_speed * jump_time * jump_power * gravity * jump_time * jump_time * delta);
 
 		if (position.y < 0.0f) {
 			position.y = 0.0f;

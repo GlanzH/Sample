@@ -69,16 +69,23 @@ void EnemyManager::Iterator() {
 			//“G‚ªŽ€–S‚µ‚½‚Æ‚«‚Ìˆ—
 			dead_enemy_count++;
 
-			auto tag = (*itr)->GetTag();
+			if ((*itr)->LifeDeathDecision() == DEAD) {
+				auto tag = (*itr)->GetTag();
 
 				if (tag == "S" || tag == "H")
 					death_effect_pos = (*itr)->GetAnimModel()->GetPosition();
 				else
 					death_effect_pos = (*itr)->GetModel()->GetPosition();
 
+				if(death_effect_pos.z > 40)
 				DX12Effect.PlayOneShot("die", death_effect_pos);
-
+			}
+			else {
 				itr = enemy.erase(itr);
+				continue;
+			}
+
+			itr = enemy.erase(itr);
 		}
 	}
 }

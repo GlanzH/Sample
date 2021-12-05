@@ -17,10 +17,16 @@ void AudienceManager::LoadAssets() {
 	audience->SetPosition(-2, -15.0f, 25);
 }
 
-int AudienceManager::Update(const float deltaTime) {
-		SetAnimation(man, FIRST);
+int AudienceManager::Update(float appeal_time,const float deltaTime) {
 
-		man->AdvanceTime(deltaTime / 1.0f);
+	//if(DXTK->KeyState->W)
+	//time = appeal_time;
+
+	//if (time >= 3.0f) {
+	//	SetAnimation(throw_things_lv2, FIRST);
+	//	throw_things_lv2->AdvanceTime(deltaTime / 1.0f);
+	//	throw_things_flag = true;
+	//}
 
 	if (DXTK->KeyState->Z)
 		throw_things_flag = true;
@@ -41,6 +47,11 @@ void AudienceManager::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletac
 
 void AudienceManager::Render() {
 	audience->Draw();
+
+	if (time > 3.0f) {
+		
+	}
+
 	//man->Draw();
 	//throw_things_lv2->Draw();
 }

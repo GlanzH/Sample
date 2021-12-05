@@ -8,7 +8,7 @@ public:
 	AudienceManager() {}
 	~AudienceManager() {}
 	void LoadAssets();
-	int  Update(const float deltaTime);
+	int  Update(float appeal_time, const float deltaTime);
 	void Render();
 	bool GetThrowThingsFlag() { return throw_things_flag; }
 private:
@@ -16,7 +16,10 @@ private:
 
 	DX9::MODEL		  audience;
 	DX9::SKINNEDMODEL man;
+	DX9::SKINNEDMODEL throw_things_lv1;
 	DX9::SKINNEDMODEL throw_things_lv2;
+
+	float time = 0.0f;
 
 	bool throw_things_flag = false;
 
