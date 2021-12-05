@@ -11,8 +11,6 @@ bool PlayerBase::Initialize()
 	jump_start_v_ = 0.0f;
 
 
-	appeil_cool_time     = 0.0f;
-	appeil_cool_time_max = 0.5f;
 
 
 	appeal_state_mode = Appeal_state::NORMAL;
@@ -807,14 +805,17 @@ void PlayerBase::Appeal(const float deltaTime)
 {
 	//アピール
 	if (!jump_flag_) {
-		if (DXTK->KeyState->W || DXTK->GamePadState->triggers.left) {
-			appeal_state_mode = Appeal_state::APPEAL;
-		}
-		else
-		{
-			appeal_state_mode = Appeal_state::NORMAL;
-			appeil_time = 0.0f;
-			model->SetTrackPosition(APPEIL, 0.0);
+		if (!appeil_cool_flag) {
+			if (DXTK->KeyState->W || DXTK->GamePadState->triggers.left) {
+				appeal_state_mode = Appeal_state::APPEAL;
+			}
+			else
+			{
+				appeal_state_mode = Appeal_state::NORMAL;
+				appeil_time = 0.0f;
+				model->SetTrackPosition(APPEIL, 0.0);
+				
+			}
 		}
 	}
 	if (appeal_state_mode == Appeal_state::APPEAL) {
@@ -826,7 +827,16 @@ void PlayerBase::Appeal(const float deltaTime)
 		appeal_state_mode = Appeal_state::NORMAL;
 		appeil_time = 0.0f;
 		model->SetTrackPosition(APPEIL, 0.0);
+		appeil_cool_flag = true;
+	}
 
+	if (appeil_cool_flag) {
+		appeil_cool_time += deltaTime;
+	}
+
+	if (appeil_cool_time >= appeil_cool_time_max) {
+		appeil_cool_flag = false;
+		appeil_cool_time = 0.0f;
 	}
 }
 
@@ -859,11 +869,11 @@ void PlayerBase::_2DRender()
 	//	L"%f", effect_generation_time
 	//);
 
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(600.0f, 40.0f),
-	//	DX9::Colors::White,
-	//	L"エフェクト時間: %f エフェクトMAX: %f", effect_generation_time
-	//);
+	DX9::SpriteBatch->DrawString(font.Get(),
+		SimpleMath::Vector2(600.0f, 40.0f),
+		DX9::Colors::White,
+		L"%f", appeil_cool_time
+	);
 
 	DX9::SpriteBatch->DrawString(font.Get(),
 		SimpleMath::Vector2(1000.0f, 80.0f),

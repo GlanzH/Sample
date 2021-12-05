@@ -283,11 +283,11 @@ private:
 
 	Appeal_state appeal_state_mode;
 
-	float appeil_time=0.0f;
-	float appeil_time_max=5.0f;
+	float appeil_time = 0.0f;
+	float appeil_time_max = 5.0f;
 
-	float appeil_cool_time;
-	float appeil_cool_time_max;
+	float appeil_cool_time = 0.0f;
+	float appeil_cool_time_max = 1.0f;
 
 	bool appeil_cool_flag = false;
 
