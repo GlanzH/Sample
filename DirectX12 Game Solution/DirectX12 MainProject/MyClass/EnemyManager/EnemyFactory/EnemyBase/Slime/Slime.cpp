@@ -29,7 +29,7 @@ void Slime::Action() {
 	case MOVE:
 		is_move_frame += delta;
 
-		if (is_move_frame < max_is_move) {
+		if (is_move_frame < 1) {
 			if (!EnemyBase::IsDamage()) {
 				Rotate();
 				Move();
@@ -86,8 +86,8 @@ void Slime::EntryExitJump() {
 			break;
 
 		case EXIT:
-			if (position.y < -5.0f) {
-				position.y = -5.0f;
+			if (position.y < -10.0f) {
+				position.y = -10.0f;
 				jump_flag = false;
 			}
 			break;

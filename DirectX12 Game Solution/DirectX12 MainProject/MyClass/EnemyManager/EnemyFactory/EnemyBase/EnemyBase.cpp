@@ -1,6 +1,6 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
-
+#include "MyClass/StatusManager/StatusManager.h"
 #include "EnemyBase.h"
 
 EnemyBase::EnemyBase()
@@ -100,22 +100,32 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool
 		model->SetPosition(position);
 	}
 
-	if (retreat_flg && retreat_count < max_retreat){
-		if(player.x < position.x)
+	if (retreat_flg && retreat_count < max_retreat) {
+		if (player.x < position.x)
 			position.x += retreat_dist * deltaTime;
 		else
 			position.x -= retreat_dist * deltaTime;
 
 		retreat_count++;
-	} 
+	}
 	else {
-		retreat_flg   = false;
+		retreat_flg = false;
 		retreat_count = 0;
 	}
 
-	if (position.z < 15.0f)
+	if (position.z < 15.0f) {
 		explode.Update(position, delta);
 
+		if (!reduce_audience_flag) {
+			if(enemy_tag == "S")
+				StatusManager::Instance().AddAudience(3);
+	   else if (enemy_tag == "H")
+				StatusManager::Instance().AddAudience(5);
+			reduce_audience_flag = true;
+		}
+	}
+
+	StatusManager::Instance().DownAudience(delta);
 	return 0;
 }
 

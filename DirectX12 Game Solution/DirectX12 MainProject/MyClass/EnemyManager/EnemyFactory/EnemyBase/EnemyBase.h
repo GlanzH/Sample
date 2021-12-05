@@ -60,6 +60,7 @@ private:
 	const float retreat_dist = 15.0f;
 
 	bool damage_flag = false;
+	bool reduce_audience_flag = false;
 
 	//!ダメージモーション再生用変数
 	int is_damage = 0;

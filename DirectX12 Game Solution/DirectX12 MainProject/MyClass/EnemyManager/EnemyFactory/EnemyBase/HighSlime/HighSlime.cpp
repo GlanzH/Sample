@@ -59,7 +59,7 @@ void HighSlime::Action() {
 		break;
 
 	case EXIT:
-		if (position.z > EXIT_POS) {
+		if (position.z >= EXIT_POS) {
 			jump_dist = EXIT_DIST;
 			EntryExitJump();
 		}
@@ -86,11 +86,22 @@ void HighSlime::EntryExitJump() {
 		position.z -= jump_dist * delta;
 		jump_time += delta;
 		position.y += exit_jump_speed * delta;
-		position.y = position.y + (exit_jump_speed * jump_time * jump_power * gravity * jump_time * jump_time * delta);
+		position.y = position.y + (exit_jump_speed * jump_time * exit_jump_power * gravity * jump_time * jump_time * delta);
 
-		if (position.y < 0.0f) {
-			position.y = 0.0f;
-			jump_flag = false;
+		switch (action) {
+		case ENTRY:
+			if (position.y < 0.0f) {
+				position.y = 0.0f;
+				jump_flag = false;
+			}
+			break;
+
+		case EXIT:
+			if (position.y < -10.0f) {
+				position.y = -10.0f;
+				jump_flag = false;
+			}
+			break;
 		}
 	}
 }
