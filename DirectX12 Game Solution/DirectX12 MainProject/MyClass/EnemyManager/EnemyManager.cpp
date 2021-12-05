@@ -27,12 +27,9 @@ EnemyManager::~EnemyManager() {
 
 bool EnemyManager::Initialize(PlayerBase* player_base)
 {
-	DX12Effect.Initialize();
-	DX12Effect.Create(L"Effect/EnemyEffect/hit/hit.efk","hit_eff");
-	DX12Effect.Create(L"Effect/EnemyEffect/die/die.efk","die");
+
 	player_data = player_base;
-	death_effect_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
-	hit_effect_pos   = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
+	enemy_base.EffectInit();
 
 	LoadEnemyArrangement();
 	return true;
@@ -69,16 +66,16 @@ void EnemyManager::Iterator() {
 			//“G‚ªŽ€–S‚µ‚½‚Æ‚«‚Ìˆ—
 			dead_enemy_count++;
 
-			auto tag = (*itr)->GetTag();
-
-				if (tag == "S" || tag == "H")
-					death_effect_pos = (*itr)->GetAnimModel()->GetPosition();
-				else
-					death_effect_pos = (*itr)->GetModel()->GetPosition();
-
-				DX12Effect.PlayOneShot("die", death_effect_pos);
-
+			if ((*itr)->LifeDeathDecision() == DEAD) {
+				(*itr)->DeathEffect();
+				StatusManager::Instance().HeartCount();
+			}
+			else {
 				itr = enemy.erase(itr);
+				continue;
+			}
+
+			itr = enemy.erase(itr);
 		}
 	}
 }
@@ -104,21 +101,18 @@ void EnemyManager::Render()
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
      base->Damage(player_data->GetDamage());
+	 base->HitEffect();
 
 	 std::string tag = base->GetTag();
 
 	 if (tag != "C") {
 		 if (StatusManager::Instance().GetCombo() == max_combo)
 			 base->Retreat();
-	 }
+	 }	
+}
 
-	 if (tag == "S" || tag == "H")
-		 hit_effect_pos = base->GetAnimModel()->GetPosition();
-	 else
-		 hit_effect_pos = base->GetModel()->GetPosition();
-	
-	 DX12Effect.PlayOneShot("hit_eff",hit_effect_pos);
-	
+void EnemyManager::OnCollisionSpecialMove(EnemyBase* base) {
+	base->Damage(player_data->GetDamage());
 }
 
 int EnemyManager::AppearTimer() {

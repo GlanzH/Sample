@@ -2,19 +2,36 @@
 
 void AudienceManager::LoadAssets() {
 	audience = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Audience\\StandingMan\\audience_stand.X");
-	//audience->SetTexture(L"audience.png", DX9::Colors::Alpha(0.0f));
-	//model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Audience\\ThrowThings\\throw_lv1.X");
+	throw_things_lv2 = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Audience\\ThrowThings\\throw_lv2b.X");
 
-	//model->SetScale(0.005f);
-	//model->SetPosition(0, 15.0f, 50);
-	//audience->SetTexture(L"Model\\Audience\\StandingMan\\audience.png");
+	//audience->SetTexture(0,L"audience.png");
+
+	//material.Diffuse = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 0.0f);
+	//material.Ambient = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 0.0f);
+	//material.Specular = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 0.0f);
+
+
+	throw_things_lv2->SetPosition(0, -12.0f, 25);
+
 	audience->SetPosition(-2, -15.0f, 25);
 }
 
-int AudienceManager::Update(const float deltaTime) {
-	//	SetAnimation(throw_things_lv1, FIRST);
+int AudienceManager::Update(float appeal_time,const float deltaTime) {
 
-	//throw_things_lv1->AdvanceTime(deltaTime / 1.0f);
+	//if(DXTK->KeyState->W)
+	//time = appeal_time;
+
+	//if (time >= 3.0f) {
+	//	SetAnimation(throw_things_lv2, FIRST);
+	//	throw_things_lv2->AdvanceTime(deltaTime / 1.0f);
+	//	throw_things_flag = true;
+	//}
+
+	if (DXTK->KeyState->Z)
+		throw_things_flag = true;
+	else
+		throw_things_flag = false;
+
 	return 0;
 }
 
@@ -29,5 +46,10 @@ void AudienceManager::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletac
 
 void AudienceManager::Render() {
 	audience->Draw();
-	//model->Draw();
+
+	if (time > 3.0f) {
+		
+	}
+
+	//throw_things_lv2->Draw();
 }

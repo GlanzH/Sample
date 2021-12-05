@@ -107,7 +107,7 @@ namespace DX9 {
 			return foward;
 		}
 
-		inline D3DMATERIAL9 GetMaterial(const DWORD index)
+		inline D3DMATERIAL9 GetMaterial(const DWORD index = 0) const
 		{ return m_materials[index]; }
 
 		void Move(const float x, const float y, const float z);
@@ -144,7 +144,7 @@ namespace DX9 {
 
 		__declspec(property(get = GetRightVector))		DirectX::XMFLOAT3 RightVector;
 		__declspec(property(get = GetUpVector))			DirectX::XMFLOAT3 UpVector;
-		__declspec(property(get = GetFowardVector))		DirectX::XMFLOAT3 FowardVector;
+		__declspec(property(get = GetForwardVector))	DirectX::XMFLOAT3 ForwardVector;
 
 		static std::unique_ptr<Model> CreateFromFile(
 			IDirect3DDevice9* device, LPCWSTR file

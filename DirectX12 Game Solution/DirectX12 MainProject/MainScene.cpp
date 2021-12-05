@@ -112,8 +112,8 @@ NextScene MainScene::Update(const float deltaTime)
 	DX12Effect.Update(deltaTime);
 	player->Update(deltaTime);
 	camera->Update(player->GetModel()->GetPosition());
-	enemy->Update(player->GetModel()->GetPosition(),false,false,deltaTime);
-	audience->Update(deltaTime);
+	audience->Update(player->GetAppielTime(), deltaTime);
+	enemy->Update(player->GetModel()->GetPosition(),player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
 	observer->Update(player, enemy);
 
 	return NextScene::Continue;
@@ -143,7 +143,7 @@ void MainScene::Render()
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ
-	//ui->Render(StatusManager::Instance().ReturnAudience(),StatusManager::Instance().ReturnHeart());
+	ui->Render(StatusManager::Instance().ReturnAudience(),StatusManager::Instance().ReturnHeart());
 	player->_2DRender();
 
 	DX9::SpriteBatch->End();
