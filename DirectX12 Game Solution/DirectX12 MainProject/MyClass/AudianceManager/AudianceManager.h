@@ -15,7 +15,7 @@ private:
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack);
 
 	DX9::MODEL		  audience;
-	DX9::SKINNEDMODEL model;
+	DX9::SKINNEDMODEL man;
 	DX9::SKINNEDMODEL throw_things_lv2;
 
 	bool throw_things_flag = false;

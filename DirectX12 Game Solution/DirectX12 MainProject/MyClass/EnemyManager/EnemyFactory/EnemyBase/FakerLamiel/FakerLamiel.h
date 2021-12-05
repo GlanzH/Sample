@@ -14,11 +14,13 @@ public:
 	int Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 	void Render();
 private:
-	void Move(SimpleMath::Vector3 player);
+	void Move();
 	void MoveFireCollision();
+	void StopEffect();
 
+	SimpleMath::Vector3 player_pos;
 	SimpleMath::Vector3 fire_pos;
-	const SimpleMath::Vector3 collision_scale = SimpleMath::Vector3(25, 14, 10);
+	const SimpleMath::Vector3 collision_scale = SimpleMath::Vector3(20, 7, 10);
 
 	float teleport_frame    = 0;
 	float omen_effect_frame = 0;
@@ -35,12 +37,16 @@ private:
 	const float adjust_fire_x = 60.0f;
 	const float adjust_fire_y = 15.0f;
 
-	const float move_fire  = 53.95f;
+	const float move_fire  = 26.0f;
+	float fire_accelerate  = 1.0f;
 	const float move_speed = 10.0f;
 
 	 bool appear_collision_flag = false;
 
 	 float delta;
+
+	 bool throw_flag;
+	 bool special_flag;
 
 	 bool draw_flag = false;
 

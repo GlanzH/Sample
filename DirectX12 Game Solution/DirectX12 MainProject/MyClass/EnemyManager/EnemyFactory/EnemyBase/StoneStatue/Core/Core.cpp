@@ -25,25 +25,29 @@ bool Core::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
 	launch_count_count = 0;
 	landing_count = 0;
 
-
-
-
-
 	return true;
 }
 
 int Core::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime) {
 	
+	special_flag = special_attack_flag;
+	throw_flag   = thorow_things_flag;
 	delta = deltaTime;
 	
-	EnemyBase::Update(player,special_attack_flag,thorow_things_flag, deltaTime);
+	EnemyBase::Update(player, special_flag, throw_flag, deltaTime);
 
-	if(!special_attack_flag && !thorow_things_flag)
-	Move(player);
+	if (!special_flag && !throw_flag) {
+		Move(player);
+	}
+	else if(special_flag || throw_flag) {
+		StopEffect();
+	}
 
 
 	if (enemy_hp < 0)
 		return DEAD;
+
+
 
 	collision->SetPosition(model->GetPosition());
 	col.bullet.Center = obstacle_collision->GetPosition();
@@ -185,6 +189,20 @@ void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 			launch_count_count++;
 			shot_flag = false;
 		}
+	}
+}
+
+void Core::StopEffect() {
+	switch (action) {
+		case CHARGE:
+			DX12Effect.Stop("charge");
+			break;
+		case ATTACK:
+			DX12Effect.Stop("shoot");
+			DX12Effect.Stop("landing");
+			break;
+		default:
+			break;
 	}
 }
 

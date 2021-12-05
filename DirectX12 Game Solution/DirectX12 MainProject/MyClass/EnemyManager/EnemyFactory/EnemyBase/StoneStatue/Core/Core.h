@@ -16,6 +16,7 @@ public:
 private:
 	void Move(SimpleMath::Vector3 player);
 	void Shot(SimpleMath::Vector3 init_bull_pos);
+	void StopEffect();
 
 	PlayerBase* player;
 
@@ -60,6 +61,9 @@ private:
 	//!着弾時エフェクト描画時間
 	float landing_effect_frame = 0;
 	const float max_landing    = 0.8f;
+
+	bool throw_flag;
+	bool special_flag;
 
 	bool launch_permit;
 	char launch_count_count;

@@ -20,6 +20,7 @@ bool EnemyBase::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
 void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
 	position = initial_position;
 
+	D3DMATERIAL9 material;
 	material.Diffuse = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.75f);
 	material.Ambient = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);

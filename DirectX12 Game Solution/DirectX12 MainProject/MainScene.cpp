@@ -112,8 +112,8 @@ NextScene MainScene::Update(const float deltaTime)
 	DX12Effect.Update(deltaTime);
 	player->Update(deltaTime);
 	camera->Update(player->GetModel()->GetPosition());
-	enemy->Update(player->GetModel()->GetPosition(),false,false,deltaTime);
 	audience->Update(deltaTime);
+	enemy->Update(player->GetModel()->GetPosition(),player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
 	observer->Update(player, enemy);
 
 	return NextScene::Continue;
