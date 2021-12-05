@@ -36,7 +36,11 @@ public:
 
 	int GetAttackCount() { return motion_count; }
 
-	float GetAppielTime() { return appeil_time; }
+	float GetAppielTime() { return appeil_time; }//アピールしている時間
+
+	bool IsDeathbrow() { return deathbrow_flag; }//必殺技発動フラグ
+
+
 
 	void _2DRender();
 
@@ -279,8 +283,8 @@ private:
 
 	Appeal_state appeal_state_mode;
 
-	float appeil_time;
-	float appeil_time_max;
+	float appeil_time=0.0f;
+	float appeil_time_max=5.0f;
 
 	float appeil_cool_time;
 	float appeil_cool_time_max;
@@ -288,13 +292,7 @@ private:
 	bool appeil_cool_flag = false;
 
 	//必殺技
-	enum SPECIALMOVE
-	{
-		NOMAL_MOVE,
-		DEATHBLOW
-	};
-
-	SPECIALMOVE specialmove_state;
+	bool deathbrow_flag = false;//必殺技発動フラグ
 
 	float specialmove_time = 0.0f;
 	float specialmove_time_max = 4.0f;
@@ -311,6 +309,6 @@ private:
 	bool bright_flag   = false;
 	int  Ming_Turn = 55;
 
-	int Deathblow_count = 90;
+	int Deathblow_count = 20;
 
 };

@@ -10,8 +10,6 @@ bool PlayerBase::Initialize()
 	jump_time_ = 0.0f;
 	jump_start_v_ = 0.0f;
 
-	appeil_time = 0.0f;
-	appeil_time_max = 5.0f;
 
 	appeil_cool_time     = 0.0f;
 	appeil_cool_time_max = 0.5f;
@@ -25,7 +23,6 @@ bool PlayerBase::Initialize()
 
 	canot_move_state_mode = CANNOT_MOVE_STATE::MOVE;
 
-	specialmove_state = SPECIALMOVE::NOMAL_MOVE;
 
 	return 0;
 }
@@ -259,7 +256,7 @@ void PlayerBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack)
 void PlayerBase::Player_move(const float deltaTime)
 {
 	if (!parry_flag) {
-		if(specialmove_state == SPECIALMOVE::NOMAL_MOVE){
+		if(!deathbrow_flag){
 			if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
 				if (canot_move_state_mode == CANNOT_MOVE_STATE::MOVE) {
 					//プレイヤー:移動(キーボード) & ゲームパッド十字キー
@@ -299,7 +296,7 @@ void PlayerBase::Player_limit()
 void PlayerBase::Player_jump(const float deltaTime) {
 	//ジャンプ
 	if (!parry_flag) {
-		if (specialmove_state == SPECIALMOVE::NOMAL_MOVE) {
+		if (!deathbrow_flag) {
 			if (under_attack_state_mode == UNDER_ATTACK_STATE::NOMAL) {
 				if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
 					if (!jump_flag_) {
@@ -340,7 +337,7 @@ void PlayerBase::Player_attack(const float deltaTime) {
 	//プレイヤー:攻撃
 	if (!cool_time_flag_zwei) {
 		if (!parry_flag) {
-			if (specialmove_state == SPECIALMOVE::NOMAL_MOVE) {
+			if (!deathbrow_flag) {
 				if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
 					if (DXTK->KeyEvent->pressed.J || DXTK->KeyEvent->pressed.F || DXTK->GamePadEvent[0].x) {
 						//移動不可
@@ -509,7 +506,7 @@ void PlayerBase::Player_attack(const float deltaTime) {
 void PlayerBase::Player_Attack_two(const float deltaTime) {
 	if (!cool_time_flag_zwei) {
 		if (!parry_flag) {
-			if (specialmove_state == SPECIALMOVE::NOMAL_MOVE) {
+			if (!deathbrow_flag) {
 				if (appeal_state_mode == Appeal_state::NORMAL || appeal_state_mode == Appeal_state::FOCUS) {
 
 					//1撃目
@@ -747,12 +744,12 @@ void PlayerBase::Player_Special_Move(const float deltaTime) {
 	if (!jump_flag_) {
 		if (Deathblow_count >= 20) {
 			if (DXTK->KeyEvent->pressed.L || DXTK->GamePadEvent->rightShoulder == GamePad::ButtonStateTracker::PRESSED) {
-				specialmove_state = SPECIALMOVE::DEATHBLOW;
+				deathbrow_flag = true;
 			}
 		}
 	}
 
-	if (specialmove_state == SPECIALMOVE::DEATHBLOW) {
+	if (deathbrow_flag) {
 		specialmove_time += deltaTime;
 		Blackout_flag = true;
 
@@ -771,7 +768,7 @@ void PlayerBase::Player_Special_Move(const float deltaTime) {
 		//attack_flag = true;
 		//if (IsAttack()) {
 		Blackout_flag = false;
-		DX12Effect.PlayOneShot("deathblow_effect", Vector3(0, 10, 0));
+		DX12Effect.PlayOneShot("deathblow_effect", Vector3(player_pos.x, 10, 0));
 		damage = 20;
 
 	}
@@ -789,7 +786,7 @@ void PlayerBase::Player_Special_Move(const float deltaTime) {
 
 	//必殺技終了
 	if (specialmove_time >= specialmove_time_max) {
-		specialmove_state = SPECIALMOVE::NOMAL_MOVE;
+		deathbrow_flag = false;
 		specialmove_time = 0.0f;
 
 		//必殺技ゲージリセット呼び出し
@@ -810,12 +807,14 @@ void PlayerBase::Appeal(const float deltaTime)
 {
 	//アピール
 	if (!jump_flag_) {
-		if (!appeil_cool_flag) {
-			if (DXTK->KeyState->W || DXTK->GamePadState->triggers.left) {
-				appeal_state_mode = Appeal_state::APPEAL;
-
-
-			}
+		if (DXTK->KeyState->W || DXTK->GamePadState->triggers.left) {
+			appeal_state_mode = Appeal_state::APPEAL;
+		}
+		else
+		{
+			appeal_state_mode = Appeal_state::NORMAL;
+			appeil_time = 0.0f;
+			model->SetTrackPosition(APPEIL, 0.0);
 		}
 	}
 	if (appeal_state_mode == Appeal_state::APPEAL) {
@@ -823,24 +822,12 @@ void PlayerBase::Appeal(const float deltaTime)
 		appeil_time += deltaTime;
 	}
 
-	if (appeil_time >= appeil_time_max) {
-		appeil_cool_flag = true;
+	if (appeil_time >= appeil_time_max) {//ボタン話したときもNOMALに戻す
 		appeal_state_mode = Appeal_state::NORMAL;
-	}
-
-	if (appeil_cool_flag) {
-		appeil_cool_time += deltaTime;
-		if (appeil_cool_time >= appeil_cool_time_max) {
-			appeil_cool_flag = false;
-			appeil_cool_time = 0.0f;
-		}
-	}
-
-
-
-	//アピール　リセット
-	if (appeal_state_mode == Appeal_state::NORMAL )
+		appeil_time = 0.0f;
 		model->SetTrackPosition(APPEIL, 0.0);
+
+	}
 }
 
 void PlayerBase::_2DRender()
@@ -855,13 +842,13 @@ void PlayerBase::_2DRender()
 	if (appeal_state_mode == Appeal_state::APPEAL){
 		DX9::SpriteBatch->DrawString(font.Get(),
 			SimpleMath::Vector2(1000.0f, 0.0f),
-			DX9::Colors::Black,
+			DX9::Colors::White,
 			L"ON"
 		);
 	} else {
 		DX9::SpriteBatch->DrawString(font.Get(),
 			SimpleMath::Vector2(1000.0f, 0.0f),
-			DX9::Colors::Black,
+			DX9::Colors::White,
 			L"OFF"
 		);
 	}
@@ -881,7 +868,7 @@ void PlayerBase::_2DRender()
 	DX9::SpriteBatch->DrawString(font.Get(),
 		SimpleMath::Vector2(1000.0f, 80.0f),
 		DX9::Colors::White,
-		L"%d", Deathblow_count
+		L"%f", appeil_time
 	);
 
 	//DX9::SpriteBatch->DrawString(font.Get(),
