@@ -110,6 +110,10 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	 }	
 }
 
+void EnemyManager::OnCollisionSpecialMove(EnemyBase* base) {
+	base->Damage(player_data->GetDamage());
+}
+
 int EnemyManager::AppearTimer() {
 	if (frame < max_frame) 
 		++frame;
