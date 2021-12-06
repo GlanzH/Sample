@@ -31,39 +31,35 @@ void AudienceManager::LoadAssets() {
 	collision->SetMaterial(material);
 }
 
-int AudienceManager::Update(float appeal_time,const float deltaTime) {
+int AudienceManager::Update(float appeal_time, bool cool_flag,bool special_flag, const float deltaTime) {
 
-	if(appeal_time >= 3.0f)
-	time = appeal_time;
+	delta = deltaTime;
 
-	//if (time >= 3.0f) {
-	//	SetAnimation(throw_things_lv2, FIRST);
-	//	throw_things_lv2->AdvanceTime(deltaTime / 1.0f);
-	//	throw_things_flag = true;
-	//}
-	//
-	//if (throw_frame < max_throw) {
-	//	SetAnimation(throw_things_lv2, FIRST);
-	//	throw_things_lv2->AdvanceTime(deltaTime / 1.0f);
-	//	throw_frame += deltaTime;
-	//	throw_things_flag = true;
-	//}
-	//else {
-	//	if (col_frame < max_col) {
-	//		collision->SetPosition(fill_theater_pos);
-	//		collision->SetScale(fill_theater_col);
-	//		col_frame += deltaTime;
-	//		col.lv2_box.Center = fill_theater_pos;
-	//	}
-	//	else {
-	//		col.lv2_box.Center = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
-	//		collision->SetPosition(INT_MAX, INT_MAX, INT_MAX);
-	//		collision->SetScale(SimpleMath::Vector3::One);
-	//		col_frame   = 0.0f;
-	//		throw_frame = 0.0f;
-	//		throw_things_flag = false;
-	//	}
-	//}
+	if (cool_flag && appeal_time >= 3.0f) {
+			time = appeal_time;
+	}
+
+	if (special_flag) {
+		SpecialAttackCollision(0.01f);
+	}
+	else {
+		col.lv2_box.Center = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
+		collision->SetPosition(INT_MAX, INT_MAX, INT_MAX);
+		collision->SetScale(SimpleMath::Vector3::One);
+	}
+
+
+	if (time >= 3.0f) {
+		if (throw_frame < max_throw) {
+			SetAnimation(throw_things_lv2, FIRST);
+			throw_things_lv2->AdvanceTime(deltaTime / 1.0f);
+			throw_frame += deltaTime;
+			throw_things_flag = true;
+		}
+		else {
+			SpecialAttackCollision(0.1f);
+		}
+	}
 
 
 	return 0;
@@ -78,15 +74,32 @@ void AudienceManager::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletac
 	}
 }
 
+void AudienceManager::SpecialAttackCollision(float max_col_time) {
+	if (col_frame < max_col_time) {
+		collision->SetPosition(fill_theater_pos);
+		collision->SetScale(fill_theater_col);
+		col_frame += delta;
+		col.lv2_box.Center = fill_theater_pos;
+	}
+	else {
+		col.lv2_box.Center = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
+		collision->SetPosition(INT_MAX, INT_MAX, INT_MAX);
+		collision->SetScale(SimpleMath::Vector3::One);
+		col_frame = 0.0f;
+		throw_frame = 0.0f;
+		time = 0;
+		throw_things_flag = false;
+	}
+}
+
 void AudienceManager::Render() {
 	DXTK->Direct3D9->AlphaBendEnable(true);
 	audience->Draw();
 	DXTK->Direct3D9->AlphaBendEnable(false);
 
-	if (time > 3.0f) {
-		
+	if (time >= 3.0f) {
+		throw_things_lv2->Draw();
 	}
 
-	throw_things_lv2->Draw();
 //	collision->Draw();
 }
