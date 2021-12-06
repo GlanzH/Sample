@@ -25,7 +25,7 @@ void AudienceManager::LoadAssets() {
 		col.lv2_box.Extents.z * 2
 	);
 
-	col.lv2_box.Center = collision->GetPosition();
+	col.lv2_box.Center =SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 	collision->SetPosition(INT_MAX, INT_MAX, INT_MAX);
 	collision->SetScale(SimpleMath::Vector3::One);
 	collision->SetMaterial(material);
