@@ -25,7 +25,7 @@ public:
 	void AddAudience(float add_size	 );	//値を取得
 	void DownAudience  (const float deltaTime);	//ダウン
 	float ReturnAudience   () { return audience * AUDIENCE_GAUGE_DIVIDE; }	//ゲージ描画時呼び出し
-
+	float ReturnScore() { return audience; }	//スコア判定時使用
 
 	//ハート(必殺技ゲージ)
 	void HeartCount();	//敵撃破時呼び出し

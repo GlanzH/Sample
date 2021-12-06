@@ -8,16 +8,19 @@ public:
 	~RankJudgeManager() {};
 
 	void Initialize();
+	void Update();
 
-	void GetVoltage();
+	void GetAudience();
 
-	int JudgeRnak();
+	void JudgeRnak();
+
+	int ReturnRank() { return now_rank; }
 
 private:
 	float now_score;
 	int now_rank;
 	enum RANK {
-		D,C,B,A,S
+		E,D,C,B,A,S
 	};
 	// コルーチンのプロトタイプ宣言
 	cppcoro::generator<int> ReleaseRank();

@@ -187,6 +187,9 @@
     <ClInclude Include="MyClass\AudianceManager\ExplodeMan\ExplodeMan.h">
       <Filter>MyClass\AudianceManager\ExplodeMan</Filter>
     </ClInclude>
+    <ClInclude Include="MyClass\GameSceneManager\SceneManager.h">
+      <Filter>MyClass\GameSceneManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -270,6 +273,9 @@
     </ClCompile>
     <ClCompile Include="MyClass\AudianceManager\ExplodeMan\ExplodeMan.cpp">
       <Filter>MyClass\AudianceManager\ExplodeMan</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\GameSceneManager\SceneManager.cpp">
+      <Filter>MyClass\GameSceneManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
