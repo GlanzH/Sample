@@ -498,8 +498,8 @@ void PlayerBase::Player_Attack_two(const float deltaTime) {
 						motion_flag_1 = true;
 						//移動不可
 						canot_move_state_mode = CANNOT_MOVE_STATE::CANNOT_MOVE;
-						effect_first_time = 0.0f;
-						Attack(deltaTime);
+						
+						
 
 					}
 
@@ -509,7 +509,7 @@ void PlayerBase::Player_Attack_two(const float deltaTime) {
 						//移動不可
 						canot_move_state_mode = CANNOT_MOVE_STATE::CANNOT_MOVE;
 
-						Attack(deltaTime);
+						
 
 					}
 
@@ -519,19 +519,20 @@ void PlayerBase::Player_Attack_two(const float deltaTime) {
 						//移動不可
 						canot_move_state_mode = CANNOT_MOVE_STATE::CANNOT_MOVE;
 
-						Attack(deltaTime);
+						
 					}
 
 				}
 			}
 		}
 	}
-	//if (DXTK->KeyEvent->pressed.D || DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED ||
-	//	DXTK->KeyEvent->pressed.A || DXTK->GamePadEvent->x == GamePad::ButtonStateTracker::PRESSED ||
-	//	DXTK->KeyEvent->pressed.S || DXTK->GamePadEvent->y == GamePad::ButtonStateTracker::PRESSED)
-	//{
-	//	Attack(deltaTime);
-	//}
+	if (DXTK->KeyEvent->pressed.D || DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED ||
+		DXTK->KeyEvent->pressed.A || DXTK->GamePadEvent->x == GamePad::ButtonStateTracker::PRESSED ||
+		DXTK->KeyEvent->pressed.S || DXTK->GamePadEvent->y == GamePad::ButtonStateTracker::PRESSED)
+	{
+		Attack(deltaTime);
+		effect_first_time = 0.0f;
+	}
 
 
 	if (motion_flag_1) {
@@ -633,7 +634,7 @@ void PlayerBase::Attack(const float deltaTime)
 				if (motion_flag_1) {
 					//エネミーに与えるダメージ
 					damage = 2;
-
+					effect_first_time = 0.0f;
 					Attack_First(deltaTime);
 					//effect_first_time = 0.0f;
 				}
@@ -841,14 +842,14 @@ void PlayerBase::Appeal(const float deltaTime)
 			else
 			{
 				appeil_flag = false;
-				appeil_time = 0.0f;
+				
 				model->SetTrackPosition(APPEIL, 0.0);
-				appeil_time = 0.0f;
+				
 				
 
 				if (!appeil_flag) {
 					appeil_cool_flag = true;
-					appeil_cool_time = 0.0f;
+					
 				}
 				
 
@@ -874,6 +875,7 @@ void PlayerBase::Appeal(const float deltaTime)
 	if (appeil_cool_time >= appeil_cool_time_max) {
 		appeil_cool_flag = false;
 		appeil_cool_time = 0.0f;
+		appeil_time = 0.0f;
 	}
 }
 
@@ -909,7 +911,7 @@ void PlayerBase::_2DRender()
 	DX9::SpriteBatch->DrawString(font.Get(),
 		SimpleMath::Vector2(1000.0f, 40.0f),
 		DX9::Colors::White,
-		L"%f", effect_first_time
+		L"%f", appeil_time
 	);
 
 	//DX9::SpriteBatch->DrawString(font.Get(),
