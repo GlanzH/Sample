@@ -54,6 +54,9 @@ private:
 	int   retreat_count   = 0;
 	const int max_retreat = 30;
 
+	float dead_frame = 0.0f;
+	const float max_dead = 0.5f;
+
 	float auto_destroy_frame = 0.0f;
 	const float max_auto_destroy = 1.5f;
 
