@@ -45,6 +45,7 @@ int Core::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thor
 
 
 	if (enemy_hp < 0)
+		DX12Effect.Stop("charge");
 		return DEAD;
 
 
