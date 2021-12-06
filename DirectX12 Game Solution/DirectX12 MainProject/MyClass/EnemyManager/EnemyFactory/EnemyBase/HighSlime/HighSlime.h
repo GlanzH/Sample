@@ -9,7 +9,7 @@ public:
 	HighSlime();
 	~HighSlime() {}
 	bool Initialize();
-	int Update(SimpleMath::Vector3 player, const float deltaTime);
+	int Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 
 private:
 	void Action();
@@ -40,14 +40,17 @@ private:
 	const float jump_speed = 15.0f;
 	const float gravity	   = 9.80665f;
 
+	const float exit_jump_power = -0.5f;
+	const float exit_jump_speed = 28.0f;
+
 	enum JumpPosition {
 		ENTRY_POS = 50,
-		EXIT_POS = -30
+		EXIT_POS = 15
 	};
 
 	enum JumpDistance {
 		ENTRY_DIST = 27,
-		EXIT_DIST = 60
+		EXIT_DIST = 30
 	};
 
 	enum SlimeAction {

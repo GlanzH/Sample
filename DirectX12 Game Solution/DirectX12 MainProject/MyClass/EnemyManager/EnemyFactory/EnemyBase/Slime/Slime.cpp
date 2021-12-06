@@ -2,12 +2,13 @@
 #include "Base/dxtk.h"
 #include "Slime.h"
 
-int Slime::Update(SimpleMath::Vector3 player, const float deltaTime) {
-	EnemyBase::Update(player, deltaTime);
+int Slime::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime) {
+	EnemyBase::Update(player,special_attack_flag,thorow_things_flag, deltaTime);
 
 	delta      = deltaTime;
 	player_pos = player;
 
+	if (!special_attack_flag && !thorow_things_flag)
 	Action();
 
    
@@ -76,9 +77,20 @@ void Slime::EntryExitJump() {
 		position.y += jump_speed * delta;
 		position.y = position.y + (jump_speed * jump_time * jump_power * gravity * jump_time * jump_time * delta);
 
-		if (position.y < 0.0f) {
-			position.y = 0.0f;
-			jump_flag = false;
+		switch (action) {
+		case ENTRY:
+			if (position.y < 0.0f) {
+				position.y = 0.0f;
+				jump_flag = false;
+			}
+			break;
+
+		case EXIT:
+			if (position.y < -10.0f) {
+				position.y = -10.0f;
+				jump_flag = false;
+			}
+			break;
 		}
 	}
 }
