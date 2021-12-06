@@ -72,6 +72,13 @@ private:
 
 	void Attack(const float deltaTime);
 
+	//エフェクト1撃目
+	void Attack_First(const float deltaTime);
+	//エフェクト2撃目
+	void Attack_Secnod(const float deltaTime);
+	//エフェクト3撃目
+	void Attack_Third(const float deltaTime);
+
 	DX9::SPRITEFONT font;
 
 	D3DMATERIAL9 material;
@@ -110,7 +117,7 @@ private:
 
 
 	//プレイヤーのスピード
-	const float player_speed_ = 40.0f;
+	const float player_speed_ = 30.0f;
 
 	//ジャンプしてるかのフラグ
 	bool jump_flag_ = false;
@@ -198,8 +205,16 @@ private:
 
 	//エフェクトの発生タイミング等
 	bool  effect_generation = false;
-	float effect_generation_time = 0.0f;
-	float effect_generation_time_max[3]{ 0.04f,0.033f,0.005f };//フレーム(19f,2f,11f)
+	float effect_generation_time = 0.1f;
+	float effect_generation_time_max[3]{ 1.0f,0.033f,0.005f };//フレーム(19f,2f,11f)
+
+	bool effect_end_flag = false;
+
+
+	bool  effect_first_flag = false;
+	float effect_first_time = 0.4f;
+	float effect_first_max_time = 0.4f;
+
 
 
 	//無敵時間
@@ -240,7 +255,7 @@ private:
 	float motion_time_3 = 0.0f;
 
 	float motion_time_max_1 = 0.6f;
-	float motion_time_max_2 = 0.5f;
+	float motion_time_max_2 = 0.26f;
 	float motion_time_max_3 = 0.583f;
 
 	//入力受付時間までの時間 & エフェクト表示までの時間
@@ -286,6 +301,8 @@ private:
 
 	//必殺技
 	bool deathbrow_flag = false;//必殺技発動フラグ
+
+	bool deathbrow_attack = false;//必殺技の当たり判定
 
 	float specialmove_time = 0.0f;
 	float specialmove_time_max = 4.0f;
