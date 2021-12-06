@@ -1,14 +1,13 @@
 #include "MyClass/Observer/Observer.h"
 
-int Observer::Update(PlayerBase* player, EnemyManager* enemy) {
-	CollisionDetection(player, enemy);
+int Observer::Update(PlayerBase* player, EnemyManager* enemy, AudienceManager* audience) {
+	CollisionDetection(player, enemy,audience);
 	return 0;
 }
 
-void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy) {
+void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, AudienceManager* audience) {
 	for (auto enemies_roop : enemy->GetEnemy()) {
 		if (player->IsAttack()) {
-			//!
 			if (player->GetSwordBox().Intersects(enemies_roop->GetAnimBox())) {
 				enemy->OnCollisionEnter(enemies_roop);
 			}
@@ -28,6 +27,16 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy) {
 		   player->GetBox().Intersects(enemies_roop->GetBox().bullet) ||
 			player->GetBox().Intersects(enemies_roop->GetBox().fire)) {
 			player->OnCollisionEnter();
+		}
+
+		//!“GEŠÏ‹q‚ÌUŒ‚(SKINNEDMODEL)
+		if (audience->GetBox().lv2_box.Intersects(enemies_roop->GetAnimBox())) {
+			enemy->OnCollisionSpecialMove(enemies_roop);
+		}
+
+		//!“GEŠÏ‹q‚ÌUŒ‚(MODEL)
+		if (audience->GetBox().lv2_box.Intersects(enemies_roop->GetBox().box)) {
+			enemy->OnCollisionSpecialMove(enemies_roop);
 		}
 	}
 }

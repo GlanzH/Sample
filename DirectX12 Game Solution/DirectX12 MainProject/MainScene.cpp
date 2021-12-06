@@ -114,7 +114,7 @@ NextScene MainScene::Update(const float deltaTime)
 	camera->Update(player->GetModel()->GetPosition());
 	audience->Update(player->GetAppielTime(), deltaTime);
 	enemy->Update(player->GetModel()->GetPosition(),player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
-	observer->Update(player, enemy);
+	observer->Update(player, enemy,audience);
 
 	return NextScene::Continue;
 }
@@ -133,7 +133,7 @@ void MainScene::Render()
 
 	point.SetLightPower(100.0f,0);
 	point.PointRender(camera->GetCamera(), ground->GetModel(), player->GetModel());
-
+	
 	point.ShadeRender(player->GetModel(),SimpleMath::Vector4(0,0,1,0.3f));
 
 	player->Render();
