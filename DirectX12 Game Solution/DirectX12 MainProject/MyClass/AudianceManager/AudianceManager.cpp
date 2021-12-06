@@ -25,7 +25,7 @@ void AudienceManager::LoadAssets() {
 		col.lv2_box.Extents.z * 2
 	);
 
-	col.lv2_box.Center =SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
+	col.lv2_box.Center = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 	collision->SetPosition(INT_MAX, INT_MAX, INT_MAX);
 	collision->SetScale(SimpleMath::Vector3::One);
 	collision->SetMaterial(material);
@@ -33,15 +33,15 @@ void AudienceManager::LoadAssets() {
 
 int AudienceManager::Update(float appeal_time,const float deltaTime) {
 
-	//if(DXTK->KeyState->W)
-	//time = appeal_time;
+	if(appeal_time >= 3.0f)
+	time = appeal_time;
 
 	//if (time >= 3.0f) {
 	//	SetAnimation(throw_things_lv2, FIRST);
 	//	throw_things_lv2->AdvanceTime(deltaTime / 1.0f);
 	//	throw_things_flag = true;
 	//}
-	
+	//
 	//if (throw_frame < max_throw) {
 	//	SetAnimation(throw_things_lv2, FIRST);
 	//	throw_things_lv2->AdvanceTime(deltaTime / 1.0f);
@@ -53,8 +53,10 @@ int AudienceManager::Update(float appeal_time,const float deltaTime) {
 	//		collision->SetPosition(fill_theater_pos);
 	//		collision->SetScale(fill_theater_col);
 	//		col_frame += deltaTime;
+	//		col.lv2_box.Center = fill_theater_pos;
 	//	}
 	//	else {
+	//		col.lv2_box.Center = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 	//		collision->SetPosition(INT_MAX, INT_MAX, INT_MAX);
 	//		collision->SetScale(SimpleMath::Vector3::One);
 	//		col_frame   = 0.0f;
@@ -63,7 +65,6 @@ int AudienceManager::Update(float appeal_time,const float deltaTime) {
 	//	}
 	//}
 
-	//col.lv2_box.Center = fill_theater_pos;
 
 	return 0;
 }

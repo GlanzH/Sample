@@ -31,12 +31,12 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 
 		//!“GEŠÏ‹q‚ÌUŒ‚(SKINNEDMODEL)
 		if (audience->GetBox().lv2_box.Intersects(enemies_roop->GetAnimBox())) {
-			enemy->OnCollisionSpecialMove(enemies_roop);
+			enemy->OnCollisionAudience(enemies_roop);
 		}
 
 		//!“GEŠÏ‹q‚ÌUŒ‚(MODEL)
 		if (audience->GetBox().lv2_box.Intersects(enemies_roop->GetBox().box)) {
-			enemy->OnCollisionSpecialMove(enemies_roop);
+			enemy->OnCollisionAudience(enemies_roop);
 		}
 	}
 }
