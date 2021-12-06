@@ -45,7 +45,9 @@ namespace DX12Effekseer
 
 		Effekseer::Effect* Create(LPCWSTR fileName,std::string effectName);
 		void Play(std::string effectName);
+		void Play(std::string effectName,Vector3 pos);
 		void PlayOneShot(std::string effectName);
+		void PlayOneShot(std::string effectName,Vector3 pos);
 		void Stop(std::string effectName);
 		void Pause(std::string effectName);
 
@@ -59,7 +61,7 @@ namespace DX12Effekseer
 		float GetSpeed(std::string effectName);
 		void SetSpeed(std::string effectName,float speed);
 
-		bool CheckLive(std::string effectName) { return m_manager->Exists(m_handles[effectName]); }
+		bool CheckAlive(std::string effectName) { return m_manager->Exists(m_handles[effectName]); }
 
 	private:
 		Effekseer::Manager*			m_manager;

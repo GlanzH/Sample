@@ -8,6 +8,7 @@
 #include "MyClass/GroundManager/GroundManager.h"
 #include "MyClass/CameraManager/CameraManager.h"
 #include "MyClass/PlayerManager/PlayerManager.h"
+#include "MyClass/AudianceManager/AudianceManager.h"
 #include "MyClass/EnemyManager/EnemyManager.h"
 #include "MyClass/Observer/Observer.h"
 #include "MyClass/CameraManager/CameraManager.h"
@@ -53,12 +54,14 @@ private:
 
 	DX9::SHADER shader;
 
-	GroundManager* ground;
-	CameraManager* camera;
-	PlayerBase*    player;
-	EnemyManager*  enemy;
-	Observer*      observer;
-	UIManager*     ui;
+	GroundManager*   ground;
+	CameraManager*   camera;
+	PlayerBase*      player;
+	EnemyManager*    enemy;
+	AudienceManager* audience;
+	Observer*        observer;
+	UIManager*       ui;
+
 
 	MultiPointLighting point;
 };

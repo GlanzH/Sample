@@ -13,6 +13,7 @@ MainScene::MainScene(): dx9GpuDescriptor{}
 	ground   = new GroundManager;
 	player   = new PlayerBase;
 	enemy    = new EnemyManager;
+	audience = new AudienceManager;
 	observer = new Observer;
 	ui       = new UIManager;
 }
@@ -22,6 +23,7 @@ MainScene::~MainScene() {
 	delete ground;
 	delete player;
 	delete enemy;
+	delete audience;
 	delete observer;
 	delete ui;
 
@@ -73,10 +75,8 @@ void MainScene::LoadAssets()
 	DX12Effect.Initialize();
 	ground->LoadAsset();
 	player->LoadAssets();
-
-	point.SetLightColor(SimpleMath::Vector4(1, 1, 1, 1), 0);
-	point.SetLightPower(0.02f,0);
-	point.SetMax(1);
+	audience->LoadAssets();
+	ui->LoadAsset();
 }
 
 // Releasing resources required for termination.
@@ -112,12 +112,9 @@ NextScene MainScene::Update(const float deltaTime)
 	DX12Effect.Update(deltaTime);
 	player->Update(deltaTime);
 	camera->Update(player->GetModel()->GetPosition());
-	enemy->Update(player->GetModel()->GetPosition(),deltaTime);
+	audience->Update(player->GetAppielTime(), deltaTime);
+	enemy->Update(player->GetModel()->GetPosition(),player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
 	observer->Update(player, enemy);
-
-	//auto light_pos = ground->GetModel()->GetPosition();
-
-	//point.SetLightPos(SimpleMath::Vector4(light_pos.x, 30, light_pos.z,1), 0);
 
 	return NextScene::Continue;
 }
@@ -133,19 +130,20 @@ void MainScene::Render()
 	//3D•`‰æ
 	DX12Effect.SetCamera((DX12::CAMERA)camera->GetCamera());
 	camera->Render();
-	//point.Begin(camera->GetCamera(), ground->GetModel());
-	ground->Render();
-	//point.End();
+
+	point.SetLightPower(100.0f,0);
+	point.PointRender(camera->GetCamera(), ground->GetModel(), player->GetModel());
+
+	point.ShadeRender(player->GetModel(),SimpleMath::Vector4(0,0,1,0.3f));
 
 	player->Render();
 	enemy->Render();
-
-
+	audience->Render();
 
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ
-	//ui->Render(StatusManager::Instance().ReturnVolt());
+	ui->Render(StatusManager::Instance().ReturnAudience(),StatusManager::Instance().ReturnHeart());
 	player->_2DRender();
 
 	DX9::SpriteBatch->End();

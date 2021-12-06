@@ -15,14 +15,14 @@ public:
 	~EnemyManager();
 
 	bool Initialize(PlayerBase* player_base);
-	int  Update(SimpleMath::Vector3 player, const float deltaTime);
+	int  Update(SimpleMath::Vector3 player,bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 	void Render();
 
 	std::list<EnemyBase*> GetEnemy() { return enemy; }
 	int  GetDeathEnemyCount()		 { return dead_enemy_count; }
 
 	void OnCollisionEnter(EnemyBase* base);
-	
+	void OnCollisionSpecialMove(EnemyBase* base);
 private:
 	void LoadEnemyArrangement();
 	void Generator();
@@ -30,9 +30,8 @@ private:
 	
 	int AppearTimer();
 
-	SimpleMath::Vector3 effect_pos;
-
 	std::list<EnemyBase*> enemy;
+	EnemyBase enemy_base;
 
 	PlayerBase* player_data;
 
@@ -49,9 +48,6 @@ private:
 	int timer = 0;
 
 	const int max_combo = 3;
-
-	float death_frame = 0.0f;
-	const  float max_death_frame = 0.5f;
 
 	enum LoadFile  { DUMMY_LINE = 6, ENEMY_NUM = 250 };
 

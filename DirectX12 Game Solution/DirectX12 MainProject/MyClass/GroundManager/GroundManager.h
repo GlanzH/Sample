@@ -20,5 +20,4 @@ private:
 
 	const float box_size =   2.0f;
 	const float pos_y	 = -25.0f;
-	const float pos_z	 =   0.0f;
 };

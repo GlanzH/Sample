@@ -36,6 +36,12 @@ public:
 
 	int GetAttackCount() { return motion_count; }
 
+	float GetAppielTime() { return appeil_time; }//アピールしている時間
+
+	bool IsDeathbrow() { return deathbrow_flag; }//必殺技発動フラグ
+
+
+
 	void _2DRender();
 
 	
@@ -61,6 +67,11 @@ private:
 	//必殺技
 	void Player_Special_Move(const float deltaTime);
 
+	//プレイヤーの攻撃(ボタン変更ver)
+	void Player_Attack_two(const float deltaTime);
+
+	void Attack(const float deltaTime);
+
 	DX9::SPRITEFONT font;
 
 	D3DMATERIAL9 material;
@@ -83,25 +94,25 @@ private:
 	float model_rotetion = -90.0f;
 
 	//プレイヤーの移動制限(幅)
-	const float model_collision_detection_X = 70.0f;
+	const float model_collision_detection_X = 67.0f;
 	const float model_collision_detection_Y_MAX = 1000.0f;
 	const float model_collision_detection_Y_MIN = -5.0f;
 	const float model_collision_detection_Z = 100.0f;
 
 	//当たり判定モデルの大きさ
-	const int player_box_size_y = 3;
-	const int player_box_size_x = 1.2;
-	const int player_box_size_z = 1;
+	const int player_box_size_y = 7;
+	const int player_box_size_x = 5;
+	const int player_box_size_z = 3;
 
-	const int box_size_x = 1;
-	const int box_size_y = 1;
-	const int box_size_z = 1;
+	const int box_size_x = 30;
+	const int box_size_y = 15;
+	const int box_size_z = 3;
 
 
 	//プレイヤーのスピード
 	const float player_speed_ = 40.0f;
 
-	//ジャンプしてるかのフラグ。
+	//ジャンプしてるかのフラグ
 	bool jump_flag_ = false;
 	float jump_time_ = 0.0f;
 	float jump_start_v_;
@@ -128,8 +139,8 @@ private:
 	BoundingBox parry_box;
 	DX9::MODEL  parry_collision;
 
-	float parry_box_size_x = 0.6f;
-	float parry_box_size_y = 2.0f;
+	float parry_box_size_x = 3.0f;
+	float parry_box_size_y = 10.0f;
 	float parry_box_size_z = 2.0f;
 
 
@@ -188,21 +199,14 @@ private:
 	//エフェクトの発生タイミング等
 	bool  effect_generation = false;
 	float effect_generation_time = 0.0f;
-	float effect_generation_time_max[3]{ 0.317f,0.033f,0.183f };//フレーム(19f,2f,11f)
+	float effect_generation_time_max[3]{ 0.04f,0.033f,0.005f };//フレーム(19f,2f,11f)
 
 
 	//無敵時間
-	bool  invincible_flag = false;
-	float		invincible_time = 0.0f;
+	bool        invincible_flag     = false;
+	float		invincible_time     = 0.0f;
 	const float invincible_time_max = 1.5f;
 
-	//アピールする時間
-	float		appeal_time = 0.0f;     //アピールする初期値
-	const float appeal_time_max = 2.0f; //アピールする時間の最大値
-
-	//ステータスアップの時間
-	float		focus_time = 0.0f;     //ステータスアップの時間:初期値
-	const float focus_time_max = 10.0f;//ステータスアップの時間:最大値
 
 	//モーションの名前
 	enum
@@ -218,6 +222,26 @@ private:
 		MOTION_MAX
 	};
 
+	//変更*2
+
+	int  motion_flag = 0;
+
+	bool motion_flag_1 = false;
+	bool motion_flag_2 = false;
+	bool motion_flag_3 = false;
+
+	bool motion_start_time_1 = false;
+	bool motion_start_time_2 = false;
+	bool motion_start_time_3 = false;
+
+
+	float motion_time_1 = 0.0f;
+	float motion_time_2 = 0.0f;
+	float motion_time_3 = 0.0f;
+
+	float motion_time_max_1 = 0.6f;
+	float motion_time_max_2 = 0.5f;
+	float motion_time_max_3 = 0.583f;
 
 	//入力受付時間までの時間 & エフェクト表示までの時間
 	bool  input_wait_flag = false;
@@ -259,28 +283,32 @@ private:
 
 	Appeal_state appeal_state_mode;
 
-	//必殺技
-	enum SPECIALMOVE
-	{
-		NOMAL_MOVE,
-		DEATHBLOW
-	};
+	float appeil_time=0.0f;
+	float appeil_time_max=5.0f;
 
-	SPECIALMOVE specialmove_state;
+	float appeil_cool_time;
+	float appeil_cool_time_max;
+
+	bool appeil_cool_flag = false;
+
+	//必殺技
+	bool deathbrow_flag = false;//必殺技発動フラグ
 
 	float specialmove_time = 0.0f;
 	float specialmove_time_max = 4.0f;
 
-	//float invincible_time_max_sp = 5.0f;
 
 	//暗転
 	DX9::SPRITE deathbrow_sprite;
 	int Transparency = 0;
-	int Blackout = 5;
+	int Blackout = 15;
 	int Blackout_max = 255;
 	bool Blackout_flag = false;
 
 	//明転
 	bool bright_flag   = false;
 	int  Ming_Turn = 55;
+
+	int Deathblow_count = 20;
+
 };
