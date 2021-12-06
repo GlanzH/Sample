@@ -39,9 +39,9 @@ int Core::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thor
 	if (!special_flag && !throw_flag) {
 		Move(player);
 	}
-	else if(special_flag || throw_flag) {
-		StopEffect();
-	}
+	//else if(special_flag || throw_flag) {
+	//	StopEffect();
+	//}
 
 
 	if (enemy_hp < 0)
@@ -131,7 +131,7 @@ void Core::Move(SimpleMath::Vector3 player){
 		landing_effect_frame = 0;
 		wait_charge_frame    = 0;
 		wait_shot_frame      = 0;
-
+		launch_count_count   = 0;
 		wait_frame = 0;
 		stop_frame = 0;
 		shot_flag = false;
@@ -154,12 +154,12 @@ void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 	
 	
 	//bull_pos.x = distance_x * delta;
-	bull_pos.y -= distance_y  * delta;
+	bull_pos.y -= distance_y  * delta+0.28;
 
 	if (bull_pos.x > init_bull_pos.x)
-		bull_pos.x -= distance_x * delta;
+		bull_pos.x -= distance_x * delta+1.0;
 	else
-		bull_pos.x += distance_x * delta;
+		bull_pos.x += distance_x * delta+1.0;
 	//if (bull_pos.y > init_bull_pos.y)
 	//{
 	//	//bull_pos.y = oblique_shooting;

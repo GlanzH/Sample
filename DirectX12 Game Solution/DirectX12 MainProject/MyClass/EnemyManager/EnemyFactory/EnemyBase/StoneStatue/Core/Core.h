@@ -60,7 +60,7 @@ private:
 
 	//!着弾時エフェクト描画時間
 	float landing_effect_frame = 0;
-	const float max_landing    = 0.3f;
+	const float max_landing    = 0.2f;
 
 	bool throw_flag;
 	bool special_flag;
