@@ -34,15 +34,12 @@ private:
 
 	const float AUDIENCE_UI_POS_X = 40.0f;
 	const float AUDIENCE_UI_POS_y = 600.0f;
+	const int AUDIENCE_MAX_HIGH = 61;
+
 
 	const float HEART_UI_POS_X = 104.0f;
 	const float HEART_UI_POS_Y = 91.0f;
 	const int HEART_MAX_WIDTH = 104;
 	const int HEART_MAX_HIGH  = 91;
-
-	float AUDIeNCE_MAX_WIDTH = 1183;
-	const int AUDIENCE_MAX_HIGH = 61;
-
-	float audience;
 
 };

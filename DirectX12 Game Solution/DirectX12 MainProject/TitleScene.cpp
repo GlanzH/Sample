@@ -24,6 +24,7 @@ void TitleScene::Initialize()
 
     ui_alpha = 255.0f;
     time_stop = 0.0f;
+
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -49,9 +50,8 @@ void TitleScene::LoadAssets()
     uploadResourcesFinished.wait();
 
     // グラフィックリソースの初期化処理
-    title = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Title.png");
+    title = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/curtain.png");
     title_ui = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/title_ui.png");
-
 }
 
 // Releasing resources required for termination.
@@ -98,9 +98,6 @@ NextScene TitleScene::Update(const float deltaTime)
     }
 
 
-
-
-
     if (co_opening_it != co_opening.end()) {
         co_opening_it++;
     }
@@ -136,7 +133,6 @@ void TitleScene::Render()
         RectWH(0, 0, 1280, 720),
         DX9::Colors::RGBA(255, 255, 255, ui_alpha)
     );
-
 
 
     DX9::SpriteBatch->End();

@@ -66,7 +66,7 @@ void UIManager::RankRnder(int rank) {
 		break;
 
 	case 5:
-		DX9::SpriteBatch->DrawSimple(rank_s.Get(),SimpleMath::Vector3(0.0f, 0.0f, 0.0f));
+		DX9::SpriteBatch->DrawSimple(rank_s.Get(),SimpleMath::Vector3(0.0f, 0.0f, -10.0f));
 		break;
 
 	default:

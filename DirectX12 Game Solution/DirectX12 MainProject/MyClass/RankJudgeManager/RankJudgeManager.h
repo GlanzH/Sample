@@ -8,8 +8,9 @@ public:
 	~RankJudgeManager() {};
 
 	void Initialize();
+	void Update();
 
-	void GetVoltage();
+	void GetAudience();
 
 	void JudgeRnak();
 

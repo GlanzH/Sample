@@ -42,7 +42,7 @@ void ResultScene::LoadAssets()
 
     // グラフィックリソースの初期化処理
     result = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Result.png");
-
+    ui.LoadAsset();
 
 }
 
@@ -81,8 +81,7 @@ NextScene ResultScene::Update(const float deltaTime)
         return NextScene::TitleScene;
     }
 
-    rankjudge.GetVoltage();
-    rankjudge.JudgeRnak();
+    rankjudge.Update();
 
 	return NextScene::Continue;
 }
@@ -97,6 +96,7 @@ void ResultScene::Render()
     DX9::SpriteBatch->Begin();
 
     DX9::SpriteBatch->DrawSimple(result.Get(), SimpleMath::Vector3(0.0f, 0.0f, 0.0f));
+    ui.RankRnder(rankjudge.ReturnRank());
 
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();

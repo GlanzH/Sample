@@ -9,7 +9,12 @@ void RankJudgeManager::Initialize() {
 	return;
 }
 
-void RankJudgeManager::GetVoltage() {
+void RankJudgeManager::Update() {
+	GetAudience();
+	JudgeRnak();
+}
+
+void RankJudgeManager::GetAudience() {
 	now_score = StatusManager::Instance().ReturnScore();
 }
 
