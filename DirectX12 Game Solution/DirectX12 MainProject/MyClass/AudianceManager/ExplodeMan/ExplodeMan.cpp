@@ -2,6 +2,7 @@
 
 void ExplodeMan::LoadAssets(float x) {
 	man = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Audience\\ExplodingMan\\audience_damege_bone.X");
+	
 	man->SetPosition(x, 0, 25);
 }
 
@@ -14,7 +15,9 @@ int ExplodeMan::Update(SimpleMath::Vector3 position,const float deltaTime) {
 }
 
 void ExplodeMan::Render() {
+	DXTK->Direct3D9->AlphaBendEnable(true);
 	man->Draw();
+	DXTK->Direct3D9->AlphaBendEnable(false);
 }
 
 void ExplodeMan::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack) {

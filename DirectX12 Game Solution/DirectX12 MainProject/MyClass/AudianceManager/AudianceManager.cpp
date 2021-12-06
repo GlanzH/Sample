@@ -4,7 +4,7 @@ void AudienceManager::LoadAssets() {
 	audience = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Audience\\StandingMan\\audience_stand.X");
 	throw_things_lv2 = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Audience\\ThrowThings\\throw_lv2b.X");
 
-	//audience->SetTexture(0,L"audience.png");
+//	audience->SetTexture(L"Model\\Audience\\StandingMan\\audience.png");
 
 	//material.Diffuse = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 0.0f);
 	//material.Ambient = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 0.0f);
@@ -45,7 +45,9 @@ void AudienceManager::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletac
 }
 
 void AudienceManager::Render() {
+	DXTK->Direct3D9->AlphaBendEnable(true);
 	audience->Draw();
+	DXTK->Direct3D9->AlphaBendEnable(false);
 
 	if (time > 3.0f) {
 		
