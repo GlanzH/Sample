@@ -18,7 +18,7 @@ EnemyFactory::EnemyFactory()
 	HighSlime_hp   = 7;
 	FakerLamiel_hp = 30;
 	StoneStatue_hp = 60;
-	StoneStatueCore_hp = 60;
+	StoneStatueCore_hp = 127;
 	//@敵の種類のタグをプッシュバック@//
 	//@　　スライム         @//
 	enemy_tag.push_back("S");

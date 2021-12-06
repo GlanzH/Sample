@@ -59,7 +59,7 @@ private:
 
 	//!着弾時エフェクト描画時間
 	float landing_effect_frame = 0;
-	const float max_landing    = 0.8f;
+	const float max_landing    = 0.3f;
 
 	bool launch_permit;
 	char launch_count_count;

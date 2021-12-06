@@ -33,15 +33,19 @@ bool Core::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
 }
 
 int Core::Update(SimpleMath::Vector3 player, const float deltaTime) {
-	
+
 	delta = deltaTime;
-	
+
 	EnemyBase::Update(player, deltaTime);
 	Move(player);
 
 
 	if (enemy_hp < 0)
+	{
+		DX12Effect.Stop("chage");
 		return DEAD;
+	}
+		
 
 	collision->SetPosition(model->GetPosition());
 	col.bullet.Center = obstacle_collision->GetPosition();
