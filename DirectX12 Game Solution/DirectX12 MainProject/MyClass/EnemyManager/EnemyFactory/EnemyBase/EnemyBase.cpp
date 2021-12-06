@@ -149,7 +149,7 @@ void EnemyBase::EnemyAnimation() {
 }
 
 void EnemyBase::HitEffect() {
-	if (enemy_hp < 0) {
+	if (enemy_hp > 0) {
 		hit_effect_pos = position;
 		DX12Effect.PlayOneShot("hit_eff", hit_effect_pos);
 	}

@@ -218,7 +218,7 @@ private:
 
 	bool  effect_first_flag = false;
 	float effect_first_time = 0.0f;
-	float effect_first_max_time = 0.5f;
+	float effect_first_max_time = 0.3f;
 
 
 
