@@ -44,6 +44,8 @@ public:
 
 	void _2DRender();
 
+	void BrackImage();
+
 	
 
 private:
@@ -203,6 +205,17 @@ private:
 
 	CANNOT_MOVE_STATE canot_move_state_mode;
 
+	//攻撃中 他の攻撃不可
+	enum CANNOT_OTHER_ATTACK
+	{
+		NOMAL_STATE,
+		FIRST,
+		SECOND,
+		THIRD
+	};
+
+	CANNOT_OTHER_ATTACK cannot_other;
+
 	//エフェクトの発生タイミング等
 	bool  effect_generation = false;
 	float effect_generation_time = 0.1f;
@@ -211,16 +224,17 @@ private:
 	bool effect_end_flag = false;
 
 
-	bool  effect_first_flag = false;
-	float effect_first_time = 0.0f;
-	float effect_first_max_time = 0.5f;
-
+	bool  first_attack_hit      = false;
+	float first_attack_time     = 0.0f;
+	float first_attack_time_max = 0.333f;
 
 
 	//無敵時間
 	bool        invincible_flag     = false;
 	float		invincible_time     = 0.0f;
-	const float invincible_time_max = 1.5f;
+	const float invincible_time_max = 0.09f;
+
+	//プレイヤーがダメージくらった時の変数
 
 
 	//モーションの名前
@@ -234,6 +248,7 @@ private:
 		APPEIL,
 		JUMP,
 		PARRY,
+		DAMAGE,
 		MOTION_MAX
 	};
 

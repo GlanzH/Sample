@@ -145,6 +145,7 @@ void MainScene::Render()
 	//2D•`‰æ
 	ui->Render(StatusManager::Instance().ReturnAudience(),StatusManager::Instance().ReturnHeart());
 	player->_2DRender();
+	player->BrackImage();
 
 	DX9::SpriteBatch->End();
 	DXTK->Direct3D9->EndScene();
