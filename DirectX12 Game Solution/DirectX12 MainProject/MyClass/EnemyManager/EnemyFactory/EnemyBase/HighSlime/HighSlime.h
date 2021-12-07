@@ -37,7 +37,7 @@ private:
 
 	const float move_speed =  5.0f;
 	const float jump_power = -0.3f;
-	const float jump_speed = 15.0f;
+	const float jump_speed = 10.0f;
 	const float gravity	   = 9.80665f;
 
 	const float exit_jump_power = -0.5f;

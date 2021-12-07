@@ -58,7 +58,6 @@ private:
 	const float CURTAIN_UP_SPEED = 130.0f;
 
 	float audience;
-
 	// コルーチンのプロトタイプ宣言
 	cppcoro::generator<int> Opening();
 	cppcoro::generator<int>                  co_opening;

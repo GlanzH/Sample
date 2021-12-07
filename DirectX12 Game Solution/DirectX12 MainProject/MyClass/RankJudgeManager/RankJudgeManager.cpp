@@ -9,29 +9,37 @@ void RankJudgeManager::Initialize() {
 	return;
 }
 
-void RankJudgeManager::GetVoltage() {
-	now_score = StatusManager::Instance().ReturnAudience();
+void RankJudgeManager::Update() {
+	GetAudience();
+	JudgeRnak();
 }
 
-int RankJudgeManager::JudgeRnak() {
+void RankJudgeManager::GetAudience() {
+	now_score = StatusManager::Instance().ReturnScore();
+}
+
+void RankJudgeManager::JudgeRnak() {
 
 	if (now_score <= 0.0f) {
+		now_rank = E;
+	}
+	else if (now_score >= 1.0f	&& now_score <= 29.0f) {
 		now_rank = D;
 	}
-	else if (now_score >= 1.0f && now_score <= 50.0f) {
+	else if (now_score >= 30.0f && now_score <= 59.0f) {
 		now_rank = C;
 	}
-	else if (now_score >= 51.0f && now_score <= 99.0f) {
+	else if (now_score >= 60.0f && now_score <= 89.0f) {
 		now_rank = B;
 	}
-	else if (now_score >= 100.0f && now_score <= 199.0f) {
+	else if (now_score >= 90.0f && now_score <= 99.0f) {
 		now_rank = A;
 	}
-	else if (now_score >= 200.0f) {
+	else if (now_score >= 100.0f) {
 		now_rank = S;
 	}
 
-	return now_rank;
+	return;
 }
 
 cppcoro::generator<int> RankJudgeManager::ReleaseRank()

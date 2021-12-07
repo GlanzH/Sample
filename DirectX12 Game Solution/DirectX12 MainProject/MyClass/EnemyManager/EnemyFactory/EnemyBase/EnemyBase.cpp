@@ -126,6 +126,7 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool
 	}
 
 	StatusManager::Instance().DownAudience(delta);
+
 	return 0;
 }
 
@@ -148,9 +149,10 @@ void EnemyBase::EnemyAnimation() {
 }
 
 void EnemyBase::HitEffect() {
-	hit_effect_pos = position;
-
-	DX12Effect.PlayOneShot("hit_eff", hit_effect_pos);
+	if (enemy_hp > 0) {
+		hit_effect_pos = position;
+		DX12Effect.PlayOneShot("hit_eff", hit_effect_pos);
+	}
 }
 
 void EnemyBase::DeathEffect() {
@@ -178,21 +180,36 @@ bool EnemyBase::IsDamage() {
 }
 
 bool EnemyBase::LifeDeathDecision() {
-	if (enemy_hp < 0)
-		return DEAD;
+	if (enemy_tag == "S" || enemy_tag == "H") {
+		if (enemy_hp < 0 && dead_frame < max_dead) {
+			if (dead_frame == 0.0f)
+				Retreat();
+
+			SetAnimation(anim_model, DAMAGE);
+			anim_model->AdvanceTime(delta / 1.0f);
+
+			dead_frame += delta;
+		}
+		else if (enemy_hp < 0 && dead_frame > max_dead) {
+			return DEAD;
+		}
+	}
+	else {
+		if (enemy_hp < 0) 
+			return DEAD;
+	}
 
 	 if (position.z <= 15.0f && auto_destroy_frame < max_auto_destroy) {
 		 auto_destroy_frame += delta;
-	}
-else if (position.z <= 15.0f && auto_destroy_frame > max_auto_destroy) {
+	 }
+	 else if (position.z <= 15.0f && auto_destroy_frame > max_auto_destroy) {
 		return AUTO;
-	}
+ 	 }
 
 	return LIVE;
 }
 
-void EnemyBase::Retreat()
-{
+void EnemyBase::Retreat(){
 	retreat_flg = true;
 }
 

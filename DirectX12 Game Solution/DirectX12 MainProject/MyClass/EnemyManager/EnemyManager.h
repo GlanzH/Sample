@@ -22,6 +22,7 @@ public:
 	int  GetDeathEnemyCount()		 { return dead_enemy_count; }
 
 	void OnCollisionEnter(EnemyBase* base);
+	void OnCollisionAudience(EnemyBase* base);
 	void OnCollisionSpecialMove(EnemyBase* base);
 private:
 	void LoadEnemyArrangement();

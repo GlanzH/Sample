@@ -97,8 +97,8 @@ void HighSlime::EntryExitJump() {
 			break;
 
 		case EXIT:
-			if (position.y < -10.0f) {
-				position.y = -10.0f;
+			if (position.y < -20.0f) {
+				position.y = -20.0f;
 				jump_flag = false;
 			}
 			break;

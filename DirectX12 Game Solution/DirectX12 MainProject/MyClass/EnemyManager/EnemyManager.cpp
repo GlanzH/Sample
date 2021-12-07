@@ -112,7 +112,11 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 }
 
 void EnemyManager::OnCollisionSpecialMove(EnemyBase* base) {
-	base->Damage(player_data->GetDamage());
+	base->Damage(20);
+}
+
+void EnemyManager::OnCollisionAudience(EnemyBase* base) {
+	base->Damage(20);
 }
 
 int EnemyManager::AppearTimer() {

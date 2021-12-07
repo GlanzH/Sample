@@ -8,6 +8,11 @@
 
 using namespace DirectX;
 
+typedef struct Collisions {
+	BoundingBox sword_box;
+	BoundingBox box;
+};
+
 class PlayerBase
 {
 public:
@@ -22,9 +27,7 @@ public:
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
 
-	BoundingBox GetSwordBox() { return sword_box; }
-	BoundingBox GetBox() { return  box; }
-	BoundingBox GetParryBox() { return parry_box; }
+	Collisions GetBox() {return col;}
 
 	void OnCollisionEnter();
 	void OnParryArea();
@@ -38,9 +41,11 @@ public:
 
 	float GetAppielTime() { return appeil_time; }//アピールしている時間
 
+	bool GetAppealCoolFlag() { return appeil_cool_flag; }
+
 	bool IsDeathbrow() { return deathbrow_flag; }//必殺技発動フラグ
 
-
+	bool GetSpecialAttackFlag() { return special_attack_flag; }
 
 	void _2DRender();
 
@@ -66,20 +71,23 @@ private:
 	void Appeal(const float deltaTime);
 	//必殺技
 	void Player_Special_Move(const float deltaTime);
-
 	//プレイヤーの攻撃(ボタン変更ver)
 	void Player_Attack_two(const float deltaTime);
 
 	void Attack(const float deltaTime);
 
+	//エフェクト1撃目
+	void Attack_First(const float deltaTime);
+	//エフェクト2撃目
+	void Attack_Secnod(const float deltaTime);
+	//エフェクト3撃目
+	void Attack_Third(const float deltaTime);
+
+	Collisions col;
+
 	DX9::SPRITEFONT font;
 
 	D3DMATERIAL9 material;
-
-	//剣の当たり判定ボックス
-	BoundingBox sword_box;
-	BoundingBox box;
-
 
 	//当たり判定用モデル
 	DX9::MODEL sword_collision;
@@ -110,7 +118,7 @@ private:
 
 
 	//プレイヤーのスピード
-	const float player_speed_ = 40.0f;
+	const float player_speed_ = 30.0f;
 
 	//ジャンプしてるかのフラグ
 	bool jump_flag_ = false;
@@ -143,6 +151,10 @@ private:
 	float parry_box_size_y = 10.0f;
 	float parry_box_size_z = 2.0f;
 
+	//必殺技
+	bool special_attack_flag = false;
+	float special_attack_frame = 0.0f;
+	const float max_special_attack = 0.5f;
 
 	//攻撃‐3連撃‐カウント
 	int attack_count;
@@ -198,8 +210,16 @@ private:
 
 	//エフェクトの発生タイミング等
 	bool  effect_generation = false;
-	float effect_generation_time = 0.0f;
-	float effect_generation_time_max[3]{ 0.04f,0.033f,0.005f };//フレーム(19f,2f,11f)
+	float effect_generation_time = 0.1f;
+	float effect_generation_time_max[3]{ 1.0f,0.033f,0.005f };//フレーム(19f,2f,11f)
+
+	bool effect_end_flag = false;
+
+
+	bool  effect_first_flag = false;
+	float effect_first_time = 0.0f;
+	float effect_first_max_time = 0.3f;
+
 
 
 	//無敵時間
@@ -240,7 +260,7 @@ private:
 	float motion_time_3 = 0.0f;
 
 	float motion_time_max_1 = 0.6f;
-	float motion_time_max_2 = 0.5f;
+	float motion_time_max_2 = 0.26f;
 	float motion_time_max_3 = 0.583f;
 
 	//入力受付時間までの時間 & エフェクト表示までの時間
@@ -274,28 +294,23 @@ private:
 	Direction_State direction_state_mode;
 
 	//アピール
-	enum Appeal_state
-	{
-		NORMAL,
-		APPEAL,
-		FOCUS
-	};
-
-	Appeal_state appeal_state_mode;
+	bool appeil_flag = false;
 
 	float appeil_time = 0.0f;
 	float appeil_time_max = 5.0f;
 
-	float appeil_cool_time;
-	float appeil_cool_time_max;
+	float appeil_cool_time = 0.0f;
+	float appeil_cool_time_max = 1.0f;
 
 	bool appeil_cool_flag = false;
 
 	//必殺技
 	bool deathbrow_flag = false;//必殺技発動フラグ
 
+	bool deathbrow_attack = false;//必殺技の当たり判定
+
 	float specialmove_time = 0.0f;
-	float specialmove_time_max = 4.0f;
+	float specialmove_time_max = 3.95f;
 
 
 	//暗転
@@ -308,7 +323,4 @@ private:
 	//明転
 	bool bright_flag = false;
 	int  Ming_Turn = 55;
-
-	int Deathblow_count = 20;
-
 };
