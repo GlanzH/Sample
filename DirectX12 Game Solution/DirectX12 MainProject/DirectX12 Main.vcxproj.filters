@@ -168,7 +168,6 @@
     <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.h">
       <Filter>MyClass\PlayerManager\PlayerBase\PlayerAttack</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\EffectBase\EffectBase.h" />
     <ClInclude Include="MyClass\Shader\MultiLighting.h">
       <Filter>MyClass\Shader</Filter>
     </ClInclude>
@@ -255,7 +254,6 @@
     <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.cpp">
       <Filter>MyClass\PlayerManager\PlayerBase\PlayerAttack</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\EffectBase\EffectBase.cpp" />
     <ClCompile Include="MyClass\Shader\MultiLighting.cpp">
       <Filter>MyClass\Shader</Filter>
     </ClCompile>
