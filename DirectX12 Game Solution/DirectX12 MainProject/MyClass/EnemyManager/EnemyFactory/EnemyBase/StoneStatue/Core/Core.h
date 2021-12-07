@@ -38,9 +38,13 @@ private:
 	int attack_count =0;
 	const int MAX_COUNT=3;
 	int landing_count;
+	Vector3 laser_coordinate;
+	
+
+	float SHOT_SPEED= 0.57f;
 	//!ATTACK待機時間
 	float wait_shot_frame = 0;
-	const float max_wait_shot = 0.75f;
+	const float max_wait_shot = 1.05f;
 
 	//!WAITの待機時間
 	float wait_frame = 0;
@@ -52,7 +56,7 @@ private:
 
 	//!チャージエフェクト待機時間
 	float wait_charge_frame = 0;
-	const float max_wait_charge = 1.0f;
+	const float max_wait_charge = 1.05f;
 
 	//!チャージエフェクト描画時間
 	float charge_effect_frame = 0;
@@ -60,7 +64,7 @@ private:
 
 	//!着弾時エフェクト描画時間
 	float landing_effect_frame = 0;
-	const float max_landing    = 0.1f;
+	const float max_landing    = 1.61f;
 
 	bool throw_flag;
 	bool special_flag;
