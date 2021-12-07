@@ -35,15 +35,13 @@ void PlayerBase::LoadAssets()
 
 
 	//ƒvƒŒƒCƒ„[‚Ì“–‚½‚è”»’è
-	box = model->GetBoundingBox();
-
-	box.Extents = SimpleMath::Vector3(box.Extents);
+	col.box = model->GetBoundingBox();
 
 	collision = DX9::Model::CreateBox(
 		DXTK->Device9,
-		box.Extents.x * player_box_size_x,
-		box.Extents.y * player_box_size_y,
-		box.Extents.z * player_box_size_z
+		col.box.Extents.x * player_box_size_x,
+		col.box.Extents.y * player_box_size_y,
+		col.box.Extents.z * player_box_size_z
 	);
 	collision->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
 
@@ -55,15 +53,15 @@ void PlayerBase::LoadAssets()
 	//collision->SetScale(0.05f);
 
 
-	sword_box = model->GetBoundingBox();
+	col.sword_box = model->GetBoundingBox();
 
-	sword_box.Extents = SimpleMath::Vector3(sword_box.Extents) * 7.0f;
+	col.sword_box.Extents = SimpleMath::Vector3(col.sword_box.Extents) * 7.0f;
 
 	sword_collision = DX9::Model::CreateBox(
 		DXTK->Device9,
-		sword_box.Extents.x * box_size_x,
-		sword_box.Extents.y * box_size_y,
-		sword_box.Extents.z * box_size_z
+		col.sword_box.Extents.x * box_size_x,
+		col.sword_box.Extents.y * box_size_y,
+		col.sword_box.Extents.z * box_size_z
 	);
 
 
@@ -137,12 +135,12 @@ int PlayerBase::Update(const float deltaTime)
 
 	//UŒ‚‚ÌŒü‚«
 	if (direction_state_mode == Direction_State::RIGHT) {
-		sword_box.Center = model->GetPosition() + SimpleMath::Vector3(9.5, 3, 0);
+		col.sword_box.Center = model->GetPosition() + SimpleMath::Vector3(9.5, 3, 0);
 		sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(6.5, 5, 0));
 
 	}
 	else if (direction_state_mode == Direction_State::LEFT) {
-		sword_box.Center = model->GetPosition() + SimpleMath::Vector3(-9.5, 3, 0);
+		col.sword_box.Center = model->GetPosition() + SimpleMath::Vector3(-9.5, 3, 0);
 		sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(-6.5, 5, 0));
 
 	}
@@ -159,12 +157,7 @@ int PlayerBase::Update(const float deltaTime)
 
 	}
 
-	if (DXTK->KeyEvent->pressed.P) {
-		Deathblow_count++;
-	}
-
-
-	box.Center = model->GetPosition();
+	col.box.Center = model->GetPosition();
 	player_pos = model->GetPosition();
 	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 6, 0));
 
@@ -255,7 +248,7 @@ void PlayerBase::Player_move(const float deltaTime)
 					if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
 						model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
 						model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
-						sword_box.Center = model->GetRotation();
+						col.sword_box.Center = model->GetRotation();
 						direction_state_mode = Direction_State::RIGHT;
 						SetAnimation(model, RUN);
 
@@ -263,7 +256,7 @@ void PlayerBase::Player_move(const float deltaTime)
 					if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left) {
 						model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
 						model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
-						sword_box.Center = model->GetRotation();
+						col.sword_box.Center = model->GetRotation();
 						direction_state_mode = Direction_State::LEFT;
 						SetAnimation(model, RUN);
 					}
@@ -838,35 +831,28 @@ void PlayerBase::Player_Special_Move(const float deltaTime) {
 		Transparency -= Ming_Turn;
 		if (Transparency <= 0) {
 			Transparency = 0;
-			bright_flag = false;
 
-			//•KE‹Z‚Ì“–‚½‚è”»’è
-			attack_flag = true;
-			if (IsAttack()) {
-				damage = 20;
-			}
+			bright_flag = false;
 
 		}
 	}
 
+	if (specialmove_time >= 3.9f && !special_attack_flag)
+		special_attack_flag = true;
+
 	//•KE‹ZI—¹
 	if (specialmove_time >= specialmove_time_max) {
 		deathbrow_flag = false;
-
-		//attack_flag = true;
-		//if (IsAttack()) {
-		//	damage = 20;
-		//}
+		special_attack_flag = false;
 		specialmove_time = 0.0f;
 
 		deathbrow_attack = false;
 
 		//•KE‹ZƒQ[ƒWƒŠƒZƒbƒgŒÄ‚Ño‚µ
-		Deathblow_count = 0;
+		StatusManager::Instance().HeartReset();
 	}
 
 }
-
 
 bool PlayerBase::IsAttack() {
 

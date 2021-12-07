@@ -40,7 +40,7 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 		anim_model->SetPosition(position);
 		anim_model->SetRotation(0.0f, XMConvertToRadians(anim_init_rotate), 0.0f);
 
-		anim_model->SetScale(0.01f);
+		anim_model->SetScale(0.1f);
 
 		//” ‚ðì‚é€”õ
 		anim_box = anim_model->GetBoundingBox();
@@ -149,10 +149,10 @@ void EnemyBase::EnemyAnimation() {
 }
 
 void EnemyBase::HitEffect() {
-	if (enemy_hp < 0) {
+	//if (enemy_hp > 0) {
 		hit_effect_pos = position;
 		DX12Effect.PlayOneShot("hit_eff", hit_effect_pos);
-	}
+	//}
 }
 
 void EnemyBase::DeathEffect() {
@@ -226,4 +226,3 @@ void EnemyBase::Render() {
 		//collision->Draw();
 	}
 }
-

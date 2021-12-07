@@ -115,6 +115,10 @@ void EnemyManager::OnCollisionSpecialMove(EnemyBase* base) {
 	base->Damage(20);
 }
 
+void EnemyManager::OnCollisionAudience(EnemyBase* base) {
+	base->Damage(20);
+}
+
 int EnemyManager::AppearTimer() {
 	if (frame < max_frame) 
 		++frame;

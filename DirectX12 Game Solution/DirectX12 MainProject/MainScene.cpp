@@ -112,7 +112,7 @@ NextScene MainScene::Update(const float deltaTime)
 	DX12Effect.Update(deltaTime);
 	player->Update(deltaTime);
 	camera->Update(player->GetModel()->GetPosition());
-	audience->Update(player->GetAppielTime(), deltaTime);
+	audience->Update(player->GetAppielTime(),player->GetAppealCoolFlag(),player->GetSpecialAttackFlag(), deltaTime);
 	enemy->Update(player->GetModel()->GetPosition(),player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
 	observer->Update(player, enemy,audience);
 
@@ -131,7 +131,8 @@ void MainScene::Render()
 	DX12Effect.SetCamera((DX12::CAMERA)camera->GetCamera());
 	camera->Render();
 
-	point.SetLightPower(100.0f,0);
+	point.SetLightPower(10.0f);
+	point.SetLightColor(SimpleMath::Vector4(255.0f / 255.0f, 144.0f / 255.0f, 0, 0));
 	point.PointRender(camera->GetCamera(), ground->GetModel(), player->GetModel());
 	
 	point.ShadeRender(player->GetModel(),SimpleMath::Vector4(0,0,1,0.3f));

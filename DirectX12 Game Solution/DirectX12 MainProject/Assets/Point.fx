@@ -32,6 +32,7 @@ float4x4 g_Projection;
 float4   g_Light;
 float4   g_Attenuation;
 float    g_Pow;
+float4   g_LightColor;
 
 float4   g_DLightDir;
 float4   g_Ambient;
@@ -78,13 +79,18 @@ float4 PS_P0_Main(VS_OUT input) : COLOR0
 
     //ägéU
     colD = saturate(dot(normalize(input.norw.xyz), dir));
-    //å∏êä
     colA = saturate(1.0f / (g_Attenuation.x + g_Attenuation.y * len + g_Attenuation.z * len * len));
 
-    col = colD * colA * g_Pow;
-    col = col + colorD;
+    //col = colD * colA;
+    //col *= 10.0f;
+    float4 diffuse = g_LightColor * colD;
 
-    return float4(col, col, col, 1.0f) * tex2D(tex,input.uv);
+    float3 color = diffuse * g_Pow;
+    //å∏êä
+    color *= saturate(1.0f / (g_Attenuation.x + g_Attenuation.y * len + g_Attenuation.z * len * len));
+ 
+
+    return float4(color, 1.0f) * tex2D(tex,input.uv);
 }
 
 //-----------------------------------------------------------------------------

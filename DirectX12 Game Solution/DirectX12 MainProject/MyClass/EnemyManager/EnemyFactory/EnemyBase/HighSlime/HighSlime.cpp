@@ -6,12 +6,6 @@ HighSlime::HighSlime()
 {
 }
 
-bool HighSlime::Initialize()
-{
-   
-    return false;
-}
-
 int HighSlime::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime)
 {
     EnemyBase::Update(player,special_attack_flag,thorow_things_flag, deltaTime);
@@ -23,13 +17,6 @@ int HighSlime::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool
 	Action();
 
 	return 0;
-}
-
-void HighSlime::Move() {
-    if (player_pos.x < position.x)
-        position.x -= move_speed * delta;
-    else
-        position.x += move_speed * delta;
 }
 
 void HighSlime::Action() {
@@ -48,6 +35,8 @@ void HighSlime::Action() {
 
 		if (is_move_frame < max_is_move) {
 			if (!EnemyBase::IsDamage()) {
+				InitDirection();
+				ChangeDirection();
 				Move();
 				Rotate();
 			}
@@ -67,13 +56,38 @@ void HighSlime::Action() {
 	}
 }
 
+void HighSlime::Move() {
+	if (move_direct == MOVE_LEFT)
+		position.x -= move_speed * delta;
+	else
+		position.x += move_speed * delta;
+}
+
+void HighSlime::InitDirection() {
+	if (!init_direct_flag) {
+		if (position.x > 0)
+			move_direct = MOVE_LEFT;
+		else
+			move_direct = MOVE_RIGHT;
+
+		init_direct_flag = true;
+	}
+}
+
+void HighSlime::ChangeDirection() {
+	 if (position.x >= 60)
+		move_direct = MOVE_LEFT;
+else if (position.x <= -60)
+		move_direct = MOVE_RIGHT;
+}
+
 void HighSlime::Rotate() {
 	const float rotate = 45.0f;
 
-	if (player_pos.x > position.x)
-		anim_model->SetRotation(0.0f, -rotate, 0.0f);
-	else
+	if (move_direct == MOVE_LEFT)
 		anim_model->SetRotation(0.0f, rotate, 0.0f);
+	else
+		anim_model->SetRotation(0.0f, -rotate, 0.0f);
 }
 
 void HighSlime::EntryExitJump() {

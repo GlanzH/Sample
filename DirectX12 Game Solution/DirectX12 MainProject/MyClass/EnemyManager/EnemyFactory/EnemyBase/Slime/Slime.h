@@ -8,13 +8,14 @@ class Slime : public EnemyBase
 public:
 	Slime() {};
 	~Slime() {}
-
 	int Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 
 private:
 	void Action();
 	void EntryExitJump();
 	void ExitRotate();
+	void InitDirection();
+	void ChangeDirection();
 	void Move  ();
 	void Rotate();
 
@@ -34,7 +35,7 @@ private:
 	float jump_time = 0.0f;
 	float jump_dist;
 
-	bool flag = false;
+	bool init_direct_flag = false;
 
 	const float jump_power = -0.3f;
 	const float jump_speed = 25.0f;
@@ -56,5 +57,11 @@ private:
 		EXIT
 	};
 
+	enum SlimeDirection{
+		MOVE_LEFT,
+		MOVE_RIGHT
+	};
+
 	int action = ENTRY;
+	int move_direct = MOVE_LEFT;
 };
