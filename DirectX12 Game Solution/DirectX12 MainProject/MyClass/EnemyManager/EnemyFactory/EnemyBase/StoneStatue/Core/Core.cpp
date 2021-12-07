@@ -13,7 +13,7 @@ bool Core::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
 	EnemyBase::Initialize(tag,speed, hp);
 	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/shoot/shoot.efk",      "shoot");
 	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/charge/charge.efk",   "charge");
-	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/landing/landing.efk","landing");
+	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/landing2/landing.efk","landing");
 
 	obstacle_collision = DX9::Model::CreateSphere(DXTK->Device9, 4, 8, 2);
 

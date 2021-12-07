@@ -18,7 +18,7 @@ class EnemyBase;
 class EnemyFactory {
 public:
 	EnemyFactory();
-	~EnemyFactory() {};
+	~EnemyFactory();
 	EnemyBase* Create(std::string tag, DirectX::SimpleMath::Vector3 position);
 	EnemyBase* CreateProduct(std::string tag, DirectX::SimpleMath::Vector3 position);
 	LPCWSTR SetModel(std::string tag);

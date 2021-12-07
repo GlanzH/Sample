@@ -12,7 +12,7 @@ class PlayerBase
 {
 public:
 
-	 PlayerBase() {};
+	PlayerBase() {};
 	~PlayerBase() {};
 
 	bool Initialize();
@@ -44,7 +44,7 @@ public:
 
 	void _2DRender();
 
-	
+
 
 private:
 	//アニメーション
@@ -125,10 +125,10 @@ private:
 	const float V0 = 50.0f;
 
 	//ジャンプタイミング
-	bool  jump_start_flag     = false;
-	float jump_start_time     = 0.0f;
+	bool  jump_start_flag = false;
+	float jump_start_time = 0.0f;
 	float jump_start_time_max = 0.133f;
-	
+
 	bool jump_end_flag = false;
 
 	//パリィ
@@ -203,8 +203,8 @@ private:
 
 
 	//無敵時間
-	bool        invincible_flag     = false;
-	float		invincible_time     = 0.0f;
+	bool        invincible_flag = false;
+	float		invincible_time = 0.0f;
 	const float invincible_time_max = 1.5f;
 
 
@@ -283,8 +283,8 @@ private:
 
 	Appeal_state appeal_state_mode;
 
-	float appeil_time=0.0f;
-	float appeil_time_max=5.0f;
+	float appeil_time = 0.0f;
+	float appeil_time_max = 5.0f;
 
 	float appeil_cool_time;
 	float appeil_cool_time_max;
@@ -306,7 +306,7 @@ private:
 	bool Blackout_flag = false;
 
 	//明転
-	bool bright_flag   = false;
+	bool bright_flag = false;
 	int  Ming_Turn = 55;
 
 	int Deathblow_count = 20;

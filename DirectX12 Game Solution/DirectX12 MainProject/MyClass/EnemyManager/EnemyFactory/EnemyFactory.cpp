@@ -37,8 +37,20 @@ EnemyFactory::EnemyFactory()
      enemy_model[FAKER_LAMIEL] = L"Model\\Enemy\\Lamiel\\ramieru.X";
      enemy_model[STONE_STATUE] = L"Model\\Enemy\\Stone\\koteihoudai_dodai.X";
 	 enemy_model[STONE_CORE]   = L"Model\\Enemy\\Stone\\koteihoudai_core.X";
-
 }
+
+EnemyFactory::~EnemyFactory()
+{
+			delete new Slime;
+			delete new HighSlime;
+			delete new FakerLamiel;
+			delete new StoneStatue;
+			delete new Core;
+}
+
+
+
+
 
 EnemyBase* EnemyFactory::Create(std::string tag, DirectX::SimpleMath::Vector3 position)
 {
@@ -58,7 +70,6 @@ EnemyBase* EnemyFactory::CreateProduct(std::string tag, DirectX::SimpleMath::Vec
 	{
 		if (tag == enemy_tag[i]) { enemy = classes[i]; }
 	}
-
 	return enemy;
 }
 
