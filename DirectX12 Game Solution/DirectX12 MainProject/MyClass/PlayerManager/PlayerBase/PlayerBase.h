@@ -8,6 +8,11 @@
 
 using namespace DirectX;
 
+typedef struct Collisions {
+	BoundingBox  sword_box;
+	BoundingBox  box;
+};
+
 class PlayerBase
 {
 public:
@@ -22,8 +27,8 @@ public:
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
 
-	BoundingBox GetSwordBox() { return sword_box; }
-	BoundingBox GetBox() { return  box; }
+	Collisions GetBox() { return col; }
+
 	BoundingBox GetParryBox() { return parry_box; }
 
 	void OnCollisionEnter();
@@ -40,6 +45,9 @@ public:
 
 	bool IsDeathbrow() { return deathbrow_flag; }//•KE‹Z”­“®ƒtƒ‰ƒO
 
+	bool GetAppealCoolFlag() { return appeil_cool_flag; }
+
+	bool GetSpecialAttackFlag() { return special_attack_flag; }
 
 
 	void _2DRender();
@@ -93,6 +101,7 @@ private:
 	//“–‚½‚è”»’è—pƒ‚ƒfƒ‹
 	DX9::MODEL sword_collision;
 	DX9::MODEL collision;
+	Collisions col;
 
 	int damage = 0;
 
@@ -152,6 +161,8 @@ private:
 	float parry_box_size_y = 10.0f;
 	float parry_box_size_z = 2.0f;
 
+	//•KE‹Z
+	bool special_attack_flag = false;
 
 	//UŒ‚]3˜AŒ‚]ƒJƒEƒ“ƒg
 	int attack_count;
