@@ -14,35 +14,29 @@ MultiPointLighting::MultiPointLighting()
 void MultiPointLighting::Init()
 {
 	shader = DX9::Shader::CreateFromFile(DXTK->Device9, L"Point.fx");
-	for (int i = 0; i < 10; i++)
-	{
-		m_lightsPos = SimpleMath::Vector4::Zero;
-		m_lightsColor = SimpleMath::Vector4::Zero;
-		m_lightsPower = 1.0f;
-		m_maxLight = 10;
-	}
 }
 
 //------------------------------------------------------------------------------
 //	ライトのポジション設定
 //------------------------------------------------------------------------------
-void MultiPointLighting::SetLightPos(SimpleMath::Vector4 pos, int number)
+void MultiPointLighting::SetLight(DX9::SKINNEDMODEL& model)
 {
-	m_lightsPos = pos;
+	auto pos = model->GetPosition();
+	m_lightsPos.push_back(SimpleMath::Vector4(pos.x, -17, pos.z - 4, 1));
 }
 
 //------------------------------------------------------------------------------
 //	ライトの色設定
 //------------------------------------------------------------------------------
-//void MultiPointLighting::SetLightColor(SimpleMath::Vector4 color, int numLight)
-//{
-//	m_lightsColor[numLight] = color;
-//}
+void MultiPointLighting::SetLightColor(SimpleMath::Vector4 color)
+{
+	m_lightsColor = color;
+}
 
 //------------------------------------------------------------------------------
 //	ライトの強さ（範囲）
 //------------------------------------------------------------------------------
-void MultiPointLighting::SetLightPower(float pow, int number)
+void MultiPointLighting::SetLightPower(float pow)
 {
 	m_lightsPower = pow;
 }
@@ -61,9 +55,10 @@ void MultiPointLighting::SetMax(int maxLight)
 void MultiPointLighting::PointRender(DX9::CAMERA camera, DX9::MODEL& model, DX9::SKINNEDMODEL& target)
 {
 	auto playerPos = target->GetPosition();
-	shader->SetParameter("g_Light", SimpleMath::Vector4(playerPos.x, playerPos.y - 17, playerPos.z - 4, 1));
-	shader->SetParameter("g_Attenuation",SimpleMath::Vector4(0.4f, 0, 0.4f, 0));
+	shader->SetParameter("g_Light", SimpleMath::Vector4(playerPos.x, playerPos.y - 20, playerPos.z + 25.0f , 1));
+	shader->SetParameter("g_Attenuation",SimpleMath::Vector4(1.0f, 0.0045f, 0.0028f, 1));
 	shader->SetParameter("g_Pow", m_lightsPower);
+	shader->SetParameter("g_LightColor", m_lightsColor);
 
 
 	shader->SetParameter("g_World", model->GetWorldTransform());
@@ -81,12 +76,13 @@ void MultiPointLighting::PointRender(DX9::CAMERA camera, DX9::MODEL& model, DX9:
 
 void MultiPointLighting::ShadeRender(DX9::SKINNEDMODEL& model, SimpleMath::Vector4 color)
 {
-	SimpleMath::Vector3 lightPos = SimpleMath::Vector3(1, 1, 1);
+	SimpleMath::Vector3 lightPos = SimpleMath::Vector3(1, 1, 0);
 	auto plane = SimpleMath::Plane(SimpleMath::Vector4(0, 1, 0, 0));
 
 	auto shadow = SimpleMath::Matrix::CreateShadow(lightPos, plane);
 	shadow = shadow * SimpleMath::Matrix::CreateScale(0.1f);
-	shadow *= SimpleMath::Matrix::CreateTranslation(model->GetPosition());
+	auto modelPos = model->GetPosition();
+	shadow *= SimpleMath::Matrix::CreateTranslation(modelPos.x,0,modelPos.z);
 
 	DXTK->Device9->Clear(0, NULL, D3DCLEAR_STENCIL, 0, 1.0f, 0);
 

@@ -8,13 +8,14 @@ class HighSlime : public EnemyBase
 public:
 	HighSlime();
 	~HighSlime() {}
-	bool Initialize();
 	int Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 
 private:
 	void Action();
 	void EntryExitJump();
 	void ExitRotate();
+	void InitDirection();
+	void ChangeDirection();
 	void Move  ();
 	void Rotate();
 	void Jump();
@@ -43,6 +44,8 @@ private:
 	const float exit_jump_power = -0.5f;
 	const float exit_jump_speed = 28.0f;
 
+	bool init_direct_flag = false;
+
 	enum JumpPosition {
 		ENTRY_POS = 50,
 		EXIT_POS = 15
@@ -59,5 +62,11 @@ private:
 		EXIT
 	};
 
+	enum SlimeDirection {
+		MOVE_LEFT,
+		MOVE_RIGHT
+	};
+
 	int action = ENTRY;
+	int move_direct = MOVE_LEFT;
 };
