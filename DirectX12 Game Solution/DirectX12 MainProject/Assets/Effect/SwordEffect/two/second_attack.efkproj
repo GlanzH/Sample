@@ -6,9 +6,9 @@
       <Node>
         <CommonValues>
           <GenerationTimeOffset>
-            <Center>4</Center>
-            <Max>4</Max>
-            <Min>4</Min>
+            <Center>7</Center>
+            <Max>7</Max>
+            <Min>7</Min>
           </GenerationTimeOffset>
         </CommonValues>
         <RotationValues>
@@ -224,9 +224,9 @@
       <Node>
         <CommonValues>
           <GenerationTimeOffset>
-            <Center>4</Center>
-            <Max>4</Max>
-            <Min>4</Min>
+            <Center>7</Center>
+            <Max>7</Max>
+            <Min>7</Min>
           </GenerationTimeOffset>
         </CommonValues>
         <RotationValues>
@@ -444,6 +444,6 @@
   <ToolVersion>1.42f</ToolVersion>
   <Version>3</Version>
   <StartFrame>0</StartFrame>
-  <EndFrame>24</EndFrame>
+  <EndFrame>27</EndFrame>
   <IsLoop>True</IsLoop>
 </EffekseerProject>

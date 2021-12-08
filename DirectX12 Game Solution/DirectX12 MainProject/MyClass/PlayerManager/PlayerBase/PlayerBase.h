@@ -17,7 +17,7 @@ class PlayerBase
 {
 public:
 
-	 PlayerBase() {};
+	PlayerBase() {};
 	~PlayerBase() {};
 
 	bool Initialize();
@@ -54,7 +54,7 @@ public:
 
 	void BrackImage();
 
-	
+
 
 private:
 	//アニメーション
@@ -131,8 +131,8 @@ private:
 	const float player_speed_ = 30.0f;
 
 	//ジャンプしてるかのフラグ
-	bool jump_flag_ = false;
-	float jump_time_ = 0.0f;
+	bool jump_flag_;
+	float jump_time_;
 	float jump_start_v_;
 
 	//1/2
@@ -143,11 +143,11 @@ private:
 	const float V0 = 50.0f;
 
 	//ジャンプタイミング
-	bool  jump_start_flag     = false;
-	float jump_start_time     = 0.0f;
-	float jump_start_time_max = 0.133f;
-	
-	bool jump_end_flag = false;
+	bool  jump_start_flag;
+	float jump_start_time;
+	float jump_start_time_max;
+
+	bool jump_end_flag;
 
 	//パリィ
 	const float  max_parry_count = 0.5f;
@@ -162,7 +162,7 @@ private:
 	float parry_box_size_z = 2.0f;
 
 	//必殺技
-	bool special_attack_flag = false;
+	bool special_attack_flag;
 
 	//攻撃‐3連撃‐カウント
 	int attack_count;
@@ -171,32 +171,32 @@ private:
 	float attack_count_time;
 
 	//攻撃の時間
-	bool  attack_flag = false;
-	float attack_zeit = 0.0f;
-	float attack_zeit_max = 0.03309f;
+	bool  attack_flag;
+	float attack_zeit;
+	float attack_zeit_max;
 
 	//攻撃のクールタイム
-	bool cool_time_flag_zwei = false;
-	float cool_time_zwei = 0.0f;
-	float cool_time_max_zwei = 1.0f;
-	int count = 0;
+	bool cool_time_flag_zwei;
+	float cool_time_zwei;
+	float cool_time_max_zwei;
+	int count;
 
-	bool  count_flag = false;
-	float count_time = 0.0f;
-	float count_time_max = 0.4f;
+	bool  count_flag;
+	float count_time;
+	float count_time_max;
 
 	//攻撃-初回
-	bool first_attaack_flag = false;
+	bool first_attaack_flag;
 
 	//攻撃-カウント-フラグ
 	//モーション
-	bool motion_time_start_flag = false;
+	bool motion_time_start_flag;
 
-	bool motion_attack_flag = false;
+	bool motion_attack_flag;
 
-	float motion_time = 0.0f;
+	float motion_time;
 	float motion_time_max[3]{ 0.617f,0.517f,0.583f };
-	int   motion_count = 0;
+	int   motion_count;
 
 	//攻撃中　ジャンプ不可
 	enum UNDER_ATTACK_STATE
@@ -228,21 +228,21 @@ private:
 	CANNOT_OTHER_ATTACK cannot_other;
 
 	//エフェクトの発生タイミング等
-	bool  effect_generation = false;
-	float effect_generation_time = 0.1f;
+	bool  effect_generation;
+	float effect_generation_time;
 	float effect_generation_time_max[3]{ 1.0f,0.033f,0.005f };//フレーム(19f,2f,11f)
 
-	bool effect_end_flag = false;
+	bool effect_end_flag;
 
 
-	bool  first_attack_hit      = false;
-	float first_attack_time     = 0.0f;
-	float first_attack_time_max = 0.333f;
+	bool  first_attack_hit;
+	float first_attack_time;
+	float first_attack_time_max;
 
 
 	//無敵時間
-	bool        invincible_flag     = false;
-	float		invincible_time     = 0.0f;
+	bool        invincible_flag;
+	float		invincible_time;
 	const float invincible_time_max = 0.09f;
 
 	//プレイヤーがダメージくらった時の変数
@@ -264,46 +264,45 @@ private:
 	};
 
 	//変更*2
+	int  motion_flag;
 
-	int  motion_flag = 0;
+	bool motion_flag_1;
+	bool motion_flag_2;
+	bool motion_flag_3;
 
-	bool motion_flag_1 = false;
-	bool motion_flag_2 = false;
-	bool motion_flag_3 = false;
-
-	bool motion_start_time_1 = false;
-	bool motion_start_time_2 = false;
-	bool motion_start_time_3 = false;
+	bool motion_start_time_1;
+	bool motion_start_time_2;
+	bool motion_start_time_3;
 
 
-	float motion_time_1 = 0.0f;
-	float motion_time_2 = 0.0f;
-	float motion_time_3 = 0.0f;
+	float motion_time_1;
+	float motion_time_2;
+	float motion_time_3;
 
-	float motion_time_max_1 = 0.6f;
-	float motion_time_max_2 = 0.26f;
-	float motion_time_max_3 = 0.583f;
+	float motion_time_max_1;
+	float motion_time_max_2;
+	float motion_time_max_3;
 
 	//入力受付時間までの時間 & エフェクト表示までの時間
-	bool  input_wait_flag = false;
-	float input_wait_time = 0.0f;
+	bool  input_wait_flag;
+	float input_wait_time;
 	float input_wait_time_max[3]{ 0.433f,0.05f,0.2f };//(3回目はエフェクト表示のみ)
-	int   input_wait_count = 0;
+	int   input_wait_count;
 
 	//入力受付時間
-	bool  input_flag = false;
-	float input_time = 0.0f;
+	bool  input_flag;
+	float input_time;
 	float input_time_max[2]{ 0.633f, 0.8f };
-	int   input_count = 0;
+	int   input_count;
 
 	//エフェクト表示
-	bool effect_flag = false;
+	bool effect_flag;
 
 	//アニメーションを出す時間
-	bool  animation_flag = false;
-	float animation_time = 0.0f;
+	bool  animation_flag;
+	float animation_time;
 	float animation_time_max[3]{ 0.967f,0.850f,0.583f };
-	int   animation_count = 0;
+	int   animation_count;
 
 	//攻撃の向き
 	enum Direction_State
@@ -315,36 +314,36 @@ private:
 	Direction_State direction_state_mode;
 
 	//アピール
-	bool appeil_flag = false;
+	bool appeil_flag;
 
-	float appeil_time = 0.0f;
-	float appeil_time_max = 5.0f;
+	float appeil_time;
+	float appeil_time_max;
 
-	float appeil_cool_time = 0.0f;
-	float appeil_cool_time_max = 1.0f;
+	float appeil_cool_time;
+	float appeil_cool_time_max;
 
-	bool appeil_cool_flag = false;
+	bool appeil_cool_flag;
 
 	//必殺技
-	bool deathbrow_flag = false;//必殺技発動フラグ
+	bool deathbrow_flag;//必殺技発動フラグ
 
-	bool deathbrow_attack = false;//必殺技の当たり判定
+	bool deathbrow_attack;//必殺技の当たり判定
 
-	float specialmove_time = 0.0f;
-	float specialmove_time_max = 4.0f;
+	float specialmove_time;
+	float specialmove_time_max;
 
 
 	//暗転
 	DX9::SPRITE deathbrow_sprite;
-	int Transparency = 0;
-	int Blackout = 15;
-	int Blackout_max = 255;
-	bool Blackout_flag = false;
+	int Transparency;
+	int Blackout;
+	int Blackout_max;
+	bool Blackout_flag;
 
 	//明転
-	bool bright_flag   = false;
-	int  Ming_Turn = 55;
+	bool bright_flag;
+	int  Ming_Turn;
 
-	int Deathblow_count = 20;
+	int Deathblow_count;
 
 };
