@@ -1,15 +1,144 @@
 #include "PlayerBase.h"
 
+
 #include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/PlayerManager/PlayerBase/PlayerAttack/PlayerAttack.h"
 
 
 bool PlayerBase::Initialize()
 {
+	//ジャンプしてるかのフラグ
 	jump_flag_ = false;
 	jump_time_ = 0.0f;
 	jump_start_v_ = 0.0f;
 
+	//ジャンプタイミング
+	jump_start_flag = false;
+	jump_start_time = 0.0f;
+	jump_start_time_max = 0.133f;
+	jump_end_flag = false;
+
+	//必殺技
+	special_attack_flag = false;
+
+
+
+	//攻撃の時間
+	attack_flag = false;
+	attack_zeit = 0.0f;
+	attack_zeit_max = 0.03309f;
+
+	//攻撃のクールタイム
+	cool_time_flag_zwei = false;
+	cool_time_zwei = 0.0f;
+	cool_time_max_zwei = 1.0f;
+	count = 0;
+
+	count_flag = false;
+	count_time = 0.0f;
+	count_time_max = 0.4f;
+
+	//攻撃-初回
+	first_attaack_flag = false;
+
+	//攻撃-カウント-フラグ
+	//モーション
+	motion_time_start_flag = false;
+
+	motion_attack_flag = false;
+	motion_time = 0.0f;
+
+	motion_count = 0;
+
+
+	//エフェクトの発生タイミング等
+	effect_generation = false;
+	effect_generation_time = 0.1f;
+
+
+	effect_end_flag = false;
+
+
+	first_attack_hit = false;
+	first_attack_time = 0.0f;
+	first_attack_time_max = 0.333f;
+
+
+	//無敵時間
+	invincible_flag = false;
+	invincible_time = 0.0f;
+
+
+	//変更*2
+	motion_flag = 0;
+
+	motion_flag_1 = false;
+	motion_flag_2 = false;
+	motion_flag_3 = false;
+
+	motion_start_time_1 = false;
+	motion_start_time_2 = false;
+	motion_start_time_3 = false;
+
+
+	motion_time_1 = 0.0f;
+	motion_time_2 = 0.0f;
+	motion_time_3 = 0.0f;
+
+	motion_time_max_1 = 0.6f;
+	motion_time_max_2 = 0.26f;
+	motion_time_max_3 = 0.583f;
+
+	//入力受付時間までの時間 & エフェクト表示までの時間
+	input_wait_flag = false;
+	input_wait_time = 0.0f;
+	input_wait_count = 0;
+
+	//入力受付時間
+	input_flag = false;
+	input_time = 0.0f;
+	input_count = 0;
+
+	//エフェクト表示
+	effect_flag = false;
+
+	//アニメーションを出す時間
+	animation_flag = false;
+	animation_time = 0.0f;
+
+	animation_count = 0;
+
+	//アピール
+	appeil_flag = false;
+
+	appeil_time = 0.0f;
+	appeil_time_max = 5.0f;
+
+	appeil_cool_time = 0.0f;
+	appeil_cool_time_max = 1.0f;
+
+	appeil_cool_flag = false;
+
+	//必殺技
+	deathbrow_flag = false;//必殺技発動フラグ
+
+	deathbrow_attack = false;//必殺技の当たり判定
+
+	specialmove_time = 0.0f;
+	specialmove_time_max = 4.0f;
+
+
+	//暗転
+	Transparency = 0;
+	Blackout = 15;
+	Blackout_max = 255;
+	Blackout_flag = false;
+
+	//明転
+	bright_flag = false;
+	Ming_Turn = 55;
+
+	Deathblow_count = 20;
 
 
 
@@ -757,6 +886,7 @@ void PlayerBase::Attack_Secnod(const float deltaTime) {
 		{
 			DX12Effect.PlayOneShot("second", Vector3(player_pos.x - 3.0f, player_pos.y + 6.0f, player_pos.z));
 		}
+		DX12Effect.SetScale("second", Vector3(1.5f, 1.5f, 1.5f));
 		DX12Effect.SetRotation("second", Vector3(0.0f, 180.0f, 0.0f));
 
 	}
@@ -793,7 +923,7 @@ void PlayerBase::Attack_Third(const float deltaTime) {
 
 void PlayerBase::Player_Special_Move(const float deltaTime) {
 	if (!jump_flag_) {
-		if (StatusManager::Instance().ReturnHeart() >= 20) {
+		if (StatusManager::Instance().ReturnHeart() >= 0) {
 			if (DXTK->KeyEvent->pressed.L || DXTK->GamePadEvent->rightShoulder == GamePad::ButtonStateTracker::PRESSED) {
 				deathbrow_flag = true;
 			}
@@ -864,6 +994,7 @@ bool PlayerBase::IsAttack() {
 	return false;
 }
 
+	//アピール
 void PlayerBase::Appeal(const float deltaTime)
 {
 	//アピール
@@ -876,21 +1007,15 @@ void PlayerBase::Appeal(const float deltaTime)
 			{
 				appeil_flag = false;
 
-				
-					model->SetTrackPosition(APPEIL, 0.0);
-				
-				
-				
+				model->SetTrackPosition(APPEIL, 0.0);
 
 				if (!appeil_flag) {
 					appeil_cool_flag = true;
-					
 				}
-				
-
 			}
 		}
 	}
+
 	if (appeil_flag) {
 		if (direction_state_mode == Direction_State::RIGHT) {
 			SetAnimation(model, APPEIL);
@@ -906,7 +1031,6 @@ void PlayerBase::Appeal(const float deltaTime)
 
 	if (appeil_time >= appeil_time_max) {//ボタン話したときもNOMALに戻す
 		appeil_flag = false;
-		appeil_time = 0.0f;
 		model->SetTrackPosition(APPEIL, 0.0);
 		appeil_cool_flag = true;
 	}
@@ -921,6 +1045,7 @@ void PlayerBase::Appeal(const float deltaTime)
 		appeil_time = 0.0f;
 	}
 }
+
 
 void PlayerBase::BrackImage() {
 	DX9::SpriteBatch->DrawSimple(deathbrow_sprite.Get(),
