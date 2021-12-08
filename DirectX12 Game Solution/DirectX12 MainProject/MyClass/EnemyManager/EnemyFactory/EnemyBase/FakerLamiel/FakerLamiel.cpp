@@ -2,9 +2,9 @@
 #include "Base/dxtk.h"
 #include "FakerLamiel.h"
 
-bool FakerLamiel::Initialize(std::string tag, SimpleMath::Vector3 speed, int hp) 
+bool FakerLamiel::Initialize(std::string tag, bool time_stop_flag, int hp)
 {
-	EnemyBase::Initialize(tag,speed,hp);
+	EnemyBase::Initialize(tag,time_stop_flag,hp);
 	DX12Effect.Create(L"Effect/EnemyEffect/LamielEffect/omen/omen.efk", "sigh");
 	DX12Effect.Create(L"Effect/EnemyEffect/LamielEffect/fire/fire.efk", "fire");
 	teleport_frame    = 0;

@@ -19,10 +19,9 @@ class EnemyFactory {
 public:
 	EnemyFactory();
 	~EnemyFactory() {};
-	EnemyBase* Create(std::string tag, DirectX::SimpleMath::Vector3 position);
-	EnemyBase* CreateProduct(std::string tag, DirectX::SimpleMath::Vector3 position);
+	EnemyBase* Create(std::string tag, bool time_stop_flag,DirectX::SimpleMath::Vector3 position);
+	EnemyBase* CreateProduct(std::string tag, bool time_stop_flag,DirectX::SimpleMath::Vector3 position);
 	LPCWSTR SetModel(std::string tag);
-	DirectX::SimpleMath::Vector3 SetSpeed(std::string tag);
 	int SetHP(std::string tag);
 
 
@@ -35,15 +34,6 @@ private:
 	int stone_statue_hp;
 	int stone_statue_core_hp;
 	std::vector<std::string> enemy_tag;
-
-	DirectX::SimpleMath::Vector3 slime_speed;
-	DirectX::SimpleMath::Vector3 high_slime_speed;
-	DirectX::SimpleMath::Vector3 faker_lamiel_speed;
-	DirectX::SimpleMath::Vector3 statue_speed;
-
-	DirectX::SimpleMath::Vector3 stone_core_speed;
-
-	DirectX::SimpleMath::Vector3 speed;
 
 	LPCWSTR enemy_model[5];
 	LPCWSTR model_name;

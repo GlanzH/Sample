@@ -111,12 +111,16 @@ NextScene MainScene::Update(const float deltaTime)
 
 	// TODO: Add your game logic here.
 
-	DX12Effect.Update(deltaTime);
-	player->Update(deltaTime);
+	if (!enemy->IsTimeStop()) {
+		DX12Effect.Update(deltaTime);
+		player->Update(deltaTime);
+		enemy->Update(player->GetModel()->GetPosition(),player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
+		audience->Update(player->GetAppielTime(), player->GetAppealCoolFlag(), player->GetSpecialAttackFlag(), deltaTime);
+		observer->Update(player, enemy, audience);
+	}
+
+	enemy->EndTimeStop();
 	camera->Update(player->GetModel()->GetPosition());
-	audience->Update(player->GetAppielTime(),player->GetAppealCoolFlag(),player->GetSpecialAttackFlag(), deltaTime);
-	enemy->Update(player->GetModel()->GetPosition(),player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
-	observer->Update(player, enemy,audience);
 
 	point.SetPosition(player->GetModel()->GetPosition() + Vector3(0,30,0));
 	return NextScene::Continue;

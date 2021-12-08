@@ -11,11 +11,12 @@ EnemyManager::EnemyManager()
 
 
 	for (int i = 0; i < ENEMY_NUM; ++i) {
-		tag[i]          = INT_MAX;
-		appear_pos[i]   = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
-		appear_time[i]  = INT_MAX;
-		destract_num[i] = INT_MAX;
-		appear_flag[i]  = false;
+		tag[i]            = INT_MAX;
+		appear_pos[i]     = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
+		appear_time[i]    = INT_MAX;
+		destract_num[i]   = INT_MAX;
+		appear_flag[i]    = false;
+		time_stop_flag[i] = false;
 	}
 }
 
@@ -55,9 +56,8 @@ int EnemyManager::Update(SimpleMath::Vector3 player,bool special_attack_flag, bo
 }
 
 void EnemyManager::Iterator() {
-	auto itr = enemy.begin();
 
-	while (itr != enemy.end())
+	for (auto itr = enemy.begin(); itr != enemy.end();)
 	{
 		if ((*itr)->LifeDeathDecision() == LIVE) {
 			itr++;
@@ -66,16 +66,18 @@ void EnemyManager::Iterator() {
 			//“G‚ª€–S‚µ‚½‚Æ‚«‚Ìˆ—
 			dead_enemy_count++;
 
+			if ((*itr)->GetTimeStopFlag())
+				enemy_stop_flag = true;
+
 			if ((*itr)->LifeDeathDecision() == DEAD) {
 				(*itr)->DeathEffect();
 				StatusManager::Instance().HeartCount();
+				itr = enemy.erase(itr);
 			}
 			else {
 				itr = enemy.erase(itr);
 				continue;
 			}
-
-			itr = enemy.erase(itr);
 		}
 	}
 }
@@ -86,7 +88,7 @@ void EnemyManager::Generator() {
 	if (!appear_flag[count])
 	{
 		//!“G‚Ìí—ŞE‰ŠúÀ•W‚ğ“n‚µ‚Ä“G‚ğ»‘¢
-		enemy.push_back(factory->Create(tag[count], appear_pos[count]));
+		enemy.push_back(factory->Create(tag[count],time_stop_flag[count], appear_pos[count]));
 		appear_flag[count] = true;
 	}
 
@@ -97,6 +99,11 @@ void EnemyManager::Render()
 	for (auto& enemies : enemy) {
 		enemies->Render();
 	}
+}
+
+void EnemyManager::EndTimeStop() {
+	if (DXTK->KeyEvent->pressed.Z)
+		enemy_stop_flag = false;
 }
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
@@ -142,7 +149,7 @@ void EnemyManager::LoadEnemyArrangement() {
 
 	//!ƒf[ƒ^“Ç‚İ‚İ
 	for (int i = 0; i < ENEMY_NUM; ++i) {
-		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> appear_time[i] >> destract_num[i];
+		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> appear_time[i] >> destract_num[i] >> time_stop_flag[i];
 	}
 }
 

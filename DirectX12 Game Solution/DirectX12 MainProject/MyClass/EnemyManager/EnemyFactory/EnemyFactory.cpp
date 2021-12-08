@@ -9,11 +9,6 @@
 EnemyFactory::EnemyFactory()
 {
 	//@各敵のステータス設定@//
-	slime_speed.x = 3.0f;
-	high_slime_speed.x = 7.0f;
-	faker_lamiel_speed.x = 1.0f;
-	statue_speed.z =0.0f ;
-	stone_core_speed.z = 0.0f;
 	slime_hp       = 2;
 	high_slime_hp   = 7;
 	faker_lamiel_hp = 2;
@@ -40,16 +35,16 @@ EnemyFactory::EnemyFactory()
 
 }
 
-EnemyBase* EnemyFactory::Create(std::string tag, DirectX::SimpleMath::Vector3 position)
+EnemyBase* EnemyFactory::Create(std::string tag, bool time_stop_flag,DirectX::SimpleMath::Vector3 position)
 {
-	EnemyBase* enemy_factory = CreateProduct(tag, position);
-	enemy_factory->Initialize(tag,SetSpeed(tag), SetHP(tag));
+	EnemyBase* enemy_factory = CreateProduct(tag,time_stop_flag,position);
+	enemy_factory->Initialize(tag,time_stop_flag, SetHP(tag));
 	enemy_factory->LoadAsset(SetModel(tag), position);
 	
 	return enemy_factory;
 }
 
-EnemyBase* EnemyFactory::CreateProduct(std::string tag, DirectX::SimpleMath::Vector3 position)
+EnemyBase* EnemyFactory::CreateProduct(std::string tag, bool time_stop_flag, DirectX::SimpleMath::Vector3 position)
 {
 	EnemyBase* classes[] = { new Slime, new HighSlime, new FakerLamiel,new StoneStatue,new Core};
 
@@ -70,16 +65,6 @@ LPCWSTR EnemyFactory::SetModel(std::string tag)
 		if (tag == enemy_tag[i]) { model_name = models[i]; }
 	}
 	return model_name;
-}
-
-DirectX::SimpleMath::Vector3 EnemyFactory::SetSpeed(std::string tag)
-{
-	DirectX::SimpleMath::Vector3 speeds[] = { slime_speed,high_slime_speed,faker_lamiel_speed ,statue_speed,stone_core_speed};
-	for (int i = 0; i < enemy_tag.size(); ++i)
-	{
-		if (tag == enemy_tag[i]) { speed = speeds[i]; }
-	}
-	return speed;
 }
 
 int EnemyFactory::SetHP(std::string tag)

@@ -22,12 +22,14 @@ public:
 	EnemyBase();
 	~EnemyBase() {};
 
-	virtual bool Initialize(std::string tag,SimpleMath::Vector3 speed,int hp);
+	virtual bool Initialize(std::string tag, bool time_stop_flag, int hp);
 	void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 	virtual int Update(SimpleMath::Vector3 player,bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 	virtual void Render();
 
 	void Retreat();
+
+	bool GetTimeStopFlag() { return do_time_stop_flag; }
 
 	bool EffectInit();
 	void HitEffect();
@@ -44,6 +46,7 @@ public:
 	std::string GetTag() { return enemy_tag; }
 
 private:
+	void TimeStopDecision();
 	void EnemyAnimation();
 	
 	ExplodeMan explode;
@@ -64,6 +67,12 @@ private:
 
 	bool damage_flag = false;
 	bool reduce_audience_flag = false;
+
+	//!演出をする敵かのフラグ
+	bool enemy_stop_flag = false;
+
+	//!動きを止めるフラグ
+	bool do_time_stop_flag = false;
 
 	//!ダメージモーション再生用変数
 	int is_damage = 0;
@@ -102,7 +111,7 @@ protected:
 	int enemy_hp;
 	float delta;
 
-	bool retreat_flg;
+	bool retreat_flag;
 
 	Collision col;
 
