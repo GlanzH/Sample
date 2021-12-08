@@ -39,6 +39,8 @@ void MainScene::Initialize()
 	enemy->Initialize(player);
 
 	point.Init();
+	point.SetAmbientColor(Vector4(0, 0, 255, 1.0f));
+	point.SetCone(40);
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -116,6 +118,7 @@ NextScene MainScene::Update(const float deltaTime)
 	enemy->Update(player->GetModel()->GetPosition(),player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
 	observer->Update(player, enemy,audience);
 
+	point.SetPosition(player->GetModel()->GetPosition() + Vector3(0,30,0));
 	return NextScene::Continue;
 }
 
@@ -131,9 +134,9 @@ void MainScene::Render()
 	DX12Effect.SetCamera((DX12::CAMERA)camera->GetCamera());
 	camera->Render();
 
-	point.SetLightPower(10.0f);
-	point.SetLightColor(SimpleMath::Vector4(255.0f / 255.0f, 144.0f / 255.0f, 0, 0));
-	point.PointRender(camera->GetCamera(), ground->GetModel(), player->GetModel());
+//	point.SetLightPower(10.0f);
+	point.SetLightColor(SimpleMath::Vector4(255.0f , 144.0f, 0, 0));
+	point.PointRender(camera->GetCamera(), ground->GetModel());
 	
 	point.ShadeRender(player->GetModel(),SimpleMath::Vector4(0,0,1,0.3f));
 

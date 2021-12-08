@@ -35,8 +35,8 @@ EnemyFactory::EnemyFactory()
      enemy_model[SLIME]        = L"Model\\Enemy\\Slime\\slime_blue_motion.X";
 	 enemy_model[HIGH_SLIME]   = L"Model\\Enemy\\HighSlime\\slime_orange_animation.X";
      enemy_model[FAKER_LAMIEL] = L"Model\\Enemy\\Lamiel\\ramieru.X";
-     enemy_model[STONE_STATUE] = L"Model\\Enemy\\Stone\\koteihoudai_dodai.X";
-	 enemy_model[STONE_CORE]   = L"Model\\Enemy\\Stone\\koteihoudai_core.X";
+     enemy_model[STONE_STATUE] = L"Model\\Enemy\\Stone\\houdai.X";
+	 enemy_model[STONE_CORE]   = L"Model\\Enemy\\Stone\\houdai_core.X";
 
 }
 

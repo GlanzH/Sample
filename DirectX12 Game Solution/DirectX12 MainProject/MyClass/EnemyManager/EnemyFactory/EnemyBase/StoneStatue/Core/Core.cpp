@@ -74,7 +74,7 @@ void Core::Move(SimpleMath::Vector3 player){
 		}
 		else if (charge_effect_frame < max_charge) 
 		{
-			DX12Effect.SetPosition("charge", position);
+			DX12Effect.SetPosition("charge", position + SimpleMath::Vector3(0,21,0));
 			DX12Effect.PlayOneShot("charge");
 			charge_effect_frame += delta;
 		}
@@ -86,7 +86,7 @@ void Core::Move(SimpleMath::Vector3 player){
 			if (!shot_flag)
 			{
 				player_pos = player;
-				bull_pos = position;
+				bull_pos = position + SimpleMath::Vector3(0, 21, 0);
 				shot_flag = true;
 			}
 			else if (wait_shot_frame < max_wait_shot)
@@ -147,7 +147,7 @@ void Core::Move(SimpleMath::Vector3 player){
 void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 {
 	auto distance_x = SimpleMath::Vector3::Distance(bull_pos, player_pos);
-	auto distance_y = SimpleMath::Vector3::Distance(bull_pos,SimpleMath::Vector3(0.0,-10.0f,50.0f)) /3;
+	auto distance_y = SimpleMath::Vector3::Distance(bull_pos,SimpleMath::Vector3(20.0,0.0f,50.0f)) /3;
 	Vector3 a =SimpleMath::Vector3(distance_x, distance_y,50);
 	a.Normalize();
 	oblique_shooting = sqrt(distance_y * distance_y + distance_x * distance_x);
