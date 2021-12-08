@@ -40,12 +40,12 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 		anim_model->SetPosition(position);
 		anim_model->SetRotation(0.0f, XMConvertToRadians(anim_init_rotate), 0.0f);
 
-		anim_model->SetScale(0.1f);
+		//anim_model->SetScale(0.05f);
 
 		//” ‚ğì‚é€”õ
 		anim_box = anim_model->GetBoundingBox();
-		anim_box.Extents = SimpleMath::Vector3(anim_box.Extents);
-		//anim_box.Extents = SimpleMath::Vector3(anim_box.Extents) * anim_adjust_extents_col;
+		//anim_box.Extents = SimpleMath::Vector3(anim_box.Extents);
+		anim_box.Extents = SimpleMath::Vector3(anim_box.Extents) * anim_adjust_extents_col;
 
 		//ƒRƒŠƒWƒ‡ƒ“ƒ‚ƒfƒ‹‚Ìì¬
 		anim_collision = DX9::Model::CreateBox(

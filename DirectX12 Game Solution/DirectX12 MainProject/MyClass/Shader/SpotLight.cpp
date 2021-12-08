@@ -2,49 +2,81 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 
-#include "MultiLighting.h"
+#include "SpotLight.h"
 
-MultiPointLighting::MultiPointLighting()
+SpotLight::SpotLight()
 {
 }
 
 //------------------------------------------------------------------------------
 //	初期化
 //------------------------------------------------------------------------------
-void MultiPointLighting::Init()
+void SpotLight::Init()
 {
-	shader = DX9::Shader::CreateFromFile(DXTK->Device9, L"Point.fx");
+	shader = DX9::Shader::CreateFromFile(DXTK->Device9, L"SpotLight.fx");
+	m_lightsPower = 1.0f;
+	m_cone = 5.0f;
+	m_range = 1000.0f;
+	m_diffuseColor = Vector4(1, 1, 1, 1);
+	m_ambientColor = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
+	m_lightsPos = Vector3(0, 50, 40);
+	m_lightDir = Vector3(0, -1, 0);
 }
 
 //------------------------------------------------------------------------------
 //	ライトのポジション設定
 //------------------------------------------------------------------------------
-void MultiPointLighting::SetLight(DX9::SKINNEDMODEL& model)
+void SpotLight::SetPosition(Vector3 pos)
 {
-	auto pos = model->GetPosition();
-	m_lightsPos.push_back(SimpleMath::Vector4(pos.x, -17, pos.z - 4, 1));
+	m_lightsPos = pos;
 }
 
 //------------------------------------------------------------------------------
 //	ライトの色設定
 //------------------------------------------------------------------------------
-void MultiPointLighting::SetLightColor(SimpleMath::Vector4 color)
+void SpotLight::SetLightColor(SimpleMath::Vector4 color)
 {
-	m_lightsColor = color;
+	auto fixColor = Vector4(color.x / 255.0f, color.y / 255.0f, color.z / 255.0f, color.w);
+	m_diffuseColor = fixColor;
+}
+
+//------------------------------------------------------------------------------
+//	ライトの環境色設定
+//------------------------------------------------------------------------------
+void SpotLight::SetAmbientColor(Vector4 color)
+{
+	auto fixColor = Vector4(color.x / 255.0f, color.y / 255.0f, color.z / 255.0f, color.w);
+	m_ambientColor = fixColor;
+}
+
+//------------------------------------------------------------------------------
+//	ライトの照らす範囲
+//------------------------------------------------------------------------------
+void SpotLight::SetCone(float angle)
+{
+	m_cone = angle;
 }
 
 //------------------------------------------------------------------------------
 //	ライトの強さ（範囲）
 //------------------------------------------------------------------------------
-void MultiPointLighting::SetLightPower(float pow)
+void SpotLight::SetPower(float pow = 1.0f)
 {
 	m_lightsPower = pow;
 }
 
 //------------------------------------------------------------------------------
+//	ライトが届く距離
+//------------------------------------------------------------------------------
+void SpotLight::SetRange(float range)
+{
+	m_range = range;
+}
+
+//------------------------------------------------------------------------------
 //	ライトの数
 //------------------------------------------------------------------------------
-void MultiPointLighting::SetMax(int maxLight)
+void SpotLight::SetMax(int maxLight)
 {
 	m_maxLight = maxLight;
 }
@@ -52,20 +84,25 @@ void MultiPointLighting::SetMax(int maxLight)
 //------------------------------------------------------------------------------
 //	モデルの描画前のシェーダー設定 モデル版
 //------------------------------------------------------------------------------
-void MultiPointLighting::PointRender(DX9::CAMERA camera, DX9::MODEL& model, DX9::SKINNEDMODEL& target)
+void SpotLight::PointRender(DX9::CAMERA camera, DX9::MODEL& model)
 {
-	auto playerPos = target->GetPosition();
-	shader->SetParameter("g_Light", SimpleMath::Vector4(playerPos.x, playerPos.y - 20, playerPos.z + 25.0f , 1));
-	shader->SetParameter("g_Attenuation",SimpleMath::Vector4(1.0f, 0.0045f, 0.0028f, 1));
+
+	shader->SetParameter("g_LightPos" , m_lightsPos);
+	shader->SetParameter("g_LightDir", m_lightDir);
+	shader->SetParameter("g_LightAtt", Vector3(0.03f, 0.01f, 0.0f));
+	shader->SetParameter("g_Cone", m_cone);
+	shader->SetParameter("g_AColor", m_ambientColor);
+	shader->SetParameter("g_Color", m_diffuseColor);
+	shader->SetParameter("g_LightRange",m_range);
 	shader->SetParameter("g_Pow", m_lightsPower);
-	shader->SetParameter("g_LightColor", m_lightsColor);
 
+	auto wvp = model->GetWorldTransform() * camera->GetViewProjectionMatrix();
 
+	//shader->SetParameter("g_World", model->GetWorldTransform());
+	//shader->SetParameter("g_View", camera->GetViewMatrix());
+	//shader->SetParameter("g_Projection", camera->GetProjectionMatrix());
+	shader->SetParameter("g_WVP", wvp);
 	shader->SetParameter("g_World", model->GetWorldTransform());
-	shader->SetParameter("g_View", camera->GetViewMatrix());
-	shader->SetParameter("g_Projection", camera->GetProjectionMatrix());
-
-	shader->SetParameter("g_DLightDir", SimpleMath::Vector4(1,-1,-1,1));
 
 	shader->Begin();
 	shader->BeginPass(0);
@@ -74,7 +111,7 @@ void MultiPointLighting::PointRender(DX9::CAMERA camera, DX9::MODEL& model, DX9:
 	shader->End();
 }
 
-void MultiPointLighting::ShadeRender(DX9::SKINNEDMODEL& model, SimpleMath::Vector4 color)
+void SpotLight::ShadeRender(DX9::SKINNEDMODEL& model, SimpleMath::Vector4 color)
 {
 	SimpleMath::Vector3 lightPos = SimpleMath::Vector3(1, 1, 0);
 	auto plane = SimpleMath::Plane(SimpleMath::Vector4(0, 1, 0, 0));
