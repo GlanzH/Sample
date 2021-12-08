@@ -38,6 +38,7 @@ private:
 	int attack_count =0;
 	const int MAX_COUNT=3;
 	int landing_count;
+
 	//!ATTACK‘Ò‹@ŽžŠÔ
 	float wait_shot_frame = 0;
 	const float max_wait_shot = 0.75f;

@@ -31,7 +31,7 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	position = initial_position;
 
 	D3DMATERIAL9 material;
-	material.Diffuse = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.75f);
+	material.Diffuse = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.0f);
 	material.Ambient = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -40,8 +40,6 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 		anim_model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
 		anim_model->SetPosition(position);
 		anim_model->SetRotation(0.0f, XMConvertToRadians(anim_init_rotate), 0.0f);
-
-		//anim_model->SetScale(0.05f);
 
 		//” ‚ðì‚é€”õ
 		anim_box = anim_model->GetBoundingBox();
@@ -70,6 +68,8 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 		//” ‚ðì‚é€”õ
 		col.box = model->GetBoundingBox();
 
+		col.box.Extents = SimpleMath::Vector3(col.box.Extents);
+
 		//ƒRƒŠƒWƒ‡ƒ“ƒ‚ƒfƒ‹‚Ìì¬
 		collision = DX9::Model::CreateBox(
 			DXTK->Device9,
@@ -80,7 +80,7 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 
 		collision->SetMaterial(material);
 
-		col.box.Center = position;
+		//col.box.Center = position;
 	}
 
 	explode.LoadAssets(initial_position.x);
@@ -96,10 +96,7 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool
 		anim_model->SetPosition(position);
 		anim_collision->SetPosition(anim_model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 	}
-	else {
-		col.box.Center = model->GetPosition();
-		model->SetPosition(position);
-	}
+
 
 	if (retreat_flag && retreat_count < max_retreat) {
 		if (player.x < position.x)
@@ -151,7 +148,11 @@ void EnemyBase::EnemyAnimation() {
 
 void EnemyBase::HitEffect() {
 	//if (enemy_hp > 0) {
+	if (enemy_tag != "C")
 		hit_effect_pos = position;
+	else
+		hit_effect_pos += SimpleMath::Vector3(0,21,50);
+
 		DX12Effect.PlayOneShot("hit_eff", hit_effect_pos);
 	//}
 }
@@ -235,6 +236,6 @@ void EnemyBase::Render() {
 	}
 	else {
 		model->Draw();
-		//collision->Draw();
+		collision->Draw();
 	}
 }

@@ -11,9 +11,9 @@ EnemyFactory::EnemyFactory()
 	//@各敵のステータス設定@//
 	slime_hp       = 2;
 	high_slime_hp   = 7;
-	faker_lamiel_hp = 2;
-	stone_statue_hp = 60;
-	stone_statue_core_hp = 2;
+	faker_lamiel_hp = 30;
+	stone_statue_hp = INT_MAX;
+	stone_statue_core_hp = 60;
 	//@敵の種類のタグをプッシュバック@//
 	//@　　スライム         @//
 	enemy_tag.push_back("S");

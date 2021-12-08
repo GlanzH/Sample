@@ -15,6 +15,7 @@ bool Core::Initialize(std::string tag, bool time_stop_flag, int hp)
 	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/charge/charge.efk",   "charge");
 	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/landing/landing.efk","landing");
 
+
 	obstacle_collision = DX9::Model::CreateSphere(DXTK->Device9, 4, 8, 2);
 
 	obstacle_collision->SetMaterial(material);
@@ -39,20 +40,20 @@ int Core::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thor
 	if (!special_flag && !throw_flag) {
 		Move(player);
 	}
-	//else if(special_flag || throw_flag) {
-	//	StopEffect();
-	//}
+	else if(special_flag || throw_flag) {
+		StopEffect();
+	}
 
+	model->SetPosition(position);
+	collision->SetScale(2.5f);
+	col.box.Center = model->GetPosition() + SimpleMath::Vector3(0,19,0);
+	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0,19,0));
+
+	col.bullet.Center = obstacle_collision->GetPosition();
+	obstacle_collision->SetPosition(bull_pos);
 
 	if (enemy_hp < 0)
 		DX12Effect.Stop("charge");
-		return DEAD;
-
-
-
-	collision->SetPosition(model->GetPosition());
-	col.bullet.Center = obstacle_collision->GetPosition();
-	obstacle_collision->SetPosition(bull_pos);
 
 	return LIVE;
 }

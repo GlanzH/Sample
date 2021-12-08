@@ -28,7 +28,9 @@ EnemyManager::~EnemyManager() {
 
 bool EnemyManager::Initialize(PlayerBase* player_base)
 {
-
+	DX12Effect.Initialize();
+	DX12Effect.Create(L"Effect/EnemyEffect/deathblow_hit/deathblow_hit.efk", "special");
+	DX12Effect.Create(L"Effect/EnemyEffect/boss_death/boss_death.efk", "boss");
 	player_data = player_base;
 	enemy_base.EffectInit();
 
@@ -66,11 +68,18 @@ void EnemyManager::Iterator() {
 			//“G‚ªŽ€–S‚µ‚½‚Æ‚«‚Ìˆ—
 			dead_enemy_count++;
 
-			if ((*itr)->GetTimeStopFlag())
+			if ((*itr)->GetTimeStopFlag()) {
+				time_stop_count++;
 				enemy_stop_flag = true;
+			}
 
 			if ((*itr)->LifeDeathDecision() == DEAD) {
-				(*itr)->DeathEffect();
+
+				if ((*itr)->GetTag() != "C")
+					(*itr)->DeathEffect();
+				else
+					DX12Effect.PlayOneShot("boss", (*itr)->GetModel()->GetPosition() + SimpleMath::Vector3(0,21,0));
+				
 				StatusManager::Instance().HeartCount();
 				itr = enemy.erase(itr);
 			}
@@ -120,10 +129,16 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 
 void EnemyManager::OnCollisionSpecialMove(EnemyBase* base) {
 	base->Damage(20);
+
+	auto pos = player_data->GetModel()->GetPosition();
+	DX12Effect.Play("special", SimpleMath::Vector3(pos.x, 0, pos.z));
 }
 
 void EnemyManager::OnCollisionAudience(EnemyBase* base) {
 	base->Damage(20);
+
+	auto pos = player_data->GetModel()->GetPosition();
+	DX12Effect.Play("special", SimpleMath::Vector3(pos.x, 0, pos.z));
 }
 
 int EnemyManager::AppearTimer() {

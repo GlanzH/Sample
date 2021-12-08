@@ -19,7 +19,9 @@ public:
 	void Render();
 
 	std::vector<EnemyBase*> GetEnemy() { return enemy; }
-	int  GetDeathEnemyCount()		 { return dead_enemy_count; }
+	int  GetDeathEnemyCount()		   { return dead_enemy_count; }
+	int  getTimeStopcount()			   { return time_stop_count; }
+
 	void EndTimeStop();
 	bool IsTimeStop() { return enemy_stop_flag; }
 
@@ -42,6 +44,7 @@ private:
 	DX9::SKINNEDMODEL model;
 	
 	int dead_enemy_count = 0;
+	int time_stop_count  = 0;
 	float delta;
 
 	const float max_frame = 60.0f;
