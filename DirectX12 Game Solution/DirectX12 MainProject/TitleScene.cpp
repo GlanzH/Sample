@@ -108,10 +108,7 @@ NextScene TitleScene::Update(const float deltaTime)
 
     if (start_flag == true) {
         return NextScene::MainScene;
-
     }
-
-
     
 	return NextScene::Continue;
 }

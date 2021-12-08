@@ -6,7 +6,7 @@
 
 #include "Scene.h"
 #include "MyClass/RankJudgeManager/RankJudgeManager.h"
-#include "MyClass/UIManager/UIManager.h"
+#include "MyClass/GameSceneManager/SceneManager.h"
 
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
@@ -42,9 +42,6 @@ private:
     DX12::HGPUDESCRIPTOR dx9GpuDescriptor;
 
 private:
-	DX9::SPRITE result;
-
 	RankJudgeManager rankjudge;
-
-	UIManager ui;
+	SceneManager scene;
 };
