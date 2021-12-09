@@ -29,7 +29,6 @@ public:
 
 	Collisions GetBox() { return col; }
 
-	BoundingBox GetParryBox() { return parry_box; }
 
 	void OnCollisionEnter();
 	void OnParryArea();
@@ -154,12 +153,6 @@ private:
 	float		 parry_count = 0.0f;
 	bool	     parry_flag = false;
 
-	BoundingBox parry_box;
-	DX9::MODEL  parry_collision;
-
-	float parry_box_size_x = 3.0f;
-	float parry_box_size_y = 10.0f;
-	float parry_box_size_z = 2.0f;
 
 	//•KŽE‹Z
 	bool special_attack_flag;

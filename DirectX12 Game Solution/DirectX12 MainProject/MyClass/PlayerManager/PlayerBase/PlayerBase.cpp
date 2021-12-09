@@ -172,11 +172,8 @@ void PlayerBase::LoadAssets()
 	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
 
-
-
 	//プレイヤーの当たり判定
 	col.box = model->GetBoundingBox();
-
 	collision = DX9::Model::CreateBox(
 		DXTK->Device9,
 		col.box.Extents.x * player_box_size_x,
@@ -192,9 +189,7 @@ void PlayerBase::LoadAssets()
 
 
 	col.sword_box = model->GetBoundingBox();
-
 	col.sword_box.Extents = SimpleMath::Vector3(col.sword_box.Extents) * 7.0f;
-
 	sword_collision = DX9::Model::CreateBox(
 		DXTK->Device9,
 		col.sword_box.Extents.x * box_size_x,
@@ -203,18 +198,7 @@ void PlayerBase::LoadAssets()
 	);
 
 
-
-	parry_box = model->GetBoundingBox();
-
-	parry_collision = DX9::Model::CreateBox(
-		DXTK->Device9,
-		parry_box.Extents.x * parry_box_size_x,
-		parry_box.Extents.y * parry_box_size_y,
-		parry_box.Extents.z * parry_box_size_z
-	);
-
-	parry_box.Center = model->GetPosition();
-
+	//フォント
 	font = DX9::SpriteFont::CreateDefaultFont(DXTK->Device9);
 
 	deathbrow_sprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"DeathBrowBG\\deathbrow_bg.png");
@@ -344,7 +328,6 @@ void PlayerBase::OnParryArea() {
 	//パリィカウントを増やす
 
 }
-
 void PlayerBase::Parry(const float deltaTime) {
 	if (!parry_flag) {
 		if (DXTK->KeyEvent->pressed.P || DXTK->GamePadEvent[0].leftShoulder) {
@@ -908,7 +891,7 @@ void PlayerBase::Attack_Third(const float deltaTime) {
 void PlayerBase::Player_Special_Move(const float deltaTime) {
 	if (!jump_flag_) {
 		if (!appeil_flag ) {
-			if (StatusManager::Instance().ReturnHeart() >= 0) {
+			if (StatusManager::Instance().ReturnHeart() >= 20) {
 				if (DXTK->KeyEvent->pressed.L || DXTK->GamePadEvent->rightShoulder == GamePad::ButtonStateTracker::PRESSED) {
 					deathbrow_flag = true;
 				}
