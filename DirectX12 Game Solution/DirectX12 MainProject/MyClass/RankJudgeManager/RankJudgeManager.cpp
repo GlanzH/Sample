@@ -2,22 +2,22 @@
 
 void RankJudgeManager::Initialize() {
 	//ランク
-	rank_pos   = SimpleMath::Vector3(0.0f, -40.0f, 0.0f);
+	rank_pos   = SimpleMath::Vector3(0.0f, RANK_START_POS_Y, 0.0f);
 	rank_alpha = 0.0f;
 
 	//フォント
-	font_pos = SimpleMath::Vector2(680.0f, 130.0f);
+	font_pos = SimpleMath::Vector2(FONT_STSRT_POS_X, FONT_STSRT_POS_Y);
 
 	//人数
-	people_pos = SimpleMath::Vector3(0.0f, 0.0f, -10.0f);
+	people_pos = SimpleMath::Vector3(0.0f, 0.0f, 0.0f);
 	people	   = 0;
 
 	//吹き出し
-	text_box_pos   = SimpleMath::Vector3(-50.0f, 0.0f, 0.0f);
+	text_box_pos   = SimpleMath::Vector3(TEXTBOX_START_POS_X, 0.0f, 0.0f);
 	text_box_alpha = 0.0f;
 
 	//コメント
-	text_pos	  = SimpleMath::Vector3(0.0f, 40.0f, 0.0f);
+	text_pos   = SimpleMath::Vector3(0.0f, TEXT_START_POS_Y, 0.0f);
 	text_alpha = 0.0f;
 
 	//時間
@@ -122,22 +122,22 @@ void RankJudgeManager::GetAudience() {
 }
 
 void RankJudgeManager::JudgeRnak() {
-	if (now_score <= 0.0f) {
+	if (now_score <= E_RANK_MAX) {
 		now_rank = E;
 	}
-	else if (now_score >= 1.0f	&& now_score <= 29.0f) {
+	else if (now_score >= D_RANK_MIN && now_score <= D_RANK_MAX) {
 		now_rank = D;
 	}
-	else if (now_score >= 30.0f && now_score <= 59.0f) {
+	else if (now_score >= C_RANK_MIN && now_score <= C_RANK_MAX) {
 		now_rank = C;
 	}
-	else if (now_score >= 60.0f && now_score <= 89.0f) {
+	else if (now_score >= B_RANK_MIN && now_score <= B_RANK_MAX) {
 		now_rank = B;
 	}
-	else if (now_score >= 90.0f && now_score <= 99.0f) {
+	else if (now_score >= A_RANK_MIN && now_score <= A_RANK_MAX) {
 		now_rank = A;
 	}
-	else if (now_score >= 100.0f) {
+	else if (now_score >= S_RANK_MIN) {
 		now_rank = S;
 	}
 
@@ -156,17 +156,17 @@ cppcoro::generator<int> RankJudgeManager::ReleaseRank()
 	stop_time = 0.0f;
 
 	//観客人数の表示
-	while (people < now_score * 3) {
+	while (people < now_score * multiple) {
 		people += 100 * time_delta;
 		if (people >= 10 && people < 100) {//桁が増えると座標移動
-			font_pos.x = 590.0f;
+			font_pos.x = TWO_DIGIT_POS;
 		}
 		else if (people >= 100) {
-			font_pos.x = 500.0f;
+			font_pos.x = THREE_DIGIT_POS;
 		}
 		co_yield 1;
 	}
-	people = now_score * 3;
+	people = now_score * multiple;
 
 	//間
 	while (stop_time < 1.0f) {
@@ -177,9 +177,8 @@ cppcoro::generator<int> RankJudgeManager::ReleaseRank()
 
 	//ランク表示
 	while (stop_time < 2.0f) {
-		rank_alpha = std::min(rank_alpha + 700.0f * time_delta, COLOR_MAX);
-		//rank_alpha = 255.0f;
-		rank_pos.y += 100.0f * time_delta;
+		rank_alpha = std::min(rank_alpha + ALPHA_SPEED * time_delta, COLOR_MAX);
+		rank_pos.y += SPRITE_MOVE_SPEED * time_delta;
 		if (rank_pos.y > 0.0f) {
 			rank_pos.y = 0.0f;
 		}
@@ -190,8 +189,8 @@ cppcoro::generator<int> RankJudgeManager::ReleaseRank()
 
 	//監督の吹き出し表示
 	while (stop_time < 2.0f) {
-		text_box_alpha = std::min(text_box_alpha + 700.0f * time_delta, COLOR_MAX);
-		text_box_pos.x += 100.0f * time_delta;
+		text_box_alpha = std::min(text_box_alpha + ALPHA_SPEED * time_delta, COLOR_MAX);
+		text_box_pos.x += SPRITE_MOVE_SPEED * time_delta;
 		if (text_box_pos.x > 0.0f) {
 			text_box_pos.x = 0.0f;
 		}
@@ -202,8 +201,8 @@ cppcoro::generator<int> RankJudgeManager::ReleaseRank()
 
 	//コメントの表示
 	while (stop_time < 2.0f) {
-		text_alpha = std::min(text_alpha + 700.0f * time_delta, COLOR_MAX);
-		text_pos.y -= 100.0f * time_delta;
+		text_alpha = std::min(text_alpha + ALPHA_SPEED * time_delta, COLOR_MAX);
+		text_pos.y -= SPRITE_MOVE_SPEED * time_delta;
 		if (text_pos.y < 0.0f) {
 			text_pos.y = 0.0f;
 		}
