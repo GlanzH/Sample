@@ -43,7 +43,6 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 
 		//” ‚ğì‚é€”õ
 		anim_box = anim_model->GetBoundingBox();
-		//anim_box.Extents = SimpleMath::Vector3(anim_box.Extents);
 		anim_box.Extents = SimpleMath::Vector3(anim_box.Extents) * anim_adjust_extents_col;
 
 		//ƒRƒŠƒWƒ‡ƒ“ƒ‚ƒfƒ‹‚Ìì¬

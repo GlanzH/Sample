@@ -11,7 +11,7 @@ EnemyManager::EnemyManager()
 
 
 	for (int i = 0; i < ENEMY_NUM; ++i) {
-		tag[i]            = INT_MAX;
+		tag[i]            = "";
 		appear_pos[i]     = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 		appear_time[i]    = INT_MAX;
 		destract_num[i]   = INT_MAX;
@@ -173,6 +173,17 @@ void EnemyManager::LoadEnemyArrangement() {
 	//!ƒf[ƒ^“Ç‚İ‚İ
 	for (int i = 0; i < ENEMY_NUM; ++i) {
 		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> appear_time[i] >> destract_num[i] >> time_stop_flag[i];
+	}
+
+	EndEnemy();
+}
+
+void EnemyManager::EndEnemy() {
+	for (int i = 0; i < ENEMY_NUM; ++i) {
+		if (tag[i] == "") {
+			enemy_num = i;
+			break;
+		}
 	}
 }
 

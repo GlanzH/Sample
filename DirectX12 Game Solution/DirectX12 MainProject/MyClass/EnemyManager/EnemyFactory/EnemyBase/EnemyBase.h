@@ -85,7 +85,7 @@ private:
 	const float anim_box_size = 2.0f;
 	const float box_size      = 1.5f;
 
-	const float anim_adjust_extents_col = 0.01f;
+	const float anim_adjust_extents_col = 0.02f;
 
 	const float anim_init_rotate = 10.0f;
 	const float init_rotate      = 90.0f;

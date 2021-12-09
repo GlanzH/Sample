@@ -13,6 +13,7 @@
 #include "MyClass/Observer/Observer.h"
 #include "MyClass/CameraManager/CameraManager.h"
 #include "MyClass/StatusManager/StatusManager.h"
+#include "MyClass/GameSceneManager/SceneManager.h"
 #include "MyClass/UIManager/UIManager.h"
 #include "MyClass/Shader//SpotLight.h"
 
@@ -61,7 +62,7 @@ private:
 	AudienceManager* audience;
 	Observer*        observer;
 	UIManager*       ui;
-
+	SceneManager     scene;
 
 	SpotLight point;
 };

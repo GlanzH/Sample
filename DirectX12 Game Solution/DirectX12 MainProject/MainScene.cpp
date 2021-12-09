@@ -126,6 +126,9 @@ NextScene MainScene::Update(const float deltaTime)
 	camera->Update(player->GetModel()->GetPosition());
 
 	point.SetPosition(player->GetModel()->GetPosition() + Vector3(0,30,0));
+
+
+
 	return NextScene::Continue;
 }
 
