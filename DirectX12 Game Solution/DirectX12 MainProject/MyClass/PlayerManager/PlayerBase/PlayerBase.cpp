@@ -918,9 +918,11 @@ void PlayerBase::Attack_Third(const float deltaTime) {
 
 void PlayerBase::Player_Special_Move(const float deltaTime) {
 	if (!jump_flag_) {
-		if (StatusManager::Instance().ReturnHeart() >= 20) {
-			if (DXTK->KeyEvent->pressed.L || DXTK->GamePadEvent->rightShoulder == GamePad::ButtonStateTracker::PRESSED) {
-				deathbrow_flag = true;
+		if (!appeil_flag && !appeil_cool_flag) {
+			if (StatusManager::Instance().ReturnHeart() >= 20) {
+				if (DXTK->KeyEvent->pressed.L || DXTK->GamePadEvent->rightShoulder == GamePad::ButtonStateTracker::PRESSED) {
+					deathbrow_flag = true;
+				}
 			}
 		}
 	}
@@ -994,24 +996,26 @@ void PlayerBase::Appeal(const float deltaTime)
 {
 	//ƒAƒs[ƒ‹
 	if (!jump_flag_) {
-		if (!appeil_cool_flag) {
-			if (DXTK->KeyState->W || DXTK->GamePadState->triggers.left) {
-				appeil_flag = true;
-			}
-			else
-			{
-				appeil_flag = false;
-
-				model->SetTrackPosition(APPEIL, 0.0);
-
-				if (!appeil_flag) {
-					appeil_cool_flag = true;
+		if (!deathbrow_flag) {
+			if (!appeil_cool_flag) {
+				if (DXTK->KeyState->W || DXTK->GamePadState->triggers.left) {
+					appeil_flag = true;
 				}
+				else
+				{
+					appeil_flag = false;
 
-				if (direction_state_mode == Direction_State::LEFT) {
-					model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
+					model->SetTrackPosition(APPEIL, 0.0);
+
+					if (!appeil_flag) {
+						appeil_cool_flag = true;
+					}
+
+					if (direction_state_mode == Direction_State::LEFT) {
+						model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
+					}
+
 				}
-
 			}
 		}
 	}
