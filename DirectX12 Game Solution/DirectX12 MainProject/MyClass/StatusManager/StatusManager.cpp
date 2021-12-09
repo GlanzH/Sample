@@ -1,6 +1,7 @@
 #include"MyClass/StatusManager/StatusManager.h"
 #include"MyClass/PlayerManager/PlayerManager.h"
 #include "MyClass/PlayerManager/PlayerBase/PlayerBase.h"
+#include "MyClass/GameSceneManager/SceneManager.h"
 
 void StatusManager::Initialize() {
 	//ƒRƒ“ƒ{
@@ -51,6 +52,7 @@ void StatusManager::DownAudience(const float deltaTime) {
 	audience = std::max(audience - AUIDENCE_DN_SPEED * deltaTime, now_audience);
 	if (audience < 0.0f) {
 		audience = 0.0f;
+		SceneManager::Instance().Update(deltaTime);
 	}
 
 	return;
