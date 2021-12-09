@@ -182,14 +182,14 @@ void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 	if (bull_pos.y > init_bull_pos.y)
 	{
 		laser_coordinate.y;
-		DX12Effect.SetPosition("shoot", laser_coordinate/*bull_pos*/);
+		DX12Effect.SetPosition("shoot", laser_coordinate );
 		DX12Effect.Play("shoot");
 	}
 	else
 	{
 		if (landing_effect_frame < max_landing)
 		{
-			DX12Effect.SetPosition("landing", laser_coordinate /*bull_pos*/);
+			DX12Effect.SetPosition("landing", laser_coordinate/*bull_pos*/ );
 			DX12Effect.PlayOneShot("landing");
 			
 			landing_effect_frame += delta;
