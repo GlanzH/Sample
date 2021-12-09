@@ -1,4 +1,3 @@
-
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 
@@ -180,7 +179,3 @@ void SpotLight::ShadeRender(DX9::SKINNEDMODEL& model, SimpleMath::Vector4 color)
 //	shader->Begin();
 //	shader->BeginPass(0);
 //}
-
-
-
-

@@ -21,7 +21,7 @@ bool Core::Initialize(std::string tag, bool time_stop_flag, int hp)
 	obstacle_collision->SetMaterial(material);
 	obstacle_collision->SetScale(collision_scale);
 
-	bull_pos = SimpleMath::Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
+	bull_pos = SimpleMath::Vector3(0,FLT_MAX,0);
 	col.bullet.Center = position;
 	launch_count_count = 0;
 	landing_count = 0;
@@ -52,12 +52,15 @@ int Core::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thor
 
 	col.bullet.Center = obstacle_collision->GetPosition();
 	obstacle_collision->SetPosition(bull_pos);
+	
+	
 
+	bull_pos.z = 50.0f;
 	bull_pos -= laser_coordinate * SHOT_SPEED;
 		DX12Effect.SetPosition("shoot", bull_pos);
 		DX12Effect.Play("shoot");
 		
-		landing_effect_frame +=10 ;
+		landing_effect_frame =10 ;
 	if (enemy_hp < 0)
 		DX12Effect.Stop("charge");
 
@@ -98,7 +101,7 @@ void Core::Move(SimpleMath::Vector3 player){
 			}
 			else if (wait_shot_frame < max_wait_shot)
 			{
-				wait_shot_frame += delta;
+				wait_shot_frame+=delta;
 			}
 			else
 			{	
@@ -153,10 +156,13 @@ void Core::Move(SimpleMath::Vector3 player){
 
 void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 {
-	laser_coordinate = position - player_pos;
-	laser_coordinate.z = 0.0f;
-	laser_coordinate.Normalize();
 
+
+	laser_coordinate = position - player_pos;
+	
+	laser_coordinate.Normalize();
+	laser_coordinate.z = 0.0f;
+	
 	DX12Effect.SetPosition("landing", bull_pos);
 	DX12Effect.PlayOneShot("landing");
 
