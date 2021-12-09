@@ -65,6 +65,9 @@ void MainScene::LoadAssets()
 	auto uploadResourcesFinished = resourceUploadBatch.End(DXTK->CommandQueue);
 	uploadResourcesFinished.wait();
 
+	DXTK->Direct3D9->SetRenderState(NormalizeNormals_Enable);
+	DXTK->Direct3D9->SetRenderState(Specular_Enable);
+
 	light.Type = D3DLIGHT_DIRECTIONAL;
 	light.Direction = DX9::VectorSet(0.0f, -1.0f, 1.0f);
 	light.Diffuse = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 1.0f);

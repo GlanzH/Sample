@@ -148,6 +148,25 @@ bool PlayerBase::Initialize()
 
 	cannot_other = CANNOT_OTHER_ATTACK::NOMAL_STATE;
 
+
+	////プレイヤーのSE ファイル読み込み
+	//first_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
+
+
+	////攻撃-SE
+	//first_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
+	//second_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
+	//third_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
+	////ジャンプ
+	//jump_se= XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
+	////着地
+	//landing_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
+	////ダメージ
+	//damege_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
+	////アピール
+	//appeal_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
+
+
 	return 0;
 }
 
@@ -208,10 +227,13 @@ void PlayerBase::LoadAssets()
 
 	deathbrow_sprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"DeathBrowBG\\deathbrow_bg.png");
 
-	//プレイヤーのSE ファイル読み込み
+	
+	
 
 
 
+
+	//エフェクト　ファイル読み込み
 	DX12Effect.Initialize();
 	DX12Effect.Create(L"Effect\\SwordEffect\\one\\first_attack.efk","first");
 	DX12Effect.Create(L"Effect\\SwordEffect\\two\\second_attack.efk","second");
@@ -299,7 +321,7 @@ void PlayerBase::Render()
 {
 	//プレイヤーの描画
 	model->Draw();
-	collision->Draw();
+	//collision->Draw();
 	//sword_collision->Draw();
 	//parry_collision->Draw();
 }
@@ -589,7 +611,6 @@ void PlayerBase::Player_attack(const float deltaTime) {
 			}
 		}
 	}
-
 }
 
 //プレイヤーの攻撃(ボタン配置変更ver)
