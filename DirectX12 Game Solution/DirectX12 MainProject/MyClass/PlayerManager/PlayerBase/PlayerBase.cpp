@@ -1007,6 +1007,11 @@ void PlayerBase::Appeal(const float deltaTime)
 				if (!appeil_flag) {
 					appeil_cool_flag = true;
 				}
+
+				if (direction_state_mode == Direction_State::LEFT) {
+					model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
+				}
+
 			}
 		}
 	}
@@ -1028,6 +1033,11 @@ void PlayerBase::Appeal(const float deltaTime)
 		appeil_flag = false;
 		model->SetTrackPosition(APPEIL, 0.0);
 		appeil_cool_flag = true;
+
+
+		if (direction_state_mode == Direction_State::LEFT) {
+			model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
+		}
 	}
 
 	if (appeil_cool_flag) {
@@ -1038,6 +1048,10 @@ void PlayerBase::Appeal(const float deltaTime)
 		appeil_cool_flag = false;
 		appeil_cool_time = 0.0f;
 		appeil_time = 0.0f;
+
+		if (direction_state_mode == Direction_State::LEFT) {
+			model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
+		}
 	}
 }
 
