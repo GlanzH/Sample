@@ -18,8 +18,12 @@ public:
 	int  Update(SimpleMath::Vector3 player,bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 	void Render();
 
-	std::list<EnemyBase*> GetEnemy() { return enemy; }
-	int  GetDeathEnemyCount()		 { return dead_enemy_count; }
+	std::vector<EnemyBase*> GetEnemy() { return enemy; }
+	int  GetDeathEnemyCount()		   { return dead_enemy_count; }
+	int  getTimeStopcount()			   { return time_stop_count; }
+
+	void EndTimeStop();
+	bool IsTimeStop() { return enemy_stop_flag; }
 
 	void OnCollisionEnter(EnemyBase* base);
 	void OnCollisionAudience(EnemyBase* base);
@@ -31,7 +35,7 @@ private:
 	
 	int AppearTimer();
 
-	std::list<EnemyBase*> enemy;
+	std::vector<EnemyBase*> enemy;
 	EnemyBase enemy_base;
 
 	PlayerBase* player_data;
@@ -40,6 +44,7 @@ private:
 	DX9::SKINNEDMODEL model;
 	
 	int dead_enemy_count = 0;
+	int time_stop_count  = 0;
 	float delta;
 
 	const float max_frame = 60.0f;
@@ -48,14 +53,26 @@ private:
 	int frame = 0;
 	int timer = 0;
 
+	bool enemy_stop_flag = false;
+
 	const int max_combo = 3;
 
-	enum LoadFile  { DUMMY_LINE = 6, ENEMY_NUM = 250 };
+	enum LoadFile {
+		DUMMY_LINE = 7,
+		ENEMY_NUM = 250 
+	};
 
-	int count = 0;                        //!敵の累計出現数カウント 
-	std::string  tag[ENEMY_NUM];          //!敵の種類         
-	Vector3		 appear_pos[ENEMY_NUM];   //!敵の出現座標  
-	double		 appear_time[ENEMY_NUM];  //!敵の出現時間
-	double		 destract_num[ENEMY_NUM];//!敵の出現時間
-	bool		 appear_flag[ENEMY_NUM];  //!敵の出現フラグ 
+
+	enum TimeStop {
+		MOVE,
+		TIME_STOP
+	};
+
+	int count = 0;                          //!敵の累計出現数カウント 
+	std::string  tag[ENEMY_NUM];            //!敵の種類         
+	Vector3		 appear_pos[ENEMY_NUM];     //!敵の出現座標  
+	double		 appear_time[ENEMY_NUM];    //!敵の出現時間
+	double		 destract_num[ENEMY_NUM];   //!敵の出現時間
+	bool		 appear_flag[ENEMY_NUM];    //!敵の出現フラグ
+	bool         time_stop_flag[ENEMY_NUM]; //!敵の演出フラグ
 };

@@ -2,9 +2,9 @@
 #include "Base/dxtk.h"
 #include "FakerLamiel.h"
 
-bool FakerLamiel::Initialize(std::string tag, SimpleMath::Vector3 speed, int hp) 
+bool FakerLamiel::Initialize(std::string tag, bool time_stop_flag, int hp)
 {
-	EnemyBase::Initialize(tag,speed,hp);
+	EnemyBase::Initialize(tag,time_stop_flag,hp);
 	DX12Effect.Create(L"Effect/EnemyEffect/LamielEffect/omen/omen.efk", "sigh");
 	DX12Effect.Create(L"Effect/EnemyEffect/LamielEffect/fire/fire.efk", "fire");
 	teleport_frame    = 0;
@@ -17,6 +17,10 @@ bool FakerLamiel::Initialize(std::string tag, SimpleMath::Vector3 speed, int hp)
 	obstacle_collision = DX9::Model::CreateBox(DXTK->Device9,1,1,1);
 
 	col.fire = obstacle_collision->GetBoundingBox();
+	col.fire.Extents.x = col.fire.Extents.x * 20;
+
+	if (collision != nullptr)
+		collision->SetScale(2.0f);
 
 	obstacle_collision->SetMaterial(material);
 	obstacle_collision->SetScale(collision_scale);
@@ -40,7 +44,12 @@ int FakerLamiel::Update(SimpleMath::Vector3 player, bool special_attack_flag, bo
 		StopEffect();
 	}
 
+	model->SetPosition(position);
 	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
+	col.box.Center = model->GetPosition();
+
+	col.fire.Center = obstacle_collision->GetPosition();
+	obstacle_collision->SetPosition(fire_pos);
 
 	return 0;
 }
@@ -62,7 +71,7 @@ void FakerLamiel::Move()
 				SimpleMath::Vector3(
 					position.x,
 					position.y - adjust_sigh_y,
-					position.z)
+					position.z + 20)
 			);
 
 			DX12Effect.PlayOneShot("sigh");
@@ -122,13 +131,13 @@ void FakerLamiel::Move()
 }
 
 void FakerLamiel::MoveFireCollision() {
-	if (fire_effect_frame < MAX_FIRE_FRAME) {
+	if (fire_effect_frame < MAX_FIRE_FRAME + 0.01f) {
 		fire_pos.x -= move_fire * fire_accelerate * delta;
 
 		if(player_pos.x + 4.0f < fire_pos.x)
 			fire_accelerate = 2.45f;
 		else if (player_pos.x - 1.0f <= fire_pos.x && player_pos.x + 4.0f >= fire_pos.x)
-			fire_accelerate = 0.2f;
+			fire_accelerate = 1.f;
 		//else if(player_pos.x + 10.0f > fire_pos.x)
 		//	fire_accelerate = 2.45f;
 	}
@@ -136,9 +145,6 @@ void FakerLamiel::MoveFireCollision() {
 		fire_pos = SimpleMath::Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
 		fire_accelerate = 1.0f;
 	}
-
-	col.fire.Center = obstacle_collision->GetPosition();
-	obstacle_collision->SetPosition(fire_pos);
 }
 
 void FakerLamiel::StopEffect() {
@@ -156,5 +162,5 @@ void FakerLamiel::StopEffect() {
 
 void FakerLamiel::Render() {
 	EnemyBase::Render();
-	//obstacle_collision->Draw();
+	obstacle_collision->Draw();
 }

@@ -9,7 +9,7 @@ class Core : public EnemyBase
 public:
 	Core();
 	~Core() {}
-    bool Initialize(std::string tag,SimpleMath::Vector3 speed, int hp);
+    bool Initialize(std::string tag, bool time_stop_flag,int hp);
 	int Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 	void Render();
 
@@ -38,6 +38,7 @@ private:
 	int attack_count =0;
 	const int MAX_COUNT=3;
 	int landing_count;
+
 	//!ATTACK‘Ò‹@ŽžŠÔ
 	float wait_shot_frame = 0;
 	const float max_wait_shot = 0.75f;

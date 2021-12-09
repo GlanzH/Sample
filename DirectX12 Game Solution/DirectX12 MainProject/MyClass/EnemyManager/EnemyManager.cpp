@@ -11,11 +11,12 @@ EnemyManager::EnemyManager()
 
 
 	for (int i = 0; i < ENEMY_NUM; ++i) {
-		tag[i]          = INT_MAX;
-		appear_pos[i]   = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
-		appear_time[i]  = INT_MAX;
-		destract_num[i] = INT_MAX;
-		appear_flag[i]  = false;
+		tag[i]            = INT_MAX;
+		appear_pos[i]     = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
+		appear_time[i]    = INT_MAX;
+		destract_num[i]   = INT_MAX;
+		appear_flag[i]    = false;
+		time_stop_flag[i] = false;
 	}
 }
 
@@ -27,7 +28,9 @@ EnemyManager::~EnemyManager() {
 
 bool EnemyManager::Initialize(PlayerBase* player_base)
 {
-
+	DX12Effect.Initialize();
+	DX12Effect.Create(L"Effect/EnemyEffect/deathblow_hit/deathblow_hit.efk", "special");
+	DX12Effect.Create(L"Effect/EnemyEffect/boss_death/boss_death.efk", "boss");
 	player_data = player_base;
 	enemy_base.EffectInit();
 
@@ -55,9 +58,8 @@ int EnemyManager::Update(SimpleMath::Vector3 player,bool special_attack_flag, bo
 }
 
 void EnemyManager::Iterator() {
-	auto itr = enemy.begin();
 
-	while (itr != enemy.end())
+	for (auto itr = enemy.begin(); itr != enemy.end();)
 	{
 		if ((*itr)->LifeDeathDecision() == LIVE) {
 			itr++;
@@ -66,16 +68,25 @@ void EnemyManager::Iterator() {
 			//ìGÇ™éÄñSÇµÇΩÇ∆Ç´ÇÃèàóù
 			dead_enemy_count++;
 
+			if ((*itr)->GetTimeStopFlag()) {
+				time_stop_count++;
+				enemy_stop_flag = true;
+			}
+
 			if ((*itr)->LifeDeathDecision() == DEAD) {
-				(*itr)->DeathEffect();
+
+				if ((*itr)->GetTag() != "C")
+					(*itr)->DeathEffect();
+				else
+					DX12Effect.PlayOneShot("boss", (*itr)->GetModel()->GetPosition() + SimpleMath::Vector3(0,21,0));
+				
 				StatusManager::Instance().HeartCount();
+				itr = enemy.erase(itr);
 			}
 			else {
 				itr = enemy.erase(itr);
 				continue;
 			}
-
-			itr = enemy.erase(itr);
 		}
 	}
 }
@@ -86,7 +97,7 @@ void EnemyManager::Generator() {
 	if (!appear_flag[count])
 	{
 		//!ìGÇÃéÌóﬁÅEèâä˙ç¿ïWÇìnÇµÇƒìGÇêªë¢
-		enemy.push_back(factory->Create(tag[count], appear_pos[count]));
+		enemy.push_back(factory->Create(tag[count],time_stop_flag[count], appear_pos[count]));
 		appear_flag[count] = true;
 	}
 
@@ -97,6 +108,11 @@ void EnemyManager::Render()
 	for (auto& enemies : enemy) {
 		enemies->Render();
 	}
+}
+
+void EnemyManager::EndTimeStop() {
+	if (DXTK->KeyEvent->pressed.Z)
+		enemy_stop_flag = false;
 }
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
@@ -113,10 +129,16 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 
 void EnemyManager::OnCollisionSpecialMove(EnemyBase* base) {
 	base->Damage(20);
+
+	auto pos = player_data->GetModel()->GetPosition();
+	DX12Effect.Play("special", SimpleMath::Vector3(pos.x, 0, pos.z));
 }
 
 void EnemyManager::OnCollisionAudience(EnemyBase* base) {
 	base->Damage(20);
+
+	auto pos = player_data->GetModel()->GetPosition();
+	DX12Effect.Play("special", SimpleMath::Vector3(pos.x, 0, pos.z));
 }
 
 int EnemyManager::AppearTimer() {
@@ -142,7 +164,7 @@ void EnemyManager::LoadEnemyArrangement() {
 
 	//!ÉfÅ[É^ì«Ç›çûÇ›
 	for (int i = 0; i < ENEMY_NUM; ++i) {
-		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> appear_time[i] >> destract_num[i];
+		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> appear_time[i] >> destract_num[i] >> time_stop_flag[i];
 	}
 }
 
