@@ -128,7 +128,7 @@ private:
 
 
 	//プレイヤーのスピード
-	const float player_speed_ = 30.0f;
+	const float player_speed_ = 25.0f;
 
 	//ジャンプしてるかのフラグ
 	bool jump_flag_;
@@ -243,7 +243,7 @@ private:
 	//無敵時間
 	bool        invincible_flag;
 	float		invincible_time;
-	const float invincible_time_max = 0.09f;
+	const float invincible_time_max = 0.2f;
 
 	//プレイヤーがダメージくらった時の変数
 
@@ -345,5 +345,11 @@ private:
 	int  Ming_Turn;
 
 	int Deathblow_count;
+
+	//SE 変数
+	//XAudio::SOUNDEFFECT;
+	
+
+
 
 };
