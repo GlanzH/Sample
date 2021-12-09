@@ -919,7 +919,7 @@ void PlayerBase::Attack_Third(const float deltaTime) {
 void PlayerBase::Player_Special_Move(const float deltaTime) {
 	if (!jump_flag_) {
 		if (!appeil_flag ) {
-			if (StatusManager::Instance().ReturnHeart() >= 0) {
+			if (StatusManager::Instance().ReturnHeart() >= 20) {
 				if (DXTK->KeyEvent->pressed.L || DXTK->GamePadEvent->rightShoulder == GamePad::ButtonStateTracker::PRESSED) {
 					deathbrow_flag = true;
 				}
