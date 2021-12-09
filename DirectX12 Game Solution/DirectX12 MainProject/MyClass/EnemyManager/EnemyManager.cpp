@@ -44,6 +44,7 @@ int EnemyManager::Update(SimpleMath::Vector3 player,bool special_attack_flag, bo
 		enemies->Update(player, special_attack_flag, thorow_things_flag,deltaTime);
 	}
 
+	StatusManager::Instance().HeartCount();
 	Iterator();
 	delta = deltaTime;
 
@@ -75,12 +76,10 @@ void EnemyManager::Iterator() {
 
 			if ((*itr)->LifeDeathDecision() == DEAD) {
 
-				if (!special_move_flag) {
 					if ((*itr)->GetTag() != "C")
 						(*itr)->DeathEffect();
 					else
 						DX12Effect.PlayOneShot("boss", (*itr)->GetModel()->GetPosition() + SimpleMath::Vector3(0, 21, 0));
-				}
 
 				special_move_flag = false;
 

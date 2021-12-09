@@ -45,6 +45,7 @@ void MainScene::Initialize()
 	point.SetCone(0.8f,0);
 	point.SetAtt(Vector3(0.65f, 0.001f, 0), 0);
 	point.SetLightColor(SimpleMath::Vector4(255.0f, 189, 76, 1.0f), 0);
+	end_frame = 0.0f;
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -133,7 +134,11 @@ NextScene MainScene::Update(const float deltaTime)
 			observer->Update(player, enemy, audience);
 		}
 	}
+	else if (end_frame < max_end) {
+		    end_frame += deltaTime;
+	}
 	else {
+		//if(end_frame > max_end)
 		SceneManager::Instance().Update(deltaTime);
 
 		if (SceneManager::Instance().ReturnSceneFlag())
@@ -151,9 +156,9 @@ NextScene MainScene::Update(const float deltaTime)
 }
 
 void MainScene::ChangeLightRenge(const float deltaTime) {
-		if (player->GetAppielTime() > 0)
+		if (DXTK->KeyState->W)
 			range += 6.f * deltaTime;
-		else if(player->GetAppealCoolFlag())
+		else
 			range -= 30.f * deltaTime;
 
 		range = std::clamp(range,0.8f,50.0f);
