@@ -6,6 +6,10 @@
 #include "cppcoro/generator.h"
 
 #include "Scene.h"
+#include "MyClass/GroundManager/GroundManager.h"
+#include "MyClass/CameraManager/CameraManager.h"
+#include "MyClass/PlayerManager/PlayerManager.h"
+#include "MyClass/AudianceManager/AudianceManager.h"
 
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
@@ -41,6 +45,11 @@ private:
     DX12::HGPUDESCRIPTOR dx9GpuDescriptor;
 
 private:
+	GroundManager*   ground;
+	CameraManager*   camera;
+	PlayerBase*      player;
+	AudienceManager* audience_m;
+
 	DX9::SPRITE title;
 	DX9::SPRITE title_ui;
 

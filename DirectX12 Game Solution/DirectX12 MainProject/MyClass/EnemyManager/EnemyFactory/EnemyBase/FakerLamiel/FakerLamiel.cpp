@@ -162,5 +162,5 @@ void FakerLamiel::StopEffect() {
 
 void FakerLamiel::Render() {
 	EnemyBase::Render();
-	obstacle_collision->Draw();
+	//obstacle_collision->Draw();
 }

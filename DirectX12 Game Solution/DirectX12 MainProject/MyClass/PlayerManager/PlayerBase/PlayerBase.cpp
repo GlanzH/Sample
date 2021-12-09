@@ -298,7 +298,7 @@ void PlayerBase::Render()
 {
 	//ƒvƒŒƒCƒ„[‚Ì•`‰æ
 	model->Draw();
-	collision->Draw();
+	//collision->Draw();
 	//sword_collision->Draw();
 	//parry_collision->Draw();
 }

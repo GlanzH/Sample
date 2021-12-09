@@ -53,7 +53,8 @@ private:
 	int frame = 0;
 	int timer = 0;
 
-	bool enemy_stop_flag = false;
+	bool enemy_stop_flag   = false;
+	bool special_move_flag = false;
 
 	const int max_combo = 3;
 

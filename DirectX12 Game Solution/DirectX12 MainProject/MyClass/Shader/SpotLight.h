@@ -19,6 +19,7 @@ public:
 	void SetPosition(Vector3 pos);
 	void SetLightColor(SimpleMath::Vector4 color);
 	void SetAmbientColor(Vector4 color);
+	void SetAngle(Vector3 angle);
 	void SetCone(float angle);
 	void SetPower(float pow);
 	void SetRange(float range);

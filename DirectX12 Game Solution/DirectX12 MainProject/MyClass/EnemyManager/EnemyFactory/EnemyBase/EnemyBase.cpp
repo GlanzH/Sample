@@ -236,6 +236,6 @@ void EnemyBase::Render() {
 	}
 	else {
 		model->Draw();
-		collision->Draw();
+		//collision->Draw();
 	}
 }
