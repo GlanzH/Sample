@@ -87,7 +87,7 @@ NextScene TitleScene::Update(const float deltaTime)
     time_delta = deltaTime;
 
     if (opening_flag == false) {
-        if (DXTK->KeyEvent->pressed.Enter ||
+        if (DXTK->KeyEvent->pressed.Space ||
             DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
 
             co_opening = Opening();        // ƒRƒ‹[ƒ`ƒ“‚Ì¶¬
@@ -108,10 +108,7 @@ NextScene TitleScene::Update(const float deltaTime)
 
     if (start_flag == true) {
         return NextScene::MainScene;
-
     }
-
-
     
 	return NextScene::Continue;
 }

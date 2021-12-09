@@ -15,8 +15,10 @@ public:
 
 	void Initialize();
 	void LoadAsset();
-	NextScene Update(const float deltaTime);
+	void Update(const float deltaTime);
 	void Render();
+
+	bool ReturnSceneFlag() { return scene_change_flag; }//ƒV[ƒ“Ø‚è‘Ö‚¦
 
 private:
 	DX9::SPRITE curtain;

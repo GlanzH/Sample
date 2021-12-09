@@ -1,4 +1,5 @@
 #include "MyClass/GameSceneManager/SceneManager.h"
+#include "SceneFactory.h"
 
 void SceneManager::Initialize() {
 	curtain_pos = SimpleMath::Vector3(0.0f, -720.0f, 0.0f);
@@ -7,10 +8,10 @@ void SceneManager::Initialize() {
 }
 
 void SceneManager::LoadAsset() {
-	curtain = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/curtain.png");
+	curtain = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/curtain_bright.png");
 }
 
-NextScene SceneManager::Update(const float deltaTime) {
+void SceneManager::Update(const float deltaTime) {
 
 	time_delta = deltaTime;
 
@@ -29,10 +30,7 @@ NextScene SceneManager::Update(const float deltaTime) {
 		co_ending.begin();
 	}
 
-	if (scene_change_flag == true) {
-		return NextScene::ResultScene;
-	}
-	return NextScene::Continue;
+	return;
 }
 
 void SceneManager::Render() {
