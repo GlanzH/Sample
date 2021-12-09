@@ -24,15 +24,15 @@ private:
 	DX9::SPRITE heart_max;
 
 	
+	//äœãq
+	const float AUDIENCE_UI_POS_X = 79.0f;
+	const float AUDIENCE_UI_POS_y = 58.0f;
+	const int AUDIENCE_MAX_HIGH = 64;
 
-	const float AUDIENCE_UI_POS_X = 40.0f;
-	const float AUDIENCE_UI_POS_y = 600.0f;
-	const int AUDIENCE_MAX_HIGH = 61;
-
-
-	const float HEART_UI_POS_X = 104.0f;
-	const float HEART_UI_POS_Y = 91.0f;
-	const int HEART_MAX_WIDTH = 104;
-	const int HEART_MAX_HIGH  = 91;
+	//ÉnÅ[Ég
+	const float HEART_UI_POS_X = 84.0f;
+	const float HEART_UI_POS_Y = 137.0f;
+	const int HEART_MAX_WIDTH = 89;
+	const int HEART_MAX_HIGH  = 75;
 
 };

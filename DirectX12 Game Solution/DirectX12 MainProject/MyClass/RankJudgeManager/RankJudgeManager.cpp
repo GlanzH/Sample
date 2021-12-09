@@ -20,6 +20,10 @@ void RankJudgeManager::Initialize() {
 	text_pos   = SimpleMath::Vector3(0.0f, TEXT_START_POS_Y, 0.0f);
 	text_alpha = 0.0f;
 
+	//EXIT
+	exit_pos = SimpleMath::Vector3(0.0f, 0.0f, 0.0f);
+	exit_alpha = 0.0f;
+
 	//ŽžŠÔ
 	time_delta  = 0.0f;
 	stop_time	= 0.0f;
@@ -47,6 +51,8 @@ void RankJudgeManager::LoadAseet() {
 	text_box = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/speech_bubble_ui.png");
 
 	text = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/letter_ui.png");
+
+	exit = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/exit.png");
 }
 
 void RankJudgeManager::Update(const float deltaTime) {
@@ -77,6 +83,9 @@ void RankJudgeManager::Render() {
 		Rect(0, 0, SPRITE_WIDTH, SPRITE_HIGHT),
 		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, text_alpha));
 
+	DX9::SpriteBatch->DrawSimple(exit.Get(), exit_pos,
+		Rect(0, 0, SPRITE_WIDTH, SPRITE_WIDTH),
+		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, exit_alpha));
 
 	switch (now_rank)
 	{
@@ -209,6 +218,7 @@ cppcoro::generator<int> RankJudgeManager::ReleaseRank()
 		stop_time += time_delta;
 		co_yield 5;
 	}
+	exit_alpha = COLOR_MAX;
 	stop_time = 0.0f;
 	scene_flag = true;
 	co_return;

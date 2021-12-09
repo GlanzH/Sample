@@ -49,7 +49,7 @@ private:
 
 	const float AUDIENCE_START_VALUE = 100.0f;    //初期値設定
 	const float AUIDENCE_DN_SPEED = 20.0f;    //オーディエンス減スピード
-	const float AUDIENCE_GAUGE_DIVIDE = 11.81f;    //人ゲージ100分の1の数(描画時使用)
+	const float AUDIENCE_GAUGE_DIVIDE = 3.06f;    //人ゲージ100分の1の数(描画時使用)
 
 	//ハート
 	float heart;

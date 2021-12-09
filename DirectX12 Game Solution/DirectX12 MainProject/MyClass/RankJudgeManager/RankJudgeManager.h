@@ -80,17 +80,24 @@ private:
 	float text_box_alpha;
 	const float TEXTBOX_START_POS_X = -50.0f;
 
-	//コメント
+	//テキスト
 	DX9::SPRITE text;
 	SimpleMath::Vector3 text_pos;
 	float text_alpha;
 
 	const float TEXT_START_POS_Y = 40.0f;
+
+	//EXIT
+	DX9::SPRITE exit;
+	SimpleMath::Vector3 exit_pos;
+	float exit_alpha;
+
+
 	const int SPRITE_HIGHT = 720;	//画像の最大表示高さ
 	const int SPRITE_WIDTH = 1280;	//画像の最大表示幅
 
 	const float COLOR_MAX = 255.0f;	//RGBA最大値
-	bool scene_flag;
+	bool scene_flag;	//シーン切り替え可能フラグ
 
 	//時間
 	float time_delta;
