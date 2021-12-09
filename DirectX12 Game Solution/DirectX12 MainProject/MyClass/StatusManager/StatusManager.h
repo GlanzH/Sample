@@ -16,7 +16,7 @@ public:
 	float GetTime() { return combo_time; }
 
 
-	static StatusManager&Instance(){
+	static StatusManager& Instance(){
 		static StatusManager instance;
 		return instance;
 	}
@@ -38,18 +38,18 @@ private:
 	const float COMBO_TIME_MAX[3]{ 0.617f,0.517f,0.583f };
 	int combo;
 	const int COMBO_MAX = 4;
-	
+
 	bool combo_flag = false;
 	int  combo_count = 0;
-	
+
 
 	//オーディエンス
 	float audience;
-	float now_audience;	//現在のオーディエンス数
-	
-	const float AUDIENCE_START_VALUE  = 100.0f;	//初期値設定
-	const float AUIDENCE_DN_SPEED	  = 20.0f;	//オーディエンス減スピード
-	const float AUDIENCE_GAUGE_DIVIDE = 11.81f;	//人ゲージ100分の1の数(描画時使用)
+	float now_audience;    //現在のオーディエンス数
+
+	const float AUDIENCE_START_VALUE = 100.0f;    //初期値設定
+	const float AUIDENCE_DN_SPEED = 20.0f;    //オーディエンス減スピード
+	const float AUDIENCE_GAUGE_DIVIDE = 11.81f;    //人ゲージ100分の1の数(描画時使用)
 
 	//ハート
 	float heart;

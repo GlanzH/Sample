@@ -47,6 +47,8 @@ public:
 
 
 private:
+	void ChangeLightRenge(const float deltaTime);
+
 	DX12::DESCRIPTORHEAP descriptorHeap;
 	DX12::SPRITEBATCH    spriteBatch;
 	DX12::HGPUDESCRIPTOR dx9GpuDescriptor;
@@ -62,7 +64,8 @@ private:
 	AudienceManager* audience;
 	Observer*        observer;
 	UIManager*       ui;
-	SceneManager     scene;
 
 	SpotLight point;
+
+	float range = 0.8f;
 };

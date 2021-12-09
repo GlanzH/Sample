@@ -1,7 +1,5 @@
 #include "CameraManager.h"
 
-#include "MyClass/PlayerManager/PlayerBase/PlayerBase.h"
-
 bool CameraManager::Initialize() {
 	//ƒJƒƒ‰‚ÌˆÊ’u
 	camera->SetView(SimpleMath::Vector3(0.0f, fixed_pos, 0.0f), SimpleMath::Vector3::Zero);
@@ -19,8 +17,16 @@ void CameraManager::LoadAsset() {
 
 }
 
-int CameraManager::Update(SimpleMath::Vector3 pos) {
-	camera->SetPosition(pos.x,fixed_pos, - 20);
+int CameraManager::Update(PlayerBase* base,const float deltaTime) {
+	if (base->GetAppielTime() > 0)
+		camera_z -= 15.f * deltaTime;
+	else if (base->GetAppealCoolFlag())
+		camera_z += 40.f * deltaTime;
+
+	camera_z = std::clamp(camera_z, -10.0f, 20.0f);
+
+
+	camera->SetPosition(base->GetModel()->GetPosition().x, fixed_pos, -camera_z);
 	return 0;
 }
 

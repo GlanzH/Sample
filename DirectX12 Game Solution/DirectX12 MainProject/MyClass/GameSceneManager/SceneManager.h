@@ -20,6 +20,11 @@ public:
 
 	bool ReturnSceneFlag() { return scene_change_flag; }//ƒV[ƒ“Ø‚è‘Ö‚¦
 
+	static SceneManager& Instance() {
+		static SceneManager instance;
+		return instance;
+	}
+
 private:
 	DX9::SPRITE curtain;
 

@@ -11,83 +11,86 @@ SpotLight::SpotLight()
 //------------------------------------------------------------------------------
 //	初期化
 //------------------------------------------------------------------------------
-void SpotLight::Init()
+void SpotLight::Init(int num)
 {
 	shader = DX9::Shader::CreateFromFile(DXTK->Device9, L"SpotLight.fx");
-	m_lightsPower = 1.0f;
-	m_cone = 5.0f;
-	m_range = 1000.0f;
-	m_diffuseColor = Vector4(1, 1, 1, 1);
-	m_ambientColor = Vector4(0.2f, 0.2f, 0.2f, 1.0f);
-	m_lightsPos = Vector3(0, 50, 40);
-	m_lightDir = Vector3(0, -1, 0);
+	m_maxLight = num;
+
+	for (int i = 0; i < m_maxLight; i++)
+	{
+		m_lightsPower[i] = 1.0f;
+		m_cone[i] = 5.0f;
+		m_range[i] = 1000.0f;
+		m_diffuseColor[i] = Vector4(1, 1, 1, 1);
+		m_ambientColor[i] = Vector4(0.2, 0.2, 0.2, 1.0f);
+		m_lightsPos[i] = Vector3(0, 50, 40);
+		m_lightDir[i] = Vector3(0, -1, 0);
+		m_att[i] = Vector3(0.03f, 0.01f, 0.0f);
+	}
 }
 
 //------------------------------------------------------------------------------
 //	ライトのポジション設定
 //------------------------------------------------------------------------------
-void SpotLight::SetPosition(Vector3 pos)
+void SpotLight::SetPosition(Vector3 pos, int index)
 {
-	m_lightsPos = pos;
+	m_lightsPos[index] = pos;
 }
 
 //------------------------------------------------------------------------------
 //	ライトの色設定
 //------------------------------------------------------------------------------
-void SpotLight::SetLightColor(SimpleMath::Vector4 color)
+void SpotLight::SetLightColor(Vector4 color, int index)
 {
 	auto fixColor = Vector4(color.x / 255.0f, color.y / 255.0f, color.z / 255.0f, color.w);
-	m_diffuseColor = fixColor;
+	m_diffuseColor[index] = fixColor;
 }
 
 //------------------------------------------------------------------------------
 //	ライトの環境色設定
 //------------------------------------------------------------------------------
-void SpotLight::SetAmbientColor(Vector4 color)
+void SpotLight::SetAmbientColor(Vector4 color, int index)
 {
 	auto fixColor = Vector4(color.x / 255.0f, color.y / 255.0f, color.z / 255.0f, color.w);
-	m_ambientColor = fixColor;
+	m_ambientColor[index] = fixColor;
+}
+
+void SpotLight::SetAtt(Vector3 att,int index)
+{
+	m_att[index] = att;
 }
 
 //------------------------------------------------------------------------------
 //	ライトの角度設定
 //------------------------------------------------------------------------------
-void SpotLight::SetAngle(Vector3 angle)
+void SpotLight::SetAngle(Vector3 angle, int index)
 {
-	m_lightDir = angle;
-	m_lightDir.Normalize();
+	m_lightDir[index] = angle;
+	m_lightDir[index].Normalize();
 }
 
 //------------------------------------------------------------------------------
 //	ライトの照らす範囲
 //------------------------------------------------------------------------------
-void SpotLight::SetCone(float angle)
+void SpotLight::SetCone(float angle, int index)
 {
-	m_cone = angle;
+	m_cone[index] = angle;
 }
 
 //------------------------------------------------------------------------------
 //	ライトの強さ（範囲）
 //------------------------------------------------------------------------------
-void SpotLight::SetPower(float pow = 1.0f)
+void SpotLight::SetPower(float pow, int index)
 {
-	m_lightsPower = pow;
+	m_lightsPower[index] = pow;
 }
 
 //------------------------------------------------------------------------------
 //	ライトが届く距離
 //------------------------------------------------------------------------------
-void SpotLight::SetRange(float range)
+void SpotLight::SetRange(float range, int index)
 {
-	m_range = range;
-}
-
-//------------------------------------------------------------------------------
-//	ライトの数
-//------------------------------------------------------------------------------
-void SpotLight::SetMax(int maxLight)
-{
-	m_maxLight = maxLight;
+	m_range[index] = range;
 }
 
 //------------------------------------------------------------------------------
@@ -95,15 +98,15 @@ void SpotLight::SetMax(int maxLight)
 //------------------------------------------------------------------------------
 void SpotLight::PointRender(DX9::CAMERA camera, DX9::MODEL& model)
 {
-
-	shader->SetParameter("g_LightPos" , m_lightsPos);
-	shader->SetParameter("g_LightDir", m_lightDir);
-	shader->SetParameter("g_LightAtt", Vector3(0.03f, 0.01f, 0.0f));
-	shader->SetParameter("g_Cone", m_cone);
-	shader->SetParameter("g_AColor", m_ambientColor);
-	shader->SetParameter("g_Color", m_diffuseColor);
-	shader->SetParameter("g_LightRange",m_range);
-	shader->SetParameter("g_Pow", m_lightsPower);
+	shader->SetData("g_LightPos" , m_lightsPos, (sizeof(Vector3) * m_maxLight));
+	shader->SetData("g_LightDir", m_lightDir, sizeof(Vector3) * m_maxLight);
+	shader->SetData("g_LightAtt", m_att, sizeof(Vector3) * m_maxLight);
+	shader->SetData("g_Cone", m_cone, sizeof(float) * m_maxLight);
+	shader->SetData("g_AColor", m_ambientColor, sizeof(Vector4) * m_maxLight);
+	shader->SetData("g_Color", m_diffuseColor, sizeof(Vector4) * m_maxLight);
+	shader->SetData("g_LightRange",m_range, sizeof(float) * m_maxLight);
+	shader->SetData("g_Pow", m_lightsPower, sizeof(float) * m_maxLight);
+	shader->SetParameter("g_Count", m_maxLight);
 
 	auto wvp = model->GetWorldTransform() * camera->GetViewProjectionMatrix();
 

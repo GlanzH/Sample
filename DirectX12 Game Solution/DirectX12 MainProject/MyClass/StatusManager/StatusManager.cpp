@@ -2,12 +2,23 @@
 #include"MyClass/PlayerManager/PlayerManager.h"
 #include "MyClass/PlayerManager/PlayerBase/PlayerBase.h"
 
-void Initialize() {
+void StatusManager::Initialize() {
+	//コンボ
+	combo_time = 0.0f;
+	combo = 0;
+	combo_flag = false;
+	combo_count = 0;
 
+	//オーディエンス
+	audience = AUDIENCE_START_VALUE;
+	now_audience = audience;
+
+	//パリィ
+	heart = 0.0f;
 }
 
 int StatusManager::Update(const float deltaTime) {
-	if (combo_time > combo_time_max[combo_count] || combo >= combo_max) {
+	if (combo_time > COMBO_TIME_MAX[combo_count] || combo >= COMBO_MAX) {
 		combo_time  = 0.0f;
 		combo_flag  = false;
 		combo_count = 0;

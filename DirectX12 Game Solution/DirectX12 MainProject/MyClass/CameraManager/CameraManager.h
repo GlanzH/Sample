@@ -2,6 +2,7 @@
 
 #include "Base/pch.h"
 #include "Base/dxtk.h"
+#include "MyClass/PlayerManager/PlayerBase/PlayerBase.h"
 
 using namespace DirectX;
 
@@ -13,7 +14,7 @@ public:
 
 	bool Initialize();
 	void LoadAsset();
-	int  Update(SimpleMath::Vector3 pos);
+	int  Update(PlayerBase* base, const float deltaTime);
 	void Render();
 
 	DX9::CAMERA GetCamera() { return camera; }
@@ -23,6 +24,8 @@ private:
 
 	SimpleMath::Vector3 position;
 	
+	float camera_z = 20.0f;
+
 	const float position_y = 30.0f;
 	const float fixed_pos  = 10.0f;
 
