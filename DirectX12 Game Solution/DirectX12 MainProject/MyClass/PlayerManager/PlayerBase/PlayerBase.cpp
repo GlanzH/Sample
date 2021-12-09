@@ -138,7 +138,6 @@ bool PlayerBase::Initialize()
 	bright_flag = false;
 	Ming_Turn = 55;
 
-	Deathblow_count = 20;
 
 	direction_state_mode = Direction_State::RIGHT;
 
@@ -290,10 +289,6 @@ int PlayerBase::Update(const float deltaTime)
 	if (attack_zeit >= attack_zeit_max) {
 		attack_flag = false;
 		attack_zeit = 0.0f;
-
-		//effect_generation = false;
-		//effect_generation_time = 0.0f;
-
 	}
 
 	col.box.Center = model->GetPosition();
@@ -383,6 +378,7 @@ void PlayerBase::Player_move(const float deltaTime)
 		if(!deathbrow_flag){
 			if (!appeil_flag) {
 				if (canot_move_state_mode == CANNOT_MOVE_STATE::MOVE) {
+
 					//プレイヤー:移動(キーボード) & ゲームパッド十字キー
 					if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
 						model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
@@ -665,13 +661,6 @@ void PlayerBase::Player_Attack_two(const float deltaTime) {
 		}
 	}
 
-	//if (DXTK->KeyEvent->pressed.D || DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED ||
-	//	DXTK->KeyEvent->pressed.A || DXTK->GamePadEvent->x == GamePad::ButtonStateTracker::PRESSED ||
-	//	DXTK->KeyEvent->pressed.S || DXTK->GamePadEvent->y == GamePad::ButtonStateTracker::PRESSED)
-	//{
-	//	Attack(deltaTime);
-	//	effect_first_time = 0.0f;
-	//}
 
 	if (motion_flag_1) {
 		if (cannot_other == CANNOT_OTHER_ATTACK::FIRST) {
@@ -919,7 +908,7 @@ void PlayerBase::Attack_Third(const float deltaTime) {
 void PlayerBase::Player_Special_Move(const float deltaTime) {
 	if (!jump_flag_) {
 		if (!appeil_flag ) {
-			if (StatusManager::Instance().ReturnHeart() >= 20) {
+			if (StatusManager::Instance().ReturnHeart() >= 0) {
 				if (DXTK->KeyEvent->pressed.L || DXTK->GamePadEvent->rightShoulder == GamePad::ButtonStateTracker::PRESSED) {
 					deathbrow_flag = true;
 				}
@@ -1067,90 +1056,6 @@ void PlayerBase::BrackImage() {
 
 void PlayerBase::_2DRender()
 {
-	//if (invincible_flag) {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 0.0f),
-	//		DX9::Colors::White,
-	//		L"ON"
-	//	);
-	//} else {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 0.0f),
-	//		DX9::Colors::White,
-	//		L"OFF"
-	//	);
-	//}
-
-
-	//if (cannot_other == CANNOT_OTHER_ATTACK::FIRST) {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 20.0f),
-	//		DX9::Colors::White,
-	//		L"ON"
-	//	);
-	//}
-	//else {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 20.0f),
-	//		DX9::Colors::White,
-	//		L"OFF"
-	//	);
-	//}
-
-	//if (cannot_other == CANNOT_OTHER_ATTACK::SECOND) {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 40.0f),
-	//		DX9::Colors::White,
-	//		L"ON"
-	//	);
-	//}
-	//else {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 40.0f),
-	//		DX9::Colors::White,
-	//		L"OFF"
-	//	);
-	//}
-
-	//if (cannot_other == CANNOT_OTHER_ATTACK::THIRD) {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 60.0f),
-	//		DX9::Colors::White,
-	//		L"ON"
-	//	);
-	//}
-	//else {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 60.0f),
-	//		DX9::Colors::White,
-	//		L"OFF"
-	//	);
-	//}
-
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(1000.0f, 80.0f),
-	//	DX9::Colors::White,
-	//	L"%d", StatusManager::Instance().ReturnHeart()
-	//);
-
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(1000.0f, 40.0f),
-	//	DX9::Colors::White,
-	//	L"%f", appeil_time
-	//);
-
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(1000.0f, 80.0f),
-	//	DX9::Colors::White,
-	//	L"%f", effect_generation_time
-	//);
-
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(1000.0f, 100.0f),
-	//	DX9::Colors::Black,
-	//	L"%f %f %f", sword_box.Center.x, sword_box.Center.y, sword_box.Center.z
-	//);
-
 	//DX9::SpriteBatch->DrawString(font.Get(),
 	//	SimpleMath::Vector2(1000.0f, 120.0f),
 	//	DX9::Colors::BlueViolet,

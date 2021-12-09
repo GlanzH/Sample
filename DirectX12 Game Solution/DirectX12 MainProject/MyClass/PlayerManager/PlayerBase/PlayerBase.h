@@ -264,6 +264,7 @@ private:
 	};
 
 	//•ÏX*2
+	//ƒ‚[ƒVƒ‡ƒ“Œn“
 	int  motion_flag;
 
 	bool motion_flag_1;
@@ -343,8 +344,6 @@ private:
 	//–¾“]
 	bool bright_flag;
 	int  Ming_Turn;
-
-	int Deathblow_count;
 
 
 
