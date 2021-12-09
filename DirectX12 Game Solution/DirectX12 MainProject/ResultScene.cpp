@@ -82,9 +82,6 @@ NextScene ResultScene::Update(const float deltaTime)
         }
     }
 
-    if (DXTK->KeyEvent->pressed.Space)
-        rankjudge.Initialize();
-
     rankjudge.Update(deltaTime);
 
 	return NextScene::Continue;

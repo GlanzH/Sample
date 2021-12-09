@@ -60,14 +60,14 @@ void StatusManager::DownAudience(const float deltaTime) {
 }
 
 void StatusManager::HeartCount() {
-	if (heart < 20.0f) {
+	if (heart < HEART_MAX) {
 		heart++;
 	}
 	return;
 }
 
 void StatusManager::HeartReset() {
-	if (heart >= 20.0f) {
+	if (heart >= HEART_MAX) {
 		heart = 0.0f;
 	}
 	return;
