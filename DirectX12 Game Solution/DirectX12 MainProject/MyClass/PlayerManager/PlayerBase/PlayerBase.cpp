@@ -1048,10 +1048,6 @@ void PlayerBase::Appeal(const float deltaTime)
 		appeil_cool_flag = false;
 		appeil_cool_time = 0.0f;
 		appeil_time = 0.0f;
-
-		if (direction_state_mode == Direction_State::LEFT) {
-			model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
-		}
 	}
 }
 
