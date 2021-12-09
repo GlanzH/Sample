@@ -31,6 +31,8 @@ void Slime::Action() {
 
 		if (is_move_frame < max_is_move) {
 			if (!EnemyBase::IsDamage()) {
+				InitDirection();
+				ChangeDirection();
 				Rotate();
 				Move();
 			}
@@ -49,17 +51,35 @@ void Slime::Action() {
 	}
 }
 
+void Slime::InitDirection() {
+	if (!init_direct_flag) {
+		if (position.x > 0)
+			move_direct = MOVE_LEFT;
+		else
+			move_direct = MOVE_RIGHT;
+
+		init_direct_flag = true;
+	}
+}
+
+void Slime::ChangeDirection() {
+	if (position.x >=  60)
+		move_direct = MOVE_LEFT;
+else if(position.x <= -60)
+		move_direct = MOVE_RIGHT;
+}
+
 void Slime::Rotate() {
 	const float rotate = 45.0f;
 
-	if (player_pos.x > position.x)
-		anim_model->SetRotation(0.0f, -rotate, 0.0f);
+	if (move_direct == MOVE_LEFT)
+		anim_model->SetRotation(0.0f,rotate, 0.0f);
 	else
-		anim_model->SetRotation(0.0f,  rotate, 0.0f);
+		anim_model->SetRotation(0.0f,-rotate, 0.0f);
 }
 
 void Slime::Move() {
-	if (player_pos.x < position.x)
+	if (move_direct == MOVE_LEFT)
 		position.x -= move_speed * delta;
 	else
 		position.x += move_speed * delta;

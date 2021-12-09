@@ -207,12 +207,11 @@
     <ClInclude Include="MyClass\GameSceneManager\SceneManager.h" />
     <ClInclude Include="MyClass\GroundManager\GroundManager.h" />
     <ClInclude Include="MyClass\Observer\Observer.h" />
-    <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\EffectBase\EffectBase.h" />
     <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.h" />
     <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerBase.h" />
     <ClInclude Include="MyClass\PlayerManager\PlayerManager.h" />
     <ClInclude Include="MyClass\RankJudgeManager\RankJudgeManager.h" />
-    <ClInclude Include="MyClass\Shader\MultiLighting.h" />
+    <ClInclude Include="MyClass\Shader\SpotLight.h" />
     <ClInclude Include="MyClass\StatusManager\StatusManager.h" />
     <ClInclude Include="MyClass\UIManager\UIManager.h" />
     <ClInclude Include="ResultScene.h" />
@@ -282,9 +281,6 @@
     <ClCompile Include="MyClass\Observer\Observer.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\EffectBase\EffectBase.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -297,9 +293,7 @@
     <ClCompile Include="MyClass\RankJudgeManager\RankJudgeManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MyClass\Shader\MultiLighting.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="MyClass\Shader\SpotLight.cpp" />
     <ClCompile Include="MyClass\StatusManager\StatusManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>

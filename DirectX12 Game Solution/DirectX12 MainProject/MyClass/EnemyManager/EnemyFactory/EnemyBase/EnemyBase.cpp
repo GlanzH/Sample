@@ -16,12 +16,13 @@ bool EnemyBase::EffectInit() {
 	return true;
 }
 
-bool EnemyBase::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
+bool EnemyBase::Initialize(std::string tag, bool time_stop_flag, int hp)
 {
 	enemy_tag   = tag;
-	enemy_speed = speed;
 	enemy_hp    = hp;
-	retreat_flg = false;
+
+	enemy_stop_flag = time_stop_flag;
+	retreat_flag    = false;
 	
 	return true;
 }
@@ -30,7 +31,7 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	position = initial_position;
 
 	D3DMATERIAL9 material;
-	material.Diffuse = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.75f);
+	material.Diffuse = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.0f);
 	material.Ambient = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -40,12 +41,10 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 		anim_model->SetPosition(position);
 		anim_model->SetRotation(0.0f, XMConvertToRadians(anim_init_rotate), 0.0f);
 
-		anim_model->SetScale(0.01f);
-
 		//” ‚ðì‚é€”õ
 		anim_box = anim_model->GetBoundingBox();
-		anim_box.Extents = SimpleMath::Vector3(anim_box.Extents);
-		//anim_box.Extents = SimpleMath::Vector3(anim_box.Extents) * anim_adjust_extents_col;
+		//anim_box.Extents = SimpleMath::Vector3(anim_box.Extents);
+		anim_box.Extents = SimpleMath::Vector3(anim_box.Extents) * anim_adjust_extents_col;
 
 		//ƒRƒŠƒWƒ‡ƒ“ƒ‚ƒfƒ‹‚Ìì¬
 		anim_collision = DX9::Model::CreateBox(
@@ -68,6 +67,8 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 		//” ‚ðì‚é€”õ
 		col.box = model->GetBoundingBox();
 
+		col.box.Extents = SimpleMath::Vector3(col.box.Extents);
+
 		//ƒRƒŠƒWƒ‡ƒ“ƒ‚ƒfƒ‹‚Ìì¬
 		collision = DX9::Model::CreateBox(
 			DXTK->Device9,
@@ -78,7 +79,7 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 
 		collision->SetMaterial(material);
 
-		col.box.Center = position;
+		//col.box.Center = position;
 	}
 
 	explode.LoadAssets(initial_position.x);
@@ -94,12 +95,9 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool
 		anim_model->SetPosition(position);
 		anim_collision->SetPosition(anim_model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 	}
-	else {
-		col.box.Center = model->GetPosition();
-		model->SetPosition(position);
-	}
 
-	if (retreat_flg && retreat_count < max_retreat) {
+
+	if (retreat_flag && retreat_count < max_retreat) {
 		if (player.x < position.x)
 			position.x += retreat_dist * deltaTime;
 		else
@@ -108,7 +106,7 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool
 		retreat_count++;
 	}
 	else {
-		retreat_flg = false;
+		retreat_flag = false;
 		retreat_count = 0;
 	}
 
@@ -148,10 +146,14 @@ void EnemyBase::EnemyAnimation() {
 }
 
 void EnemyBase::HitEffect() {
-	if (enemy_hp > 0) {
+	//if (enemy_hp > 0) {
+	if (enemy_tag != "C")
 		hit_effect_pos = position;
+	else
+		hit_effect_pos += SimpleMath::Vector3(0,21,50);
+
 		DX12Effect.PlayOneShot("hit_eff", hit_effect_pos);
-	}
+	//}
 }
 
 void EnemyBase::DeathEffect() {
@@ -179,6 +181,7 @@ bool EnemyBase::IsDamage() {
 }
 
 bool EnemyBase::LifeDeathDecision() {
+	//!“G‚ÌŽ€–S
 	if (enemy_tag == "S" || enemy_tag == "H") {
 		if (enemy_hp < 0 && dead_frame < max_dead) {
 			if (dead_frame == 0.0f)
@@ -190,26 +193,36 @@ bool EnemyBase::LifeDeathDecision() {
 			dead_frame += delta;
 		}
 		else if (enemy_hp < 0 && dead_frame > max_dead) {
+			TimeStopDecision();
 			return DEAD;
 		}
 	}
 	else {
-		if (enemy_hp < 0) 
+		if (enemy_hp < 0) {
+			TimeStopDecision();
 			return DEAD;
+		}
 	}
 
+	//!“G‚ÌŽ©“®íœ
 	 if (position.z <= 15.0f && auto_destroy_frame < max_auto_destroy) {
 		 auto_destroy_frame += delta;
 	 }
 	 else if (position.z <= 15.0f && auto_destroy_frame > max_auto_destroy) {
+		 TimeStopDecision();
 		return AUTO;
  	 }
 
 	return LIVE;
 }
 
+void EnemyBase::TimeStopDecision() {
+	if (enemy_stop_flag)
+		do_time_stop_flag = true;
+}
+
 void EnemyBase::Retreat(){
-	retreat_flg = true;
+	retreat_flag = true;
 }
 
 void EnemyBase::Render() {
@@ -222,7 +235,6 @@ void EnemyBase::Render() {
 	}
 	else {
 		model->Draw();
-		//collision->Draw();
+		collision->Draw();
 	}
 }
-

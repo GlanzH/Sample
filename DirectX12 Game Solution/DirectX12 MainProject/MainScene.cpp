@@ -39,6 +39,8 @@ void MainScene::Initialize()
 	enemy->Initialize(player);
 
 	point.Init();
+	point.SetAmbientColor(Vector4(0, 0, 255, 1.0f));
+	point.SetCone(40);
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -109,13 +111,18 @@ NextScene MainScene::Update(const float deltaTime)
 
 	// TODO: Add your game logic here.
 
-	DX12Effect.Update(deltaTime);
-	player->Update(deltaTime);
-	camera->Update(player->GetModel()->GetPosition());
-	audience->Update(player->GetAppielTime(),player->GetAppealCoolFlag(),player->GetSpecialAttackFlag(), deltaTime);
-	enemy->Update(player->GetModel()->GetPosition(),player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
-	observer->Update(player, enemy,audience);
+	if (!enemy->IsTimeStop()) {
+		DX12Effect.Update(deltaTime);
+		player->Update(deltaTime);
+		enemy->Update(player->GetModel()->GetPosition(),player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
+		audience->Update(player->GetAppielTime(), player->GetAppealCoolFlag(), player->GetSpecialAttackFlag(), deltaTime);
+		observer->Update(player, enemy, audience);
+	}
 
+	enemy->EndTimeStop();
+	camera->Update(player->GetModel()->GetPosition());
+
+	point.SetPosition(player->GetModel()->GetPosition() + Vector3(0,30,0));
 	return NextScene::Continue;
 }
 
@@ -131,8 +138,9 @@ void MainScene::Render()
 	DX12Effect.SetCamera((DX12::CAMERA)camera->GetCamera());
 	camera->Render();
 
-	point.SetLightPower(100.0f,0);
-	point.PointRender(camera->GetCamera(), ground->GetModel(), player->GetModel());
+//	point.SetLightPower(10.0f);
+	point.SetLightColor(SimpleMath::Vector4(255.0f , 144.0f, 0, 0));
+	point.PointRender(camera->GetCamera(), ground->GetModel());
 	
 	point.ShadeRender(player->GetModel(),SimpleMath::Vector4(0,0,1,0.3f));
 
@@ -145,6 +153,7 @@ void MainScene::Render()
 	//2D•`‰æ
 	ui->Render(StatusManager::Instance().ReturnAudience(),StatusManager::Instance().ReturnHeart());
 	player->_2DRender();
+	player->BrackImage();
 
 	DX9::SpriteBatch->End();
 	DXTK->Direct3D9->EndScene();

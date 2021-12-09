@@ -8,12 +8,13 @@ Core::Core()
 {
 }
 
-bool Core::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
+bool Core::Initialize(std::string tag, bool time_stop_flag, int hp)
 {
-	EnemyBase::Initialize(tag,speed, hp);
+	EnemyBase::Initialize(tag,time_stop_flag, hp);
 	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/shoot/shoot.efk",      "shoot");
 	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/charge/charge.efk",   "charge");
-	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/landing3/landing.efk","landing");
+	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/landing/landing.efk","landing");
+
 
 	obstacle_collision = DX9::Model::CreateSphere(DXTK->Device9, 4, 8, 2);
 
@@ -25,7 +26,6 @@ bool Core::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
 	launch_count_count = 0;
 	landing_count = 0;
 
-	
 	return true;
 }
 
@@ -40,20 +40,20 @@ int Core::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thor
 	if (!special_flag && !throw_flag) {
 		Move(player);
 	}
-	//else if(special_flag || throw_flag) {
-	//	StopEffect();
-	//}
+	else if(special_flag || throw_flag) {
+		StopEffect();
+	}
 
+	model->SetPosition(position);
+	collision->SetScale(2.5f);
+	col.box.Center = model->GetPosition() + SimpleMath::Vector3(0,19,0);
+	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0,19,0));
+
+	col.bullet.Center = obstacle_collision->GetPosition();
+	obstacle_collision->SetPosition(bull_pos);
 
 	if (enemy_hp < 0)
 		DX12Effect.Stop("charge");
-		return DEAD;
-
-
-
-	collision->SetPosition(model->GetPosition());
-	col.bullet.Center = obstacle_collision->GetPosition();
-	obstacle_collision->SetPosition(bull_pos);
 
 	return LIVE;
 }
@@ -75,7 +75,7 @@ void Core::Move(SimpleMath::Vector3 player){
 		}
 		else if (charge_effect_frame < max_charge) 
 		{
-			DX12Effect.SetPosition("charge", position);
+			DX12Effect.SetPosition("charge", position + SimpleMath::Vector3(0,21,0));
 			DX12Effect.PlayOneShot("charge");
 			charge_effect_frame += delta;
 		}
@@ -87,7 +87,7 @@ void Core::Move(SimpleMath::Vector3 player){
 			if (!shot_flag)
 			{
 				player_pos = player;
-				bull_pos = position;
+				bull_pos = position + SimpleMath::Vector3(0, 21, 0);
 				shot_flag = true;
 			}
 			else if (wait_shot_frame < max_wait_shot)
@@ -147,49 +147,39 @@ void Core::Move(SimpleMath::Vector3 player){
 
 void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 {
-
-	
-	laser_coordinate = bull_pos- player_pos;
-	 laser_coordinate.Normalize();
-	 
-	
-	/*auto distance_x = SimpleMath::Vector3::Distance(bull_pos, player_pos);
-	auto distance_y = SimpleMath::Vector3::Distance(bull_pos,SimpleMath::Vector3(0.0,-10.0f,50.0f)) /3;
+	auto distance_x = SimpleMath::Vector3::Distance(bull_pos, player_pos);
+	auto distance_y = SimpleMath::Vector3::Distance(bull_pos,SimpleMath::Vector3(20.0,0.0f,50.0f)) /3;
 	Vector3 a =SimpleMath::Vector3(distance_x, distance_y,50);
 	a.Normalize();
 	oblique_shooting = sqrt(distance_y * distance_y + distance_x * distance_x);
-	*/
+	
 	
 	//bull_pos.x = distance_x * delta;
-	//bull_pos.y -= distance_y  * delta+0.2;
+	bull_pos.y -= distance_y  * delta+0.28;
 
-	 if (bull_pos.x > init_bull_pos.x)
-		 laser_coordinate.x;
-	 //    bull_pos.x = -player_pos.x * SHOT_SPEED;
-	 //	//bull_pos.x -= distance_x * delta+1.0;
-	 else
-		 -laser_coordinate.x;
-	//	bull_pos.x = +player_pos.x * SHOT_SPEED;
-		//bull_pos.x += distance_x * delta+1.0;
+	if (bull_pos.x > init_bull_pos.x)
+		bull_pos.x -= distance_x * delta+1.0;
+	else
+		bull_pos.x += distance_x * delta+1.0;
 	//if (bull_pos.y > init_bull_pos.y)
 	//{
-	//	/*bull_pos.y = oblique_shooting;
-	//	bull_pos.y -= move_bull_y * delta;*/
-	//	
+	//	//bull_pos.y = oblique_shooting;
+	//	bull_pos.y -= move_bull_y * delta;
+
 	//	DX12Effect.SetPosition("shoot", bull_pos);	
 	//	DX12Effect.Play("shoot");
 	//}
 	if (bull_pos.y > init_bull_pos.y)
 	{
-		laser_coordinate.y;
-		DX12Effect.SetPosition("shoot", laser_coordinate );
+
+		DX12Effect.SetPosition("shoot", bull_pos);
 		DX12Effect.Play("shoot");
 	}
 	else
 	{
 		if (landing_effect_frame < max_landing)
 		{
-			DX12Effect.SetPosition("landing", laser_coordinate/*bull_pos*/ );
+			DX12Effect.SetPosition("landing", bull_pos);
 			DX12Effect.PlayOneShot("landing");
 			
 			landing_effect_frame += delta;

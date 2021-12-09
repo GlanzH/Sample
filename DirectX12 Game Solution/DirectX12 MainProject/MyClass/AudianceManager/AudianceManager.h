@@ -28,7 +28,10 @@ private:
 
 	DX9::MODEL		  audience;
 	DX9::SKINNEDMODEL throw_things_lv1;
-	DX9::SKINNEDMODEL throw_things_lv2;
+
+	DX9::SKINNEDMODEL throw_things_lv2_left;
+	DX9::SKINNEDMODEL throw_things_lv2_center;
+	DX9::SKINNEDMODEL throw_things_lv2_right;
 
 	DX9::MODEL  collision;
 

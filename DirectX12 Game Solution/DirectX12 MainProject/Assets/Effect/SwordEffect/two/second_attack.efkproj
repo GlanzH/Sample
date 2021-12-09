@@ -4,6 +4,13 @@
     <Name>Root</Name>
     <Children>
       <Node>
+        <CommonValues>
+          <GenerationTimeOffset>
+            <Center>7</Center>
+            <Max>7</Max>
+            <Min>7</Min>
+          </GenerationTimeOffset>
+        </CommonValues>
         <RotationValues>
           <Type>1</Type>
           <PVA>
@@ -158,11 +165,9 @@
                     <ColorAll_Easing>
                       <Start>
                         <R>
-                          <Center>58</Center>
                           <DrawnAs>0</DrawnAs>
                         </R>
                         <G>
-                          <Center>23</Center>
                           <DrawnAs>0</DrawnAs>
                         </G>
                         <B>
@@ -174,18 +179,19 @@
                       </Start>
                       <End>
                         <R>
-                          <Center>0</Center>
+                          <Center>110</Center>
                           <Max>111</Max>
                           <Min>109</Min>
                           <DrawnAs>0</DrawnAs>
                         </R>
                         <G>
-                          <Center>243</Center>
-                          <Max>127</Max>
+                          <Center>129</Center>
+                          <Max>129</Max>
                           <Min>129</Min>
                           <DrawnAs>0</DrawnAs>
                         </G>
                         <B>
+                          <Center>231</Center>
                           <Max>254</Max>
                           <Min>209</Min>
                           <DrawnAs>0</DrawnAs>
@@ -216,6 +222,13 @@
         </Children>
       </Node>
       <Node>
+        <CommonValues>
+          <GenerationTimeOffset>
+            <Center>7</Center>
+            <Max>7</Max>
+            <Min>7</Min>
+          </GenerationTimeOffset>
+        </CommonValues>
         <RotationValues>
           <Type>1</Type>
           <PVA>
@@ -431,6 +444,6 @@
   <ToolVersion>1.42f</ToolVersion>
   <Version>3</Version>
   <StartFrame>0</StartFrame>
-  <EndFrame>20</EndFrame>
+  <EndFrame>27</EndFrame>
   <IsLoop>True</IsLoop>
 </EffekseerProject>

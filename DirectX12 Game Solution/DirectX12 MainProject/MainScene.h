@@ -14,7 +14,7 @@
 #include "MyClass/CameraManager/CameraManager.h"
 #include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/UIManager/UIManager.h"
-#include "MyClass/Shader/MultiLighting.h"
+#include "MyClass/Shader//SpotLight.h"
 
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
@@ -63,5 +63,5 @@ private:
 	UIManager*       ui;
 
 
-	MultiPointLighting point;
+	SpotLight point;
 };

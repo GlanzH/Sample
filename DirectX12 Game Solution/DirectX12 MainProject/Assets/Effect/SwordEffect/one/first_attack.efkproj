@@ -4,6 +4,13 @@
     <Name>Root</Name>
     <Children>
       <Node>
+        <CommonValues>
+          <GenerationTimeOffset>
+            <Center>20</Center>
+            <Max>20</Max>
+            <Min>20</Min>
+          </GenerationTimeOffset>
+        </CommonValues>
         <RotationValues>
           <Type>1</Type>
           <PVA>
@@ -225,6 +232,13 @@
         </Children>
       </Node>
       <Node>
+        <CommonValues>
+          <GenerationTimeOffset>
+            <Center>20</Center>
+            <Max>20</Max>
+            <Min>20</Min>
+          </GenerationTimeOffset>
+        </CommonValues>
         <RotationValues>
           <Type>1</Type>
           <PVA>
@@ -450,6 +464,6 @@
   <ToolVersion>1.42f</ToolVersion>
   <Version>3</Version>
   <StartFrame>0</StartFrame>
-  <EndFrame>20</EndFrame>
+  <EndFrame>40</EndFrame>
   <IsLoop>True</IsLoop>
 </EffekseerProject>
