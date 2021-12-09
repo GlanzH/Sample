@@ -15,7 +15,7 @@ ResultScene::ResultScene()
 // Initialize a variable and audio resources.
 void ResultScene::Initialize()
 {
-    //rankjudge.Initialize();
+    rankjudge.Initialize();
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.

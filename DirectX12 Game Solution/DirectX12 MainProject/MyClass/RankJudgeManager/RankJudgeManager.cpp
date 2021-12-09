@@ -6,7 +6,7 @@ void RankJudgeManager::Initialize() {
 	rank_alpha = 0.0f;
 
 	//フォント
-	font_pos = SimpleMath::Vector2(/*500.0f*/680.0f, 130.0f);
+	font_pos = SimpleMath::Vector2(680.0f, 130.0f);
 
 	//人数
 	people_pos = SimpleMath::Vector3(0.0f, 0.0f, -10.0f);
@@ -147,6 +147,13 @@ void RankJudgeManager::JudgeRnak() {
 cppcoro::generator<int> RankJudgeManager::ReleaseRank()
 {
 	co_yield 0;
+
+	//間
+	while (stop_time < 1.0f) {
+		stop_time += time_delta;
+		co_yield 1;
+	}
+	stop_time = 0.0f;
 
 	//観客人数の表示
 	while (people < now_score * 3) {

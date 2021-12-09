@@ -11,7 +11,7 @@ void SceneManager::LoadAsset() {
 	curtain = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/curtain_bright.png");
 }
 
-NextScene SceneManager::Update(const float deltaTime) {
+void SceneManager::Update(const float deltaTime) {
 
 	time_delta = deltaTime;
 
@@ -30,11 +30,7 @@ NextScene SceneManager::Update(const float deltaTime) {
 		co_ending.begin();
 	}
 
-	if (scene_change_flag == true) {
-		scene_change_flag = false;
-		return NextScene::ResultScene;
-	}
-	return NextScene::Continue;
+	return;
 }
 
 void SceneManager::Render() {
