@@ -28,9 +28,9 @@ private:
 	float delta;
 	
 	SimpleMath::Vector3 shot_pos;
-
-	float oblique_shooting;
-	float spead;
+	float SHOT_SPEED;
+	//float oblique_shooting;
+	//float spead;
 	const float move_core = 2.0f;
 	const float collision_scale = 0.5f;
 	const float max_move = 50.0f;
@@ -38,7 +38,7 @@ private:
 	int attack_count =0;
 	const int MAX_COUNT=3;
 	int landing_count;
-
+	Vector3 laser_coordinate;
 	//!ATTACK‘Ò‹@ŽžŠÔ
 	float wait_shot_frame = 0;
 	const float max_wait_shot = 0.75f;
@@ -77,7 +77,7 @@ private:
 		BACK,
 		STOP,
 		INIT,
-	};
-
+	};	
 	int  action = MOVE;
+
 };
