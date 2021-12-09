@@ -148,11 +148,7 @@ bool PlayerBase::Initialize()
 
 	cannot_other = CANNOT_OTHER_ATTACK::NOMAL_STATE;
 
-
 	////プレイヤーのSE ファイル読み込み
-	//first_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
-
-
 	////攻撃-SE
 	//first_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
 	//second_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
@@ -195,8 +191,6 @@ void PlayerBase::LoadAssets()
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	collision->SetMaterial(material);
 
-	//collision->SetScale(0.05f);
-
 
 	col.sword_box = model->GetBoundingBox();
 
@@ -210,7 +204,6 @@ void PlayerBase::LoadAssets()
 	);
 
 
-	//sword_box.Center = model->GetPosition();
 
 	parry_box = model->GetBoundingBox();
 
@@ -226,12 +219,6 @@ void PlayerBase::LoadAssets()
 	font = DX9::SpriteFont::CreateDefaultFont(DXTK->Device9);
 
 	deathbrow_sprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"DeathBrowBG\\deathbrow_bg.png");
-
-	
-	
-
-
-
 
 	//エフェクト　ファイル読み込み
 	DX12Effect.Initialize();

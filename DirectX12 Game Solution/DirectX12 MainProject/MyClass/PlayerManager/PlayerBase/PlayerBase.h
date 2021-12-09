@@ -114,7 +114,7 @@ private:
 	//プレイヤーの移動制限(幅)
 	const float model_collision_detection_X = 67.0f;
 	const float model_collision_detection_Y_MAX = 1000.0f;
-	const float model_collision_detection_Y_MIN = 0.4f;
+	const float model_collision_detection_Y_MIN = 0.1f;
 	const float model_collision_detection_Z = 100.0f;
 
 	//当たり判定モデルの大きさ
@@ -348,21 +348,23 @@ private:
 
 
 
-	////SE 変数
-	////攻撃-SE
-	//XAudio::SOUNDEFFECT  first_attack_se;
-	//XAudio::SOUNDEFFECT second_attack_se;
-	//XAudio::SOUNDEFFECT  third_attack_se;
-	////ジャンプ
-	//XAudio::SOUNDEFFECT jump_se;
-	////着地
-	//XAudio::SOUNDEFFECT landing_se;
+	//SE 変数
+	//攻撃-SE
+	XAudio::SOUNDEFFECT  first_attack_se;
+	XAudio::SOUNDEFFECT second_attack_se;
+	XAudio::SOUNDEFFECT  third_attack_se;
+	//ジャンプ
+	XAudio::SOUNDEFFECT jump_se;
+	//着地
+	XAudio::SOUNDEFFECT landing_se;
 
-	////ダメージ
-	//XAudio::SOUNDEFFECT damege_se;
+	//ダメージ
+	XAudio::SOUNDEFFECT damege_se;
 
-	////アピール
-	//XAudio::SOUNDEFFECT appeal_se;
+	//アピール
+	XAudio::SOUNDEFFECT appeal_se;
+
+
 
 	
 };
