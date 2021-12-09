@@ -14,7 +14,7 @@ public:
 
 	bool Initialize();
 	void LoadAsset();
-	int  Update(PlayerBase* base, const float deltaTime);
+	int  Update(PlayerBase* base,int camera_pos_num, const float deltaTime);
 	void Render();
 
 	DX9::CAMERA GetCamera() { return camera; }
@@ -24,7 +24,12 @@ private:
 
 	SimpleMath::Vector3 position;
 	
-	float camera_z = 20.0f;
+	enum CameraMode {
+		IN_ZOOM,
+		OUT_ZOOM
+	};
+
+	float camera_z = -10.0f;
 
 	const float position_y = 30.0f;
 	const float fixed_pos  = 10.0f;

@@ -14,6 +14,7 @@
 #include "MyClass/CameraManager/CameraManager.h"
 #include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/GameSceneManager/SceneManager.h"
+#include "MyClass/DialogueManager/DialogueManager.h"
 #include "MyClass/UIManager/UIManager.h"
 #include "MyClass/Shader//SpotLight.h"
 
@@ -62,10 +63,18 @@ private:
 	PlayerBase*      player;
 	EnemyManager*    enemy;
 	AudienceManager* audience;
+	DialogueManager* dialogue;
 	Observer*        observer;
 	UIManager*       ui;
 
 	SpotLight point;
+
+	enum LightMode {
+		IN_ZOOM,
+		OUT_ZOOM
+	};
+
+	int light_mode = IN_ZOOM;
 
 	float range = 0.8f;
 

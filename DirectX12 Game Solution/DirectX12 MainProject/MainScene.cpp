@@ -14,6 +14,7 @@ MainScene::MainScene(): dx9GpuDescriptor{}
 	player   = new PlayerBase;
 	enemy    = new EnemyManager;
 	audience = new AudienceManager;
+	dialogue = new DialogueManager;
 	observer = new Observer;
 	ui       = new UIManager;
 }
@@ -24,6 +25,7 @@ MainScene::~MainScene() {
 	delete player;
 	delete enemy;
 	delete audience;
+	delete dialogue;
 	delete observer;
 	delete ui;
 
@@ -42,9 +44,10 @@ void MainScene::Initialize()
 
 	point.Init(1);
 	point.SetAmbientColor(Vector4(0, 0, 255, 1.0f),0);
-	point.SetCone(0.8f,0);
 	point.SetAtt(Vector3(0.65f, 0.001f, 0), 0);
 	point.SetLightColor(SimpleMath::Vector4(255.0f, 189, 76, 1.0f), 0);
+
+	enemy->StartTimeStop();
 	end_frame = 0.0f;
 }
 
@@ -86,6 +89,7 @@ void MainScene::LoadAssets()
 	ground->LoadAsset();
 	player->LoadAssets();
 	audience->LoadAssets();
+	dialogue->LoadAssets();
 	ui->LoadAsset();
 	SceneManager::Instance().LoadAsset();
 }
@@ -131,22 +135,29 @@ NextScene MainScene::Update(const float deltaTime)
 			player->Update(deltaTime);
 			enemy->Update(player->GetModel()->GetPosition(), player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
 			audience->Update(player->GetAppielTime(), player->GetAppealCoolFlag(), player->GetSpecialAttackFlag(), deltaTime);
+			camera->Update(player, OUT_ZOOM, deltaTime);
 			observer->Update(player, enemy, audience);
+			light_mode = OUT_ZOOM;
 		}
-	}
-	else if (end_frame < max_end) {
-		    end_frame += deltaTime;
+		else {
+			dialogue->Update(enemy->IsTimeStop());
+			camera->Update(player, IN_ZOOM, deltaTime);
+			light_mode = IN_ZOOM;
+		}
+
 	}
 	else {
-		//if(end_frame > max_end)
-		SceneManager::Instance().Update(deltaTime);
+		end_frame += deltaTime;
 
-		if (SceneManager::Instance().ReturnSceneFlag())
-			return NextScene::ResultScene;
+		if(end_frame > max_end) {
+			SceneManager::Instance().Update(deltaTime);
+
+			if (SceneManager::Instance().ReturnSceneFlag())
+				return NextScene::ResultScene;
+		}
 	}
 
 	enemy->EndTimeStop();
-	camera->Update(player,deltaTime);
 
 	auto pos = player->GetModel()->GetPosition();
 
@@ -156,7 +167,7 @@ NextScene MainScene::Update(const float deltaTime)
 }
 
 void MainScene::ChangeLightRenge(const float deltaTime) {
-		if (DXTK->KeyState->W)
+		if (DXTK->KeyState->W || light_mode == IN_ZOOM)
 			range += 6.f * deltaTime;
 		else
 			range -= 30.f * deltaTime;
@@ -195,6 +206,9 @@ void MainScene::Render()
 	player->_2DRender();
 	player->BrackImage();
 	SceneManager::Instance().Render();
+
+	if (enemy->IsTimeStop())
+		dialogue->Render(enemy->GetTimeStopCount());
 
 	DX9::SpriteBatch->End();
 	DXTK->Direct3D9->EndScene();

@@ -9,7 +9,6 @@ bool CameraManager::Initialize() {
 		XMConvertToRadians(rotate_degrees), aspect, min_screen_range, max_screen_range
 	);
 	
-
 	return true;
 }
 
@@ -17,8 +16,8 @@ void CameraManager::LoadAsset() {
 
 }
 
-int CameraManager::Update(PlayerBase* base,const float deltaTime) {
-	if (base->GetAppielTime() > 0)
+int CameraManager::Update(PlayerBase* base,int camera_pos_num,const float deltaTime) {
+	if (base->GetAppielTime() > 0 || camera_pos_num == IN_ZOOM)
 		camera_z -= 15.f * deltaTime;
 	else if (base->GetAppealCoolFlag())
 		camera_z += 40.f * deltaTime;

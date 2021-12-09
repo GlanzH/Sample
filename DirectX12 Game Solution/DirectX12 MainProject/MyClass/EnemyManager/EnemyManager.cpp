@@ -44,7 +44,6 @@ int EnemyManager::Update(SimpleMath::Vector3 player,bool special_attack_flag, bo
 		enemies->Update(player, special_attack_flag, thorow_things_flag,deltaTime);
 	}
 
-	StatusManager::Instance().HeartCount();
 	Iterator();
 	delta = deltaTime;
 
@@ -69,10 +68,8 @@ void EnemyManager::Iterator() {
 			//“G‚ªŽ€–S‚µ‚½‚Æ‚«‚Ìˆ—
 			dead_enemy_count++;
 
-			if ((*itr)->GetTimeStopFlag()) {
-				time_stop_count++;
-				enemy_stop_flag = true;
-			}
+			if ((*itr)->GetTimeStopFlag())
+				TimeStop();
 
 			if ((*itr)->LifeDeathDecision() == DEAD) {
 
@@ -113,9 +110,23 @@ void EnemyManager::Render()
 	}
 }
 
+void EnemyManager::StartTimeStop() {
+	time_stop_count++;
+	enemy_stop_flag = true;
+}
+
 void EnemyManager::EndTimeStop() {
-	if (DXTK->KeyEvent->pressed.Z)
+	if (DXTK->KeyEvent->pressed.B)
+		push_count++;
+
+	if (time_stop_count <= 2 && push_count >= 2) {
+		push_count = 0;
 		enemy_stop_flag = false;
+	}
+	else if (time_stop_count == 3 && push_count >= 1) {
+		push_count = 0;
+		enemy_stop_flag = false;
+	}
 }
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
@@ -185,4 +196,3 @@ void EnemyManager::EndEnemy() {
 		}
 	}
 }
-
