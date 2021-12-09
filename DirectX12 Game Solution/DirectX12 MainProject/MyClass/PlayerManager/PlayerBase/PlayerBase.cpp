@@ -148,11 +148,7 @@ bool PlayerBase::Initialize()
 
 	cannot_other = CANNOT_OTHER_ATTACK::NOMAL_STATE;
 
-
 	////プレイヤーのSE ファイル読み込み
-	//first_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
-
-
 	////攻撃-SE
 	//first_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
 	//second_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
@@ -195,8 +191,6 @@ void PlayerBase::LoadAssets()
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	collision->SetMaterial(material);
 
-	//collision->SetScale(0.05f);
-
 
 	col.sword_box = model->GetBoundingBox();
 
@@ -210,7 +204,6 @@ void PlayerBase::LoadAssets()
 	);
 
 
-	//sword_box.Center = model->GetPosition();
 
 	parry_box = model->GetBoundingBox();
 
@@ -226,12 +219,6 @@ void PlayerBase::LoadAssets()
 	font = DX9::SpriteFont::CreateDefaultFont(DXTK->Device9);
 
 	deathbrow_sprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"DeathBrowBG\\deathbrow_bg.png");
-
-	
-	
-
-
-
 
 	//エフェクト　ファイル読み込み
 	DX12Effect.Initialize();
@@ -931,9 +918,11 @@ void PlayerBase::Attack_Third(const float deltaTime) {
 
 void PlayerBase::Player_Special_Move(const float deltaTime) {
 	if (!jump_flag_) {
-		if (StatusManager::Instance().ReturnHeart() >= 20) {
-			if (DXTK->KeyEvent->pressed.L || DXTK->GamePadEvent->rightShoulder == GamePad::ButtonStateTracker::PRESSED) {
-				deathbrow_flag = true;
+		if (!appeil_flag ) {
+			if (StatusManager::Instance().ReturnHeart() >= 20) {
+				if (DXTK->KeyEvent->pressed.L || DXTK->GamePadEvent->rightShoulder == GamePad::ButtonStateTracker::PRESSED) {
+					deathbrow_flag = true;
+				}
 			}
 		}
 	}
@@ -1007,18 +996,25 @@ void PlayerBase::Appeal(const float deltaTime)
 {
 	//アピール
 	if (!jump_flag_) {
-		if (!appeil_cool_flag) {
-			if (DXTK->KeyState->W || DXTK->GamePadState->triggers.left) {
-				appeil_flag = true;
-			}
-			else
-			{
-				appeil_flag = false;
+		if (!deathbrow_flag) {
+			if (!appeil_cool_flag) {
+				if (DXTK->KeyState->W || DXTK->GamePadState->triggers.left) {
+					appeil_flag = true;
+				}
+				else
+				{
+					appeil_flag = false;
 
-				model->SetTrackPosition(APPEIL, 0.0);
+					model->SetTrackPosition(APPEIL, 0.0);
 
-				if (!appeil_flag) {
-					appeil_cool_flag = true;
+					if (!appeil_flag) {
+						appeil_cool_flag = true;
+					}
+
+					if (direction_state_mode == Direction_State::LEFT) {
+						model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
+					}
+
 				}
 			}
 		}
@@ -1041,6 +1037,11 @@ void PlayerBase::Appeal(const float deltaTime)
 		appeil_flag = false;
 		model->SetTrackPosition(APPEIL, 0.0);
 		appeil_cool_flag = true;
+
+
+		if (direction_state_mode == Direction_State::LEFT) {
+			model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
+		}
 	}
 
 	if (appeil_cool_flag) {
