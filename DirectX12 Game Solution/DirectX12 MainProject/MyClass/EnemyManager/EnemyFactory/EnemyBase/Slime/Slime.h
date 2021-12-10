@@ -31,6 +31,8 @@ private:
 	float delta;
 	SimpleMath::Vector3 player_pos;
 
+	D3DMATERIAL9 material;
+
 	 bool jump_flag = true;
 	float jump_time = 0.0f;
 	float jump_dist;

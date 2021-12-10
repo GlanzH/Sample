@@ -14,6 +14,7 @@ MainScene::MainScene(): dx9GpuDescriptor{}
 	player   = new PlayerBase;
 	enemy    = new EnemyManager;
 	audience = new AudienceManager;
+	dialogue = new DialogueManager;
 	observer = new Observer;
 	ui       = new UIManager;
 }
@@ -24,6 +25,7 @@ MainScene::~MainScene() {
 	delete player;
 	delete enemy;
 	delete audience;
+	delete dialogue;
 	delete observer;
 	delete ui;
 
@@ -37,10 +39,16 @@ void MainScene::Initialize()
 	player->Initialize();
 	camera->Initialize();
 	enemy->Initialize(player);
+	SceneManager::Instance().Initialize();
+	StatusManager::Instance().Initialize();
 
-	point.Init();
-	point.SetAmbientColor(Vector4(0, 0, 255, 1.0f));
-	point.SetCone(40);
+	point.Init(1);
+	point.SetAmbientColor(Vector4(0, 0, 255, 1.0f),0);
+	point.SetAtt(Vector3(0.65f, 0.001f, 0), 0);
+	point.SetLightColor(SimpleMath::Vector4(255.0f, 189, 76, 1.0f), 0);
+
+	enemy->StartTimeStop();
+	end_frame = 0.0f;
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -65,6 +73,9 @@ void MainScene::LoadAssets()
 	auto uploadResourcesFinished = resourceUploadBatch.End(DXTK->CommandQueue);
 	uploadResourcesFinished.wait();
 
+	DXTK->Direct3D9->SetRenderState(NormalizeNormals_Enable);
+	DXTK->Direct3D9->SetRenderState(Specular_Enable);
+
 	light.Type = D3DLIGHT_DIRECTIONAL;
 	light.Direction = DX9::VectorSet(0.0f, -1.0f, 1.0f);
 	light.Diffuse = DX9::Colors::Value(1.0f, 1.0f, 1.0f, 1.0f);
@@ -78,7 +89,9 @@ void MainScene::LoadAssets()
 	ground->LoadAsset();
 	player->LoadAssets();
 	audience->LoadAssets();
+	dialogue->LoadAssets();
 	ui->LoadAsset();
+	SceneManager::Instance().LoadAsset();
 }
 
 // Releasing resources required for termination.
@@ -111,19 +124,57 @@ NextScene MainScene::Update(const float deltaTime)
 
 	// TODO: Add your game logic here.
 
-	if (!enemy->IsTimeStop()) {
-		DX12Effect.Update(deltaTime);
-		player->Update(deltaTime);
-		enemy->Update(player->GetModel()->GetPosition(),player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
-		audience->Update(player->GetAppielTime(), player->GetAppealCoolFlag(), player->GetSpecialAttackFlag(), deltaTime);
-		observer->Update(player, enemy, audience);
+	//!I—¹Žžˆ—
+	auto end_flag = enemy->GetDeathEnemyCount() == enemy->GetEnemyNum() || StatusManager::Instance().ReturnAudience() <= 0;
+
+	ChangeLightRenge(deltaTime);
+
+	if (!end_flag) {
+		if (!enemy->IsTimeStop()) {
+			DX12Effect.Update(deltaTime);
+			player->Update(deltaTime);
+			enemy->Update(player->GetModel()->GetPosition(), player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
+			audience->Update(player->GetAppielTime(), player->GetAppealCoolFlag(), player->GetSpecialAttackFlag(), deltaTime);
+			camera->Update(player, OUT_ZOOM, deltaTime);
+			observer->Update(player, enemy, audience);
+			light_mode = OUT_ZOOM;
+		}
+		else {
+			dialogue->Update(enemy->IsTimeStop());
+			camera->Update(player, IN_ZOOM, deltaTime);
+			light_mode = IN_ZOOM;
+		}
+
+	}
+	else {
+		end_frame += deltaTime;
+
+		if(end_frame > max_end) {
+			SceneManager::Instance().Update(deltaTime);
+
+			if (SceneManager::Instance().ReturnSceneFlag())
+				return NextScene::ResultScene;
+		}
 	}
 
 	enemy->EndTimeStop();
-	camera->Update(player->GetModel()->GetPosition());
 
-	point.SetPosition(player->GetModel()->GetPosition() + Vector3(0,30,0));
+	auto pos = player->GetModel()->GetPosition();
+
+	point.SetPosition(Vector3(pos.x, 30, pos.z),0);
+
 	return NextScene::Continue;
+}
+
+void MainScene::ChangeLightRenge(const float deltaTime) {
+		if (DXTK->KeyState->W || light_mode == IN_ZOOM)
+			range += 6.f * deltaTime;
+		else
+			range -= 30.f * deltaTime;
+
+		range = std::clamp(range,0.8f,50.0f);
+
+		point.SetCone(range, 0);
 }
 
 // Draws the scene.
@@ -138,8 +189,8 @@ void MainScene::Render()
 	DX12Effect.SetCamera((DX12::CAMERA)camera->GetCamera());
 	camera->Render();
 
-//	point.SetLightPower(10.0f);
-	point.SetLightColor(SimpleMath::Vector4(255.0f , 144.0f, 0, 0));
+	
+	point.SetPower(1.0f,0);
 	point.PointRender(camera->GetCamera(), ground->GetModel());
 	
 	point.ShadeRender(player->GetModel(),SimpleMath::Vector4(0,0,1,0.3f));
@@ -154,6 +205,10 @@ void MainScene::Render()
 	ui->Render(StatusManager::Instance().ReturnAudience(),StatusManager::Instance().ReturnHeart());
 	player->_2DRender();
 	player->BrackImage();
+	SceneManager::Instance().Render();
+
+	if (enemy->IsTimeStop())
+		dialogue->Render(enemy->GetTimeStopCount());
 
 	DX9::SpriteBatch->End();
 	DXTK->Direct3D9->EndScene();

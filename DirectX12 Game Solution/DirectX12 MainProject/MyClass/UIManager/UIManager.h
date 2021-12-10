@@ -14,8 +14,7 @@ public:
 	void LoadAsset();
 	int Update(const float deltaTime);
 	int GetTensionCount(int count) { return 0; }
-	void Render(float distance ,float heart);
-	void RankRnder(int rank);
+	void Render(float audience ,float heart);
 
 private:
 	DX9::SPRITE audience_empty;
@@ -24,22 +23,16 @@ private:
 	DX9::SPRITE heart_empty;
 	DX9::SPRITE heart_max;
 
-	DX9::SPRITE rank_s;
-	DX9::SPRITE rank_a;
-	DX9::SPRITE rank_b;
-	DX9::SPRITE rank_c;
-	DX9::SPRITE rank_d;
-	DX9::SPRITE rank_e;
 	
+	//äœãq
+	const float AUDIENCE_UI_POS_X = 79.0f;
+	const float AUDIENCE_UI_POS_y = 58.0f;
+	const int AUDIENCE_MAX_HIGH = 64;
 
-	const float AUDIENCE_UI_POS_X = 40.0f;
-	const float AUDIENCE_UI_POS_y = 600.0f;
-	const int AUDIENCE_MAX_HIGH = 61;
-
-
-	const float HEART_UI_POS_X = 104.0f;
-	const float HEART_UI_POS_Y = 91.0f;
-	const int HEART_MAX_WIDTH = 104;
-	const int HEART_MAX_HIGH  = 91;
+	//ÉnÅ[Ég
+	const float HEART_UI_POS_X = 84.0f;
+	const float HEART_UI_POS_Y = 137.0f;
+	const int HEART_MAX_WIDTH = 89;
+	const int HEART_MAX_HIGH  = 75;
 
 };

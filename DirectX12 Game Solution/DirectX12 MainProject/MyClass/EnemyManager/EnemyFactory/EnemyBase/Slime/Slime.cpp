@@ -11,7 +11,6 @@ int Slime::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool tho
 	if (!special_attack_flag && !thorow_things_flag)
 	Action();
 
-   
 	return 0;
 }
 

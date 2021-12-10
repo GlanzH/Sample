@@ -1,14 +1,15 @@
 float4x4 g_WVP;
 float4x4 g_World;
 
-float3 g_LightPos;
-float  g_LightRange;
-float3 g_LightDir;
-float3 g_LightAtt;
-float  g_Cone;
-float4 g_AColor;
-float4 g_Color;
-float  g_Pow;
+float3 g_LightPos[1];
+float3 g_LightDir[1];
+float3 g_LightAtt[1];
+float  g_Cone[1];
+float4 g_AColor[1];
+float4 g_Color[1];
+float  g_LightRange[1];
+float  g_Pow[1];
+int    g_Count;
 
 sampler tex : register(s0);
 
@@ -40,26 +41,25 @@ VS_OUT VS(VS_IN input)
 
     return output;
 }
-
-float4 PS(VS_OUT input) : COLOR0
+float4 OneLight(VS_OUT input, int index)
 {
-    input.normal = normalize(input.normal);
+    //return float4(1.0f, 1.0f, 1.0f, 1.0f);
 
-    float4 diffuse = tex2D(tex,input.uv);
+    float4 diffuse = tex2D(tex, input.uv);
 
     float3 finalColor = float3(0.0f, 0.0f, 0.0f);
 
     //Create the vector between light position and pixels position
-    float3 lightToPixelVec = g_LightPos - input.posw;
+    float3 lightToPixelVec = g_LightPos[index] - input.posw;
 
     //Find the distance between the light pos and pixel pos
     float d = length(lightToPixelVec);
 
     //Add the ambient light
-    float3 finalAmbient = diffuse * g_AColor;
+    float3 finalAmbient = diffuse * g_AColor[index];
 
     //If pixel is too far, return pixel color with ambient light
-    if (d > g_LightRange)
+    if (d > g_LightRange[index])
         return float4(finalAmbient, diffuse.a);
 
     //Turn lightToPixelVec into a unit length vector describing
@@ -71,23 +71,35 @@ float4 PS(VS_OUT input) : COLOR0
     float howMuchLight = dot(lightToPixelVec, input.normal);
 
     //If light is striking the front side of the pixel
-//    if (howMuchLight > 0.0f)
-    {
-        //Add light to the finalColor of the pixel
-        finalColor += diffuse * g_Color;
+    //Add light to the finalColor of the pixel
+    finalColor += diffuse * g_Color[index];
 
-        //Calculate Light's Distance Falloff factor
-        finalColor /= (g_LightAtt.x + (g_LightAtt.y * d)) + (g_LightAtt.z * (d * d));
-
-        //Calculate falloff from center to edge of pointlight cone
-        finalColor *= pow(max(dot(-lightToPixelVec, g_LightDir), 0.0f), g_Cone);
-    }
+    //Calculate Light's Distance Falloff factor
+    finalColor /= (g_LightAtt[index].x + (g_LightAtt[index].y * d)) + (g_LightAtt[index].z * (d * d));
+    //Calculate falloff from center to edge of pointlight cone
+    finalColor *= pow(max(dot(-lightToPixelVec, g_LightDir[index]), 0.0f), g_Cone[index]);
 
     //make sure the values are between 1 and 0, and add the ambient
     finalColor = saturate(finalColor + finalAmbient);
 
     //Return Final Color
-    return float4(finalColor * g_Pow, diffuse.a);
+    return float4(finalColor * g_Pow[index], diffuse.a);
+}
+
+
+float4 PS(VS_OUT input) : COLOR0
+{
+    float4 color = float4(0,0,0,0);
+
+    input.normal = normalize(input.normal);
+
+    for (int i = 0; i < g_Count; i++)
+    {
+        color += OneLight(input, i);
+    }
+    color = saturate(color * 1.0f);
+
+    return color;
 }
 
 //-----------------------------------------------------------------------------

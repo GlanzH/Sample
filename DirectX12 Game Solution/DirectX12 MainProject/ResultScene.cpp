@@ -15,7 +15,7 @@ ResultScene::ResultScene()
 // Initialize a variable and audio resources.
 void ResultScene::Initialize()
 {
-
+    rankjudge.Initialize();
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -41,9 +41,8 @@ void ResultScene::LoadAssets()
     uploadResourcesFinished.wait();
 
     // グラフィックリソースの初期化処理
-    result = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Result.png");
-    ui.LoadAsset();
-
+    scene.LoadAsset();
+    rankjudge.LoadAseet();
 }
 
 // Releasing resources required for termination.
@@ -76,12 +75,14 @@ NextScene ResultScene::Update(const float deltaTime)
 
 	// TODO: Add your game logic here.
 
-    if (DXTK->KeyEvent->pressed.Enter ||
-        DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
-        return NextScene::TitleScene;
+    if (rankjudge.SceneChange()) {
+        if (DXTK->KeyEvent->pressed.Enter ||
+            DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
+            return NextScene::TitleScene;
+        }
     }
 
-    rankjudge.Update();
+    rankjudge.Update(deltaTime);
 
 	return NextScene::Continue;
 }
@@ -95,8 +96,8 @@ void ResultScene::Render()
     DXTK->Direct3D9->BeginScene();
     DX9::SpriteBatch->Begin();
 
-    DX9::SpriteBatch->DrawSimple(result.Get(), SimpleMath::Vector3(0.0f, 0.0f, 0.0f));
-    ui.RankRnder(rankjudge.ReturnRank());
+    scene.Render();
+    rankjudge.Render();
 
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();

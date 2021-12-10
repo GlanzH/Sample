@@ -1,16 +1,16 @@
 #include "MyClass/GameSceneManager/SceneManager.h"
 
 void SceneManager::Initialize() {
-	curtain_pos = SimpleMath::Vector3(0.0f, -720.0f, 0.0f);
-	ending_coro_flag = false;
+	curtain_pos = SimpleMath::Vector3(0.0f, CURTAIN_START_POS, 0.0f);
+	ending_coro_flag  = false;
 	scene_change_flag = false;
 }
 
 void SceneManager::LoadAsset() {
-	curtain = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/curtain.png");
+	curtain = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/curtain_bright.png");
 }
 
-NextScene SceneManager::Update(const float deltaTime) {
+void SceneManager::Update(const float deltaTime) {
 
 	time_delta = deltaTime;
 
@@ -29,10 +29,7 @@ NextScene SceneManager::Update(const float deltaTime) {
 		co_ending.begin();
 	}
 
-	if (scene_change_flag == true) {
-		return NextScene::ResultScene;
-	}
-	return NextScene::Continue;
+	return;
 }
 
 void SceneManager::Render() {
@@ -42,7 +39,7 @@ void SceneManager::Render() {
 cppcoro::generator<int> SceneManager::Ending() {
 	co_yield 0;
 	while (curtain_pos.y < 0.0f) {
-		curtain_pos.y += 100.0f * time_delta;
+		curtain_pos.y += CURTAIN_DOWN_SPEED * time_delta;
 		co_yield 1;
 	}
 	curtain_pos.y = 0.0f;

@@ -140,9 +140,6 @@ bool PlayerBase::Initialize()
 
 	Deathblow_count = 20;
 
-
-
-
 	direction_state_mode = Direction_State::RIGHT;
 
 	under_attack_state_mode = UNDER_ATTACK_STATE::NOMAL;
@@ -150,6 +147,21 @@ bool PlayerBase::Initialize()
 	canot_move_state_mode = CANNOT_MOVE_STATE::MOVE;
 
 	cannot_other = CANNOT_OTHER_ATTACK::NOMAL_STATE;
+
+	////プレイヤーのSE ファイル読み込み
+	////攻撃-SE
+	//first_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
+	//second_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
+	//third_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
+	////ジャンプ
+	//jump_se= XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
+	////着地
+	//landing_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
+	////ダメージ
+	//damege_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
+	////アピール
+	//appeal_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
+
 
 	return 0;
 }
@@ -179,8 +191,6 @@ void PlayerBase::LoadAssets()
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	collision->SetMaterial(material);
 
-	//collision->SetScale(0.05f);
-
 
 	col.sword_box = model->GetBoundingBox();
 
@@ -194,7 +204,6 @@ void PlayerBase::LoadAssets()
 	);
 
 
-	//sword_box.Center = model->GetPosition();
 
 	parry_box = model->GetBoundingBox();
 
@@ -211,6 +220,7 @@ void PlayerBase::LoadAssets()
 
 	deathbrow_sprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"DeathBrowBG\\deathbrow_bg.png");
 
+	//エフェクト　ファイル読み込み
 	DX12Effect.Initialize();
 	DX12Effect.Create(L"Effect\\SwordEffect\\one\\first_attack.efk","first");
 	DX12Effect.Create(L"Effect\\SwordEffect\\two\\second_attack.efk","second");
@@ -298,7 +308,7 @@ void PlayerBase::Render()
 {
 	//プレイヤーの描画
 	model->Draw();
-	collision->Draw();
+	//collision->Draw();
 	//sword_collision->Draw();
 	//parry_collision->Draw();
 }
@@ -325,10 +335,10 @@ void PlayerBase::Invincible(const float deltaTime)
 	if (invincible_flag) {
 		SetAnimation(model, DAMAGE);
 		if (direction_state_mode == Direction_State::RIGHT) {
-			model->Move(0, 0, 80.0f * deltaTime);
+			model->Move(0, 0, 30.0f * deltaTime);
 		}
 		else if (direction_state_mode == Direction_State::LEFT) {
-			model->Move(0, 0, 80.0f * deltaTime);
+			model->Move(0, 0, 30.0f * deltaTime);
 		}
 	}
 
@@ -369,7 +379,7 @@ void PlayerBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack)
 
 void PlayerBase::Player_move(const float deltaTime)
 {
-	if (!parry_flag) {
+	if (!invincible_flag) {
 		if(!deathbrow_flag){
 			if (!appeil_flag) {
 				if (canot_move_state_mode == CANNOT_MOVE_STATE::MOVE) {
@@ -380,7 +390,6 @@ void PlayerBase::Player_move(const float deltaTime)
 						col.sword_box.Center = model->GetRotation();
 						direction_state_mode = Direction_State::RIGHT;
 						SetAnimation(model, RUN);
-
 					}
 					if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left) {
 						model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
@@ -409,12 +418,12 @@ void PlayerBase::Player_limit()
 
 void PlayerBase::Player_jump(const float deltaTime) {
 	//ジャンプ
-	if (!parry_flag) {
+	if (!invincible_flag) {
 		if (!deathbrow_flag) {
 			if (under_attack_state_mode == UNDER_ATTACK_STATE::NOMAL) {
 				if (!appeil_flag) {
 					if (!jump_flag_) {
-						if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a==GamePad::ButtonStateTracker::PRESSED) {
+						if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
 							jump_start_flag = true;
 							jump_flag_ = true;
 							jump_time_ = 0;
@@ -438,7 +447,7 @@ void PlayerBase::Player_jump(const float deltaTime) {
 		pos.y = jump_start_v_ + V0 * jump_time_ - 0.5f * gravity_ * jump_time_ * jump_time_;
 		model->SetPosition(pos);
 
-		if (model->GetPosition().y <= 0.7f) {
+		if (model->GetPosition().y <= 0.65f) {
 			jump_flag_ = false;
 			jump_start_flag = false;
 			jump_start_time = 0.0f;
@@ -589,21 +598,6 @@ void PlayerBase::Player_attack(const float deltaTime) {
 			}
 		}
 	}
-
-
-	//auto motion_1 = model->GetTrackPosition(ACT1);
-	//if (motion_1 >= 0.617f) {
-	//	model->SetTrackPosition(ACT1, 0.0f);
-	//}
-
-	//if (motion_time >= motion_time_max[motion_count = 1]) {
-	//	model->SetTrackPosition(ACT2, 0.0f);
-	//}
-	//if(motion_time >= motion_time_max[motion_count = 2]){
-	//	model->SetTrackPosition(ACT3, 0.0f);
-
-	//}
-
 }
 
 //プレイヤーの攻撃(ボタン配置変更ver)
@@ -670,6 +664,7 @@ void PlayerBase::Player_Attack_two(const float deltaTime) {
 			}
 		}
 	}
+
 	//if (DXTK->KeyEvent->pressed.D || DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED ||
 	//	DXTK->KeyEvent->pressed.A || DXTK->GamePadEvent->x == GamePad::ButtonStateTracker::PRESSED ||
 	//	DXTK->KeyEvent->pressed.S || DXTK->GamePadEvent->y == GamePad::ButtonStateTracker::PRESSED)
@@ -923,9 +918,11 @@ void PlayerBase::Attack_Third(const float deltaTime) {
 
 void PlayerBase::Player_Special_Move(const float deltaTime) {
 	if (!jump_flag_) {
-		if (StatusManager::Instance().ReturnHeart() >= 0) {
-			if (DXTK->KeyEvent->pressed.L || DXTK->GamePadEvent->rightShoulder == GamePad::ButtonStateTracker::PRESSED) {
-				deathbrow_flag = true;
+		if (!appeil_flag ) {
+			if (StatusManager::Instance().ReturnHeart() >= 20) {
+				if (DXTK->KeyEvent->pressed.L || DXTK->GamePadEvent->rightShoulder == GamePad::ButtonStateTracker::PRESSED) {
+					deathbrow_flag = true;
+				}
 			}
 		}
 	}
@@ -999,18 +996,25 @@ void PlayerBase::Appeal(const float deltaTime)
 {
 	//アピール
 	if (!jump_flag_) {
-		if (!appeil_cool_flag) {
-			if (DXTK->KeyState->W || DXTK->GamePadState->triggers.left) {
-				appeil_flag = true;
-			}
-			else
-			{
-				appeil_flag = false;
+		if (!deathbrow_flag) {
+			if (!appeil_cool_flag) {
+				if (DXTK->KeyState->W || DXTK->GamePadState->triggers.left) {
+					appeil_flag = true;
+				}
+				else
+				{
+					appeil_flag = false;
 
-				model->SetTrackPosition(APPEIL, 0.0);
+					model->SetTrackPosition(APPEIL, 0.0);
 
-				if (!appeil_flag) {
-					appeil_cool_flag = true;
+					if (!appeil_flag) {
+						appeil_cool_flag = true;
+					}
+
+					if (direction_state_mode == Direction_State::LEFT) {
+						model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
+					}
+
 				}
 			}
 		}
@@ -1033,6 +1037,11 @@ void PlayerBase::Appeal(const float deltaTime)
 		appeil_flag = false;
 		model->SetTrackPosition(APPEIL, 0.0);
 		appeil_cool_flag = true;
+
+
+		if (direction_state_mode == Direction_State::LEFT) {
+			model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
+		}
 	}
 
 	if (appeil_cool_flag) {
@@ -1055,7 +1064,6 @@ void PlayerBase::BrackImage() {
 	);
 
 }
-
 
 void PlayerBase::_2DRender()
 {
@@ -1118,8 +1126,6 @@ void PlayerBase::_2DRender()
 	//		L"OFF"
 	//	);
 	//}
-
-
 
 	//DX9::SpriteBatch->DrawString(font.Get(),
 	//	SimpleMath::Vector2(1000.0f, 80.0f),
