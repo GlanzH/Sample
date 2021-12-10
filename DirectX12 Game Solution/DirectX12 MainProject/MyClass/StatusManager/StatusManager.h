@@ -30,7 +30,8 @@ public:
 	//ハート(必殺技ゲージ)
 	void HeartCount();	//敵撃破時呼び出し
 	void HeartReset();	//必殺技発動時呼び出し
-	float ReturnHeart() { return heart * HEART_GAUGE_DIVIDE; }	//ゲージ描画時呼び出し
+	float ReturnHeart() { return heart; }	//必殺技使用時呼び出し
+	float ReturnRenderHeart() { return heart * HEART_GAUGE_DIVIDE; }//ゲージ描画時呼び出し
 
 private:
 	//コンボ
