@@ -23,6 +23,8 @@ void TitleScene::Initialize()
     start_flag = false;
 
     ui_alpha = 255.0f;
+    vinette_pos = SimpleMath::Vector3(0.0f, 0.0f, 0.0f);
+    vinette_alpha = 255.0f;
     time_stop = 0.0f;
 
 }
@@ -51,7 +53,8 @@ void TitleScene::LoadAssets()
 
     // グラフィックリソースの初期化処理
     title = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/curtain.png");
-    title_ui = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/title_ui.png");
+    title_logo = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/TitleLogo2.png");
+    vinette = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/vinette_2.png");
 }
 
 // Releasing resources required for termination.
@@ -125,12 +128,14 @@ void TitleScene::Render()
     DX9::SpriteBatch->DrawSimple(title.Get(), title_pos);
     
     DX9::SpriteBatch->DrawSimple(
-        title_ui.Get(),
+        title_logo.Get(),
         SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
         RectWH(0, 0, 1280, 720),
         DX9::Colors::RGBA(255, 255, 255, ui_alpha)
     );
 
+    DX9::SpriteBatch->DrawSimple(vinette.Get(), vinette_pos,
+        Rect(0, 0, 1280, 720), DX9::Colors::RGBA(255, 255, 255, vinette_alpha));
 
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();
@@ -161,8 +166,10 @@ cppcoro::generator<int> TitleScene::Opening() {
 
     while (ui_alpha > 0.0f) {
         ui_alpha = std::max(ui_alpha - ALPHA_SPEED * time_delta, 0.0f);
+        vinette_alpha = std::max(vinette_alpha - ALPHA_SPEED * time_delta, 0.0f);
         co_yield 1;
     }
+    
 
     while (time_stop < 1.0f) {
         time_stop += time_delta;
@@ -170,8 +177,9 @@ cppcoro::generator<int> TitleScene::Opening() {
     }
     time_stop = 0.0f;
 
-    while (title_pos.y > -730.0f) {
+    while (vinette_pos.y > -770.0f) {
         title_pos.y -= CURTAIN_UP_SPEED * time_delta;
+        vinette_pos.y -= CURTAIN_UP_SPEED * time_delta;
         co_yield 3;
     }
     
