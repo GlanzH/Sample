@@ -199,7 +199,7 @@ void Core::Attack(SimpleMath::Vector3 player)
   			DX12Effect.PlayOneShot("shoot", bull_pos);
 			DX12Effect.SetPosition("shoot", bull_pos);
 			//DX12Effect.Stop("shoot");
-			launch_count_count++;
+			//launch_count_count++;
 			landing_flag = true;
 			Shot(player_pos);
 		}
