@@ -192,3 +192,24 @@ void Core::Render() {
 	EnemyBase::Render();
 	//obstacle_collision->Draw();
 }
+/*bull_pos -= laser_coordinate * SHOT_SPEED;
+	laser_coordinate = position - player_pos;
+	laser_coordinate.Normalize();
+	laser_coordinate.z = 0.0f;
+
+	landing_effect_frame += delta;
+	if (bull_pos.y >= 0.0 && !landing_flag)
+	{
+		DX12Effect.PlayOneShot("shoot", bull_pos);
+		DX12Effect.SetPosition("shoot", bull_pos);
+		landing_flag = true;
+	}
+		if (landing_flag)
+		{
+			DX12Effect.PlayOneShot("landing", bull_pos);
+
+			landing_effect_frame = 0;
+			wait_shot_frame = 0;
+			launch_count_count++;
+			landing_flag = false;
+		*/
