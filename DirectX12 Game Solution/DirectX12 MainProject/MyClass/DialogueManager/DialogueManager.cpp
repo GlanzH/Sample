@@ -8,13 +8,9 @@ void DialogueManager::LoadAssets() {
 	dialogue_5 = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Dialogue/dialogue_5.png");
 }
 
-int DialogueManager::Update(bool time_stop_flag) {
+void DialogueManager::AddCount(bool time_stop_flag) {
 	if (time_stop_flag && DXTK->KeyEvent->pressed.B)
 		dialogue_state++;
-	else if (!time_stop_flag)
-		dialogue_state = 0;
-
-	return 0;
 }
 
 void DialogueManager::Render(int dialogue_count) {
