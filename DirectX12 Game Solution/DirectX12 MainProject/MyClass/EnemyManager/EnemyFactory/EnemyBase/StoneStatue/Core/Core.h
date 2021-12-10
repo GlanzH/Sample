@@ -61,8 +61,6 @@ private:
 
 	bool throw_flag;
 	bool special_flag;
-	float SHOT_SPEED;
-	Vector3 laser_coordinate;
 	char launch_count_count;
 	enum StatueAction
 	{

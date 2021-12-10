@@ -83,7 +83,7 @@ void EnemyManager::Iterator() {
 					else
 						DX12Effect.PlayOneShot("boss", (*itr)->GetModel()->GetPosition() + SimpleMath::Vector3(0, 21, 0));
 
-						kill->Play();
+				kill->Play();
 
 				StatusManager::Instance().HeartCount();
 				itr = enemy.erase(itr);
