@@ -40,6 +40,8 @@ private:
 	SimpleMath::Vector3 fill_theater_pos = SimpleMath::Vector3(  0, 20, 50);
 	SimpleMath::Vector3 fill_theater_col = SimpleMath::Vector3(250, 50, 10);
 
+	std::unique_ptr<SoundEffect>  appeal;
+
 	float time = 0.0f;
 	float delta;
 

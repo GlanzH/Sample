@@ -50,7 +50,7 @@ int FakerLamiel::Update(SimpleMath::Vector3 player, bool special_attack_flag, bo
 
 	model->SetPosition(position);
 	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
-	//col.box.Center = model->GetPosition();
+	col.box.Center = model->GetPosition();
 
 	col.fire.Center = obstacle_collision->GetPosition();
 	obstacle_collision->SetPosition(fire_pos);

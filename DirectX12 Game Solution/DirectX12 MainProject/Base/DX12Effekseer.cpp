@@ -81,7 +81,9 @@ bool DX12Effekseer::CEffekseer::Initialize()
 */
 void DX12Effekseer::CEffekseer::Reset()
 {
-
+	m_manager->Release();
+	m_renderer->Release();
+	m_commandListEfk->Release();
 }
 
 /**

@@ -3,10 +3,15 @@
 void ExplodeMan::LoadAssets(float x) {
 	man = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Audience\\ExplodingMan\\audience_damege_bone.X");
 	
+	blow_away = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/Audience/blow_away_se.wav");
+
 	man->SetPosition(x, 0, 25);
 }
 
 int ExplodeMan::Update(SimpleMath::Vector3 position,const float deltaTime) {
+	if (!blow_away->IsInUse())
+		blow_away->Play();
+
 	man->SetPosition(position.x,position.y,25.0f);
 
 	SetAnimation(man, EXPLODE_MAN);

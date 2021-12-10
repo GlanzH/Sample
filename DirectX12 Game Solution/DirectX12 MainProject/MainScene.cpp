@@ -86,6 +86,13 @@ void MainScene::LoadAssets()
 
 	//‰æ‘œ‚âƒ‚ƒfƒ‹‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 	DX12Effect.Initialize();
+
+	introduct = make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/BGM/introduction_bgm.wav");
+	main = make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/BGM/main_bgm.wav");
+	boss = make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/BGM/introduction_bgm.wav");
+	//music_flag = false;
+	//ChangeBGM(INTRO);
+
 	ground->LoadAsset();
 	player->LoadAssets();
 	audience->LoadAssets();
@@ -113,7 +120,7 @@ void MainScene::OnDeviceLost()
 // Restart any looped sounds here
 void MainScene::OnRestartSound()
 {
-
+	loop->Play(true);
 }
 
 // Updates the scene.
@@ -129,25 +136,26 @@ NextScene MainScene::Update(const float deltaTime)
 
 	ChangeLightRenge(deltaTime);
 
-	if (!end_flag) {
-		if (!enemy->IsTimeStop()) {
-			DX12Effect.Update(deltaTime);
-			player->Update(deltaTime);
-			enemy->Update(player->GetModel()->GetPosition(), player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
-			audience->Update(player->GetAppielTime(), player->GetAppealCoolFlag(), player->GetSpecialAttackFlag(), deltaTime);
-			camera->Update(player, OUT_ZOOM, deltaTime);
-			observer->Update(player, enemy, audience);
-			dialogue->ResetCount();
-			light_mode = OUT_ZOOM;
-		}
-		else {
-			dialogue->AddCount(enemy->IsTimeStop());
-			camera->Update(player, IN_ZOOM, deltaTime);
-			light_mode = IN_ZOOM;
-		}
+	if (!enemy->IsTimeStop()) {
+		player->Update(deltaTime);
+		enemy->Update(player->GetModel()->GetPosition(), player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
+		audience->Update(player->GetAppielTime(), player->GetAppealCoolFlag(), player->GetSpecialAttackFlag(), deltaTime);
+		camera->Update(player, OUT_ZOOM, deltaTime);
+		observer->Update(player, enemy, audience);
+		dialogue->ResetCount();
 
+		//ChangeBGM(MAIN);
+		light_mode = OUT_ZOOM;
 	}
 	else {
+		dialogue->AddCount(enemy->IsTimeStop());
+		camera->Update(player, IN_ZOOM, deltaTime);
+		light_mode = IN_ZOOM;
+	}
+
+		DX12Effect.Update(deltaTime);
+
+		if (end_flag) {
 		end_frame += deltaTime;
 
 		if(end_frame > max_end) {
@@ -178,6 +186,26 @@ void MainScene::ChangeLightRenge(const float deltaTime) {
 		point.SetCone(range, 0);
 }
 
+void MainScene::ChangeBGM(int music_num) {
+	if (!music_flag) {
+		switch (music_num) {
+		case INTRO:
+			loop = introduct->CreateInstance();
+			loop->Play(true);
+			break;
+		case MAIN:
+			loop = main->CreateInstance();
+			loop->Play(true);
+			break;
+		case BOSS:
+			loop = boss->CreateInstance();
+			loop->Play(true);
+			break;
+		}
+		music_flag = true;
+	}
+}
+
 // Draws the scene.
 void MainScene::Render()
 {
@@ -203,7 +231,7 @@ void MainScene::Render()
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ
-	ui->Render(StatusManager::Instance().ReturnAudience(),StatusManager::Instance().ReturnHeart());
+	ui->Render(StatusManager::Instance().ReturnAudience(),StatusManager::Instance().ReturnRenderHeart());
 	player->_2DRender();
 	player->BrackImage();
 	SceneManager::Instance().Render();

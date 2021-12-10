@@ -2,7 +2,7 @@
 
 bool CameraManager::Initialize() {
 	//カメラの位置
-	camera->SetView(SimpleMath::Vector3(0.0f, fixed_pos, 0.0f), SimpleMath::Vector3::Zero);
+	camera->SetView(SimpleMath::Vector3(0.0f, fixed_pos, 20.0f), SimpleMath::Vector3::Zero);
 
 	//カメラの向き・映す距離
 	camera->SetPerspectiveFieldOfView(

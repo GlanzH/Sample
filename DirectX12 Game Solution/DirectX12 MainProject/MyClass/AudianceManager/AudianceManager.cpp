@@ -22,6 +22,8 @@ void AudienceManager::LoadAssets() {
 	throw_things_lv2_center = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Audience\\ThrowThings\\throw_lv2b.X");
 	throw_things_lv2_right  = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Audience\\ThrowThings\\throw_lv2b.X");
 
+	appeal = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/Audience/appeal_se.wav");
+
 	audience->SetPosition(-2, -15.0f, 25);
 
 	throw_things_lv2_left->  SetPosition(-40.0f, -12.0f, 25.0f);
@@ -80,6 +82,9 @@ int AudienceManager::Update(float appeal_time, bool cool_flag,bool special_flag,
 		}
 		else {
 			SpecialAttackCollision(0.1f);
+
+			if (!appeal->IsInUse())
+				appeal->Play();
 		}
 	}
 

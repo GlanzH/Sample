@@ -61,8 +61,6 @@ private:
 
 	bool throw_flag;
 	bool special_flag;
-
-	bool launch_permit;
 	char launch_count_count;
 	enum StatueAction
 	{
