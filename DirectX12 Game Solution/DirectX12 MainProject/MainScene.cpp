@@ -86,6 +86,12 @@ void MainScene::LoadAssets()
 
 	//‰æ‘œ‚âƒ‚ƒfƒ‹‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 	DX12Effect.Initialize();
+
+	introduct = make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/BGM/introduction_bgm.wav");
+	main = make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/BGM/main_bgm.wav");
+	boss = make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/BGM/introduction_bgm.wav");
+	ChangeBGM(INTRO);
+
 	ground->LoadAsset();
 	player->LoadAssets();
 	audience->LoadAssets();
@@ -113,7 +119,7 @@ void MainScene::OnDeviceLost()
 // Restart any looped sounds here
 void MainScene::OnRestartSound()
 {
-
+	loop->Play(true);
 }
 
 // Updates the scene.
@@ -138,6 +144,8 @@ NextScene MainScene::Update(const float deltaTime)
 			camera->Update(player, OUT_ZOOM, deltaTime);
 			observer->Update(player, enemy, audience);
 			dialogue->ResetCount();
+
+			ChangeBGM(MAIN);
 			light_mode = OUT_ZOOM;
 		}
 		else {
@@ -176,6 +184,23 @@ void MainScene::ChangeLightRenge(const float deltaTime) {
 		range = std::clamp(range,0.8f,50.0f);
 
 		point.SetCone(range, 0);
+}
+
+void MainScene::ChangeBGM(int music_num) {
+		switch (music_num) {
+		case INTRO:
+			loop = introduct->CreateInstance();
+			loop->Play(true);
+			break;
+		case MAIN:
+			loop = main->CreateInstance();
+			loop->Play(true);
+			break;
+		case BOSS:
+			loop = boss->CreateInstance();
+			loop->Play(true);
+			break;
+		}
 }
 
 // Draws the scene.
