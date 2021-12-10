@@ -26,7 +26,7 @@ private:
 	float omen_effect_frame = 0;
 	float fire_effect_frame = 0;
 
-	const float min_down_pos = 15.0f;
+	const float min_down_pos = 13.0f;
 
 	const float max_omen_frame = 3.5f;
 

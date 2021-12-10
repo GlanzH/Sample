@@ -121,7 +121,7 @@ void EnemyManager::StartTimeStop() {
 }
 
 void EnemyManager::EndTimeStop() {
-	if (DXTK->KeyEvent->pressed.B)
+	if (DXTK->KeyEvent->pressed.B || DXTK->GamePadEvent[0].b == GamePad::ButtonStateTracker::PRESSED)
 		push_count++;
 
 	if (push_count >= 2) {

@@ -9,7 +9,8 @@ void DialogueManager::LoadAssets() {
 }
 
 void DialogueManager::AddCount(bool time_stop_flag) {
-	if (time_stop_flag && DXTK->KeyEvent->pressed.B)
+	if (time_stop_flag && DXTK->KeyEvent->pressed.B ||
+		time_stop_flag && DXTK->GamePadEvent[0].b == GamePad::ButtonStateTracker::PRESSED)
 		dialogue_state++;
 }
 
