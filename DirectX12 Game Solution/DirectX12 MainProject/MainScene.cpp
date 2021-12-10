@@ -138,7 +138,6 @@ NextScene MainScene::Update(const float deltaTime)
 
 	if (!end_flag) {
 		if (!enemy->IsTimeStop()) {
-			DX12Effect.Update(deltaTime);
 			player->Update(deltaTime);
 			enemy->Update(player->GetModel()->GetPosition(), player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
 			audience->Update(player->GetAppielTime(), player->GetAppealCoolFlag(), player->GetSpecialAttackFlag(), deltaTime);
@@ -155,6 +154,7 @@ NextScene MainScene::Update(const float deltaTime)
 			light_mode = IN_ZOOM;
 		}
 
+		DX12Effect.Update(deltaTime);
 	}
 	else {
 		end_frame += deltaTime;
