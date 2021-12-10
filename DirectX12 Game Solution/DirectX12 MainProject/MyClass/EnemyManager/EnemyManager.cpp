@@ -69,7 +69,7 @@ void EnemyManager::Iterator() {
 			dead_enemy_count++;
 
 			if ((*itr)->GetTimeStopFlag())
-				TimeStop();
+				StartTimeStop();
 
 			if ((*itr)->LifeDeathDecision() == DEAD) {
 
@@ -78,7 +78,6 @@ void EnemyManager::Iterator() {
 					else
 						DX12Effect.PlayOneShot("boss", (*itr)->GetModel()->GetPosition() + SimpleMath::Vector3(0, 21, 0));
 
-				special_move_flag = false;
 
 				StatusManager::Instance().HeartCount();
 				itr = enemy.erase(itr);
@@ -119,14 +118,14 @@ void EnemyManager::EndTimeStop() {
 	if (DXTK->KeyEvent->pressed.B)
 		push_count++;
 
-	if (time_stop_count <= 2 && push_count >= 2) {
+	if (push_count >= 2) {
 		push_count = 0;
 		enemy_stop_flag = false;
 	}
-	else if (time_stop_count == 3 && push_count >= 1) {
-		push_count = 0;
-		enemy_stop_flag = false;
-	}
+	//else if (time_stop_count == 4 && push_count >= 1) {
+	//	push_count = 0;
+	//	enemy_stop_flag = false;
+	//}
 }
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {

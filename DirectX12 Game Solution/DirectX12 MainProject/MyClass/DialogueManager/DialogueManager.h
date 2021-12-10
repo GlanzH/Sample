@@ -7,8 +7,9 @@ using namespace DirectX;
 class DialogueManager {
 public:
 	void LoadAssets();
-	int Update(bool time_stop_flag);
 	void Render(int dialogue_count);
+	void AddCount(bool time_stop_flag);
+	void ResetCount() { dialogue_state = 0; }
 private:
 	DX9::SPRITE dialogue_1;
 	DX9::SPRITE dialogue_2;

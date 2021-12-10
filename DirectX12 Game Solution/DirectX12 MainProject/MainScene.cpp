@@ -137,10 +137,11 @@ NextScene MainScene::Update(const float deltaTime)
 			audience->Update(player->GetAppielTime(), player->GetAppealCoolFlag(), player->GetSpecialAttackFlag(), deltaTime);
 			camera->Update(player, OUT_ZOOM, deltaTime);
 			observer->Update(player, enemy, audience);
+			dialogue->ResetCount();
 			light_mode = OUT_ZOOM;
 		}
 		else {
-			dialogue->Update(enemy->IsTimeStop());
+			dialogue->AddCount(enemy->IsTimeStop());
 			camera->Update(player, IN_ZOOM, deltaTime);
 			light_mode = IN_ZOOM;
 		}
