@@ -151,23 +151,13 @@ void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 	Vector3 a =SimpleMath::Vector3(distance_x, distance_y,50);
 	a.Normalize();
 	oblique_shooting = sqrt(distance_y * distance_y + distance_x * distance_x);
-	
-	
-	//bull_pos.x = distance_x * delta;
+
 	bull_pos.y -= distance_y  * delta+0.28;
 
 	if (bull_pos.x > init_bull_pos.x)
 		bull_pos.x -= distance_x * delta+1.0;
 	else
 		bull_pos.x += distance_x * delta+1.0;
-	//if (bull_pos.y > init_bull_pos.y)
-	//{
-	//	//bull_pos.y = oblique_shooting;
-	//	bull_pos.y -= move_bull_y * delta;
-
-	//	DX12Effect.SetPosition("shoot", bull_pos);	
-	//	DX12Effect.Play("shoot");
-	//}
 	if (bull_pos.y > init_bull_pos.y)
 	{
 
