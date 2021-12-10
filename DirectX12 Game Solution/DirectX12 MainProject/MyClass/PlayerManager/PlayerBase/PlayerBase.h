@@ -337,8 +337,6 @@ private:
 	bool bright_flag;
 	int  Ming_Turn;
 
-
-
 	//SE •Ï”
 	//UŒ‚-SE
 	XAudio::SOUNDEFFECT  first_attack_se;
@@ -355,7 +353,4 @@ private:
 	//ƒAƒs[ƒ‹
 	XAudio::SOUNDEFFECT appeal_se;
 
-
-
-	
 };

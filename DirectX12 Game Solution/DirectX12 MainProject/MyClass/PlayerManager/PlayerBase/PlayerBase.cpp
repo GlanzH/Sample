@@ -152,16 +152,6 @@ bool PlayerBase::Initialize()
 	first_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE\\Player\\first_attack_se.wav");
 	second_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE\\Player\\second_attack_se.wav");
 	third_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE\\Player\\third_attack_se.wav");
-	////ジャンプ
-	//jump_se= XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
-	////着地
-	//landing_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
-	////ダメージ
-	//damege_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
-	////アピール
-	//appeal_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
-
-
 	return 0;
 }
 
