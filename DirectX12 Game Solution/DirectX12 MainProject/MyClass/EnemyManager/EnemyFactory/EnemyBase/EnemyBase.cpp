@@ -43,7 +43,6 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 
 		//” ‚ðì‚é€”õ
 		anim_box = anim_model->GetBoundingBox();
-		//anim_box.Extents = SimpleMath::Vector3(anim_box.Extents);
 		anim_box.Extents = SimpleMath::Vector3(anim_box.Extents) * anim_adjust_extents_col;
 
 		//ƒRƒŠƒWƒ‡ƒ“ƒ‚ƒfƒ‹‚Ìì¬
@@ -64,7 +63,6 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 		model = DX9::Model::CreateFromFile(DXTK->Device9, model_name);
 		model->SetPosition(position);
 		model->SetRotation(0.0f, XMConvertToRadians(init_rotate), 0.0f);
-
 		//” ‚ðì‚é€”õ
 		col.box = model->GetBoundingBox();
 

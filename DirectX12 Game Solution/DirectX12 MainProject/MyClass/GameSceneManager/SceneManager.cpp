@@ -1,9 +1,8 @@
 #include "MyClass/GameSceneManager/SceneManager.h"
-#include "SceneFactory.h"
 
 void SceneManager::Initialize() {
-	curtain_pos = SimpleMath::Vector3(0.0f, -720.0f, 0.0f);
-	ending_coro_flag = false;
+	curtain_pos = SimpleMath::Vector3(0.0f, CURTAIN_START_POS, 0.0f);
+	ending_coro_flag  = false;
 	scene_change_flag = false;
 }
 
@@ -40,7 +39,7 @@ void SceneManager::Render() {
 cppcoro::generator<int> SceneManager::Ending() {
 	co_yield 0;
 	while (curtain_pos.y < 0.0f) {
-		curtain_pos.y += 100.0f * time_delta;
+		curtain_pos.y += CURTAIN_DOWN_SPEED * time_delta;
 		co_yield 1;
 	}
 	curtain_pos.y = 0.0f;

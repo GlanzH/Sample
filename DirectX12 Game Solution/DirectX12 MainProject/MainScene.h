@@ -13,6 +13,8 @@
 #include "MyClass/Observer/Observer.h"
 #include "MyClass/CameraManager/CameraManager.h"
 #include "MyClass/StatusManager/StatusManager.h"
+#include "MyClass/GameSceneManager/SceneManager.h"
+#include "MyClass/DialogueManager/DialogueManager.h"
 #include "MyClass/UIManager/UIManager.h"
 #include "MyClass/Shader//SpotLight.h"
 
@@ -46,6 +48,8 @@ public:
 
 
 private:
+	void ChangeLightRenge(const float deltaTime);
+
 	DX12::DESCRIPTORHEAP descriptorHeap;
 	DX12::SPRITEBATCH    spriteBatch;
 	DX12::HGPUDESCRIPTOR dx9GpuDescriptor;
@@ -59,9 +63,21 @@ private:
 	PlayerBase*      player;
 	EnemyManager*    enemy;
 	AudienceManager* audience;
+	DialogueManager* dialogue;
 	Observer*        observer;
 	UIManager*       ui;
 
-
 	SpotLight point;
+
+	enum LightMode {
+		IN_ZOOM,
+		OUT_ZOOM
+	};
+
+	int light_mode = IN_ZOOM;
+
+	float range = 0.8f;
+
+	float end_frame = 0.0f;
+	const float max_end = 3.0f;
 };

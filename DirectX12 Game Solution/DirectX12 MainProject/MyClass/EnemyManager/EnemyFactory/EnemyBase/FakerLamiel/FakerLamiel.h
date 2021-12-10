@@ -7,7 +7,7 @@ using namespace DirectX;
 class FakerLamiel : public EnemyBase
 {
 public:
-	FakerLamiel()  {}
+	FakerLamiel();
 	~FakerLamiel() {}
 
 	bool Initialize(std::string tag, bool time_stop_flag,int hp);
@@ -30,7 +30,7 @@ private:
 
 	const float max_omen_frame = 3.5f;
 
-	const float adjust_sigh_y = 6.0f;
+	const float adjust_sigh_y = 7.0f;
 	const float fire_effect_y = 15.0f;
 	const float fire_effect_z = 150.0f;
 

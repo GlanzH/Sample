@@ -11,7 +11,7 @@ EnemyManager::EnemyManager()
 
 
 	for (int i = 0; i < ENEMY_NUM; ++i) {
-		tag[i]            = INT_MAX;
+		tag[i]            = "";
 		appear_pos[i]     = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 		appear_time[i]    = INT_MAX;
 		destract_num[i]   = INT_MAX;
@@ -68,21 +68,16 @@ void EnemyManager::Iterator() {
 			//“G‚ªŽ€–S‚µ‚½‚Æ‚«‚Ìˆ—
 			dead_enemy_count++;
 
-			if ((*itr)->GetTimeStopFlag()) {
-				time_stop_count++;
-				enemy_stop_flag = true;
-			}
+			if ((*itr)->GetTimeStopFlag())
+				StartTimeStop();
 
 			if ((*itr)->LifeDeathDecision() == DEAD) {
 
-				if (!special_move_flag) {
 					if ((*itr)->GetTag() != "C")
 						(*itr)->DeathEffect();
 					else
 						DX12Effect.PlayOneShot("boss", (*itr)->GetModel()->GetPosition() + SimpleMath::Vector3(0, 21, 0));
-				}
 
-				special_move_flag = false;
 
 				StatusManager::Instance().HeartCount();
 				itr = enemy.erase(itr);
@@ -114,9 +109,23 @@ void EnemyManager::Render()
 	}
 }
 
+void EnemyManager::StartTimeStop() {
+	time_stop_count++;
+	enemy_stop_flag = true;
+}
+
 void EnemyManager::EndTimeStop() {
-	if (DXTK->KeyEvent->pressed.Z)
+	if (DXTK->KeyEvent->pressed.B)
+		push_count++;
+
+	if (push_count >= 2) {
+		push_count = 0;
 		enemy_stop_flag = false;
+	}
+	//else if (time_stop_count == 4 && push_count >= 1) {
+	//	push_count = 0;
+	//	enemy_stop_flag = false;
+	//}
 }
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
@@ -174,5 +183,15 @@ void EnemyManager::LoadEnemyArrangement() {
 	for (int i = 0; i < ENEMY_NUM; ++i) {
 		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> appear_time[i] >> destract_num[i] >> time_stop_flag[i];
 	}
+
+	EndEnemy();
 }
 
+void EnemyManager::EndEnemy() {
+	for (int i = 0; i < ENEMY_NUM; ++i) {
+		if (tag[i] == "") {
+			enemy_num = i;
+			break;
+		}
+	}
+}

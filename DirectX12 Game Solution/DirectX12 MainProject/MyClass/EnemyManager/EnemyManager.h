@@ -20,16 +20,20 @@ public:
 
 	std::vector<EnemyBase*> GetEnemy() { return enemy; }
 	int  GetDeathEnemyCount()		   { return dead_enemy_count; }
-	int  getTimeStopcount()			   { return time_stop_count; }
+	int  GetTimeStopCount()			   { return time_stop_count; }
 
+	int  GetEnemyNum() { return enemy_num; }
+	void StartTimeStop();
 	void EndTimeStop();
 	bool IsTimeStop() { return enemy_stop_flag; }
+	bool EndWaitTime();
 
 	void OnCollisionEnter(EnemyBase* base);
 	void OnCollisionAudience(EnemyBase* base);
 	void OnCollisionSpecialMove(EnemyBase* base);
 private:
 	void LoadEnemyArrangement();
+	void EndEnemy();
 	void Generator();
 	void Iterator();
 	
@@ -52,6 +56,8 @@ private:
 
 	int frame = 0;
 	int timer = 0;
+	int enemy_num = 0;
+	int push_count = 0;
 
 	bool enemy_stop_flag   = false;
 	bool special_move_flag = false;
