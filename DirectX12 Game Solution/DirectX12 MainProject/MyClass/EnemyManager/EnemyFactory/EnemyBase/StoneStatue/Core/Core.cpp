@@ -23,11 +23,11 @@ bool Core::Initialize(std::string tag, bool time_stop_flag, int hp)
 
 	bull_pos = SimpleMath::Vector3(0,FLT_MAX,0);
 	col.bullet.Center = position;
-	shot_flag = false;
+	shot_flag    = false;
 	landing_flag = false;
 	launch_count_count = 0;
 	landing_count      = 0;
-	SHOT_SPEED     = 1.1 ;
+	SHOT_SPEED         = 1.1;
 	return true;
 }
 
@@ -62,10 +62,9 @@ int Core::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thor
 	wait_charge_frame += delta;
 	if (wait_shot_frame < max_wait_shot)
 	{
-		if (bull_pos.y >= -1.0&&!landing_flag)
+		if (bull_pos.y >= -1.0 && !landing_flag)
 		{
-			DX12Effect.SetPosition("shoot", bull_pos);
-			DX12Effect.Play("shoot");
+			DX12Effect.Play("shoot" , bull_pos);
 		}
 		else
 		{
@@ -73,8 +72,6 @@ int Core::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thor
 			landing_flag = true;
 		}
 	}
-	
-	
 	if (enemy_hp < 0)
 		DX12Effect.Stop("charge");
 
@@ -98,8 +95,7 @@ void Core::Move(SimpleMath::Vector3 player){
 		}
 		else if (charge_effect_frame < max_charge) 
 		{
-			DX12Effect.SetPosition("charge", position);
-			DX12Effect.PlayOneShot("charge");
+			DX12Effect.PlayOneShot("charge", position);
 			charge_effect_frame += delta;
 		}
 		else
@@ -177,11 +173,9 @@ void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 
 	if (landing_effect_frame < max_landing)
 	{
-		if (bull_pos.y<=0.0&&landing_flag)
+		if (bull_pos.y <= 0.0&&landing_flag)
 		{
-			bull_pos.y = -1.0f;
-			DX12Effect.SetPosition("landing", bull_pos);
-			DX12Effect.PlayOneShot("landing");
+			DX12Effect.PlayOneShot("landing", bull_pos);
 		}
 	}
 	landing_effect_frame = 0;
