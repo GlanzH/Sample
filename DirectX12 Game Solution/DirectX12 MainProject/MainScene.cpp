@@ -136,27 +136,26 @@ NextScene MainScene::Update(const float deltaTime)
 
 	ChangeLightRenge(deltaTime);
 
-	if (!end_flag) {
-		if (!enemy->IsTimeStop()) {
-			player->Update(deltaTime);
-			enemy->Update(player->GetModel()->GetPosition(), player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
-			audience->Update(player->GetAppielTime(), player->GetAppealCoolFlag(), player->GetSpecialAttackFlag(), deltaTime);
-			camera->Update(player, OUT_ZOOM, deltaTime);
-			observer->Update(player, enemy, audience);
-			dialogue->ResetCount();
+	if (!enemy->IsTimeStop()) {
+		player->Update(deltaTime);
+		enemy->Update(player->GetModel()->GetPosition(), player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
+		audience->Update(player->GetAppielTime(), player->GetAppealCoolFlag(), player->GetSpecialAttackFlag(), deltaTime);
+		camera->Update(player, OUT_ZOOM, deltaTime);
+		observer->Update(player, enemy, audience);
+		dialogue->ResetCount();
 
-			//ChangeBGM(MAIN);
-			light_mode = OUT_ZOOM;
-		}
-		else {
-			dialogue->AddCount(enemy->IsTimeStop());
-			camera->Update(player, IN_ZOOM, deltaTime);
-			light_mode = IN_ZOOM;
-		}
-
-		DX12Effect.Update(deltaTime);
+		//ChangeBGM(MAIN);
+		light_mode = OUT_ZOOM;
 	}
 	else {
+		dialogue->AddCount(enemy->IsTimeStop());
+		camera->Update(player, IN_ZOOM, deltaTime);
+		light_mode = IN_ZOOM;
+	}
+
+		DX12Effect.Update(deltaTime);
+
+		if (end_flag) {
 		end_frame += deltaTime;
 
 		if(end_frame > max_end) {
