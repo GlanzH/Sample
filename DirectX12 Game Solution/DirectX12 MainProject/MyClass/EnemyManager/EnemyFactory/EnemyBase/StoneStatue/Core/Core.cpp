@@ -54,11 +54,11 @@ int Core::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thor
 	col.bullet.Center = obstacle_collision->GetPosition();
 	obstacle_collision->SetPosition(bull_pos);
 
-	bull_pos -= laser_coordinate * SHOT_SPEED;
+	/*bull_pos -= laser_coordinate * SHOT_SPEED;
 	if (launch_count_count<3)
 	{
 		Attack(player);
-	}
+	}*/
 	
 	
 
@@ -105,9 +105,13 @@ void Core::Move(SimpleMath::Vector3 player){
 				shot_flag = true;
 				landing_flag = false;
 			}
+			else if (wait_shot_frame < max_wait_shot)
+			{
+				wait_shot_frame += delta;
+			}
 			else
 			{
-					
+				Shot(player);
 				if (launch_count_count == 3)
 				{
 					action = WAIT;
@@ -159,19 +163,25 @@ void Core::Move(SimpleMath::Vector3 player){
 
 void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 {
+	bull_pos -= laser_coordinate * SHOT_SPEED;
 	laser_coordinate = position - player_pos;
 	laser_coordinate.Normalize();
 	laser_coordinate.z = 0.0f;
 
 	landing_effect_frame += delta;
-	
-	
+	if (bull_pos.y >= 0.0 && !landing_flag)
+	{
+		DX12Effect.PlayOneShot("shoot", bull_pos);
+		DX12Effect.SetPosition("shoot", bull_pos);
+		landing_flag = true;
+	}
 		if (landing_flag)
 		{
 			DX12Effect.PlayOneShot("landing", bull_pos);
 
 			landing_effect_frame = 0;
 			wait_shot_frame = 0;
+			launch_count_count++;
 			landing_flag = false;
 		}
 }
@@ -192,8 +202,6 @@ void Core::StopEffect() {
 
 void Core::Attack(SimpleMath::Vector3 player)
 {
-	if (wait_shot_frame < max_wait_shot)
-	{
 		if (bull_pos.y >= 0.0 && !landing_flag)
 		{
   			DX12Effect.PlayOneShot("shoot", bull_pos);
@@ -203,7 +211,6 @@ void Core::Attack(SimpleMath::Vector3 player)
 			landing_flag = true;
 			Shot(player_pos);
 		}
-	}
 }
 
 void Core::Render() {
