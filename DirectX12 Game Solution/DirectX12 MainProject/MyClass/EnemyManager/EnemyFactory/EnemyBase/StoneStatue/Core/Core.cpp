@@ -13,7 +13,7 @@ bool Core::Initialize(std::string tag, bool time_stop_flag, int hp)
 	EnemyBase::Initialize(tag,time_stop_flag, hp);
 	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/shoot/shoot.efk",      "shoot");
 	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/charge/charge.efk",   "charge");
-	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/landing2/landing.efk","landing");
+	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/landing3/landing.efk","landing");
 
 
 	obstacle_collision = DX9::Model::CreateSphere(DXTK->Device9, 4, 8, 2);
@@ -53,28 +53,22 @@ int Core::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thor
 
 	col.bullet.Center = obstacle_collision->GetPosition();
 	obstacle_collision->SetPosition(bull_pos);
-	
-	
 
-	bull_pos.z = 50.0f;
 	bull_pos -= laser_coordinate * SHOT_SPEED;
-
-	wait_charge_frame += delta;
-	if (wait_shot_frame < max_wait_shot)
+	if (launch_count_count<3)
 	{
-		if (bull_pos.y >= -1.0 && !landing_flag)
-		{
-			DX12Effect.Play("shoot" , bull_pos);
-		}
-		else
-		{
-			DX12Effect.Stop("shoot");
-			landing_flag = true;
-		}
+		Attack(player);
 	}
-	if (enemy_hp < 0)
-		DX12Effect.Stop("charge");
+	
+	
 
+	
+	if (enemy_hp < 0)
+	{
+		DX12Effect.Stop("charge");
+		DX12Effect.Stop("shoot");
+	}
+		
 	return LIVE;
 }
 
@@ -105,13 +99,15 @@ void Core::Move(SimpleMath::Vector3 player){
 	case ATTACK:
 			if (!shot_flag)
 			{
+				
 				player_pos = player;
 				bull_pos = position;
 				shot_flag = true;
+				landing_flag = false;
 			}
 			else
-			{	
-				Shot(player_pos);
+			{
+					
 				if (launch_count_count == 3)
 				{
 					action = WAIT;
@@ -164,24 +160,20 @@ void Core::Move(SimpleMath::Vector3 player){
 void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 {
 	laser_coordinate = position - player_pos;
-	
 	laser_coordinate.Normalize();
 	laser_coordinate.z = 0.0f;
 
-	
 	landing_effect_frame += delta;
-
-	if (landing_effect_frame < max_landing)
-	{
-		if (bull_pos.y <= 0.0&&landing_flag)
+	
+	
+		if (landing_flag)
 		{
 			DX12Effect.PlayOneShot("landing", bull_pos);
+
+			landing_effect_frame = 0;
+			wait_shot_frame = 0;
+			landing_flag = false;
 		}
-	}
-	landing_effect_frame = 0;
-	wait_shot_frame = 0;
-	landing_flag = false;
-	//launch_count_count++;
 }
 
 void Core::StopEffect() {
@@ -195,6 +187,22 @@ void Core::StopEffect() {
 			break;
 		default:
 			break;
+	}
+}
+
+void Core::Attack(SimpleMath::Vector3 player)
+{
+	if (wait_shot_frame < max_wait_shot)
+	{
+		if (bull_pos.y >= 0.0 && !landing_flag)
+		{
+  			DX12Effect.PlayOneShot("shoot", bull_pos);
+			DX12Effect.SetPosition("shoot", bull_pos);
+			//DX12Effect.Stop("shoot");
+			launch_count_count++;
+			landing_flag = true;
+			Shot(player_pos);
+		}
 	}
 }
 

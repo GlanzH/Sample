@@ -17,7 +17,7 @@ private:
 	void Move(SimpleMath::Vector3 player);
 	void Shot(SimpleMath::Vector3 init_bull_pos);
 	void StopEffect();
-
+	void Attack(SimpleMath::Vector3 player);
 	PlayerBase* player;
 
 	SimpleMath::Vector3 player_pos;
