@@ -11,7 +11,7 @@ Core::Core()
 bool Core::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
 {
 	EnemyBase::Initialize(tag,speed, hp);
-	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/shoot/shoot.efk",      "shoot");
+	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/shoot/shoot.efk","shoot");
 	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/charge/charge.efk",   "charge");
 	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/landing3/landing.efk","landing");
 
