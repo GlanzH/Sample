@@ -90,7 +90,8 @@ void MainScene::LoadAssets()
 	introduct = make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/BGM/introduction_bgm.wav");
 	main = make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/BGM/main_bgm.wav");
 	boss = make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/BGM/introduction_bgm.wav");
-	ChangeBGM(INTRO);
+	//music_flag = false;
+	//ChangeBGM(INTRO);
 
 	ground->LoadAsset();
 	player->LoadAssets();
@@ -145,7 +146,7 @@ NextScene MainScene::Update(const float deltaTime)
 			observer->Update(player, enemy, audience);
 			dialogue->ResetCount();
 
-			ChangeBGM(MAIN);
+			//ChangeBGM(MAIN);
 			light_mode = OUT_ZOOM;
 		}
 		else {
@@ -187,6 +188,7 @@ void MainScene::ChangeLightRenge(const float deltaTime) {
 }
 
 void MainScene::ChangeBGM(int music_num) {
+	if (!music_flag) {
 		switch (music_num) {
 		case INTRO:
 			loop = introduct->CreateInstance();
@@ -201,6 +203,8 @@ void MainScene::ChangeBGM(int music_num) {
 			loop->Play(true);
 			break;
 		}
+		music_flag = true;
+	}
 }
 
 // Draws the scene.

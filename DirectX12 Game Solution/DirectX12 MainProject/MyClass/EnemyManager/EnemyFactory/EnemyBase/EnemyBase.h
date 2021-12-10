@@ -104,6 +104,7 @@ protected:
 
 	SimpleMath::Vector3  position;
 	SimpleMath::Vector3  enemy_speed;
+	SimpleMath::Vector3  player_pos;
 
 	std::string enemy_tag;
 
