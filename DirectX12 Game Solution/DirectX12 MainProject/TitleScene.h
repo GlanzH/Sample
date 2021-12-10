@@ -45,11 +45,6 @@ private:
     DX12::HGPUDESCRIPTOR dx9GpuDescriptor;
 
 private:
-	GroundManager*   ground;
-	CameraManager*   camera;
-	PlayerBase*      player;
-	AudienceManager* audience_m;
-
 	DX9::SPRITE title;
 	DX9::SPRITE title_logo;
 	SimpleMath::Vector3 title_pos;
