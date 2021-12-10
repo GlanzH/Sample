@@ -4,7 +4,7 @@
 
 #pragma once
 
-#define GAME_TITLE      L"DirectX12 Game Solution"
+#define GAME_TITLE      L"演者、勇者になる。～守って！魅せて！ビューティフォゥ！！～"
 
 #define DXTK_FULLSCREEN 0   // 1...fullscreen mode
 #define DXTK_KEYBOARD   1   // 1...use Keyboard
