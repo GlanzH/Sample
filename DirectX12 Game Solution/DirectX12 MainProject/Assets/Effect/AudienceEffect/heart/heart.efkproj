@@ -6,71 +6,62 @@
       <Node>
         <CommonValues>
           <Life>
-            <Center>80</Center>
-            <Max>80</Max>
-            <Min>80</Min>
+            <Center>69</Center>
+            <Max>69</Max>
+            <Min>69</Min>
           </Life>
         </CommonValues>
         <LocationValues>
-          <Type>3</Type>
+          <Type>1</Type>
+          <PVA>
+            <Velocity>
+              <Y>
+                <Center>0.1</Center>
+                <Max>0.1</Max>
+                <Min>0.1</Min>
+              </Y>
+            </Velocity>
+          </PVA>
           <LocationFCurve>
             <FCurve>
               <Keys>
                 <X>
                   <Key0>
-                    <Frame>0</Frame>
-                    <Value>-0.02767169</Value>
-                    <LeftX>-10</LeftX>
-                    <LeftY>-2.555343</LeftY>
-                    <RightX>5.544268</RightX>
-                    <RightY>1.378759</RightY>
+                    <Frame>93</Frame>
+                    <Value>0.1051188</Value>
+                    <LeftX>93</LeftX>
+                    <LeftY>0.1051188</LeftY>
+                    <RightX>93</RightX>
+                    <RightY>0.1051188</RightY>
                     <InterpolationType>0</InterpolationType>
                   </Key0>
                   <Key1>
-                    <Frame>10</Frame>
-                    <Value>1.5</Value>
-                    <LeftX>3.977301</LeftX>
-                    <LeftY>1.784092</LeftY>
-                    <RightX>16.33371</RightX>
-                    <RightY>1.758997</RightY>
+                    <Frame>93</Frame>
+                    <Value>0.1471663</Value>
+                    <LeftX>93</LeftX>
+                    <LeftY>0.1471663</LeftY>
+                    <RightX>93</RightX>
+                    <RightY>0.1471663</RightY>
                     <InterpolationType>0</InterpolationType>
                   </Key1>
                   <Key2>
-                    <Frame>30</Frame>
-                    <Value>-1.5</Value>
-                    <LeftX>19.31214</LeftX>
-                    <LeftY>-1.548697</LeftY>
-                    <RightX>40.04314</RightX>
-                    <RightY>-1.546368</RightY>
+                    <Frame>93</Frame>
+                    <Value>0.1471663</Value>
+                    <LeftX>93</LeftX>
+                    <LeftY>0.1471663</LeftY>
+                    <RightX>93</RightX>
+                    <RightY>0.1471663</RightY>
                     <InterpolationType>0</InterpolationType>
                   </Key2>
                   <Key3>
-                    <Frame>50</Frame>
-                    <Value>1.5</Value>
-                    <LeftX>35.25709</LeftX>
-                    <LeftY>1.677336</LeftY>
-                    <RightX>62.33257</RightX>
-                    <RightY>1.503658</RightY>
+                    <Frame>93</Frame>
+                    <Value>0.1471663</Value>
+                    <LeftX>93</LeftX>
+                    <LeftY>0.1471663</LeftY>
+                    <RightX>93</RightX>
+                    <RightY>0.1471663</RightY>
                     <InterpolationType>0</InterpolationType>
                   </Key3>
-                  <Key4>
-                    <Frame>70</Frame>
-                    <Value>-1.5</Value>
-                    <LeftX>57.35639</LeftX>
-                    <LeftY>-1.13894</LeftY>
-                    <RightX>84.82068</RightX>
-                    <RightY>-1.528337</RightY>
-                    <InterpolationType>0</InterpolationType>
-                  </Key4>
-                  <Key5>
-                    <Frame>90</Frame>
-                    <Value>1.5</Value>
-                    <LeftX>76.65666</LeftX>
-                    <LeftY>1.568556</LeftY>
-                    <RightX>100</RightX>
-                    <RightY>3</RightY>
-                    <InterpolationType>0</InterpolationType>
-                  </Key5>
                 </X>
                 <Y>
                   <Key0>
@@ -83,12 +74,12 @@
                     <InterpolationType>0</InterpolationType>
                   </Key0>
                   <Key1>
-                    <Frame>158</Frame>
-                    <Value>31.95721</Value>
-                    <LeftX>158</LeftX>
-                    <LeftY>31.95721</LeftY>
-                    <RightX>158</RightX>
-                    <RightY>31.95721</RightY>
+                    <Frame>162</Frame>
+                    <Value>14.19475</Value>
+                    <LeftX>162</LeftX>
+                    <LeftY>14.19475</LeftY>
+                    <RightX>162</RightX>
+                    <RightY>14.19475</RightY>
                     <InterpolationType>0</InterpolationType>
                   </Key1>
                 </Y>
@@ -100,9 +91,9 @@
           <Type>3</Type>
           <SinglePVA>
             <Scale>
-              <Center>3.6</Center>
-              <Max>3.6</Max>
-              <Min>3.6</Min>
+              <Center>1.9</Center>
+              <Max>1.9</Max>
+              <Min>1.9</Min>
             </Scale>
           </SinglePVA>
         </ScalingValues>
@@ -114,9 +105,18 @@
           </FadeIn>
           <FadeOutType>1</FadeOutType>
           <FadeOut>
-            <Frame>15</Frame>
+            <Frame>44.6</Frame>
           </FadeOut>
         </RendererCommonValues>
+        <DrawingValues>
+          <Sprite>
+            <ColorAll_Fixed>
+              <G>0</G>
+              <B>0</B>
+              <A>104</A>
+            </ColorAll_Fixed>
+          </Sprite>
+        </DrawingValues>
         <Name>heart</Name>
         <Children />
       </Node>
