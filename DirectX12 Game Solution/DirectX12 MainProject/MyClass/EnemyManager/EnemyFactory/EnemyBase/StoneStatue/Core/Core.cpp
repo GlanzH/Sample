@@ -13,7 +13,7 @@ bool Core::Initialize(std::string tag, bool time_stop_flag, int hp)
 	EnemyBase::Initialize(tag,time_stop_flag, hp);
 	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/shoot/shoot.efk",      "shoot");
 	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/charge/charge.efk",   "charge");
-	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/landing3/landing.efk","landing");
+	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/landing2/landing.efk","landing");
 
 
 	obstacle_collision = DX9::Model::CreateSphere(DXTK->Device9, 4, 8, 2);
@@ -23,10 +23,11 @@ bool Core::Initialize(std::string tag, bool time_stop_flag, int hp)
 
 	bull_pos = SimpleMath::Vector3(0,FLT_MAX,0);
 	col.bullet.Center = position;
+	shot_flag = false;
+	landing_flag = false;
 	launch_count_count = 0;
-	landing_count = 0;
-	SHOT_SPEED = 1.1 ;
-	
+	landing_count      = 0;
+	SHOT_SPEED     = 1.1 ;
 	return true;
 }
 
@@ -57,10 +58,23 @@ int Core::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thor
 
 	bull_pos.z = 50.0f;
 	bull_pos -= laser_coordinate * SHOT_SPEED;
-		DX12Effect.SetPosition("shoot", bull_pos);
-		DX12Effect.Play("shoot");
-		
-		landing_effect_frame =10 ;
+
+	wait_charge_frame += delta;
+	if (wait_shot_frame < max_wait_shot)
+	{
+		if (bull_pos.y >= -1.0&&!landing_flag)
+		{
+			DX12Effect.SetPosition("shoot", bull_pos);
+			DX12Effect.Play("shoot");
+		}
+		else
+		{
+			DX12Effect.Stop("shoot");
+			landing_flag = true;
+		}
+	}
+	
+	
 	if (enemy_hp < 0)
 		DX12Effect.Stop("charge");
 
@@ -99,10 +113,6 @@ void Core::Move(SimpleMath::Vector3 player){
 				bull_pos = position;
 				shot_flag = true;
 			}
-			else if (wait_shot_frame < max_wait_shot)
-			{
-				wait_shot_frame+=delta;
-			}
 			else
 			{	
 				Shot(player_pos);
@@ -117,7 +127,7 @@ void Core::Move(SimpleMath::Vector3 player){
 		bull_pos = SimpleMath::Vector3(FLT_MAX, FLT_MAX, FLT_MAX);
 
 		if (wait_frame < max_wait)
-			wait_frame += delta;
+			wait_frame = wait_frame+ delta;
 		else
 		action = BACK;
 		break;
@@ -142,9 +152,10 @@ void Core::Move(SimpleMath::Vector3 player){
 		wait_charge_frame    = 0;
 		wait_shot_frame      = 0;
 		launch_count_count   = 0;
-		wait_frame = 0;
-		stop_frame = 0;
-		shot_flag = false;
+		wait_frame   = 0;
+		stop_frame   = 0;
+		shot_flag    = false;
+		landing_flag = false;
 		action = MOVE;
 		break;
 
@@ -156,20 +167,27 @@ void Core::Move(SimpleMath::Vector3 player){
 
 void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 {
-
-
 	laser_coordinate = position - player_pos;
 	
 	laser_coordinate.Normalize();
 	laser_coordinate.z = 0.0f;
-	
-	DX12Effect.SetPosition("landing", bull_pos);
-	DX12Effect.PlayOneShot("landing");
 
+	
+	landing_effect_frame += delta;
+
+	if (landing_effect_frame < max_landing)
+	{
+		if (bull_pos.y<=0.0&&landing_flag)
+		{
+			bull_pos.y = -1.0f;
+			DX12Effect.SetPosition("landing", bull_pos);
+			DX12Effect.PlayOneShot("landing");
+		}
+	}
 	landing_effect_frame = 0;
 	wait_shot_frame = 0;
+	landing_flag = false;
 	//launch_count_count++;
-	shot_flag = false;
 }
 
 void Core::StopEffect() {

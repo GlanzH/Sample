@@ -22,23 +22,26 @@ private:
 
 	SimpleMath::Vector3 player_pos;
 	SimpleMath::Vector3 bull_pos;
-	
-	bool shot_flag = false;
-	
-	float delta;
-	
-	SimpleMath::Vector3 shot_pos;
-	float SHOT_SPEED;
-	//float oblique_shooting;
-	//float spead;
-	const float move_core = 2.0f;
+	SimpleMath::Vector3 laser_coordinate;
+
+	const float move_core       = 2.0f;
 	const float collision_scale = 0.5f;
-	const float max_move = 50.0f;
-	const float max_back = 60.0f;
-	int attack_count =0;
-	const int MAX_COUNT=3;
+	const float max_move        = 50.0f;
+	const float max_back        = 60.0f;
+
+	float delta;
+	float SHOT_SPEED;
+
+	bool shot_flag;
+	bool throw_flag;
+	bool special_flag;
+	bool landing_flag;
+
+	
+   
 	int landing_count;
-	Vector3 laser_coordinate;
+	
+	char launch_count_count;
 	
 	//!WAITの待機時間
 	float wait_frame = 0;
@@ -51,19 +54,15 @@ private:
 	const float max_charge    = 6.7f;
 	//!ATTACK待機時間
 	float wait_shot_frame = 0;
-	const float max_wait_shot = 1.00f;
+    float max_wait_shot = 1.00f;
 	//!着弾時エフェクト描画時間
 	float landing_effect_frame = 0;
-	const float max_landing    = 0.2f;
+	const float max_landing    = 0.6f;
 	//!最終移動(STOP)待機時間
 	float stop_frame = 0;
 	const float max_stop = 10.0f;
-
-	bool throw_flag;
-	bool special_flag;
-
-	bool launch_permit;
-	char launch_count_count;
+	
+	int  action = MOVE;
 	enum StatueAction
 	{
 		MOVE,
@@ -74,6 +73,5 @@ private:
 		STOP,
 		INIT,
 	};	
-	int  action = MOVE;
-
+	
 };

@@ -78,7 +78,7 @@ void EnemyManager::Iterator() {
 				if ((*itr)->GetTag() != "C")
 					(*itr)->DeathEffect();
 				else
-					DX12Effect.PlayOneShot("boss", (*itr)->GetModel()->GetPosition() + SimpleMath::Vector3(0,21,0));
+					DX12Effect.PlayOneShot("boss", (*itr)->GetModel()->GetPosition());
 				
 				StatusManager::Instance().HeartCount();
 				itr = enemy.erase(itr);
