@@ -147,11 +147,11 @@ bool PlayerBase::Initialize()
 
 	cannot_other = CANNOT_OTHER_ATTACK::NOMAL_STATE;
 
-	////プレイヤーのSE ファイル読み込み
-	////攻撃-SE
-	//first_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
-	//second_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
-	//third_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
+	//プレイヤーのSE ファイル読み込み
+	//攻撃-SE
+	first_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE\\Player\\first_attack_se.wav");
+	second_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE\\Player\\second_attack_se.wav");
+	third_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE\\Player\\third_attack_se.wav");
 	////ジャンプ
 	//jump_se= XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
 	////着地
@@ -756,6 +756,9 @@ void PlayerBase::Player_Attack_two(const float deltaTime) {
 				damage = 2;
 				first_attack_hit = false;
 				first_attack_time = 0.0f;
+
+				//SE
+				first_attack_se->Play();
 			}
 		}
 	}
@@ -781,6 +784,7 @@ void PlayerBase::Attack(const float deltaTime)
 					//エネミーに与えるダメージ
 					damage = 3;
 					Attack_Secnod(deltaTime);
+					second_attack_se->Play();
 				}
 			}
 		}
@@ -794,6 +798,7 @@ void PlayerBase::Attack(const float deltaTime)
 					//エネミーに与えるダメージ
 					damage = 5;
 					Attack_Third(deltaTime);
+					third_attack_se->Play();
 				}
 			}
 		}
