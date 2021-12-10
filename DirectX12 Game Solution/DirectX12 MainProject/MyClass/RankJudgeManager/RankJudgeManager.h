@@ -90,8 +90,9 @@ private:
 	//EXIT
 	DX9::SPRITE exit;
 	SimpleMath::Vector3 exit_pos;
-	float exit_alpha;
-
+	int exit_flash;
+	const int FLASH_MAX = 100;
+	const int FLASH_SPEED = 100;
 
 	const int SPRITE_HIGHT = 720;	//‰æ‘œ‚ÌÅ‘å•\¦‚‚³
 	const int SPRITE_WIDTH = 1280;	//‰æ‘œ‚ÌÅ‘å•\¦•

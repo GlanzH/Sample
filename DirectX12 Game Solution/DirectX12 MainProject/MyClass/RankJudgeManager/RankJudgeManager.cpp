@@ -22,7 +22,7 @@ void RankJudgeManager::Initialize() {
 
 	//EXIT
 	exit_pos = SimpleMath::Vector3(0.0f, 0.0f, 0.0f);
-	exit_alpha = 0.0f;
+	exit_flash = 0;
 
 	//ŽžŠÔ
 	time_delta  = 0.0f;
@@ -83,9 +83,9 @@ void RankJudgeManager::Render() {
 		Rect(0, 0, SPRITE_WIDTH, SPRITE_HIGHT),
 		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, text_alpha));
 
-	DX9::SpriteBatch->DrawSimple(exit.Get(), exit_pos,
-		Rect(0, 0, SPRITE_WIDTH, SPRITE_WIDTH),
-		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, exit_alpha));
+	if (exit_flash % 2 != 0) {
+		DX9::SpriteBatch->DrawSimple(exit.Get(), exit_pos);
+	}
 
 	switch (now_rank)
 	{
@@ -218,8 +218,16 @@ cppcoro::generator<int> RankJudgeManager::ReleaseRank()
 		stop_time += time_delta;
 		co_yield 5;
 	}
-	exit_alpha = COLOR_MAX;
 	stop_time = 0.0f;
 	scene_flag = true;
+
+	while (true) {
+		exit_flash += FLASH_SPEED * time_delta;
+		if (exit_flash > FLASH_MAX) {
+			exit_flash = 0;
+		}
+		co_yield 6;
+	}
+
 	co_return;
 }
