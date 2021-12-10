@@ -185,7 +185,7 @@ void PlayerBase::LoadAssets()
 	material.Diffuse  = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.75f);
 	material.Ambient  = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
-	collision->SetMaterial(material);
+	collision->SetMaterial(material); 
 
 
 	col.sword_box = model->GetBoundingBox();

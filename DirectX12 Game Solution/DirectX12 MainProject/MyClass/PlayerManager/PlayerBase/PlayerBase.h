@@ -29,7 +29,6 @@ public:
 
 	Collisions GetBox() { return col; }
 
-
 	void OnCollisionEnter();
 	void OnParryArea();
 
