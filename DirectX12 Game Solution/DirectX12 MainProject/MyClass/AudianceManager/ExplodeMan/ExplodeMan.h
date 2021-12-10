@@ -17,6 +17,8 @@ private:
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack);
 	DX9::SKINNEDMODEL man;
 
+	std::unique_ptr<SoundEffect>  blow_away;
+
 	enum {
 		EXPLODE_MAN,
 		MAX_MOTION

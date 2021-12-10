@@ -31,6 +31,11 @@ bool EnemyManager::Initialize(PlayerBase* player_base)
 	DX12Effect.Initialize();
 	DX12Effect.Create(L"Effect/EnemyEffect/deathblow_hit/deathblow_hit.efk", "special");
 	DX12Effect.Create(L"Effect/EnemyEffect/boss_death/boss_death.efk", "boss");
+
+	hit  = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/Enemy/hit_se.wav");
+	die  = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/Enemy/enemy_die_se.wav");
+	kill = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/Audience/kill_se.wav");
+
 	player_data = player_base;
 	enemy_base.EffectInit();
 
@@ -78,6 +83,7 @@ void EnemyManager::Iterator() {
 					else
 						DX12Effect.PlayOneShot("boss", (*itr)->GetModel()->GetPosition() + SimpleMath::Vector3(0, 21, 0));
 
+						kill->Play();
 
 				StatusManager::Instance().HeartCount();
 				itr = enemy.erase(itr);
@@ -129,6 +135,7 @@ void EnemyManager::EndTimeStop() {
 }
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
+	 hit->Play();
      base->Damage(player_data->GetDamage());
 	 base->HitEffect();
 
@@ -141,6 +148,7 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 }
 
 void EnemyManager::OnCollisionSpecialMove(EnemyBase* base) {
+	hit->Play();
 	base->Damage(20);
 	
 	auto pos = player_data->GetModel()->GetPosition();
@@ -150,6 +158,7 @@ void EnemyManager::OnCollisionSpecialMove(EnemyBase* base) {
 }
 
 void EnemyManager::OnCollisionAudience(EnemyBase* base) {
+	hit->Play();
 	base->Damage(20);
 
 	auto pos = player_data->GetModel()->GetPosition();

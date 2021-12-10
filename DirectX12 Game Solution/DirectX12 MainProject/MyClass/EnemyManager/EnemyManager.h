@@ -44,8 +44,9 @@ private:
 
 	PlayerBase* player_data;
 
-	DX9::SPRITEFONT font;
 	DX9::SKINNEDMODEL model;
+	
+	std::unique_ptr<SoundEffect> hit,die,kill;
 	
 	int dead_enemy_count = 0;
 	int time_stop_count  = 0;
