@@ -40,6 +40,7 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 		anim_model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
 		anim_model->SetPosition(position);
 		anim_model->SetRotation(0.0f, XMConvertToRadians(anim_init_rotate), 0.0f);
+	
 
 		//” ‚ðì‚é€”õ
 		anim_box = anim_model->GetBoundingBox();

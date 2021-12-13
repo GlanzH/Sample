@@ -7,7 +7,6 @@
 Core::Core()
 {
 }
-
 bool Core::Initialize(std::string tag, bool time_stop_flag, int hp)
 {
 	EnemyBase::Initialize(tag, time_stop_flag, hp);

@@ -75,3 +75,8 @@ private:
 	};	
 	
 };
+//class ShotMaager 
+//{
+//public:
+//	void ShotManager();
+//};
