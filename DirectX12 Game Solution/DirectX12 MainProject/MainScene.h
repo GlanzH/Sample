@@ -92,5 +92,5 @@ private:
 	float range = 0.8f;
 
 	float end_frame = 0.0f;
-	const float max_end = 3.0f;
+	float max_end = FLT_MAX;
 };

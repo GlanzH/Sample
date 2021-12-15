@@ -54,7 +54,7 @@ private:
 	const float max_wait_shot = 1.00f;
 	//!着弾時エフェクト描画時間
 	float landing_effect_frame = 0;
-	const float max_landing    = 0.2f;
+	const float max_landing    = 0.6f;
 	//!最終移動(STOP)待機時間
 	float stop_frame = 0;
 	const float max_stop = 10.0f;
