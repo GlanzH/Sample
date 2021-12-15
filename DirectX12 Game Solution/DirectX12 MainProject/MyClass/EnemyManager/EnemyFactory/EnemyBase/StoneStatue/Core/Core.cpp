@@ -8,12 +8,12 @@ Core::Core()
 {
 }
 
-bool Core::Initialize(std::string tag,SimpleMath::Vector3 speed, int hp)
+bool Core::Initialize(std::string tag, bool time_stop_flag, int hp)
 {
-	EnemyBase::Initialize(tag,speed, hp);
+	EnemyBase::Initialize(tag,time_stop_flag, hp);
 	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/shoot/shoot.efk",      "shoot");
 	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/charge/charge.efk",   "charge");
-	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/landing/landing.efk","landing");
+	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/landing3/landing.efk","landing");
 
 	obstacle_collision = DX9::Model::CreateSphere(DXTK->Device9, 4, 8, 2);
 
@@ -150,7 +150,7 @@ void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 	auto distance_y = SimpleMath::Vector3::Distance(bull_pos,SimpleMath::Vector3(0.0,-10.0f,50.0f)) /3;
 	Vector3 a =SimpleMath::Vector3(distance_x, distance_y,50);
 	a.Normalize();
-	oblique_shooting = sqrt(distance_y * distance_y + distance_x * distance_x);
+	//oblique_shooting = sqrt(distance_y * distance_y + distance_x * distance_x);
 
 	bull_pos.y -= distance_y  * delta+0.28;
 
