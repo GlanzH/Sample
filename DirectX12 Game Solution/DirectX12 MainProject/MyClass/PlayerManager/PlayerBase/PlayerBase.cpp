@@ -4,6 +4,9 @@
 #include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/PlayerManager/PlayerBase/PlayerAttack/PlayerAttack.h"
 
+void PlayerBase::OnDeviceLost() {
+	DX12Effect.Reset();
+}
 
 bool PlayerBase::Initialize()
 {

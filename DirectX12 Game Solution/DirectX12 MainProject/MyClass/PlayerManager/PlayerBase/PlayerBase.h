@@ -52,6 +52,8 @@ public:
 
 	void BrackImage();
 
+	void OnDeviceLost();
+
 
 
 private:
