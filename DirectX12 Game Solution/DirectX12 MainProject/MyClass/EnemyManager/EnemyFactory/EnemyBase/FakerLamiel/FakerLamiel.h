@@ -12,6 +12,7 @@ public:
 
 	bool Initialize(std::string tag, bool time_stop_flag,int hp);
 	int Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
+	void OnDeviceLost();
 	void Render();
 private:
 	void Move();

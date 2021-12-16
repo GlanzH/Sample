@@ -114,6 +114,7 @@ void MainScene::Terminate()
 // Direct3D resource cleanup.
 void MainScene::OnDeviceLost()
 {
+	enemy->OnDeviceLost();
 	DX12Effect.Reset();
 }
 
@@ -132,7 +133,7 @@ NextScene MainScene::Update(const float deltaTime)
 	// TODO: Add your game logic here.
 
 	//!I—¹Žžˆ—
-	auto end_flag = enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum() - 1 || StatusManager::Instance().ReturnAudience() <= 0.0f;
+	auto end_flag = enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum() || StatusManager::Instance().ReturnAudience() <= 0.0f;
 
 	ChangeLightRenge(deltaTime);
 
@@ -156,7 +157,7 @@ NextScene MainScene::Update(const float deltaTime)
 	if (end_flag) {
 		end_frame += deltaTime;
 
-		if (enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum() - 1)
+		if (enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum())
 			max_end = 10.0f;
 		else
 			max_end = 2.0f;

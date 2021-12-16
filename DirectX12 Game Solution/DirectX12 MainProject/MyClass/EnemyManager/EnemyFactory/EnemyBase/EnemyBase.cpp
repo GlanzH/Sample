@@ -128,6 +128,10 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool
 	return 0;
 }
 
+void EnemyBase::OnDeviceLost() {
+	DX12Effect.Reset();
+}
+
 void EnemyBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack)
 {
 	for (int i = 0; i < MAX_MOTION; i++)

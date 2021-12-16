@@ -57,6 +57,10 @@ int Core::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thor
 	return LIVE;
 }
 
+void Core::OnDeviceLost() {
+	DX12Effect.Reset();
+}
+
 void Core::Move(SimpleMath::Vector3 player){
 	switch (action)
 	{

@@ -8,6 +8,7 @@ class HighSlime : public EnemyBase
 public:
 	HighSlime();
 	~HighSlime() {}
+	void OnDeviceLost() {}
 	int Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 
 private:
