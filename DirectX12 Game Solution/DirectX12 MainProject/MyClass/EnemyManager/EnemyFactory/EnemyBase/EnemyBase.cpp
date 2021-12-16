@@ -116,9 +116,9 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool
 
 		if (!reduce_audience_flag) {
 			if(enemy_tag == "S")
-				StatusManager::Instance().AddAudience(3);
+				StatusManager::Instance().AddAudience(6);
 	   else if (enemy_tag == "H")
-				StatusManager::Instance().AddAudience(5);
+				StatusManager::Instance().AddAudience(8);
 			reduce_audience_flag = true;
 		}
 	}
@@ -148,10 +148,7 @@ void EnemyBase::EnemyAnimation() {
 
 void EnemyBase::HitEffect() {
 	//if (enemy_hp > 0) {
-	if (enemy_tag != "C")
 		hit_effect_pos = position;
-	else
-		hit_effect_pos += SimpleMath::Vector3(0,21,50);
 
 		DX12Effect.PlayOneShot("hit_eff", hit_effect_pos);
 	//}
