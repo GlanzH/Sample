@@ -1,3 +1,4 @@
+
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 
@@ -12,7 +13,10 @@ SpotLight::SpotLight()
 //------------------------------------------------------------------------------
 void SpotLight::Init(int num)
 {
-	shader = DX9::Shader::CreateFromFile(DXTK->Device9, L"SpotLight.fx");
+	shader = DX9::Shader::CreateFromFile(DXTK->Device9, L"Shader/SpotLightBone.fx");
+	shader2 = DX9::Shader::CreateFromFile(DXTK->Device9, L"Shader/SpotLight.fx");
+
+
 	m_maxLight = num;
 
 	for (int i = 0; i < m_maxLight; i++)
@@ -26,6 +30,7 @@ void SpotLight::Init(int num)
 		m_lightDir[i] = Vector3(0, -1, 0);
 		m_att[i] = Vector3(0.03f, 0.01f, 0.0f);
 	}
+
 }
 
 //------------------------------------------------------------------------------
@@ -52,11 +57,6 @@ void SpotLight::SetAmbientColor(Vector4 color, int index)
 {
 	auto fixColor = Vector4(color.x / 255.0f, color.y / 255.0f, color.z / 255.0f, color.w);
 	m_ambientColor[index] = fixColor;
-}
-
-void SpotLight::SetAtt(Vector3 att,int index)
-{
-	m_att[index] = att;
 }
 
 //------------------------------------------------------------------------------
@@ -95,7 +95,7 @@ void SpotLight::SetRange(float range, int index)
 //------------------------------------------------------------------------------
 //	モデルの描画前のシェーダー設定 モデル版
 //------------------------------------------------------------------------------
-void SpotLight::PointRender(DX9::CAMERA camera, DX9::MODEL& model)
+void SpotLight::PointRender(DX9::CAMERA camera, DX9::SKINNEDMODEL& model)
 {
 	shader->SetData("g_LightPos" , m_lightsPos, (sizeof(Vector3) * m_maxLight));
 	shader->SetData("g_LightDir", m_lightDir, sizeof(Vector3) * m_maxLight);
@@ -109,17 +109,36 @@ void SpotLight::PointRender(DX9::CAMERA camera, DX9::MODEL& model)
 
 	auto wvp = model->GetWorldTransform() * camera->GetViewProjectionMatrix();
 
-	//shader->SetParameter("g_World", model->GetWorldTransform());
-	//shader->SetParameter("g_View", camera->GetViewMatrix());
-	//shader->SetParameter("g_Projection", camera->GetProjectionMatrix());
 	shader->SetParameter("g_WVP", wvp);
+	shader->SetParameter("g_VP", camera->GetViewProjectionMatrix());
 	shader->SetParameter("g_World", model->GetWorldTransform());
 
-	shader->Begin();
-	shader->BeginPass(0);
+	model->Draw(shader);
+}
+
+void SpotLight::PointRender(DX9::CAMERA camera, DX9::MODEL& model)
+{
+	shader2->SetData("g_LightPos", m_lightsPos, (sizeof(Vector3) * m_maxLight));
+	shader2->SetData("g_LightDir", m_lightDir, sizeof(Vector3) * m_maxLight);
+	shader2->SetData("g_LightAtt", m_att, sizeof(Vector3) * m_maxLight);
+	shader2->SetData("g_Cone", m_cone, sizeof(float) * m_maxLight);
+	shader2->SetData("g_AColor", m_ambientColor, sizeof(Vector4) * m_maxLight);
+	shader2->SetData("g_Color", m_diffuseColor, sizeof(Vector4) * m_maxLight);
+	shader2->SetData("g_LightRange", m_range, sizeof(float) * m_maxLight);
+	shader2->SetData("g_Pow", m_lightsPower, sizeof(float) * m_maxLight);
+	shader2->SetParameter("g_Count", m_maxLight);
+
+	auto wvp = model->GetWorldTransform() * camera->GetViewProjectionMatrix();
+
+	shader2->SetParameter("g_WVP", wvp);
+	shader2->SetParameter("g_VP", camera->GetViewProjectionMatrix());
+	shader2->SetParameter("g_World", model->GetWorldTransform());
+
+	shader2->Begin();
+	shader2->BeginPass(0);
 	model->Draw();
-	shader->EndPass();
-	shader->End();
+	shader2->EndPass();
+	shader2->End();
 }
 
 void SpotLight::ShadeRender(DX9::SKINNEDMODEL& model, SimpleMath::Vector4 color)
@@ -172,22 +191,6 @@ void SpotLight::ShadeRender(DX9::SKINNEDMODEL& model, SimpleMath::Vector4 color)
 	DXTK->Device9->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-//------------------------------------------------------------------------------
-//　アニメーション付きモデル版
-//------------------------------------------------------------------------------
-//void MultiPointLighting::Begin(DX9::CAMERA camera, DX9::SKINNEDMODEL model)
-//{
-//	shader->SetVectorArray("g_vLightPos", m_lightsPos, m_maxLight);
-//	shader->SetVectorArray("g_Diffuse", m_lightsColor, m_maxLight);
-//	shader->SetFloatArray("g_Pow", m_lightsPower, m_maxLight);
-//	shader->SetParameter("g_numLight", m_maxLight);
-//
-//	auto wvp = model->GetWorldTransform() * camera->ViewMatrix * camera->ProjectionMatrix;
-//
-//	shader->SetParameter("g_vEye", (camera->GetForwardVector(), 0));
-//	shader->SetParameter("g_mW", model->GetWorldTransform());
-//	shader->SetParameter("g_mWVP", wvp);
-//
-//	shader->Begin();
-//	shader->BeginPass(0);
-//}
+
+
+
