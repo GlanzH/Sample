@@ -68,6 +68,11 @@ void SpotLight::SetAngle(Vector3 angle, int index)
 	m_lightDir[index].Normalize();
 }
 
+void SpotLight::SetAtt(Vector3 att, int index)
+{
+	m_att[index] = att;
+}
+
 //------------------------------------------------------------------------------
 //	ƒ‰ƒCƒg‚ÌÆ‚ç‚·”ÍˆÍ
 //------------------------------------------------------------------------------

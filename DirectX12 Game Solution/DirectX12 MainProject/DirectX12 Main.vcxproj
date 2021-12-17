@@ -196,6 +196,12 @@
     <ClInclude Include="MyClass\AudianceManager\ExplodeMan\ExplodeMan.h" />
     <ClInclude Include="MyClass\CameraManager\CameraManager.h" />
     <ClInclude Include="MyClass\DialogueManager\DialogueManager.h" />
+    <ClInclude Include="MyClass\DX12SetUp\DX12SetUp.h" />
+    <ClInclude Include="MyClass\DX12SetUp\DX12Shader.h" />
+    <ClInclude Include="MyClass\DX12SetUp\IndexBuffer.h" />
+    <ClInclude Include="MyClass\DX12SetUp\PipeLineState.h" />
+    <ClInclude Include="MyClass\DX12SetUp\RootSignature.h" />
+    <ClInclude Include="MyClass\DX12SetUp\VertexBuffer.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FakerLamiel\FakerLamiel.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\HighSlime\HighSlime.h" />
@@ -213,6 +219,7 @@
     <ClInclude Include="MyClass\PlayerManager\PlayerManager.h" />
     <ClInclude Include="MyClass\RankJudgeManager\RankJudgeManager.h" />
     <ClInclude Include="MyClass\Shader\SpotLight.h" />
+    <ClInclude Include="MyClass\Shader\TextureLight.h" />
     <ClInclude Include="MyClass\StatusManager\StatusManager.h" />
     <ClInclude Include="MyClass\UIManager\UIManager.h" />
     <ClInclude Include="ResultScene.h" />
@@ -252,6 +259,11 @@
     <ClCompile Include="MyClass\DialogueManager\DialogueManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="MyClass\DX12SetUp\DX12Shader.cpp" />
+    <ClCompile Include="MyClass\DX12SetUp\IndexBuffer.cpp" />
+    <ClCompile Include="MyClass\DX12SetUp\PipeLineState.cpp" />
+    <ClCompile Include="MyClass\DX12SetUp\RootSignature.cpp" />
+    <ClCompile Include="MyClass\DX12SetUp\VertexBuffer.cpp" />
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -300,6 +312,7 @@
     <ClCompile Include="MyClass\Shader\SpotLight.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="MyClass\Shader\TextureLight.cpp" />
     <ClCompile Include="MyClass\StatusManager\StatusManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>

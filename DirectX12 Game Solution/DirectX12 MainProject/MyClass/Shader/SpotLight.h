@@ -20,6 +20,7 @@ public:
 	void SetLightColor(Vector4 color,int index);
 	void SetAmbientColor(Vector4 color, int index);
 	void SetAngle(Vector3 angle, int index);
+	void SetAtt(Vector3 att,int index);
 	void SetCone(float angle, int index);
 	void SetPower(float pow, int index);
 	void SetRange(float range, int index);

@@ -46,6 +46,7 @@ void MainScene::Initialize()
 	point.SetAmbientColor(Vector4(0, 0, 255, 1.0f),0);
 	point.SetAtt(Vector3(0.65f, 0.001f, 0), 0);
 	point.SetLightColor(SimpleMath::Vector4(255.0f, 189, 76, 1.0f), 0);
+	texLight.Init();
 
 	enemy->StartTimeStop();
 	end_frame = 0.0f;
@@ -255,6 +256,7 @@ void MainScene::Render()
 
 	DXTK->ResetCommand();
 	DXTK->ClearRenderTarget(DirectX::Colors::CornflowerBlue);
+	texLight.Render();
 
 	const auto heapes = descriptorHeap->Heap();
 	DXTK->CommandList->SetDescriptorHeaps(1, &heapes);

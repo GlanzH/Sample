@@ -17,6 +17,7 @@
 #include "MyClass/DialogueManager/DialogueManager.h"
 #include "MyClass/UIManager/UIManager.h"
 #include "MyClass/Shader//SpotLight.h"
+#include "MyClass/Shader/TextureLight.h"
 
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
@@ -72,6 +73,7 @@ private:
 	UIManager*       ui;
 
 	SpotLight point;
+	TextureLight texLight;
 
 	enum LightMode {
 		IN_ZOOM,
