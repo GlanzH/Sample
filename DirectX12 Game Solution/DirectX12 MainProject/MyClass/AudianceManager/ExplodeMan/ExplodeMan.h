@@ -19,7 +19,8 @@ private:
 
 	std::unique_ptr<SoundEffect>  blow_away;
 
-	enum {
+	enum
+	{
 		EXPLODE_MAN,
 		MAX_MOTION
 	};
