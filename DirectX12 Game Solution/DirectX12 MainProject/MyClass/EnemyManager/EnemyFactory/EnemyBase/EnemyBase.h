@@ -26,7 +26,7 @@ public:
 	void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 	virtual int Update(SimpleMath::Vector3 player,bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 	virtual void Render();
-
+	virtual void OnDeviceLost();
 	void Retreat();
 
 	bool GetTimeStopFlag() { return do_time_stop_flag; }
@@ -104,6 +104,7 @@ protected:
 
 	SimpleMath::Vector3  position;
 	SimpleMath::Vector3  enemy_speed;
+	SimpleMath::Vector3  player_pos;
 
 	std::string enemy_tag;
 

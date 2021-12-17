@@ -76,7 +76,7 @@ NextScene ResultScene::Update(const float deltaTime)
 	// TODO: Add your game logic here.
 
     if (rankjudge.SceneChange()) {
-        if (DXTK->KeyEvent->pressed.Enter ||
+        if (DXTK->KeyEvent->pressed.Space ||
             DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
             return NextScene::TitleScene;
         }

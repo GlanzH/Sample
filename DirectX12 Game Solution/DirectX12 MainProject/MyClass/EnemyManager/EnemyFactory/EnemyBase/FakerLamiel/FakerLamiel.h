@@ -12,6 +12,7 @@ public:
 
 	bool Initialize(std::string tag, bool time_stop_flag,int hp);
 	int Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
+	void OnDeviceLost();
 	void Render();
 private:
 	void Move();
@@ -26,7 +27,7 @@ private:
 	float omen_effect_frame = 0;
 	float fire_effect_frame = 0;
 
-	const float min_down_pos = 15.0f;
+	const float min_down_pos = 13.0f;
 
 	const float max_omen_frame = 3.5f;
 

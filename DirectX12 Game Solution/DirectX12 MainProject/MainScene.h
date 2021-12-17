@@ -48,6 +48,7 @@ public:
 
 
 private:
+	void ChangeBGM(int music_num);
 	void ChangeLightRenge(const float deltaTime);
 
 	DX12::DESCRIPTORHEAP descriptorHeap;
@@ -57,6 +58,9 @@ private:
 	D3DLIGHT9 light{};
 
 	DX9::SHADER shader;
+
+	unique_ptr<SoundEffect> introduct,main,boss;
+	unique_ptr<SoundEffectInstance> loop;
 
 	GroundManager*   ground;
 	CameraManager*   camera;
@@ -74,10 +78,19 @@ private:
 		OUT_ZOOM
 	};
 
+	enum MusicMode {
+		INTRO,
+		MAIN,
+		BOSS
+	};
+
+	int nusic_mode = INTRO;
 	int light_mode = IN_ZOOM;
+
+	bool music_flag = false;
 
 	float range = 0.8f;
 
 	float end_frame = 0.0f;
-	const float max_end = 3.0f;
+	float max_end = FLT_MAX;
 };

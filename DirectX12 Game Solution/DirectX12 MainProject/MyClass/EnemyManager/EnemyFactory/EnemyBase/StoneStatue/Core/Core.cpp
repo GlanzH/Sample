@@ -7,12 +7,13 @@
 Core::Core()
 {
 }
+
 bool Core::Initialize(std::string tag, bool time_stop_flag, int hp)
 {
-	EnemyBase::Initialize(tag, time_stop_flag, hp);
-	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/shoot/shoot.efk", "shoot");
-	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/charge/charge.efk", "charge");
-	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/landing3/landing.efk", "landing");
+	EnemyBase::Initialize(tag,time_stop_flag, hp);
+	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/shoot/shoot.efk",      "shoot");
+	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/charge/charge.efk",   "charge");
+	DX12Effect.Create(L"Effect/EnemyEffect/StatueEffect/landing3/landing.efk","landing");
 
 	obstacle_collision = DX9::Model::CreateSphere(DXTK->Device9, 4, 8, 2);
 
@@ -23,14 +24,12 @@ bool Core::Initialize(std::string tag, bool time_stop_flag, int hp)
 	col.bullet.Center = position;
 	launch_count_count = 0;
 	landing_count = 0;
-	SHOT_SPEED = 1.1;
+
 	return true;
-	return false;
 }
 
 int Core::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime) {
 	
-	bull_pos -= laser_coordinate * SHOT_SPEED;
 	special_flag = special_attack_flag;
 	throw_flag   = thorow_things_flag;
 	delta = deltaTime;
@@ -56,6 +55,10 @@ int Core::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thor
 	obstacle_collision->SetPosition(bull_pos);
 
 	return LIVE;
+}
+
+void Core::OnDeviceLost() {
+	DX12Effect.Reset();
 }
 
 void Core::Move(SimpleMath::Vector3 player){
@@ -147,20 +150,31 @@ void Core::Move(SimpleMath::Vector3 player){
 
 void Core::Shot(SimpleMath::Vector3 init_bull_pos)
 {
-	laser_coordinate = position - player_pos;
-	laser_coordinate.Normalize();
-	laser_coordinate.z = 0.0f;
+	auto distance_x = SimpleMath::Vector3::Distance(bull_pos, player_pos);
+	auto distance_y = SimpleMath::Vector3::Distance(bull_pos,SimpleMath::Vector3(0.0,-10.0f,50.0f)) /3;
+	Vector3 a =SimpleMath::Vector3(distance_x, distance_y,50);
+	a.Normalize();
+	//oblique_shooting = sqrt(distance_y * distance_y + distance_x * distance_x);
+
+	bull_pos.y -= distance_y  * delta+0.28;
+
+	if (bull_pos.x > init_bull_pos.x)
+		bull_pos.x -= distance_x * delta+1.0;
+	else
+		bull_pos.x += distance_x * delta+1.0;
 	if (bull_pos.y > init_bull_pos.y)
 	{
 
-		DX12Effect.PlayOneShot("shoot", bull_pos);
 		DX12Effect.SetPosition("shoot", bull_pos);
+		DX12Effect.Play("shoot");
 	}
 	else
 	{
 		if (landing_effect_frame < max_landing)
 		{
-			DX12Effect.PlayOneShot("landing", bull_pos);
+			DX12Effect.SetPosition("landing", bull_pos);
+			DX12Effect.PlayOneShot("landing");
+			
 			landing_effect_frame += delta;
 		}
 		else
@@ -191,24 +205,3 @@ void Core::Render() {
 	EnemyBase::Render();
 	//obstacle_collision->Draw();
 }
-/*bull_pos -= laser_coordinate * SHOT_SPEED;
-	laser_coordinate = position - player_pos;
-	laser_coordinate.Normalize();
-	laser_coordinate.z = 0.0f;
-
-	landing_effect_frame += delta;
-	if (bull_pos.y >= 0.0 && !landing_flag)
-	{
-		DX12Effect.PlayOneShot("shoot", bull_pos);
-		DX12Effect.SetPosition("shoot", bull_pos);
-		landing_flag = true;
-	}
-		if (landing_flag)
-		{
-			DX12Effect.PlayOneShot("landing", bull_pos);
-
-			landing_effect_frame = 0;
-			wait_shot_frame = 0;
-			launch_count_count++;
-			landing_flag = false;
-		*/

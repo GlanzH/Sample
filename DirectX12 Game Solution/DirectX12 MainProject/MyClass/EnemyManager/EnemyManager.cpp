@@ -81,9 +81,9 @@ void EnemyManager::Iterator() {
 					if ((*itr)->GetTag() != "C")
 						(*itr)->DeathEffect();
 					else
-						DX12Effect.PlayOneShot("boss", (*itr)->GetModel()->GetPosition() + SimpleMath::Vector3(0, 21, 0));
+						DX12Effect.PlayOneShot("boss", (*itr)->GetModel()->GetPosition());
 
-						kill->Play();
+				kill->Play();
 
 				StatusManager::Instance().HeartCount();
 				itr = enemy.erase(itr);
@@ -93,6 +93,14 @@ void EnemyManager::Iterator() {
 				continue;
 			}
 		}
+	}
+}
+
+void EnemyManager::OnDeviceLost() {
+	DX12Effect.Reset();
+
+	for (auto& enemies : enemy) {
+		enemies->OnDeviceLost();
 	}
 }
 
@@ -121,7 +129,7 @@ void EnemyManager::StartTimeStop() {
 }
 
 void EnemyManager::EndTimeStop() {
-	if (DXTK->KeyEvent->pressed.B)
+	if (DXTK->KeyEvent->pressed.B || DXTK->GamePadEvent[0].b == GamePad::ButtonStateTracker::PRESSED)
 		push_count++;
 
 	if (push_count >= 2) {
@@ -199,7 +207,7 @@ void EnemyManager::LoadEnemyArrangement() {
 void EnemyManager::EndEnemy() {
 	for (int i = 0; i < ENEMY_NUM; ++i) {
 		if (tag[i] == "") {
-			enemy_num = i;
+			enemy_num = i - 1;
 			break;
 		}
 	}

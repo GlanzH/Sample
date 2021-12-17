@@ -138,7 +138,6 @@ bool PlayerBase::Initialize()
 	bright_flag = false;
 	Ming_Turn = 55;
 
-	Deathblow_count = 20;
 
 	direction_state_mode = Direction_State::RIGHT;
 
@@ -148,11 +147,11 @@ bool PlayerBase::Initialize()
 
 	cannot_other = CANNOT_OTHER_ATTACK::NOMAL_STATE;
 
-	////プレイヤーのSE ファイル読み込み
-	////攻撃-SE
-	//first_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
-	//second_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
-	//third_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
+	//プレイヤーのSE ファイル読み込み
+	//攻撃-SE
+	first_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE\\Player\\first_attack_se.wav");
+	second_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE\\Player\\second_attack_se.wav");
+	third_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE\\Player\\third_attack_se.wav");
 	////ジャンプ
 	//jump_se= XAudio::CreateSoundEffect(DXTK->AudioEngine, L"");
 	////着地
@@ -173,11 +172,8 @@ void PlayerBase::LoadAssets()
 	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
 
-
-
 	//プレイヤーの当たり判定
 	col.box = model->GetBoundingBox();
-
 	collision = DX9::Model::CreateBox(
 		DXTK->Device9,
 		col.box.Extents.x * player_box_size_x,
@@ -189,13 +185,11 @@ void PlayerBase::LoadAssets()
 	material.Diffuse  = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.75f);
 	material.Ambient  = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
-	collision->SetMaterial(material);
+	collision->SetMaterial(material); 
 
 
 	col.sword_box = model->GetBoundingBox();
-
 	col.sword_box.Extents = SimpleMath::Vector3(col.sword_box.Extents) * 7.0f;
-
 	sword_collision = DX9::Model::CreateBox(
 		DXTK->Device9,
 		col.sword_box.Extents.x * box_size_x,
@@ -204,18 +198,7 @@ void PlayerBase::LoadAssets()
 	);
 
 
-
-	parry_box = model->GetBoundingBox();
-
-	parry_collision = DX9::Model::CreateBox(
-		DXTK->Device9,
-		parry_box.Extents.x * parry_box_size_x,
-		parry_box.Extents.y * parry_box_size_y,
-		parry_box.Extents.z * parry_box_size_z
-	);
-
-	parry_box.Center = model->GetPosition();
-
+	//フォント
 	font = DX9::SpriteFont::CreateDefaultFont(DXTK->Device9);
 
 	deathbrow_sprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"DeathBrowBG\\deathbrow_bg.png");
@@ -290,10 +273,6 @@ int PlayerBase::Update(const float deltaTime)
 	if (attack_zeit >= attack_zeit_max) {
 		attack_flag = false;
 		attack_zeit = 0.0f;
-
-		//effect_generation = false;
-		//effect_generation_time = 0.0f;
-
 	}
 
 	col.box.Center = model->GetPosition();
@@ -349,7 +328,6 @@ void PlayerBase::OnParryArea() {
 	//パリィカウントを増やす
 
 }
-
 void PlayerBase::Parry(const float deltaTime) {
 	if (!parry_flag) {
 		if (DXTK->KeyEvent->pressed.P || DXTK->GamePadEvent[0].leftShoulder) {
@@ -383,6 +361,7 @@ void PlayerBase::Player_move(const float deltaTime)
 		if(!deathbrow_flag){
 			if (!appeil_flag) {
 				if (canot_move_state_mode == CANNOT_MOVE_STATE::MOVE) {
+
 					//プレイヤー:移動(キーボード) & ゲームパッド十字キー
 					if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
 						model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
@@ -665,13 +644,6 @@ void PlayerBase::Player_Attack_two(const float deltaTime) {
 		}
 	}
 
-	//if (DXTK->KeyEvent->pressed.D || DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED ||
-	//	DXTK->KeyEvent->pressed.A || DXTK->GamePadEvent->x == GamePad::ButtonStateTracker::PRESSED ||
-	//	DXTK->KeyEvent->pressed.S || DXTK->GamePadEvent->y == GamePad::ButtonStateTracker::PRESSED)
-	//{
-	//	Attack(deltaTime);
-	//	effect_first_time = 0.0f;
-	//}
 
 	if (motion_flag_1) {
 		if (cannot_other == CANNOT_OTHER_ATTACK::FIRST) {
@@ -784,6 +756,9 @@ void PlayerBase::Player_Attack_two(const float deltaTime) {
 				damage = 2;
 				first_attack_hit = false;
 				first_attack_time = 0.0f;
+
+				//SE
+				first_attack_se->Play();
 			}
 		}
 	}
@@ -809,6 +784,7 @@ void PlayerBase::Attack(const float deltaTime)
 					//エネミーに与えるダメージ
 					damage = 3;
 					Attack_Secnod(deltaTime);
+					second_attack_se->Play();
 				}
 			}
 		}
@@ -822,6 +798,7 @@ void PlayerBase::Attack(const float deltaTime)
 					//エネミーに与えるダメージ
 					damage = 5;
 					Attack_Third(deltaTime);
+					third_attack_se->Play();
 				}
 			}
 		}
@@ -1067,90 +1044,6 @@ void PlayerBase::BrackImage() {
 
 void PlayerBase::_2DRender()
 {
-	//if (invincible_flag) {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 0.0f),
-	//		DX9::Colors::White,
-	//		L"ON"
-	//	);
-	//} else {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 0.0f),
-	//		DX9::Colors::White,
-	//		L"OFF"
-	//	);
-	//}
-
-
-	//if (cannot_other == CANNOT_OTHER_ATTACK::FIRST) {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 20.0f),
-	//		DX9::Colors::White,
-	//		L"ON"
-	//	);
-	//}
-	//else {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 20.0f),
-	//		DX9::Colors::White,
-	//		L"OFF"
-	//	);
-	//}
-
-	//if (cannot_other == CANNOT_OTHER_ATTACK::SECOND) {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 40.0f),
-	//		DX9::Colors::White,
-	//		L"ON"
-	//	);
-	//}
-	//else {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 40.0f),
-	//		DX9::Colors::White,
-	//		L"OFF"
-	//	);
-	//}
-
-	//if (cannot_other == CANNOT_OTHER_ATTACK::THIRD) {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 60.0f),
-	//		DX9::Colors::White,
-	//		L"ON"
-	//	);
-	//}
-	//else {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 60.0f),
-	//		DX9::Colors::White,
-	//		L"OFF"
-	//	);
-	//}
-
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(1000.0f, 80.0f),
-	//	DX9::Colors::White,
-	//	L"%d", StatusManager::Instance().ReturnHeart()
-	//);
-
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(1000.0f, 40.0f),
-	//	DX9::Colors::White,
-	//	L"%f", appeil_time
-	//);
-
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(1000.0f, 80.0f),
-	//	DX9::Colors::White,
-	//	L"%f", effect_generation_time
-	//);
-
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(1000.0f, 100.0f),
-	//	DX9::Colors::Black,
-	//	L"%f %f %f", sword_box.Center.x, sword_box.Center.y, sword_box.Center.z
-	//);
-
 	//DX9::SpriteBatch->DrawString(font.Get(),
 	//	SimpleMath::Vector2(1000.0f, 120.0f),
 	//	DX9::Colors::BlueViolet,

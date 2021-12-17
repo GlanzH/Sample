@@ -81,7 +81,9 @@ bool DX12Effekseer::CEffekseer::Initialize()
 */
 void DX12Effekseer::CEffekseer::Reset()
 {
-
+	m_manager->Release();
+	m_renderer->Release();
+	m_commandListEfk->Release();
 }
 
 /**
@@ -184,6 +186,11 @@ void DX12Effekseer::CEffekseer::PlayOneShot(std::string effectName, Vector3 pos)
 void DX12Effekseer::CEffekseer::Stop(std::string effectName)
 {
 	m_manager->StopEffect(m_handles[effectName]);
+}
+
+void DX12Effekseer::CEffekseer::AllStop()
+{
+	m_manager->StopAllEffects();
 }
 
 /**
