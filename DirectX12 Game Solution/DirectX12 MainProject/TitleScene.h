@@ -38,7 +38,7 @@ public:
 
 	NextScene Update(const float deltaTime) override;
 	void Render() override;
-
+	void Sound();
 private:
     DX12::DESCRIPTORHEAP descriptorHeap;
     DX12::SPRITEBATCH    spriteBatch;
@@ -47,19 +47,33 @@ private:
 private:
 	DX9::SPRITE title;
 	DX9::SPRITE title_logo;
+	DX9::SPRITE opening_buzzer;
 	SimpleMath::Vector3 title_pos;
 
 	DX9::SPRITE vinette;
 	SimpleMath::Vector3 vinette_pos;
-	float vinette_alpha;
 
+	float vinette_alpha;
+	float flashing_alpha;
 	float ui_alpha;
 	float time_delta;
 	float time_stop;
+    float flashing;
 
+	float buzzer_frame;
+	const float buzzer_max = 5.00f;
+	float annouce_frame;
+	const float annouce_max = 5.00f;
+
+	std::unique_ptr<SoundEffect>buzzer, announce;
+	std::unique_ptr<SoundEffectInstance> buzzer_end;
+	std::unique_ptr<SoundEffectInstance> announce_end;
+	bool flashing_alpha_flag;
+	bool announce_flag;
+	bool buzzer_flag;
 	bool opening_flag;
 	bool start_flag;
-
+	bool opencurtain_flag;
 	const float ALPHA_SPEED = 200.0f;
 	
 	const float CURTAIN_UP_SPEED = 130.0f;

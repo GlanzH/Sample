@@ -19,14 +19,23 @@ void TitleScene::Initialize()
     title_pos.y = 0.0f;
     title_pos.z = 1.0f;
 
+    annouce_frame = 0;
+    buzzer_frame = 0;
+    flashing_alpha = 0.0f;
+    flashing = 0;
     opening_flag = false;
     start_flag = false;
+    flashing_alpha_flag = true;
+    announce_flag = false;
+
+    buzzer_flag = false;
+
+    opencurtain_flag = false;
 
     ui_alpha = 255.0f;
     vinette_pos = SimpleMath::Vector3(0.0f, 0.0f, 0.0f);
     vinette_alpha = 255.0f;
     time_stop = 0.0f;
-
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -55,6 +64,11 @@ void TitleScene::LoadAssets()
     title = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/curtain.png");
     title_logo = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/TitleLogo2.png");
     vinette = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/vinette_2.png");
+    opening_buzzer = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/OpeningBuzzer.png");
+    buzzer = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/opening_buzzer.wav");
+    announce = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/kaien.wav");
+     buzzer_end = buzzer->CreateInstance();
+     announce_end = announce->CreateInstance();
 }
 
 // Releasing resources required for termination.
@@ -84,23 +98,56 @@ NextScene TitleScene::Update(const float deltaTime)
 {
 	// If you use 'deltaTime', remove it.
 	UNREFERENCED_PARAMETER(deltaTime);
-
-	// TODO: Add your game logic here.
-
-    time_delta = deltaTime;
-
-    if (opening_flag == false) {
-        if (DXTK->KeyEvent->pressed.Space ||
-            DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
-
-            co_opening = Opening();        // コルーチンの生成
-            co_opening_it = co_opening.begin(); // コルーチンの実行開始
-            
-            opening_flag = true;
-        }
+    if (flashing_alpha_flag)
+    {
+        flashing_alpha += 5;
     }
+    
+	// TODO: Add your game logic here.
+    
+    time_delta = deltaTime;
+            
+    if (opening_flag == false)
+    {
+        if (DXTK->KeyEvent->pressed.Space ||DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) 
+        {
+            announce_flag = true;
+            flashing_alpha_flag = false;
+            if (opencurtain_flag)
+            {
+                co_opening = Opening();        // コルーチンの生成
+                co_opening_it = co_opening.begin(); // コルーチンの実行開始
+            }
+        } 
+        if (announce_flag && annouce_frame < annouce_max)
+        {
+            if (annouce_frame == 0.0)
+            {
+                announce->Play();
+            }
+            annouce_frame += deltaTime;
+        }
+        else if( annouce_frame >= annouce_max)
+        {
+            buzzer_flag = true;
+        }
 
+        if (buzzer_flag && buzzer_frame < buzzer_max)
+        {
+            if (buzzer_frame == 0.0)
+            {
+                buzzer->Play();
+            }
+            buzzer_frame += deltaTime;
+        }
+        else if( buzzer_frame >= buzzer_max)
+        {
+            opencurtain_flag = true;
+        }
 
+    }
+   
+        
     if (co_opening_it != co_opening.end()) {
         co_opening_it++;
     }
@@ -109,7 +156,9 @@ NextScene TitleScene::Update(const float deltaTime)
         co_opening.begin();
     }
 
-    if (start_flag == true) {
+    
+    if (start_flag == true) 
+    {
         return NextScene::MainScene;
     }
     
@@ -129,13 +178,19 @@ void TitleScene::Render()
     
     DX9::SpriteBatch->DrawSimple(
         title_logo.Get(),
-        SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
+        SimpleMath::Vector3(0.0f, -100.0f, 0.0f),
         RectWH(0, 0, 1280, 720),
         DX9::Colors::RGBA(255, 255, 255, ui_alpha)
     );
 
     DX9::SpriteBatch->DrawSimple(vinette.Get(), vinette_pos,
         Rect(0, 0, 1280, 720), DX9::Colors::RGBA(255, 255, 255, vinette_alpha));
+    if (flashing_alpha_flag)
+    {
+        DX9::SpriteBatch->DrawSimple(opening_buzzer.Get(), SimpleMath::Vector3(550.0f, 500.0f, 0.0f), RectWH(0, 0, 1280, 720)
+            , DX9::Colors::RGBA(255, 255, 255, flashing_alpha));
+    }
+   
 
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();
@@ -160,6 +215,29 @@ void TitleScene::Render()
     DXTK->ExecuteCommandList();
 }
 
+void TitleScene::Sound()
+{
+    if (announce_flag)
+    {
+        auto state = announce_end->GetState();
+        // announce->Play();
+        if (state == SoundState::STOPPED)
+        {
+            announce_flag = false;
+            buzzer_flag = true;
+        }
+    }
+    if (buzzer_flag)
+    {
+        auto a = buzzer_end->GetState();
+        //  buzzer->Play();
+        if (a == SoundState::STOPPED)
+        {
+            buzzer_flag = false;
+            opencurtain_flag = true;
+        }
+    }
+}
 
 cppcoro::generator<int> TitleScene::Opening() {
     co_yield 0;
@@ -187,3 +265,4 @@ cppcoro::generator<int> TitleScene::Opening() {
 
     co_return;
 }
+
