@@ -195,6 +195,9 @@
     <ClInclude Include="MyClass\DialogueManager\DialogueManager.h">
       <Filter>MyClass\DialogueManager</Filter>
     </ClInclude>
+    <ClInclude Include="EndingScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -283,6 +286,9 @@
     </ClCompile>
     <ClCompile Include="MyClass\DialogueManager\DialogueManager.cpp">
       <Filter>MyClass\DialogueManager</Filter>
+    </ClCompile>
+    <ClCompile Include="EndingScene.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

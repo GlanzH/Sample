@@ -207,7 +207,8 @@ void EnemyManager::LoadEnemyArrangement() {
 void EnemyManager::EndEnemy() {
 	for (int i = 0; i < ENEMY_NUM; ++i) {
 		if (tag[i] == "") {
-			enemy_num = i - 1;
+			//enemy_num = i - 1;
+			enemy_num = i;
 			break;
 		}
 	}
