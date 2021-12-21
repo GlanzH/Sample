@@ -47,6 +47,9 @@ void MainScene::Initialize()
 	point.SetAtt(Vector3(0.65f, 0.001f, 0), 0);
 	point.SetLightColor(SimpleMath::Vector4(255.0f, 189, 76, 1.0f), 0);
 
+	font   = DX9::SpriteFont::CreateFromFontFile(DXTK->Device9,L"衡山毛筆フォント.ttf", L"衡山毛筆フォント", 250);
+	se     = std::make_unique<SoundEffect>(DXTK->AudioEngine,L"dora.wav");
+
 	enemy->StartTimeStop();
 	end_frame = 0.0f;
 }
@@ -131,7 +134,6 @@ NextScene MainScene::Update(const float deltaTime)
 	UNREFERENCED_PARAMETER(deltaTime);
 
 	// TODO: Add your game logic here.
-
 	//!終了時処理
 	auto end_flag = enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum() || StatusManager::Instance().ReturnAudience() <= 0.0f;
 
@@ -156,6 +158,12 @@ NextScene MainScene::Update(const float deltaTime)
 	
 	if (end_flag) {
 		end_frame += deltaTime;
+		end_a_play_flag = true;
+
+		if (!se_flag) {
+			se->Play();
+			se_flag = true;
+		}
 
 		if (enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum())
 			max_end = 10.0f;
@@ -243,6 +251,14 @@ void MainScene::Render()
 	player->_2DRender();
 	player->BrackImage();
 	SceneManager::Instance().Render();
+
+	if (end_a_play_flag) {
+		DX9::SpriteBatch->DrawString(font.Get(),
+			SimpleMath::Vector2(130.0f, 200.0f),
+			DX9::Colors::Red,
+			L"劇 終"
+		);
+	}
 
 	if (enemy->IsTimeStop())
 		dialogue->Render(enemy->GetTimeStopCount());

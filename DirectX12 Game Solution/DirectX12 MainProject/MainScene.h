@@ -58,6 +58,8 @@ private:
 	D3DLIGHT9 light{};
 
 	DX9::SHADER shader;
+	DX9::SPRITEFONT font;
+	std::unique_ptr<SoundEffect> se;
 
 	unique_ptr<SoundEffect> introduct,main,boss;
 	unique_ptr<SoundEffectInstance> loop;
@@ -88,6 +90,8 @@ private:
 	int light_mode = IN_ZOOM;
 
 	bool music_flag = false;
+	bool se_flag = false;
+	bool end_a_play_flag = false;
 
 	float range = 0.8f;
 

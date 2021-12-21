@@ -85,9 +85,6 @@
     <Filter Include="MyClass\DialogueManager">
       <UniqueIdentifier>{22c7b9e1-5606-4f7c-8da4-0c19880adca7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\PlayerManager\LandingAttackClass">
-      <UniqueIdentifier>{b82d58e2-d3ec-4320-9a59-8abd9e78f56b}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -198,8 +195,8 @@
     <ClInclude Include="MyClass\DialogueManager\DialogueManager.h">
       <Filter>MyClass\DialogueManager</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\PlayerManager\LandingAttackClass\LandingAttackClass.h">
-      <Filter>MyClass\PlayerManager\LandingAttackClass</Filter>
+    <ClInclude Include="EndingScene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -290,8 +287,8 @@
     <ClCompile Include="MyClass\DialogueManager\DialogueManager.cpp">
       <Filter>MyClass\DialogueManager</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\PlayerManager\LandingAttackClass\LandingAttackClass.cpp">
-      <Filter>MyClass\PlayerManager\LandingAttackClass</Filter>
+    <ClCompile Include="EndingScene.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

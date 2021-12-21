@@ -191,6 +191,7 @@
     <ClInclude Include="Base\pch.h" />
     <ClInclude Include="Base\StepTimer.h" />
     <ClInclude Include="DontDestroyOnLoad.h" />
+    <ClInclude Include="EndingScene.h" />
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="MyClass\AudianceManager\AudianceManager.h" />
     <ClInclude Include="MyClass\AudianceManager\ExplodeMan\ExplodeMan.h" />
@@ -237,6 +238,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="EndingScene.cpp" />
     <ClCompile Include="MainScene.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
