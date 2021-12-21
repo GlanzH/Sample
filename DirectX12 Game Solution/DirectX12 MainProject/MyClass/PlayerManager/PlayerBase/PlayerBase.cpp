@@ -1,9 +1,7 @@
 #include "PlayerBase.h"
-
-
 #include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/PlayerManager/PlayerBase/PlayerAttack/PlayerAttack.h"
-
+#include"MyClass/PlayerManager/LandingAttackClass/LandingAttackClass.h"
 
 bool PlayerBase::Initialize()
 {
@@ -205,15 +203,15 @@ void PlayerBase::LoadAssets()
 
 	//エフェクト　ファイル読み込み
 	DX12Effect.Initialize();
-	DX12Effect.Create(L"Effect\\SwordEffect\\one\\first_attack.efk","first");
-	DX12Effect.Create(L"Effect\\SwordEffect\\two\\second_attack.efk","second");
-	DX12Effect.Create(L"Effect\\SwordEffect\\three\\third_attack.efk","third");
+	//DX12Effect.Create(L"Effect\\SwordEffect\\one\\first_attack.efk","first");
+	//DX12Effect.Create(L"Effect\\SwordEffect\\two\\second_attack.efk","second");
+	//DX12Effect.Create(L"Effect\\SwordEffect\\three\\third_attack.efk","third");
 
 	//必殺技のエフェクト
-	DX12Effect.Create(L"Effect\\DeathBlow_Effect\\deathblow\\deathblow.efk", "deathblow_effect");
+	//DX12Effect.Create(L"Effect\\DeathBlow_Effect\\deathblow\\deathblow.efk", "deathblow_effect");
 
 	//パリィのエフェクト
-	DX12Effect.Create(L"Effect\\Parry_Effect\\parry\\parry.efk", "parry_effect");
+	//DX12Effect.Create(L"Effect\\Parry_Effect\\parry\\parry.efk", "parry_effect");
 
 }
 
@@ -250,9 +248,13 @@ int PlayerBase::Update(const float deltaTime)
 
 	//無敵時間
 	Invincible(deltaTime);
-
+	///
+	//tarai_attack(enemy);
 	StatusManager::Instance().Update(deltaTime);
-
+	if (DXTK->KeyEvent->pressed.Q)
+	{
+		fall.Update();
+	}
 
 
 	//攻撃の向き
@@ -890,9 +892,6 @@ void PlayerBase::Attack_Third(const float deltaTime) {
 
 }
 
-
-
-
 void PlayerBase::Player_Special_Move(const float deltaTime) {
 	if (!jump_flag_) {
 		if (!appeil_flag ) {
@@ -955,7 +954,6 @@ void PlayerBase::Player_Special_Move(const float deltaTime) {
 		//必殺技ゲージリセット呼び出し
 		StatusManager::Instance().HeartReset();
 	}
-
 }
 
 bool PlayerBase::IsAttack() {
@@ -1010,7 +1008,7 @@ void PlayerBase::Appeal(const float deltaTime)
 		appeil_time += deltaTime;
 	}
 
-	if (appeil_time >= appeil_time_max) {//ボタン話したときもNOMALに戻す
+	if (appeil_time >= appeil_time_max) {//ボタン離したときもNOMALに戻す
 		appeil_flag = false;
 		model->SetTrackPosition(APPEIL, 0.0);
 		appeil_cool_flag = true;

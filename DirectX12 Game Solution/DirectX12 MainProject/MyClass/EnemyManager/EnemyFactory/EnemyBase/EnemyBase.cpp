@@ -9,7 +9,7 @@ EnemyBase::EnemyBase()
 
 bool EnemyBase::EffectInit() {
 	DX12Effect.Initialize();
-	DX12Effect.Create(L"Effect/EnemyEffect/hit/hit.efk", "hit_eff");
+	DX12Effect.Create(L"Effect/EnemyEffect/hit2/hit2.efk", "hit_eff");
 	DX12Effect.Create(L"Effect/EnemyEffect/die/die.efk", "die");
 	DX12Effect.Create(L"Effect/AudienceEffect/heart/heart.efk", "love");
 	death_effect_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);

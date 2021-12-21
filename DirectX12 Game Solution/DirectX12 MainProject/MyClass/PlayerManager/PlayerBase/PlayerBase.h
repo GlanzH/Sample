@@ -5,6 +5,7 @@
 #include "Base/dxtk.h"
 
 #include "MyClass/PlayerManager/PlayerBase/PlayerAttack/PlayerAttack.h"
+#include "MyClass/PlayerManager/LandingAttackClass/LandingAttackClass.h"
 
 using namespace DirectX;
 
@@ -86,6 +87,7 @@ private:
 	void Attack_Secnod(const float deltaTime);
 	//エフェクト3撃目
 	void Attack_Third(const float deltaTime);
+	
 
 	DX9::SPRITEFONT font;
 
@@ -95,12 +97,14 @@ private:
 	BoundingBox sword_box;
 	BoundingBox box;
 
+	DX9::MODEL T;
 
 	//当たり判定用モデル
 	DX9::MODEL sword_collision;
 	DX9::MODEL collision;
 	Collisions col;
 
+	LandingAttackClass fall;
 	int damage = 0;
 
 	//プレイヤー
@@ -355,6 +359,7 @@ private:
 	//アピール
 	XAudio::SOUNDEFFECT appeal_se;
 
+	
 
 
 	
