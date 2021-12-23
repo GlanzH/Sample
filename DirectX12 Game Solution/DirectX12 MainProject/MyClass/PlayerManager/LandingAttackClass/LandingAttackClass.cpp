@@ -1,16 +1,21 @@
 #include "LandingAttackClass.h"
 
 
+void LandingAttackClass::Initialize()
+{
+}
+
 void LandingAttackClass::LoadAseets()
 {
 	tarai = DX9::Model::CreateFromFile(DXTK->Device9, L"Model/tarai/tarai.X");
+	tarai->SetPosition(tarai_pos);
 }
 
 void LandingAttackClass::Update()
 {
 	tarai_pos.y = tarai_pos.y - deltaTime;
-	tarai_attack(enemy_pos);
-	tarai->SetPosition(tarai_pos);
+	tarai_attack(tarai_pos);
+
 }
 
 void LandingAttackClass::Render()

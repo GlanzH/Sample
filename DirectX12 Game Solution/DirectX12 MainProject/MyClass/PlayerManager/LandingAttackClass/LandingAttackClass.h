@@ -11,6 +11,7 @@ class LandingAttackClass
 public:
 	LandingAttackClass() {};
 	~LandingAttackClass() {};
+	void Initialize();
 	void LoadAseets();
 	void Update();
 	void Render();

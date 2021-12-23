@@ -53,7 +53,7 @@ void EndScene::LoadAssets()
     continued = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Ending/ToBeContinued.png");
     curtain = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/curtain_bright.png");
 
-    bgm = make_unique<SoundEffect>(DXTK->AudioEngine, L"Ending/プロジェクトA-FULL.wav");
+    bgm = make_unique<SoundEffect>(DXTK->AudioEngine, L"Ending/コンギョ.wav");
     loop = bgm->CreateInstance();
     loop->Play(false);
 }
