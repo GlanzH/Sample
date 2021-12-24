@@ -6,8 +6,8 @@
 #include "cppcoro/generator.h"
 
 #include "Scene.h"
-#include "MyClass/GroundManager/GroundManager.h"
-#include "MyClass/CameraManager/CameraManager.h"
+#include "MyClass/Ground/Ground.h"
+#include "MyClass/Camera/C_Camera.h"
 #include "MyClass/PlayerManager/PlayerManager.h"
 #include "MyClass/AudianceManager/AudianceManager.h"
 

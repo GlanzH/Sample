@@ -6,11 +6,11 @@
 
 using namespace DirectX;
 
-class CameraManager
+class C_Camera
 {
 public:
-	CameraManager() {};
-	~CameraManager() {};
+	C_Camera() {};
+	~C_Camera() {};
 
 	bool Initialize();
 	void LoadAsset();

@@ -5,10 +5,10 @@
 
 using namespace DirectX;
 
-class GroundManager {
+class Ground {
 public:
-	GroundManager() {};
-	~GroundManager() {};
+	Ground() {};
+	~Ground() {};
 
 	void LoadAsset();
 	void Render();

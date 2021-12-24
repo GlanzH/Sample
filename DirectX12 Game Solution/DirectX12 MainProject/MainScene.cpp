@@ -9,8 +9,6 @@
 // Initialize member variables.
 MainScene::MainScene(): dx9GpuDescriptor{}
 {
-	camera   = new CameraManager;
-	ground   = new GroundManager;
 	player   = new PlayerBase;
 	enemy    = new EnemyManager;
 	audience = new AudienceManager;
@@ -20,8 +18,6 @@ MainScene::MainScene(): dx9GpuDescriptor{}
 }
 
 MainScene::~MainScene() {
-	delete camera;
-	delete ground;
 	delete player;
 	delete enemy;
 	delete audience;
@@ -37,7 +33,7 @@ void MainScene::Initialize()
 {
 	//•Ï”‚âŠÖ”‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 	player->Initialize();
-	camera->Initialize();
+	camera.Initialize();
 	enemy->Initialize(player);
 	SceneManager::Instance().Initialize();
 	StatusManager::Instance().Initialize();
@@ -94,7 +90,7 @@ void MainScene::LoadAssets()
 	//music_flag = false;
 	//ChangeBGM(INTRO);
 
-	ground->LoadAsset();
+	ground.LoadAsset();
 	player->LoadAssets();
 	audience->LoadAssets();
 	dialogue->LoadAssets();
@@ -142,7 +138,7 @@ NextScene MainScene::Update(const float deltaTime)
 		player->Update(deltaTime);
 		enemy->Update(player->GetModel()->GetPosition(), player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
 		audience->Update(player->GetAppielTime(), player->GetAppealCoolFlag(), player->GetSpecialAttackFlag(), deltaTime);
-		camera->Update(player, OUT_ZOOM, deltaTime);
+		camera.Update(player, OUT_ZOOM, deltaTime);
 		observer->Update(player, enemy, audience);
 		dialogue->ResetCount();
 
@@ -151,7 +147,7 @@ NextScene MainScene::Update(const float deltaTime)
 	}
 	else {
 		dialogue->AddCount(enemy->IsTimeStop());
-		camera->Update(player, IN_ZOOM, deltaTime);
+		camera.Update(player, IN_ZOOM, deltaTime);
 		light_mode = IN_ZOOM;
 	}
 	
@@ -224,12 +220,12 @@ void MainScene::Render()
 	DXTK->Direct3D9->BeginScene();
 
 	//3D•`‰æ
-	DX12Effect.SetCamera((DX12::CAMERA)camera->GetCamera());
-	camera->Render();
+	DX12Effect.SetCamera((DX12::CAMERA)camera.GetCamera());
+	camera.Render();
 
 	
 	point.SetPower(1.0f,0);
-	point.PointRender(camera->GetCamera(), ground->GetModel());
+	point.PointRender(camera.GetCamera(), ground.GetModel());
 	
 	point.ShadeRender(player->GetModel(),SimpleMath::Vector4(0,0,1,0.3f));
 

@@ -5,13 +5,12 @@
 #pragma once
 
 #include "Scene.h"
-#include "MyClass/GroundManager/GroundManager.h"
-#include "MyClass/CameraManager/CameraManager.h"
+#include "MyClass/Ground/Ground.h"
+#include "MyClass/Camera/C_Camera.h"
 #include "MyClass/PlayerManager/PlayerManager.h"
 #include "MyClass/AudianceManager/AudianceManager.h"
 #include "MyClass/EnemyManager/EnemyManager.h"
 #include "MyClass/Observer/Observer.h"
-#include "MyClass/CameraManager/CameraManager.h"
 #include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/GameSceneManager/SceneManager.h"
 #include "MyClass/DialogueManager/DialogueManager.h"
@@ -23,7 +22,7 @@ using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
 using std::make_unique;
 using namespace DirectX;
-using namespace DX9;
+
 class MainScene final : public Scene {
 public:
 	MainScene();
@@ -63,8 +62,8 @@ private:
 	unique_ptr<SoundEffect> introduct,main,boss;
 	unique_ptr<SoundEffectInstance> loop;
 
-	GroundManager*   ground;
-	CameraManager*   camera;
+	Ground           ground;
+	C_Camera         camera;
 	PlayerBase*      player;
 	EnemyManager*    enemy;
 	AudienceManager* audience;
