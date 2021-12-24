@@ -219,6 +219,7 @@ void PlayerBase::LoadAssets()
 
 int PlayerBase::Update(const float deltaTime)
 {
+	//is_scaffold = foot_hold_flag;
 
 	//モデル　アニメーション
 	SetAnimation(model, STAND);
@@ -395,6 +396,13 @@ void PlayerBase::Player_limit()
 	model->SetPosition(p_pos);
 }
 
+float PlayerBase::LimitLandingPoint(bool scaffold_flag) {
+	if (scaffold_flag)
+		return 7.0f;
+
+	return 0.65f;
+}
+
 void PlayerBase::Player_jump(const float deltaTime) {
 	//ジャンプ
 	if (!invincible_flag) {
@@ -426,7 +434,7 @@ void PlayerBase::Player_jump(const float deltaTime) {
 		pos.y = jump_start_v_ + V0 * jump_time_ - 0.5f * gravity_ * jump_time_ * jump_time_;
 		model->SetPosition(pos);
 
-		if (model->GetPosition().y <= 0.65f) {
+		if (model->GetPosition().y <= LimitLandingPoint(is_scaffold)) {
 			jump_flag_ = false;
 			jump_start_flag = false;
 			jump_start_time = 0.0f;

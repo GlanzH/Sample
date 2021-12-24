@@ -47,7 +47,6 @@ public:
 
 	bool GetSpecialAttackFlag() { return special_attack_flag; }
 
-
 	void _2DRender();
 
 	void BrackImage();
@@ -77,6 +76,9 @@ private:
 
 	//プレイヤーの攻撃(ボタン変更ver)
 	void Player_Attack_two(const float deltaTime);
+
+	//着地点制限
+	float LimitLandingPoint(bool scaffold_flag);
 
 	void Attack(const float deltaTime);
 
@@ -152,6 +154,7 @@ private:
 	float		 parry_count = 0.0f;
 	bool	     parry_flag = false;
 
+	bool is_scaffold = false;
 
 	//必殺技
 	bool special_attack_flag;

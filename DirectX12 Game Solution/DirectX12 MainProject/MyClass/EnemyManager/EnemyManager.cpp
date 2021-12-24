@@ -143,16 +143,17 @@ void EnemyManager::EndTimeStop() {
 }
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
-	 hit->Play();
-     base->Damage(player_data->GetDamage());
-	 base->HitEffect();
-
 	 std::string tag = base->GetTag();
+	
+		 hit->Play();
+		 base->Damage(player_data->GetDamage());
+		 base->HitEffect();
 
-	 if (tag != "C") {
-		 if (StatusManager::Instance().GetCombo() == max_combo)
-			 base->Retreat();
-	 }	
+
+		 if (tag != "C") {
+			 if (StatusManager::Instance().GetCombo() == max_combo)
+				 base->Retreat();
+		 }
 }
 
 void EnemyManager::OnCollisionSpecialMove(EnemyBase* base) {

@@ -85,6 +85,12 @@
     <Filter Include="MyClass\DialogueManager">
       <UniqueIdentifier>{22c7b9e1-5606-4f7c-8da4-0c19880adca7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FootHoldBase">
+      <UniqueIdentifier>{25320ddd-ccf4-46bc-b090-0e497f473882}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FootHoldBase\FootHold">
+      <UniqueIdentifier>{413525c4-fa86-4b5a-bef9-2c17e593d702}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -195,6 +201,12 @@
     <ClInclude Include="MyClass\DialogueManager\DialogueManager.h">
       <Filter>MyClass\DialogueManager</Filter>
     </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FootHold\FootHoldBase\FootHoldBase.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\FootHoldBase</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FootHold\FootHold.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\FootHoldBase\FootHold</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -283,6 +295,12 @@
     </ClCompile>
     <ClCompile Include="MyClass\DialogueManager\DialogueManager.cpp">
       <Filter>MyClass\DialogueManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FootHold\FootHoldBase\FootHoldBase.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\FootHoldBase</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FootHold\FootHold.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\FootHoldBase\FootHold</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -22,14 +22,16 @@ public:
 	std::vector<EnemyBase*> GetEnemy() { return enemy; }
 	int  GetDeathEnemyCount()		   { return dead_enemy_count; }
 	int  GetTimeStopCount()			   { return time_stop_count; }
+	bool GetFootHoldFlag()             { return foot_hold_flag; }
+
 
 	int  GetEnemyNum() { return enemy_num; }
 	void StartTimeStop();
 	void EndTimeStop();
 	bool IsTimeStop() { return enemy_stop_flag; }
-	bool EndWaitTime();
 
 	void OnCollisionEnter(EnemyBase* base);
+	void NotCollisionEnter(EnemyBase* base);
 	void OnCollisionAudience(EnemyBase* base);
 	void OnCollisionSpecialMove(EnemyBase* base);
 private:
@@ -63,6 +65,7 @@ private:
 
 	bool enemy_stop_flag   = false;
 	bool special_move_flag = false;
+	bool foot_hold_flag    = false;
 
 	const int max_combo = 3;
 

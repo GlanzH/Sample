@@ -67,7 +67,6 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 		//” ‚ðì‚é€”õ
 		col.box = model->GetBoundingBox();
 
-		col.box.Extents = SimpleMath::Vector3(col.box.Extents);
 
 		//ƒRƒŠƒWƒ‡ƒ“ƒ‚ƒfƒ‹‚Ìì¬
 		collision = DX9::Model::CreateBox(
@@ -79,7 +78,7 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 
 		collision->SetMaterial(material);
 
-		//col.box.Center = position;
+		col.box.Center = position;
 	}
 
 	explode.LoadAssets(initial_position.x);
@@ -237,6 +236,6 @@ void EnemyBase::Render() {
 	}
 	else {
 		model->Draw();
-		//collision->Draw();
+		collision->Draw();
 	}
 }

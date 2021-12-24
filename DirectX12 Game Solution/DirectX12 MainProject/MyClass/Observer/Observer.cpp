@@ -23,11 +23,11 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 		}
 
 		//!ƒvƒŒƒCƒ„[MODELŒ^“–‚½‚è”»’è
-		if(player->GetBox().box.Intersects(enemies_roop->GetBox().box)    ||
-		   player->GetBox().box.Intersects(enemies_roop->GetBox().bullet) ||
-			player->GetBox().box.Intersects(enemies_roop->GetBox().fire)) {
-			player->OnCollisionEnter();
-		}
+  	    if (player->GetBox().box.Intersects(enemies_roop->GetBox().box) ||
+  	    	player->GetBox().box.Intersects(enemies_roop->GetBox().bullet) ||
+  	    	player->GetBox().box.Intersects(enemies_roop->GetBox().fire)) {
+  	    	player->OnCollisionEnter();
+  	    }
 
 		if (player->GetSpecialAttackFlag()) {
 			if (audience->GetBox().lv2_box.Intersects(enemies_roop->GetAnimBox())) {

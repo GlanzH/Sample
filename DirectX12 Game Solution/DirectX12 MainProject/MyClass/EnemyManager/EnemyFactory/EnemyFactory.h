@@ -33,13 +33,30 @@ private:
 	int faker_lamiel_hp;
 	int stone_statue_hp;
 	int stone_statue_core_hp;
+	int foot_hold_hp;
 	std::vector<std::string> enemy_tag;
 
-	LPCWSTR enemy_model[5];
-	LPCWSTR model_name;
 	/**
 　　* @enum EnemyType
 　　* 敵の種類
 　　*/
-	enum EnemyType { SLIME, HIGH_SLIME, FAKER_LAMIEL, STONE_STATUE,STONE_CORE };
+	enum EnemyType { 
+		SLIME,
+		HIGH_SLIME,
+		FAKER_LAMIEL,
+		STONE_STATUE,
+		STONE_CORE,
+		FOOT_HOLD,
+		MODEL_MAX
+	};
+
+	enum EnemyHp {
+		SLIME_HP      =  2,
+		HIGH_SLIME_HP =  7,
+		LAMIEL_HP     = 30,
+		STONE_CORE_HP = 60
+	};
+
+	LPCWSTR enemy_model[MODEL_MAX];
+	LPCWSTR model_name;
 };

@@ -142,7 +142,7 @@ NextScene MainScene::Update(const float deltaTime)
 		enemy->Update(player->GetModel()->GetPosition(), player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
 		audience->Update(player->GetAppielTime(), player->GetAppealCoolFlag(), player->GetSpecialAttackFlag(), deltaTime);
 		camera->Update(player, OUT_ZOOM, deltaTime);
-		observer->Update(player, enemy, audience);
+		observer->Update(player, enemy,audience);
 		dialogue->ResetCount();
 
 		//ChangeBGM(MAIN);
