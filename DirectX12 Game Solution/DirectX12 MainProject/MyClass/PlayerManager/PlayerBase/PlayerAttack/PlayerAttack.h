@@ -11,19 +11,12 @@ using namespace DirectX;
 class PlayerAttack
 {
 public:
-	 PlayerAttack(){};
-	~PlayerAttack(){};
+	 PlayerAttack();
+	 virtual ~PlayerAttack() = 0;
 	
 	void LoadAssets();
 
 	void Player_Attack(const float deltaTime);
 
 private:
-	enum ATTACK_BURST_STATE
-	{
-		ONE,
-		TWO,
-		THREE
-	};
-	ATTACK_BURST_STATE attack_burst_state;
 };
