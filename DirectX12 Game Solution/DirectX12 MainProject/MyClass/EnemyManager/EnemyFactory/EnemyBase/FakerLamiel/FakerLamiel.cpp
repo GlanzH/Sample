@@ -57,6 +57,9 @@ int FakerLamiel::Update(SimpleMath::Vector3 player, bool special_attack_flag, bo
 
 	return 0;
 }
+void FakerLamiel::OnDeviceLost() {
+	DX12Effect.Reset();
+}
 
 void FakerLamiel::Move()
 {

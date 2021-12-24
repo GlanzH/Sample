@@ -49,6 +49,7 @@ namespace DX12Effekseer
 		void PlayOneShot(std::string effectName);
 		void PlayOneShot(std::string effectName,Vector3 pos);
 		void Stop(std::string effectName);
+		void AllStop();
 		void Pause(std::string effectName);
 
 		void SetPosition(std::string effectName,Vector3 effectPosition);

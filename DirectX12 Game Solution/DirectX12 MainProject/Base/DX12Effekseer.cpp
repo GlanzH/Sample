@@ -188,6 +188,11 @@ void DX12Effekseer::CEffekseer::Stop(std::string effectName)
 	m_manager->StopEffect(m_handles[effectName]);
 }
 
+void DX12Effekseer::CEffekseer::AllStop()
+{
+	m_manager->StopAllEffects();
+}
+
 /**
 	@brief	エフェクトの一時停止　再生
 	@param	effectName エフェクト名

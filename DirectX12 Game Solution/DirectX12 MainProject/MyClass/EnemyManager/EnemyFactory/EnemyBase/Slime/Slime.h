@@ -8,6 +8,7 @@ class Slime : public EnemyBase
 public:
 	Slime() {};
 	~Slime() {}
+	void OnDeviceLost() {}
 	int Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 
 private:

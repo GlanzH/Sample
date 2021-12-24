@@ -1,6 +1,6 @@
-#include "CameraManager.h"
+#include "C_Camera.h"
 
-bool CameraManager::Initialize() {
+bool C_Camera::Initialize() {
 	//ƒJƒƒ‰‚ÌˆÊ’u
 	camera->SetView(SimpleMath::Vector3(0.0f, fixed_pos, 20.0f), SimpleMath::Vector3::Zero);
 
@@ -12,11 +12,11 @@ bool CameraManager::Initialize() {
 	return true;
 }
 
-void CameraManager::LoadAsset() {
+void C_Camera::LoadAsset() {
 
 }
 
-int CameraManager::Update(PlayerBase* base,int camera_pos_num,const float deltaTime) {
+int C_Camera::Update(PlayerBase* base,int camera_pos_num,const float deltaTime) {
 	if (base->GetAppielTime() > 0 || camera_pos_num == IN_ZOOM)
 		camera_z -= 15.f * deltaTime;
 	else if (base->GetAppealCoolFlag())
@@ -29,6 +29,6 @@ int CameraManager::Update(PlayerBase* base,int camera_pos_num,const float deltaT
 	return 0;
 }
 
-void CameraManager::Render() {
+void C_Camera::Render() {
 	DXTK->Direct3D9->SetCamera(camera);
 }

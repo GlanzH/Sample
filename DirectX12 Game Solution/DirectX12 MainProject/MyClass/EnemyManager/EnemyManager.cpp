@@ -96,6 +96,14 @@ void EnemyManager::Iterator() {
 	}
 }
 
+void EnemyManager::OnDeviceLost() {
+	DX12Effect.Reset();
+
+	for (auto& enemies : enemy) {
+		enemies->OnDeviceLost();
+	}
+}
+
 void EnemyManager::Generator() {
 	std::unique_ptr<EnemyFactory> factory = std::make_unique<EnemyFactory>();
 
@@ -199,7 +207,7 @@ void EnemyManager::LoadEnemyArrangement() {
 void EnemyManager::EndEnemy() {
 	for (int i = 0; i < ENEMY_NUM; ++i) {
 		if (tag[i] == "") {
-			enemy_num = i;
+			enemy_num = i - 1;
 			break;
 		}
 	}

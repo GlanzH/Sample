@@ -16,6 +16,7 @@ public:
 
 	bool Initialize(PlayerBase* player_base);
 	int  Update(SimpleMath::Vector3 player,bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
+	void OnDeviceLost();
 	void Render();
 
 	std::vector<EnemyBase*> GetEnemy() { return enemy; }

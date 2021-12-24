@@ -9,23 +9,17 @@
 // Initialize member variables.
 MainScene::MainScene(): dx9GpuDescriptor{}
 {
-	camera   = new CameraManager;
-	ground   = new GroundManager;
 	player   = new PlayerBase;
 	enemy    = new EnemyManager;
 	audience = new AudienceManager;
-	dialogue = new DialogueManager;
 	observer = new Observer;
 	ui       = new UIManager;
 }
 
 MainScene::~MainScene() {
-	delete camera;
-	delete ground;
 	delete player;
 	delete enemy;
 	delete audience;
-	delete dialogue;
 	delete observer;
 	delete ui;
 
@@ -37,7 +31,7 @@ void MainScene::Initialize()
 {
 	//•Ï”‚âŠÖ”‚Ì‰Šú‰»‚Í‚±‚¿‚ç
 	player->Initialize();
-	camera->Initialize();
+	camera.Initialize();
 	enemy->Initialize(player);
 	SceneManager::Instance().Initialize();
 	StatusManager::Instance().Initialize();
@@ -46,6 +40,7 @@ void MainScene::Initialize()
 	point.SetAmbientColor(Vector4(0, 0, 255, 1.0f),0);
 	point.SetAtt(Vector3(0.65f, 0.001f, 0), 0);
 	point.SetLightColor(SimpleMath::Vector4(255.0f, 189, 76, 1.0f), 0);
+	texLight.Init();
 
 	enemy->StartTimeStop();
 	end_frame = 0.0f;
@@ -93,10 +88,10 @@ void MainScene::LoadAssets()
 	//music_flag = false;
 	//ChangeBGM(INTRO);
 
-	ground->LoadAsset();
+	ground.LoadAsset();
 	player->LoadAssets();
 	audience->LoadAssets();
-	dialogue->LoadAssets();
+	dialogue.LoadAssets();
 	ui->LoadAsset();
 	SceneManager::Instance().LoadAsset();
 }
@@ -114,6 +109,7 @@ void MainScene::Terminate()
 // Direct3D resource cleanup.
 void MainScene::OnDeviceLost()
 {
+	enemy->OnDeviceLost();
 	DX12Effect.Reset();
 }
 
@@ -132,7 +128,7 @@ NextScene MainScene::Update(const float deltaTime)
 	// TODO: Add your game logic here.
 
 	//!I—¹Žžˆ—
-	auto end_flag = enemy->GetDeathEnemyCount() == enemy->GetEnemyNum() || StatusManager::Instance().ReturnAudience() <= 0.0f;
+	auto end_flag = enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum() || StatusManager::Instance().ReturnAudience() <= 0.0f;
 
 	ChangeLightRenge(deltaTime);
 
@@ -140,28 +136,30 @@ NextScene MainScene::Update(const float deltaTime)
 		player->Update(deltaTime);
 		enemy->Update(player->GetModel()->GetPosition(), player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
 		audience->Update(player->GetAppielTime(), player->GetAppealCoolFlag(), player->GetSpecialAttackFlag(), deltaTime);
-		camera->Update(player, OUT_ZOOM, deltaTime);
+		camera.Update(player, OUT_ZOOM, deltaTime);
 		observer->Update(player, enemy, audience);
-		dialogue->ResetCount();
+		dialogue.ResetCount();
 
 		//ChangeBGM(MAIN);
 		light_mode = OUT_ZOOM;
 	}
 	else {
-		dialogue->AddCount(enemy->IsTimeStop());
-		camera->Update(player, IN_ZOOM, deltaTime);
+		dialogue.AddCount(enemy->IsTimeStop());
+		camera.Update(player, IN_ZOOM, deltaTime);
 		light_mode = IN_ZOOM;
 	}
 	
 	if (end_flag) {
 		end_frame += deltaTime;
 
-		if (enemy->GetDeathEnemyCount() == enemy->GetEnemyNum())
+		if (enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum())
 			max_end = 10.0f;
 		else
 			max_end = 2.0f;
 
 		if(end_frame > max_end) {
+			DX12Effect.AllStop();
+
 			SceneManager::Instance().Update(deltaTime);
 			if (SceneManager::Instance().ReturnSceneFlag())
 				return NextScene::ResultScene;
@@ -220,12 +218,12 @@ void MainScene::Render()
 	DXTK->Direct3D9->BeginScene();
 
 	//3D•`‰æ
-	DX12Effect.SetCamera((DX12::CAMERA)camera->GetCamera());
-	camera->Render();
+	DX12Effect.SetCamera((DX12::CAMERA)camera.GetCamera());
+	camera.Render();
 
 	
 	point.SetPower(1.0f,0);
-	point.PointRender(camera->GetCamera(), ground->GetModel());
+	point.PointRender(camera.GetCamera(), ground.GetModel());
 	
 	point.ShadeRender(player->GetModel(),SimpleMath::Vector4(0,0,1,0.3f));
 
@@ -242,7 +240,7 @@ void MainScene::Render()
 	SceneManager::Instance().Render();
 
 	if (enemy->IsTimeStop())
-		dialogue->Render(enemy->GetTimeStopCount());
+		dialogue.Render(enemy->GetTimeStopCount());
 
 	DX9::SpriteBatch->End();
 	DXTK->Direct3D9->EndScene();
@@ -252,6 +250,7 @@ void MainScene::Render()
 
 	DXTK->ResetCommand();
 	DXTK->ClearRenderTarget(DirectX::Colors::CornflowerBlue);
+	texLight.Render();
 
 	const auto heapes = descriptorHeap->Heap();
 	DXTK->CommandList->SetDescriptorHeaps(1, &heapes);
