@@ -1,5 +1,7 @@
 #pragma once
 
+#include "TextureLight.h"
+
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
 using std::make_unique;

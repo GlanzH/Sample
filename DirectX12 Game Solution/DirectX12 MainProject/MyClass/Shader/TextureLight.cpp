@@ -3,70 +3,70 @@
 
 #include "TextureLight.h"
 
+
 void TextureLight::Init()
 {
-    m_rootSignature.Init(D3D12_FILTER_MIN_MAG_MIP_LINEAR,
-        D3D12_TEXTURE_ADDRESS_MODE_WRAP,
-        D3D12_TEXTURE_ADDRESS_MODE_WRAP,
-        D3D12_TEXTURE_ADDRESS_MODE_WRAP);
-    m_vs.LoadVS(L"Shader/test.fx","VS");
-    m_ps.LoadPS(L"Shader/test.fx","PS");
+	color = SimpleMath::Vector4(255, 255, 255, 60);
 
-    InitPipeLineState(m_pipelineState, m_rootSignature, m_vs, m_ps);
+	pos[0] = Vector3(-20, 0, 50);
+	pos[1] = Vector3(-50, 70, 50);
+	pos[2] = Vector3(-20, 50, 50);
+	pos[3] = Vector3(20, 0, 50);
 
-    SimpleMath::Vector3 vertices[] = {
-        { -0.5f, -0.5f, 0.0f },
-        { 0.0f, 0.5f, 0.0f },
-        { 0.5f, -0.5f, 0.0f }
-    };
 
-    m_vBuff.Init(sizeof(vertices), sizeof(vertices[0]));
-    m_vBuff.Copy(vertices);
+	vertex[0].position = pos[0];
+	vertex[0].uv = Vector2(0, 1);
+	vertex[0].color = DX9::Colors::RGBA(color.x, color.y, color.z, color.w);
+	vertex[1].position = pos[1];
+	vertex[1].uv = Vector2(0, 0);
+	vertex[1].color = DX9::Colors::RGBA(color.x, color.y, color.z, color.w);
+	vertex[2].position = pos[2];
+	vertex[2].uv = Vector2(1, 0);
+	vertex[2].color = DX9::Colors::RGBA(color.x, color.y, color.z, color.w);
 
-    int indices[] = {
-        0,1,2
-    };
-    m_iBuff.Init(sizeof(indices), 4);
-    m_iBuff.Copy(indices);
+	vertex[3].position = pos[2];
+	vertex[3].uv = Vector2(1, 0);
+	vertex[3].color = DX9::Colors::RGBA(color.x, color.y, color.z, color.w);
+	vertex[4].position = pos[3];
+	vertex[4].uv = Vector2(1, 1);
+	vertex[4].color = DX9::Colors::RGBA(color.x, color.y, color.z, color.w);
+	vertex[5].position = pos[0];
+	vertex[5].uv = Vector2(0, 1);
+	vertex[5].color = DX9::Colors::RGBA(color.x, color.y, color.z, color.w);
+
+	LoadTexture();
 }
 
 void TextureLight::Render()
 {
-    DXTK->CommandList->SetGraphicsRootSignature(m_rootSignature.Get());
-    DXTK->CommandList->SetPipelineState(m_pipelineState.Get().Get());
-    DXTK->CommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    DXTK->CommandList->IASetVertexBuffers(0,1,&m_vBuff.GetView());
-    DXTK->CommandList->IASetIndexBuffer(&m_iBuff.GetView());
-    DXTK->CommandList->DrawIndexedInstanced(3, 1, 0, 0, 0);
+	SimpleMath::Matrix mat = SimpleMath::Matrix::Identity;
+	DXTK->Direct3D9->SetTransform(D3DTS_WORLD, *(D3DXMATRIX*)&mat);
+	DXTK->Direct3D9->SetTexture(0, texture);
+	DXTK->Direct3D9->SetRenderState(Lighting_Disable);
+	//DXTK->Direct3D9->AlphaBendEnable(true);
+	DXTK->Direct3D9->DrawInstanced(D3DPT_TRIANGLELIST, 2, &vertex[0], DX9::VertexColor::FVF);
+	//DXTK->Direct3D9->AlphaBendEnable(false);
+	DXTK->Direct3D9->SetRenderState(Lighting_Enable);
 }
 
-void TextureLight::InitPipeLineState(PipelineState& pipelineState, RootSignature& rs, DX12Shader& vs, DX12Shader& ps)
+void TextureLight::SetPos(SCorner corner)
 {
-    // 頂点レイアウトを定義する
-    D3D12_INPUT_ELEMENT_DESC inputElementDescs[] =
-    {
-        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-    };
-
-    // パイプラインステートを作成
-    D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = { 0 };
-    psoDesc.InputLayout = { inputElementDescs, _countof(inputElementDescs) };
-    psoDesc.pRootSignature = rs.Get();
-    psoDesc.VS = CD3DX12_SHADER_BYTECODE(vs.Get());
-    psoDesc.PS = CD3DX12_SHADER_BYTECODE(ps.Get());
-    psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-    psoDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
-    psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
-    psoDesc.DepthStencilState.DepthEnable = FALSE;
-    psoDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
-    psoDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
-    psoDesc.DepthStencilState.StencilEnable = FALSE;
-    psoDesc.SampleMask = UINT_MAX;
-    psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-    psoDesc.NumRenderTargets = 1;
-    psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
-    psoDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
-    psoDesc.SampleDesc.Count = 1;
-    psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
-    pipelineState.Init(psoDesc);
+	pos[0] = corner.BL;
+	pos[1] = corner.UL;
+ 	pos[2] = corner.UR;
+ 	pos[3] = corner.BR;
 }
+ 
+void TextureLight::LoadTexture()
+{
+	auto re = D3DXCreateTextureFromFile(
+		DXTK->Device9,
+		L"Shader/spotlight.png",
+		&texture
+	);
+	
+
+}
+
+
+

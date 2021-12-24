@@ -85,9 +85,6 @@
     <Filter Include="MyClass\DialogueManager">
       <UniqueIdentifier>{22c7b9e1-5606-4f7c-8da4-0c19880adca7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\DX12SetUp">
-      <UniqueIdentifier>{e67ce034-683e-4537-9d8c-eb325ea27652}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -198,26 +195,8 @@
     <ClInclude Include="MyClass\DialogueManager\DialogueManager.h">
       <Filter>MyClass\DialogueManager</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\DX12SetUp\PipeLineState.h">
-      <Filter>MyClass\DX12SetUp</Filter>
-    </ClInclude>
-    <ClInclude Include="MyClass\DX12SetUp\RootSignature.h">
-      <Filter>MyClass\DX12SetUp</Filter>
-    </ClInclude>
-    <ClInclude Include="MyClass\DX12SetUp\DX12Shader.h">
-      <Filter>MyClass\DX12SetUp</Filter>
-    </ClInclude>
-    <ClInclude Include="MyClass\DX12SetUp\VertexBuffer.h">
-      <Filter>MyClass\DX12SetUp</Filter>
-    </ClInclude>
-    <ClInclude Include="MyClass\DX12SetUp\IndexBuffer.h">
-      <Filter>MyClass\DX12SetUp</Filter>
-    </ClInclude>
     <ClInclude Include="MyClass\Shader\TextureLight.h">
       <Filter>MyClass\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="MyClass\DX12SetUp\DX12SetUp.h">
-      <Filter>MyClass\DX12SetUp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -307,21 +286,6 @@
     </ClCompile>
     <ClCompile Include="MyClass\DialogueManager\DialogueManager.cpp">
       <Filter>MyClass\DialogueManager</Filter>
-    </ClCompile>
-    <ClCompile Include="MyClass\DX12SetUp\PipeLineState.cpp">
-      <Filter>MyClass\DX12SetUp</Filter>
-    </ClCompile>
-    <ClCompile Include="MyClass\DX12SetUp\RootSignature.cpp">
-      <Filter>MyClass\DX12SetUp</Filter>
-    </ClCompile>
-    <ClCompile Include="MyClass\DX12SetUp\DX12Shader.cpp">
-      <Filter>MyClass\DX12SetUp</Filter>
-    </ClCompile>
-    <ClCompile Include="MyClass\DX12SetUp\VertexBuffer.cpp">
-      <Filter>MyClass\DX12SetUp</Filter>
-    </ClCompile>
-    <ClCompile Include="MyClass\DX12SetUp\IndexBuffer.cpp">
-      <Filter>MyClass\DX12SetUp</Filter>
     </ClCompile>
     <ClCompile Include="MyClass\Shader\TextureLight.cpp">
       <Filter>MyClass\Shader</Filter>

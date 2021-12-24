@@ -31,6 +31,8 @@ void SpotLight::Init(int num)
 		m_att[i] = Vector3(0.03f, 0.01f, 0.0f);
 	}
 
+	TextureLight tex;
+	tex.Init();
 }
 
 //------------------------------------------------------------------------------

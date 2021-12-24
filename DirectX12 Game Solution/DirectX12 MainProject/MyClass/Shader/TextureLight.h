@@ -1,25 +1,32 @@
 #pragma once
 
-#include "../DX12SetUp/DX12SetUp.h"
-
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
 using std::make_unique;
 using namespace DirectX;
+using namespace SimpleMath;
 
 class TextureLight {
 public:
+	struct SCorner
+	{
+		Vector3 UL;
+		Vector3 UR;
+		Vector3 BL;
+		Vector3 BR;
+	};
+
 	void Init();
 	void Render();
+	void SetPos(SCorner corner);
 
 private:
-	void InitPipeLineState(PipelineState& pipelineState,
-		RootSignature& rs, DX12Shader& vs, DX12Shader& ps);
+	void LoadTexture();
 
-	RootSignature m_rootSignature;
-	DX12Shader m_vs, m_ps;
-	PipelineState m_pipelineState;
-	VertexBuffer m_vBuff;
-	IndexBuffer m_iBuff;
+	DX9::VertexColor vertex[6];
+	SimpleMath::Vector3 pos[4];
 
+	Vector4 color;
+
+	IDirect3DTexture9* texture;
 };
