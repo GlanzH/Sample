@@ -67,7 +67,7 @@ private:
 	PlayerBase*      player;
 	EnemyManager*    enemy;
 	AudienceManager* audience;
-	DialogueManager* dialogue;
+	DialogueManager  dialogue;
 	Observer*        observer;
 	UIManager*       ui;
 

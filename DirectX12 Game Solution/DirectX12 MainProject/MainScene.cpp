@@ -12,7 +12,6 @@ MainScene::MainScene(): dx9GpuDescriptor{}
 	player   = new PlayerBase;
 	enemy    = new EnemyManager;
 	audience = new AudienceManager;
-	dialogue = new DialogueManager;
 	observer = new Observer;
 	ui       = new UIManager;
 }
@@ -21,7 +20,6 @@ MainScene::~MainScene() {
 	delete player;
 	delete enemy;
 	delete audience;
-	delete dialogue;
 	delete observer;
 	delete ui;
 
@@ -93,7 +91,7 @@ void MainScene::LoadAssets()
 	ground.LoadAsset();
 	player->LoadAssets();
 	audience->LoadAssets();
-	dialogue->LoadAssets();
+	dialogue.LoadAssets();
 	ui->LoadAsset();
 	SceneManager::Instance().LoadAsset();
 }
@@ -140,13 +138,13 @@ NextScene MainScene::Update(const float deltaTime)
 		audience->Update(player->GetAppielTime(), player->GetAppealCoolFlag(), player->GetSpecialAttackFlag(), deltaTime);
 		camera.Update(player, OUT_ZOOM, deltaTime);
 		observer->Update(player, enemy, audience);
-		dialogue->ResetCount();
+		dialogue.ResetCount();
 
 		//ChangeBGM(MAIN);
 		light_mode = OUT_ZOOM;
 	}
 	else {
-		dialogue->AddCount(enemy->IsTimeStop());
+		dialogue.AddCount(enemy->IsTimeStop());
 		camera.Update(player, IN_ZOOM, deltaTime);
 		light_mode = IN_ZOOM;
 	}
@@ -242,7 +240,7 @@ void MainScene::Render()
 	SceneManager::Instance().Render();
 
 	if (enemy->IsTimeStop())
-		dialogue->Render(enemy->GetTimeStopCount());
+		dialogue.Render(enemy->GetTimeStopCount());
 
 	DX9::SpriteBatch->End();
 	DXTK->Direct3D9->EndScene();
