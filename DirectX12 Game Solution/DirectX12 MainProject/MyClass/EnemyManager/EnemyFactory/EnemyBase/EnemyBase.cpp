@@ -123,7 +123,7 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool
 		}
 	}
 
-	StatusManager::Instance().DownAudience(delta);
+	StatusManager::Instance().CalcAudience(delta);
 
 	return 0;
 }
