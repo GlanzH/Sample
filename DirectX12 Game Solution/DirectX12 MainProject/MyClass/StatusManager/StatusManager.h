@@ -23,6 +23,8 @@ public:
 
 	//オーディエンス
 	void AddAudience (float add_size	   );	//値を取得
+	void CalcAudience(const float deltaTime);	//オーディエンス計算
+	void UpAudience	 (const float deltaTime);	//アップ
 	void DownAudience(const float deltaTime);	//ダウン
 	float ReturnAudience() { return audience * AUDIENCE_GAUGE_DIVIDE; }	//ゲージ描画時呼び出し
 	float ReturnScore() { return audience; }	//スコア判定時使用
@@ -47,10 +49,13 @@ private:
 	//オーディエンス
 	float audience;
 	float now_audience;    //現在のオーディエンス数
+	bool plus_audience_flag;
 
 	const float AUDIENCE_START_VALUE = 100.0f;    //初期値設定
-	const float AUIDENCE_DN_SPEED = 20.0f;    //オーディエンス減スピード
-	const float AUDIENCE_GAUGE_DIVIDE = 3.06f;    //人ゲージ100分の1の数(描画時使用)
+	const float AUDIENCE_MAX_VALUE = 1000.0f;	//スコアの最大値
+	const float AUIDENCE_DN_SPEED = 300.0f;    //オーディエンス減スピード
+	const float AUDIENCE_GAUGE_DIVIDE = 0.306f;    //人ゲージ1000分の1の数(描画時使用)
+
 
 	//ハート
 	float heart;

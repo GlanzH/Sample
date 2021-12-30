@@ -8,6 +8,8 @@
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
 
+#include "Shader.h"
+
 namespace DX9 {
 	class SkinnedModel {
 	public:
@@ -21,6 +23,8 @@ namespace DX9 {
 		virtual ~SkinnedModel();
 
 		void Draw();
+		void Draw(SHADER& shader);
+
 		void DrawShadow(const DirectX::XMMATRIX& shadow)
 		{
 			UpdateFrameMatrices(m_frameRoot, (D3DXMATRIX*)&shadow);
@@ -191,8 +195,13 @@ namespace DX9 {
 
 		void UpdateFrameMatrices(D3DXFRAME* frameRoot, D3DXMATRIX* parentMatrix);
 		void DrawFrame(D3DXFRAME* frame);
+		void DrawFrame(D3DXFRAME* frame, SHADER& shader);
+
 		void DrawMeshContainer(D3DXMESHCONTAINER* meshContainerBase, D3DXFRAME* frameBase);
 		void DrawMeshContainerIndexed(DX9MESHCONTAINER* meshContainer, DX9FRAME* frame);
+
+		void DrawMeshContainerHLSL(D3DXMESHCONTAINER* meshContainerBase, D3DXFRAME* frameBase, SHADER& shader);
+		void DrawMeshContainerIndexedHLSL(DX9MESHCONTAINER* meshContainer, DX9FRAME* frame, SHADER& shader);
 
 		void DrawFrameShadow(D3DXFRAME* frame);
 		void DrawMeshContainerShadow(D3DXMESHCONTAINER* meshContainerBase, D3DXFRAME* frameBase);

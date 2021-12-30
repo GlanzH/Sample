@@ -13,6 +13,7 @@ void StatusManager::Initialize() {
 	//オーディエンス
 	audience = AUDIENCE_START_VALUE;
 	now_audience = audience;
+	plus_audience_flag = false;
 
 	//パリィ
 	heart = 0.0f;
@@ -44,18 +45,40 @@ void StatusManager::AddCombo(const float deltaTime) {
 }
 
 void StatusManager::AddAudience(float add_size) {
-	now_audience -= add_size;	//現在のオーディエンス
+	now_audience += add_size;	//現在のオーディエンス
+
+	now_audience = std::clamp(now_audience, 0.0f, AUDIENCE_MAX_VALUE);
+
+	if (audience <= now_audience) {
+		plus_audience_flag = true;
+	}
+	else
+	{
+		plus_audience_flag = false;
+	}
+
 	return;
 }
 
 
+void StatusManager::CalcAudience(const float deltaTime) {
+	if (plus_audience_flag) {
+		UpAudience(deltaTime);
+	}
+	else
+	{
+		DownAudience(deltaTime);
+	}
+	return;
+}
+
+void StatusManager::UpAudience(const float deltaTime) {
+	audience = std::min(audience + AUIDENCE_DN_SPEED * deltaTime, now_audience);
+	return;
+}
+
 void StatusManager::DownAudience(const float deltaTime) {
 	audience = std::max(audience - AUIDENCE_DN_SPEED * deltaTime, now_audience);
-	if (audience < 0.0f) {
-		audience = 0.0f;
-		SceneManager::Instance().Update(deltaTime);
-	}
-
 	return;
 }
 

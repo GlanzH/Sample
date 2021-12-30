@@ -1,8 +1,8 @@
 #include "MyClass/GameSceneManager/SceneManager.h"
+#include "MyClass/StatusManager/StatusManager.h"
 
 void SceneManager::Initialize() {
 	curtain_pos = SimpleMath::Vector3(0.0f, CURTAIN_START_POS, 0.0f);
-	ending_coro_flag  = false;
 	scene_change_flag = false;
 }
 
@@ -12,21 +12,16 @@ void SceneManager::LoadAsset() {
 
 void SceneManager::Update(const float deltaTime) {
 
-	time_delta = deltaTime;
-
-	if (ending_coro_flag == false) {
-		co_ending = Ending();        // コルーチンの生成
-		co_ending_it = co_ending.begin(); // コルーチンの実行開始
-
-		ending_coro_flag = true;
+	if (StatusManager::Instance().ReturnAudience() <= 0.0f) {
+		curtain_pos.y = std::min(curtain_pos.y + CURTAIN_DOWN_SPEED * deltaTime, 0.0f);
+	}
+	else {
+		curtain_pos.y = std::max(curtain_pos.y - CURTAIN_DOWN_SPEED * deltaTime, CURTAIN_START_POS);
 	}
 
-	if (co_ending_it != co_ending.end()) {
-		co_ending_it++;
-	}
 
-	if (co_ending_it != co_ending.end()) {
-		co_ending.begin();
+	if (curtain_pos.y >= 0.0f) {
+		scene_change_flag = true;
 	}
 
 	return;
@@ -34,16 +29,4 @@ void SceneManager::Update(const float deltaTime) {
 
 void SceneManager::Render() {
 	DX9::SpriteBatch->DrawSimple(curtain.Get(), curtain_pos);
-}
-
-cppcoro::generator<int> SceneManager::Ending() {
-	co_yield 0;
-	while (curtain_pos.y < 0.0f) {
-		curtain_pos.y += CURTAIN_DOWN_SPEED * time_delta;
-		co_yield 1;
-	}
-	curtain_pos.y = 0.0f;
-	scene_change_flag = true;
-
-	co_return;
 }
