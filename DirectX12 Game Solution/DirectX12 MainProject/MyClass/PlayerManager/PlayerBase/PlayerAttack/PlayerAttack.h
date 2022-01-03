@@ -14,9 +14,15 @@ public:
 	 PlayerAttack();
 	 virtual ~PlayerAttack() = 0;
 	
-	void LoadAssets();
+	 void Initialize();
+	 void LoadAssets();
+
 
 	void Player_Attack(const float deltaTime);
 
 private:
+	bool attack_flag;
+
+	int damage;
+
 };

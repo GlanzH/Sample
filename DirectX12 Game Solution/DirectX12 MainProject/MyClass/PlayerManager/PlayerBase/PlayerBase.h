@@ -25,22 +25,22 @@ public:
 	int Update(const float deltaTime);
 	void Render();
 
+	void OnCollisionEnter();
+	void OnParryArea();
+
+	bool IsAttack();
+
+	void Debug();
+	void BrackImage();
+	void OnDeviceLost();
+
+
+
 	DX9::SKINNEDMODEL& GetModel() { return model; }
 
 	Collisions GetBox() { return col; }
 
-	void OnCollisionEnter();
-	void OnParryArea();
-
-	//弾かれた時の処理
-	void OnFlipEnetr();
-
-	//弾かれるフラグ
-	bool IsFlip();
-
-
 	bool GetParryFlag() { return parry_flag; }
-	bool IsAttack();
 
 	int GetDamage() { return damage; }
 
@@ -57,11 +57,6 @@ public:
 	bool IsInvincibleFlag() { return invincible_flag; }
 
 
-	void _2DRender();
-
-	void BrackImage();
-
-	void OnDeviceLost();
 
 private:
 	//アニメーション
@@ -83,6 +78,8 @@ private:
 	void Player_Special_Move(const float deltaTime);
 	//プレイヤーの攻撃(3回目変更)
 	void Player_Attack_Three(const float deltaTime);
+	//回避
+	void Avoidance(const float deltaTime);
 
 
 	DX9::SPRITEFONT font;
@@ -288,5 +285,11 @@ private:
 	bool flip_flag_;
 	float flip_time;
 	float flip_back_time;
+
+	//回避
+	bool  avoidance_flag;
+	float avoidance_start;
+	float avoidance_max;
+
 
 };

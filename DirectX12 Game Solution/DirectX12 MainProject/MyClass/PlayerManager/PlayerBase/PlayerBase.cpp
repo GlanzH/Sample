@@ -120,6 +120,12 @@ bool PlayerBase::Initialize()
 	invincible_flag = false;
 	invincible_time = 0.0f;
 
+	//回避
+	avoidance_flag=false;
+	avoidance_start = 0.0f;
+	avoidance_max = 0.5f;
+
+
 	//アピール
 	appeil_flag = false;
 
@@ -244,12 +250,15 @@ int PlayerBase::Update(const float deltaTime)
 	//アピール
 	//Appeal(deltaTime);
 
-	//必殺技
-	Player_Special_Move(deltaTime);
+	////必殺技
+	//Player_Special_Move(deltaTime);
 
 
 	//プレイヤーの攻撃(ダッシュ攻撃)
 	Player_Attack_Three(deltaTime);
+
+	//回避
+	Avoidance(deltaTime);
 
 	//無敵時間
 	Invincible(deltaTime);
@@ -360,27 +369,22 @@ void PlayerBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack)
 
 void PlayerBase::Player_move(const float deltaTime)
 {
-	if (!invincible_flag) {
-		if(!deathbrow_flag){
-			if (!appeil_flag) {
-				if (canot_move_state_mode == CANNOT_MOVE_STATE::MOVE) {
-
-					//プレイヤー:移動(キーボード) & ゲームパッド十字キー
-					if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
-						model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-						model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
-						col.sword_box.Center = model->GetRotation();
-						direction_state_mode = Direction_State::RIGHT;
-						SetAnimation(model, RUN);
-					}
-					if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left) {
-						model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-						model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
-						col.sword_box.Center = model->GetRotation();
-						direction_state_mode = Direction_State::LEFT;
-						SetAnimation(model, RUN);
-					}
-				}
+	if (!invincible_flag || !appeil_flag) {
+		if (canot_move_state_mode == CANNOT_MOVE_STATE::MOVE) {
+			//プレイヤー:移動(キーボード) & ゲームパッド十字キー
+			if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
+				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+				model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
+				col.sword_box.Center = model->GetRotation();
+				direction_state_mode = Direction_State::RIGHT;
+				SetAnimation(model, RUN);
+			}
+			if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left) {
+				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+				model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
+				col.sword_box.Center = model->GetRotation();
+				direction_state_mode = Direction_State::LEFT;
+				SetAnimation(model, RUN);
 			}
 		}
 	}
@@ -400,20 +404,12 @@ void PlayerBase::Player_limit()
 
 void PlayerBase::Player_jump(const float deltaTime) {
 	//ジャンプ
-	if (!invincible_flag) {
-		if (!deathbrow_flag) {
-			if (under_attack_state_mode == UNDER_ATTACK_STATE::NOMAL) {
-				if (!appeil_flag) {
-					if (!jump_flag_) {
-						if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
-							jump_start_flag = true;
-							jump_flag_ = true;
-							jump_time_ = 0;
-							jump_start_v_ = model->Position.y;
-						}
-					}
-				}
-			}
+	if (!invincible_flag || under_attack_state_mode == UNDER_ATTACK_STATE::NOMAL || !appeil_flag || !jump_flag_) {
+		if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
+			jump_start_flag = true;
+			jump_flag_ = true;
+			jump_time_ = 0;
+			jump_start_v_ = model->Position.y;
 		}
 	}
 
@@ -465,12 +461,9 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 		canot_move_state_mode = CANNOT_MOVE_STATE::MOVE;
 	}
 
-	if (assault_attack_time <= 0.0f) {
-		assault_attack_time = 0.0f;
-	}
-	if (assault_attack_time >= 150.0f) {
-		assault_attack_time = 150.0f;
-	}
+	assault_attack_time = std::clamp(assault_attack_time, 0.0f, 150.0f);
+
+
 
 	//弾く(試験用)
 	if (DXTK->KeyEvent->pressed.S) {
@@ -503,6 +496,28 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 		}
 	}
 }
+
+//回避
+void PlayerBase::Avoidance(const float deltaTime) {
+
+	if (!jump_flag_||!avoidance_flag) {
+		if (DXTK->KeyEvent->pressed.Z||DXTK->GamePadEvent->b==GamePad::ButtonStateTracker::PRESSED) {
+			avoidance_flag = true;
+		}
+	}
+
+	if (avoidance_flag) {
+		avoidance_start += deltaTime;
+		if (avoidance_start < avoidance_max) {
+			model->Move(0.0f, 0.0, -5.0f * deltaTime);
+		}
+	}
+
+	if (avoidance_start >= avoidance_max) {
+		avoidance_flag = false;
+	}
+}
+
 
 void PlayerBase::Player_Special_Move(const float deltaTime) {
 	if (!jump_flag_) {
@@ -579,21 +594,6 @@ bool PlayerBase::IsAttack() {
 	return false;
 }
 
-//弾かれるフラグ
-bool PlayerBase::IsFlip() {
-	if (flip_flag_) {
-		return true;
-	}
-	return false;
-}
-
-
-//弾かれた時の処理
-void PlayerBase::OnFlipEnetr() {
-
-}
-
-
 	//アピール
 void PlayerBase::Appeal(const float deltaTime)
 {
@@ -668,33 +668,11 @@ void PlayerBase::BrackImage() {
 
 }
 
-void PlayerBase::_2DRender() {
-	DX9::SpriteBatch->DrawString(font.Get(),
-		SimpleMath::Vector2(1000.0f, 120.0f),
-		DX9::Colors::BlueViolet,
-		L"突き攻撃のパワー %f", assault_attack_time
-	);
+void PlayerBase::Debug() {
+	//DX9::SpriteBatch->DrawString(font.Get(),
+	//	SimpleMath::Vector2(1000.0f, 120.0f),
+	//	DX9::Colors::BlueViolet,
+	//	L"突き攻撃のパワー %f", assault_attack_time
+	//);
 
-	//if (player_frip_mode == PLAYER_FRIP::NOMAL_MODE) {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 140.0f),
-	//		DX9::Colors::WhiteSmoke,
-	//		L"NOMAL", player_frip_mode
-	//	);
-	//}
-	//else if (player_frip_mode == PLAYER_FRIP::ATTACK_MODE) {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 140.0f),
-	//		DX9::Colors::WhiteSmoke,
-	//		L"ATTACK", player_frip_mode
-	//	);
-	//}
-	//else
-	//{
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1000.0f, 140.0f),
-	//		DX9::Colors::WhiteSmoke,
-	//		L"FLIP", player_frip_mode
-	//	);
-	//}
 }

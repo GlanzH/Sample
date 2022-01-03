@@ -76,14 +76,14 @@
     <Filter Include="MyClass\AudianceManager\ExplodeMan">
       <UniqueIdentifier>{2e8b76d3-b30b-4091-b1e9-a7aa82c3cf8d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\DialogueManager">
-      <UniqueIdentifier>{22c7b9e1-5606-4f7c-8da4-0c19880adca7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MyClass\Camera">
       <UniqueIdentifier>{b5c7ebcc-3e32-4ac7-be02-6d789d7dfd13}</UniqueIdentifier>
     </Filter>
     <Filter Include="MyClass\Ground">
       <UniqueIdentifier>{3484e38c-733b-4580-a58d-5fa05c40e4b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\Camera\DialogueManager">
+      <UniqueIdentifier>{22c7b9e1-5606-4f7c-8da4-0c19880adca7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -187,7 +187,7 @@
       <Filter>MyClass\Shader</Filter>
     </ClInclude>
     <ClInclude Include="MyClass\DialogueManager\DialogueManager.h">
-      <Filter>MyClass\DialogueManager</Filter>
+      <Filter>MyClass\Camera\DialogueManager</Filter>
     </ClInclude>
     <ClInclude Include="MyClass\Shader\TextureLight.h">
       <Filter>MyClass\Shader</Filter>
@@ -279,7 +279,7 @@
       <Filter>MyClass\Shader</Filter>
     </ClCompile>
     <ClCompile Include="MyClass\DialogueManager\DialogueManager.cpp">
-      <Filter>MyClass\DialogueManager</Filter>
+      <Filter>MyClass\Camera\DialogueManager</Filter>
     </ClCompile>
     <ClCompile Include="MyClass\Shader\TextureLight.cpp">
       <Filter>MyClass\Shader</Filter>
