@@ -128,7 +128,8 @@ NextScene MainScene::Update(const float deltaTime)
 	// TODO: Add your game logic here.
 
 	//!I—¹Žžˆ—
-	auto end_flag = enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum() || StatusManager::Instance().ReturnAudience() <= 0.0f;
+	auto end_flag = StatusManager::Instance().ReturnAudience() <= 0.0f;
+	//auto end_flag = enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum() || StatusManager::Instance().ReturnAudience() <= 0.0f;
 
 	ChangeLightRenge(deltaTime);
 
@@ -149,6 +150,7 @@ NextScene MainScene::Update(const float deltaTime)
 		light_mode = IN_ZOOM;
 	}
 	
+
 	if (end_flag) {
 		end_frame += deltaTime;
 
@@ -159,12 +161,12 @@ NextScene MainScene::Update(const float deltaTime)
 
 		if(end_frame > max_end) {
 			DX12Effect.AllStop();
-
-			SceneManager::Instance().Update(deltaTime);
 			if (SceneManager::Instance().ReturnSceneFlag())
 				return NextScene::ResultScene;
 		}
 	}
+
+	SceneManager::Instance().Update(deltaTime);
 
 	if (end_frame < max_end)
 		DX12Effect.Update(deltaTime);
