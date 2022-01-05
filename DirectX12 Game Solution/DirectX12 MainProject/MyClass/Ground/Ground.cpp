@@ -1,10 +1,10 @@
-#include "GroundManager.h"
+#include "Ground.h"
 
-void GroundManager::LoadAsset() {
+void Ground::LoadAsset() {
 	model = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\Forest\\bg_forest.X");	
 	model->SetPosition(0.0f, pos_y, 10.0f);
 }
 
-void GroundManager::Render() {
+void Ground::Render() {
 	model->Draw();
 }

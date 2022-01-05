@@ -7,19 +7,14 @@ void UIManager::LoadAsset() {
 	heart_max	= DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/sword_gauge.png"  );
 }
 
-int UIManager::Update(const float deltaTime){
-
-	return 0;
-}
-
 void UIManager::Render(float audience, float parry) {
 	DX9::SpriteBatch->DrawSimple(
 		audience_empty.Get(),
-		SimpleMath::Vector3(AUDIENCE_UI_POS_X, AUDIENCE_UI_POS_y, 1.0f)
+		SimpleMath::Vector3(AUDIENCE_UI_POS_X, AUDIENCE_UI_POS_Y, AUDIENCE_EMPTY_UI_POS_Z)
 	);
 	DX9::SpriteBatch->DrawSimple(
 		audience_max.Get(),
-		SimpleMath::Vector3(AUDIENCE_UI_POS_X, AUDIENCE_UI_POS_y + 0.0f, 0.0f),
+		SimpleMath::Vector3(AUDIENCE_UI_POS_X, AUDIENCE_UI_POS_Y, AUDIENCE_MAX_UI_POS_Z),
 		RectWH(0, 0, (int)audience, AUDIENCE_MAX_HIGH)
 	);
 

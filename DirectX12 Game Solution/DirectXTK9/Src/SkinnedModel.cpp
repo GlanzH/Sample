@@ -42,6 +42,14 @@ void DX9::SkinnedModel::Draw()
 	DrawFrame(m_frameRoot);
 }
 
+void DX9::SkinnedModel::Draw(SHADER& shader)
+{
+	D3DXMATRIX world(GetWorldMatrix());
+	UpdateFrameMatrices(m_frameRoot, &world);
+
+	DrawFrame(m_frameRoot, shader);
+}
+
 void DX9::SkinnedModel::UpdateFrameMatrices(D3DXFRAME* frameRoot, D3DXMATRIX* parentMatrix)
 {
 	DX9FRAME* frame = (DX9FRAME*)frameRoot;
@@ -78,6 +86,22 @@ void DX9::SkinnedModel::DrawFrame(D3DXFRAME* frame)
 		DrawFrame(frame->pFrameFirstChild);
 }
 
+void DX9::SkinnedModel::DrawFrame(D3DXFRAME* frame, SHADER& shader)
+{
+	D3DXMESHCONTAINER* mesh_container = frame->pMeshContainer;
+
+	while (mesh_container) {
+		DrawMeshContainerHLSL(mesh_container, frame, shader);
+		mesh_container = mesh_container->pNextMeshContainer;
+	}
+
+	if (frame->pFrameSibling)
+		DrawFrame(frame->pFrameSibling,shader);
+
+	if (frame->pFrameFirstChild)
+		DrawFrame(frame->pFrameFirstChild, shader);
+}
+
 void DX9::SkinnedModel::DrawMeshContainer(D3DXMESHCONTAINER* meshContainerBase, D3DXFRAME* frameBase)
 {
 	DX9MESHCONTAINER* meshContainer = (DX9MESHCONTAINER*)meshContainerBase;
@@ -93,6 +117,34 @@ void DX9::SkinnedModel::DrawMeshContainer(D3DXMESHCONTAINER* meshContainerBase, 
 			m_device->SetTexture (0, meshContainer->textures.at(i).Get());
 			mesh->DrawSubset(i);
 		}
+	}
+}
+
+void DX9::SkinnedModel::DrawMeshContainerHLSL(D3DXMESHCONTAINER* meshContainerBase, D3DXFRAME* frameBase,SHADER& shader)
+{
+	DX9MESHCONTAINER* meshContainer = (DX9MESHCONTAINER*)meshContainerBase;
+	DX9FRAME* frame = (DX9FRAME*)frameBase;
+
+	if (meshContainer->pSkinInfo) {
+		DrawMeshContainerIndexedHLSL(meshContainer, frame,shader);
+	}
+	else {
+		ID3DXMesh* mesh = meshContainer->MeshData.pMesh;
+		shader->SetParameter("g_WorldMatrixArray", &frame->CombinedTransformationMatrix);
+		shader->SetParameter("g_NumBones", 0);
+		const UINT pass = shader->Begin();
+		for (UINT ps = 0; ps < pass; ps++)
+		{
+			shader->BeginPass(ps);
+			for (DWORD i = 0; i < meshContainer->NumMaterials; i++) {
+				shader->SetMaterial(meshContainer->pMaterials[i].MatD3D);
+				m_device->SetTexture(0, meshContainer->textures.at(i).Get());
+				mesh->DrawSubset(i);
+			}
+
+			shader->EndPass();
+		}
+		shader->End();
 	}
 }
 
@@ -128,6 +180,55 @@ void DX9::SkinnedModel::DrawMeshContainerIndexed(DX9MESHCONTAINER* meshContainer
 		m_device->SetMaterial(&meshContainer->pMaterials[bone_comb[iAttrib].AttribId].MatD3D);
 		m_device->SetTexture(0, meshContainer->textures.at(bone_comb[iAttrib].AttribId).Get());
 		mesh->DrawSubset(iAttrib);
+	}
+
+	m_device->SetRenderState(D3DRS_INDEXEDVERTEXBLENDENABLE, FALSE);
+	m_device->SetRenderState(D3DRS_VERTEXBLEND, D3DVBF_DISABLE);
+
+	if (meshContainer->useSoftwareVP)
+		m_device->SetSoftwareVertexProcessing(FALSE);
+}
+
+void DX9::SkinnedModel::DrawMeshContainerIndexedHLSL(DX9MESHCONTAINER* meshContainer, DX9FRAME* frame,SHADER& shader)
+{
+	if (meshContainer->useSoftwareVP)
+		m_device->SetSoftwareVertexProcessing(TRUE);
+
+	if (meshContainer->numInfl == 1)
+		m_device->SetRenderState(D3DRS_VERTEXBLEND, D3DVBF_0WEIGHTS);
+	else
+		m_device->SetRenderState(D3DRS_VERTEXBLEND, meshContainer->numInfl - 1);
+
+	if (meshContainer->numInfl > 0)
+		m_device->SetRenderState(D3DRS_INDEXEDVERTEXBLENDENABLE, TRUE);
+
+	D3DXMATRIXA16        mat[26];
+	D3DXBONECOMBINATION* bone_comb = (D3DXBONECOMBINATION*)meshContainer->boneCombinationBuf->GetBufferPointer();
+	ID3DXMesh* mesh = meshContainer->MeshData.pMesh;
+	for (UINT iAttrib = 0; iAttrib < meshContainer->numAttributeGroups; iAttrib++) {
+		for (UINT iPaletteEntry = 0; iPaletteEntry < meshContainer->numPaletteEntries; iPaletteEntry++) {
+			const UINT matrix_index = bone_comb[iAttrib].BoneId[iPaletteEntry];
+			if (matrix_index != UINT_MAX) {
+				D3DXMatrixMultiply(
+					&mat[iPaletteEntry],
+					&meshContainer->boneOffsetMatrices.at(matrix_index),
+					meshContainer->boneMatrixPtrs.at(matrix_index)
+				);
+			}
+		}
+		shader->SetMatrixArray("g_WorldMatrixArray", (DirectX::XMMATRIX*)mat, meshContainer->numPaletteEntries);
+		shader->SetParameter("g_NumBone", meshContainer->numInfl - 1);
+		shader->SetMaterial(meshContainer->pMaterials[bone_comb[iAttrib].AttribId].MatD3D);
+		m_device->SetTexture(0, meshContainer->textures.at(bone_comb[iAttrib].AttribId).Get());
+
+		const UINT PASS = shader->Begin();
+		for (UINT ps = 0; ps < PASS; ps++)
+		{
+			shader->BeginPass(ps);
+			mesh->DrawSubset(iAttrib);
+			shader->EndPass();
+		}
+		shader->End();
 	}
 
 	m_device->SetRenderState(D3DRS_INDEXEDVERTEXBLENDENABLE, FALSE);

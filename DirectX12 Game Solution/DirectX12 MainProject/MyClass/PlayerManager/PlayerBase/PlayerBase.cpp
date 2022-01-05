@@ -454,25 +454,25 @@ void PlayerBase::Player_attack(const float deltaTime) {
 						}
 						under_attack_state_mode = UNDER_ATTACK_STATE::ATTACK;
 
-						if (StatusManager::Instance().GetCombo() == 1);
-						else if (StatusManager::Instance().GetCombo() == 2);
-						else if (StatusManager::Instance().GetCombo() == 3);
+						if (StatusManager::Instance().GetAtkCombo() == 1);
+						else if (StatusManager::Instance().GetAtkCombo() == 2);
+						else if (StatusManager::Instance().GetAtkCombo() == 3);
 					}
 				}
 			}
 		}
 	}
-	if (StatusManager::Instance().GetCombo() == 1) {
+	if (StatusManager::Instance().GetAtkCombo() == 1) {
 		motion_time_start_flag = true;
 		effect_generation      = true;
 		SetAnimation(model, ACT1);
 	}
-	if (StatusManager::Instance().GetCombo() == 2) {
+	if (StatusManager::Instance().GetAtkCombo() == 2) {
 		motion_time_start_flag = true;
 		effect_generation      = true;
 		SetAnimation(model, ACT2);
 	}
-	if (StatusManager::Instance().GetCombo() == 3) {
+	if (StatusManager::Instance().GetAtkCombo() == 3) {
 		motion_time_start_flag = true;
 		effect_generation      = true;
 		SetAnimation(model, ACT3);
@@ -493,7 +493,7 @@ void PlayerBase::Player_attack(const float deltaTime) {
 			motion_time_start_flag = false;
 			motion_attack_flag = false;
 			motion_count++;
-			if (StatusManager::Instance().GetCombo() == 3) {
+			if (StatusManager::Instance().GetAtkCombo() == 3) {
 				cool_time_flag_zwei = true;
 			}
 		}
@@ -517,7 +517,7 @@ void PlayerBase::Player_attack(const float deltaTime) {
 		canot_move_state_mode = CANNOT_MOVE_STATE::MOVE;
 
 	}
-	if (motion_time >= motion_time_max[motion_count] || StatusManager::Instance().GetCombo() == 0) {
+	if (motion_time >= motion_time_max[motion_count] || StatusManager::Instance().GetAtkCombo() == 0) {
 		motion_time = 0.0f;
 		effect_generation_time = 0.0f;
 		effect_generation = false;
@@ -535,7 +535,7 @@ void PlayerBase::Player_attack(const float deltaTime) {
 	if (effect_generation_time >= effect_generation_time_max[motion_count]) {
 		attack_flag = true;
 		if (IsAttack()) {
-			if (StatusManager::Instance().GetCombo() == 1 && motion_count == 0) {
+			if (StatusManager::Instance().GetAtkCombo() == 1 && motion_count == 0) {
 				if (direction_state_mode == Direction_State::RIGHT) {
 					DX12Effect.PlayOneShot("first");
 					DX12Effect.SetPosition("first", Vector3(player_pos.x + 5.0f, player_pos.y + 2.0f, player_pos.z));
@@ -548,7 +548,7 @@ void PlayerBase::Player_attack(const float deltaTime) {
 				}
 					damage = 2;
 			}
-			else if (StatusManager::Instance().GetCombo() == 2 && motion_count == 1) {
+			else if (StatusManager::Instance().GetAtkCombo() == 2 && motion_count == 1) {
 
 				if (direction_state_mode == Direction_State::RIGHT) {
 					DX12Effect.PlayOneShot("second");
@@ -563,7 +563,7 @@ void PlayerBase::Player_attack(const float deltaTime) {
 					damage = 3;
 
 			}
-			else if (StatusManager::Instance().GetCombo() == 3 && motion_count == 2) {
+			else if (StatusManager::Instance().GetAtkCombo() == 3 && motion_count == 2) {
 				if (direction_state_mode == Direction_State::RIGHT) {
 					DX12Effect.PlayOneShot("third");
 					DX12Effect.SetPosition("third", Vector3(player_pos.x + 7.0f, player_pos.y + 5.0f, player_pos.z));

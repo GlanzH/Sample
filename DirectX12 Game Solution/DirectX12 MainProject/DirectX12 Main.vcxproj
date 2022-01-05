@@ -195,7 +195,7 @@
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="MyClass\AudianceManager\AudianceManager.h" />
     <ClInclude Include="MyClass\AudianceManager\ExplodeMan\ExplodeMan.h" />
-    <ClInclude Include="MyClass\CameraManager\CameraManager.h" />
+    <ClInclude Include="MyClass\Camera\C_Camera.h" />
     <ClInclude Include="MyClass\DialogueManager\DialogueManager.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FakerLamiel\FakerLamiel.h" />
@@ -208,7 +208,7 @@
     <ClInclude Include="MyClass\EnemyManager\EnemyManager.h" />
     <ClInclude Include="MyClass\EnumManager\EnumManager.h" />
     <ClInclude Include="MyClass\GameSceneManager\SceneManager.h" />
-    <ClInclude Include="MyClass\GroundManager\GroundManager.h" />
+    <ClInclude Include="MyClass\Ground\Ground.h" />
     <ClInclude Include="MyClass\Observer\Observer.h" />
     <ClInclude Include="MyClass\PlayerManager\LandingAttackClass\LandingAttackClass.h" />
     <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.h" />
@@ -216,6 +216,7 @@
     <ClInclude Include="MyClass\PlayerManager\PlayerManager.h" />
     <ClInclude Include="MyClass\RankJudgeManager\RankJudgeManager.h" />
     <ClInclude Include="MyClass\Shader\SpotLight.h" />
+    <ClInclude Include="MyClass\Shader\TextureLight.h" />
     <ClInclude Include="MyClass\StatusManager\StatusManager.h" />
     <ClInclude Include="MyClass\UIManager\UIManager.h" />
     <ClInclude Include="ResultScene.h" />
@@ -250,9 +251,7 @@
     <ClCompile Include="MyClass\AudianceManager\ExplodeMan\ExplodeMan.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MyClass\CameraManager\CameraManager.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="MyClass\Camera\C_Camera.cpp" />
     <ClCompile Include="MyClass\DialogueManager\DialogueManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -284,9 +283,7 @@
     <ClCompile Include="MyClass\GameSceneManager\SceneManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MyClass\GroundManager\GroundManager.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="MyClass\Ground\Ground.cpp" />
     <ClCompile Include="MyClass\Observer\Observer.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -306,6 +303,7 @@
     <ClCompile Include="MyClass\Shader\SpotLight.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="MyClass\Shader\TextureLight.cpp" />
     <ClCompile Include="MyClass\StatusManager\StatusManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
