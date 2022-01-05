@@ -13,7 +13,6 @@ EnemyManager::EnemyManager()
 	for (int i = 0; i < ENEMY_NUM; ++i) {
 		tag[i]            = "";
 		appear_pos[i]     = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
-		appear_time[i]    = INT_MAX;
 		destract_num[i]   = INT_MAX;
 		appear_flag[i]    = false;
 		time_stop_flag[i] = false;
@@ -53,7 +52,7 @@ int EnemyManager::Update(SimpleMath::Vector3 player,bool special_attack_flag, bo
 	delta = deltaTime;
 
 	if (count < ENEMY_NUM) {
-		if (AppearTimer() > appear_time[count] || dead_enemy_count >= destract_num[count]) {
+		if (dead_enemy_count >= destract_num[count]) {
 			Generator();
 			count++;
 		}
@@ -176,17 +175,6 @@ void EnemyManager::OnCollisionAudience(EnemyBase* base) {
 	special_move_flag = true;
 }
 
-int EnemyManager::AppearTimer() {
-	if (frame < max_frame) 
-		++frame;
-	else {
-		frame = 0;
-		++timer;
-	}
-
-	return timer;
-}
-
 void EnemyManager::LoadEnemyArrangement() {
 	std::ifstream pos_time_infile("EnemyArrangement/EnemyArrangement.txt");
 
@@ -199,7 +187,7 @@ void EnemyManager::LoadEnemyArrangement() {
 
 	//!ƒf[ƒ^“Ç‚Ýž‚Ý
 	for (int i = 0; i < ENEMY_NUM; ++i) {
-		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> appear_time[i] >> destract_num[i] >> time_stop_flag[i];
+		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> destract_num[i] >> time_stop_flag[i];
 	}
 
 	EndEnemy();

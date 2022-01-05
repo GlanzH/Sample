@@ -86,12 +86,11 @@ private:
 	const float box_size      = 1.5f;
 
 	const float anim_adjust_extents_col = 0.02f;
-
-	const float anim_init_rotate = 10.0f;
-	const float init_rotate      = 90.0f;
 	
 protected:
-	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack);
+	virtual void Action() {}
+	virtual void Move()   {}
+	void SetAnimation(DX9::SKINNEDMODEL& model,const int enabletack,int max_motion);
 	bool IsDamage();
 	D3DMATERIAL9  material;
 	DX9::SKINNEDMODEL anim_model;
@@ -109,18 +108,13 @@ protected:
 	std::string enemy_tag;
 
 	const float fit_collision_y = 4.0f;
+
+	const float rotate = 45.0f;
+
 	int enemy_hp;
 	float delta;
 
 	bool retreat_flag;
 
 	Collision col;
-
-	enum ENEMYMOSION
-	{
-		EXIT_JUMP,
-		DAMAGE,
-		WAIT,
-		MAX_MOTION
-	};
 };

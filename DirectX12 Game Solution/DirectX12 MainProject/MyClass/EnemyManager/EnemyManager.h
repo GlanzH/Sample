@@ -39,8 +39,6 @@ private:
 	void EndEnemy();
 	void Generator();
 	void Iterator();
-	
-	int AppearTimer();
 
 	std::vector<EnemyBase*> enemy;
 	EnemyBase enemy_base;
@@ -58,8 +56,6 @@ private:
 	const float max_frame = 60.0f;
 	const float fix_pos   = 10.0f;
 
-	int frame = 0;
-	int timer = 0;
 	int enemy_num = 0;
 	int push_count = 0;
 
@@ -82,8 +78,7 @@ private:
 
 	int count = 0;                          //!敵の累計出現数カウント 
 	std::string  tag[ENEMY_NUM];            //!敵の種類         
-	Vector3		 appear_pos[ENEMY_NUM];     //!敵の出現座標  
-	double		 appear_time[ENEMY_NUM];    //!敵の出現時間
+	Vector3		 appear_pos[ENEMY_NUM];     //!敵の出現座標
 	double		 destract_num[ENEMY_NUM];   //!敵の出現時間
 	bool		 appear_flag[ENEMY_NUM];    //!敵の出現フラグ
 	bool         time_stop_flag[ENEMY_NUM]; //!敵の演出フラグ

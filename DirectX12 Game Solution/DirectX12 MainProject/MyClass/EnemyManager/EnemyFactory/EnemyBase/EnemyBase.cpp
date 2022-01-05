@@ -37,51 +37,28 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 
 	//!アニメーションモデルの作成
-	if (enemy_tag == "S" || enemy_tag == "H") {
-		anim_model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
-		anim_model->SetPosition(position);
-		anim_model->SetRotation(0.0f, XMConvertToRadians(anim_init_rotate), 0.0f);
+	anim_model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
+	anim_model->SetPosition(position);
 
-		//箱を作る準備
-		anim_box = anim_model->GetBoundingBox();
-		anim_box.Extents = SimpleMath::Vector3(anim_box.Extents) * anim_adjust_extents_col;
+	//箱を作る準備
+	anim_box = anim_model->GetBoundingBox();
+	anim_box.Extents = SimpleMath::Vector3(anim_box.Extents) * anim_adjust_extents_col;
 
-		//コリジョンモデルの作成
-		anim_collision = DX9::Model::CreateBox(
-			DXTK->Device9,
-			anim_box.Extents.x * anim_box_size,
-			anim_box.Extents.y * anim_box_size,
-			anim_box.Extents.z * anim_box_size
-		);
+	//コリジョンモデルの作成
+	anim_collision = DX9::Model::CreateBox(
+		DXTK->Device9,
+		anim_box.Extents.x * anim_box_size,
+		anim_box.Extents.y * anim_box_size,
+		anim_box.Extents.z * anim_box_size
+	);
 
-		anim_collision->SetMaterial(material);
+	anim_collision->SetMaterial(material);
 
-		//anim_collision->SetScale(anim_adjust_extents_col);
-		anim_box.Center = position;
-	}
-	else {
-		//!モデルの作成
-		model = DX9::Model::CreateFromFile(DXTK->Device9, model_name);
-		model->SetPosition(position);
-		model->SetRotation(0.0f, XMConvertToRadians(init_rotate), 0.0f);
-		//箱を作る準備
-		col.box = model->GetBoundingBox();
-
-
-		//コリジョンモデルの作成
-		collision = DX9::Model::CreateBox(
-			DXTK->Device9,
-			col.box.Extents.x * box_size,
-			col.box.Extents.y * box_size,
-			col.box.Extents.z * box_size
-		);
-
-		collision->SetMaterial(material);
-
-		col.box.Center = position;
-	}
+	//anim_collision->SetScale(anim_adjust_extents_col);
+	anim_box.Center = position;
 
 	explode.LoadAssets(initial_position.x);
+
 }
 
 int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime)
@@ -89,12 +66,11 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool
 	delta      = deltaTime;
 	player_pos = player;
 
-	if (enemy_tag == "S" || enemy_tag == "H") {
-		EnemyAnimation();
-		anim_box.Center = anim_model->GetPosition();
-		anim_model->SetPosition(position);
-		anim_collision->SetPosition(anim_model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
-	}
+		//EnemyAnimation();
+	anim_box.Center = anim_model->GetPosition();
+	anim_model->SetPosition(position);
+	anim_model->AdvanceTime(delta / 1.0f);
+	anim_collision->SetPosition(anim_model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 
 
 	if (retreat_flag && retreat_count < max_retreat) {
@@ -113,13 +89,13 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool
 	if (position.z < 15.0f) {
 		explode.Update(position, delta);
 
-		if (!reduce_audience_flag) {
-			if(enemy_tag == "S")
-				StatusManager::Instance().AddAudience(6);
-	   else if (enemy_tag == "H")
-				StatusManager::Instance().AddAudience(8);
-			reduce_audience_flag = true;
-		}
+		//if (!reduce_audience_flag) {
+		//	if(enemy_tag == "S")
+		//		StatusManager::Instance().AddAudience(6);
+	 //  else if (enemy_tag == "H")
+		//		StatusManager::Instance().AddAudience(8);
+		//	reduce_audience_flag = true;
+		//}
 	}
 
 	StatusManager::Instance().CalcAudience(delta);
@@ -131,9 +107,17 @@ void EnemyBase::OnDeviceLost() {
 	DX12Effect.Reset();
 }
 
-void EnemyBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack)
+void EnemyBase::Render() {
+	anim_model->Draw();
+
+	if (position.z < 15.0f)
+		explode.Render();
+	//anim_collision->Draw();
+}
+
+void EnemyBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack, int max_motion)
 {
-	for (int i = 0; i < MAX_MOTION; i++)
+	for (int i = 0; i < max_motion; i++)
 	{
 		model->SetTrackEnable(i, FALSE);
 		model->SetTrackEnable(enabletack, TRUE);
@@ -141,12 +125,12 @@ void EnemyBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack)
 }
 
 void EnemyBase::EnemyAnimation() {
-	if (!IsDamage())
-		SetAnimation(anim_model, WAIT);
-	else
-		SetAnimation(anim_model, DAMAGE);
+	//if (!IsDamage())
+	//	SetAnimation(anim_model, WAIT);
+	//else
+	//	SetAnimation(anim_model, DAMAGE);
 
-	anim_model->AdvanceTime(delta / 1.0f);
+	//anim_model->AdvanceTime(delta / 1.0f);
 }
 
 void EnemyBase::HitEffect() {
@@ -162,6 +146,15 @@ void EnemyBase::DeathEffect() {
 
 	if (death_effect_pos.z > 40)
 		DX12Effect.PlayOneShot("die", death_effect_pos);
+}
+
+void EnemyBase::TimeStopDecision() {
+	if (enemy_stop_flag)
+		do_time_stop_flag = true;
+}
+
+void EnemyBase::Retreat() {
+	retreat_flag = true;
 }
 
 void EnemyBase::Damage(int damage) {
@@ -183,59 +176,36 @@ bool EnemyBase::IsDamage() {
 
 bool EnemyBase::LifeDeathDecision() {
 	//!敵の死亡
-	if (enemy_tag == "S" || enemy_tag == "H") {
-		if (enemy_hp < 0 && dead_frame < max_dead) {
-			if (dead_frame == 0.0f)
-				Retreat();
+	//if (enemy_tag == "S" || enemy_tag == "H") {
+	//	if (enemy_hp < 0 && dead_frame < max_dead) {
+	//		if (dead_frame == 0.0f)
+	//			Retreat();
 
-			SetAnimation(anim_model, DAMAGE);
-			anim_model->AdvanceTime(delta / 1.0f);
-			DX12Effect.PlayOneShot("love", SimpleMath::Vector3(position.x, 0, 20));
-			dead_frame += delta;
-		}
-		else if (enemy_hp < 0 && dead_frame > max_dead) {
-			TimeStopDecision();
-			return DEAD;
-		}
-	}
-	else {
-		if (enemy_hp < 0) {
-			TimeStopDecision();
-			return DEAD;
-		}
-	}
+	//		SetAnimation(anim_model, DAMAGE);
+	//		anim_model->AdvanceTime(delta / 1.0f);
+	//		DX12Effect.PlayOneShot("love", SimpleMath::Vector3(position.x, 0, 20));
+	//		dead_frame += delta;
+	//	}
+	//	else if (enemy_hp < 0 && dead_frame > max_dead) {
+	//		TimeStopDecision();
+	//		return DEAD;
+	//	}
+	//}
+	//else {
+	//	if (enemy_hp < 0) {
+	//		TimeStopDecision();
+	//		return DEAD;
+	//	}
+	//}
 
 	//!敵の自動削除
-	 if (position.z <= 15.0f && auto_destroy_frame < max_auto_destroy) {
-		 auto_destroy_frame += delta;
-	 }
-	 else if (position.z <= 15.0f && auto_destroy_frame > max_auto_destroy) {
-		 TimeStopDecision();
-		return AUTO;
- 	 }
+	 //if (position.z <= 15.0f && auto_destroy_frame < max_auto_destroy) {
+		// auto_destroy_frame += delta;
+	 //}
+	 //else if (position.z <= 15.0f && auto_destroy_frame > max_auto_destroy) {
+		// TimeStopDecision();
+		//return AUTO;
+ 	// }
 
 	return LIVE;
-}
-
-void EnemyBase::TimeStopDecision() {
-	if (enemy_stop_flag)
-		do_time_stop_flag = true;
-}
-
-void EnemyBase::Retreat(){
-	retreat_flag = true;
-}
-
-void EnemyBase::Render() {
-	if (enemy_tag == "S" || enemy_tag == "H") {
-		anim_model->Draw();
-
-		if (position.z < 15.0f)
-			explode.Render();
-		//anim_collision->Draw();
-	}
-	else {
-		model->Draw();
-		collision->Draw();
-	}
 }

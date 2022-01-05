@@ -12,6 +12,7 @@ public:
 	int Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 
 private:
+	//void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack) override;
 	void Action();
 	void EntryExitJump();
 	void ExitRotate();

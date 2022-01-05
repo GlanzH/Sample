@@ -1,44 +1,27 @@
 #include "EnemyFactory.h"
-#include "MyClass/EnemyManager/EnemyFactory/EnemyBase/Slime/Slime.h"
-#include "EnemyBase/HighSlime/HighSlime.h"
-#include "EnemyBase/FakerLamiel/FakerLamiel.h"
-#include "EnemyBase/StoneStatue/StoneStatue.h"
-#include "EnemyBase/StoneStatue/Core/Core.h"
-#include "EnemyBase/FootHold/FootHoldBase/FootHoldBase.h"
-
+#include "EnemyBase/SwordMan/SwordMan.h"
+#include "EnemyBase/Shielder/Shielder.h"
+#include "EnemyBase/MidBoss/MidBoss.h"
 
 
 EnemyFactory::EnemyFactory()
 {
 	//敵のステータス設定
-	slime_hp			 = SLIME_HP;
-	high_slime_hp		 = HIGH_SLIME_HP;
-	faker_lamiel_hp		 = LAMIEL_HP;
-	stone_statue_hp		 = INT_MAX;
-	stone_statue_core_hp = STONE_CORE_HP;
-	foot_hold_hp         = INT_MAX;
+	enemy_hp    = ENEMY_HP;
+	mid_boss_hp = MID_BOSS_HP;
 
 	//敵の種類のタグ
-	//スライム
-	enemy_tag.push_back("S");
-    //ハイスライム
-    enemy_tag.push_back("H");
-	//フェイクラミエル
-    enemy_tag.push_back("L");
-	//巨大な古代兵器
-    enemy_tag.push_back("B");
-	//古代兵器のコア
-	enemy_tag.push_back("C");
-	//足場
-	enemy_tag.push_back("F");
+	//兵士(剣)
+	enemy_tag.push_back("SW");
+    //兵士(盾)
+    enemy_tag.push_back("SH");
+	//中ボス
+    enemy_tag.push_back("MB");
 
 	///@敵のモデル@///
-     enemy_model[SLIME]        = L"Model\\Enemy\\Slime\\slime_blue_motion.X";
-	 enemy_model[HIGH_SLIME]   = L"Model\\Enemy\\HighSlime\\slime_orange_animation.X";
-     enemy_model[FAKER_LAMIEL] = L"Model\\Enemy\\Lamiel\\ramieru.X";
-     enemy_model[STONE_STATUE] = L"Model\\Enemy\\Stone\\houdai.X";
-	 enemy_model[STONE_CORE]   = L"Model\\Enemy\\Stone\\koteihoudai_core.X";
-	 enemy_model[FOOT_HOLD]    = L"Model\\asiba.X";
+     enemy_model[SWORD_MAN] = L"Model\\Enemy\\SwordMan\\models_sord.X";
+	 enemy_model[SHIELDER]  = L"Model\\Enemy\\Shielder\\goblin_shield.X";
+	 enemy_model[MID_BOSS]  = L"Model\\Enemy\\MidBoss\\midolboss_goblin.X";
 
 }
 
@@ -55,12 +38,9 @@ EnemyBase* EnemyFactory::CreateProduct(std::string tag, bool time_stop_flag, Dir
 {
 	EnemyBase* classes[] = 
 	{ 
-		new Slime,
-		new HighSlime,
-		new FakerLamiel,
-		new StoneStatue,
-		new Core,
-		new FootHoldBase
+		new SwordMan,
+		new Shielder,
+		new MidBoss
 	};
 
 
@@ -76,12 +56,9 @@ LPCWSTR EnemyFactory::SetModel(std::string tag)
 {
 	LPCWSTR models[] = 
 	{ 
-		enemy_model[SLIME] ,
-		enemy_model[HIGH_SLIME],
-		enemy_model[FAKER_LAMIEL],
-		enemy_model[STONE_STATUE],
-		enemy_model[STONE_CORE],
-		enemy_model[FOOT_HOLD]
+		enemy_model[SWORD_MAN],
+		enemy_model[SHIELDER],
+		enemy_model[MID_BOSS]
 	};
 
 	for (int i = 0; i < enemy_tag.size(); ++i)
@@ -95,12 +72,9 @@ int EnemyFactory::SetHP(std::string tag)
 {
 	int hps[] = 
 	{ 
-		slime_hp,
-		high_slime_hp,
-		faker_lamiel_hp,
-		stone_statue_hp,
-		stone_statue_core_hp,
-		foot_hold_hp
+		enemy_hp,
+		enemy_hp,
+		mid_boss_hp
 	};
 
 	for (int i = 0; i < enemy_tag.size(); ++i)
