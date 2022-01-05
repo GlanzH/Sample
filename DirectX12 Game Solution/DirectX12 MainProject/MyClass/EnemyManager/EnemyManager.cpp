@@ -150,7 +150,7 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	 std::string tag = base->GetTag();
 
 	 if (tag != "C") {
-		 if (StatusManager::Instance().GetCombo() == max_combo)
+		 if (StatusManager::Instance().GetAtkCombo() == max_combo)
 			 base->Retreat();
 	 }	
 }

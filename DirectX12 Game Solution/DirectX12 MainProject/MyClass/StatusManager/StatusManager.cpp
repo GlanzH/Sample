@@ -4,14 +4,15 @@
 #include "MyClass/GameSceneManager/SceneManager.h"
 
 void StatusManager::Initialize() {
-	//コンボ
-	combo_time = 0.0f;
-	combo = 0;
-	combo_flag = false;
-	combo_count = 0;
+	//プレイヤーのコンボ
+	atk_combo		= 0;
+	atk_combo_count = 0;
+	atk_combo_time	= 0.0f;
+	kill_combo_time = 0.0f;
+	atk_combo_flag	= false;
 
 	//オーディエンス
-	audience = AUDIENCE_START_VALUE;
+	audience	 = AUDIENCE_START_VALUE;
 	now_audience = audience;
 	plus_audience_flag = false;
 
@@ -20,16 +21,16 @@ void StatusManager::Initialize() {
 }
 
 int StatusManager::Update(const float deltaTime) {
-	if (combo_time > COMBO_TIME_MAX[combo_count] || combo >= COMBO_MAX) {
-		combo_time  = 0.0f;
-		combo_flag  = false;
-		combo_count = 0;
-		combo = 0;
+	if (atk_combo_time > ATK_COMBO_TIME_MAX[atk_combo_count] || atk_combo >= ATK_COMBO_MAX) {
+		atk_combo_time  = 0.0f;
+		atk_combo_flag  = false;
+		atk_combo_count = 0;
+		atk_combo = 0;
 		
 	}
 
-	if (combo_flag) {
-		combo_time += deltaTime;
+	if (atk_combo_flag) {
+		atk_combo_time += deltaTime;
 	}
 
 	return 0;
@@ -37,9 +38,9 @@ int StatusManager::Update(const float deltaTime) {
 
 void StatusManager::AddCombo(const float deltaTime) {
 
-	combo++;
-	combo_time = 0.0f;
-	combo_flag = true;
+	atk_combo++;
+	atk_combo_time = 0.0f;
+	atk_combo_flag = true;
 
 	return;
 }
@@ -79,6 +80,39 @@ void StatusManager::UpAudience(const float deltaTime) {
 
 void StatusManager::DownAudience(const float deltaTime) {
 	audience = std::max(audience - AUIDENCE_DN_SPEED * deltaTime, now_audience);
+	return;
+}
+
+float StatusManager::GetKillComboTime(const float deltaTime) {
+	kill_combo_time = std::min(kill_combo_time + deltaTime, KILL_COMBO_TIME_MAX);
+	return kill_combo_time;
+}
+
+void StatusManager::BonusScore(int kill_combo) {
+	switch (kill_combo) {
+	case 1:
+		AddAudience(20.0f);
+		kill_combo_time -= KILL_COMBO_TIME_MAX;
+		break;
+	case 2:
+		AddAudience(40.0f);
+		kill_combo_time -= KILL_COMBO_TIME_MAX;
+		break;
+	case 3:
+		AddAudience(80.0f);
+		kill_combo_time -= KILL_COMBO_TIME_MAX;
+		break;
+	case 4:
+		AddAudience(160.0f);
+		kill_combo_time -= KILL_COMBO_TIME_MAX;
+		break;
+	case 5:
+		AddAudience(320.0f);
+		kill_combo_time -= KILL_COMBO_TIME_MAX;
+		break;
+	default:
+		break;
+	}
 	return;
 }
 
