@@ -111,7 +111,7 @@ void MainScene::Terminate()
 	DXTK->WaitForGpu();
 
 	// TODO: Add your Termination logic here.
-	DX12Effect.Reset();
+	//DX12Effect.Reset();
 }
 
 // Direct3D resource cleanup.

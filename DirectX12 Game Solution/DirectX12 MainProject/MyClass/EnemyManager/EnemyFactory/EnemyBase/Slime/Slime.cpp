@@ -37,15 +37,15 @@ void Slime::Action() {
 			}
 		}
 		else {
-			ExitRotate();
+			//ExitRotate();
 		}
 		break;
 
-	case EXIT:
+	/*case EXIT:
 		if (position.z > EXIT_POS) {
 			jump_dist = EXIT_DIST;
 			EntryExitJump();
-		}
+		}*/
 		break;
 	}
 }

@@ -9,7 +9,7 @@ using namespace DirectX;
 class LandingAttackClass
 {
 public:
-	LandingAttackClass() {};
+	LandingAttackClass();
 	~LandingAttackClass() {};
 	void Initialize();
 	void LoadAseets();

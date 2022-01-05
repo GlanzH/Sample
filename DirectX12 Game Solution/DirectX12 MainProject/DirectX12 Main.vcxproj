@@ -200,6 +200,7 @@
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FakerLamiel\FakerLamiel.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\HighSlime\HighSlime.h" />
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\SlimeBase\SlimeBase.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime\Slime.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core\Core.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\StoneStatue.h" />
@@ -264,6 +265,7 @@
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\HighSlime\HighSlime.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\SlimeBase\SlimeBase.cpp" />
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime\Slime.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>

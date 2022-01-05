@@ -1,6 +1,10 @@
 #include "LandingAttackClass.h"
 
 
+LandingAttackClass::LandingAttackClass()
+{
+}
+
 void LandingAttackClass::Initialize()
 {
 }

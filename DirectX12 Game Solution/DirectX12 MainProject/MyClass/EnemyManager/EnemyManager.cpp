@@ -97,6 +97,7 @@ void EnemyManager::Iterator() {
 }
 
 void EnemyManager::OnDeviceLost() {
+
 	DX12Effect.Reset();
 
 	for (auto& enemies : enemy) {

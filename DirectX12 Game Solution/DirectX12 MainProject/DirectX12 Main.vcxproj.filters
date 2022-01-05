@@ -85,6 +85,9 @@
     <Filter Include="MyClass\DialogueManager">
       <UniqueIdentifier>{22c7b9e1-5606-4f7c-8da4-0c19880adca7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\SlimeBase">
+      <UniqueIdentifier>{fae3f7a3-cc43-46d2-acb7-452f19040714}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -150,9 +153,6 @@
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FakerLamiel\FakerLamiel.h">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\FakerLamiel</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\HighSlime\HighSlime.h">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\HighSlime</Filter>
-    </ClInclude>
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime\Slime.h">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime</Filter>
     </ClInclude>
@@ -197,6 +197,13 @@
     </ClInclude>
     <ClInclude Include="EndingScene.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\PlayerManager\LandingAttackClass\LandingAttackClass.h" />
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\HighSlime\HighSlime.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\HighSlime</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\SlimeBase\SlimeBase.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\SlimeBase</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -289,6 +296,10 @@
     </ClCompile>
     <ClCompile Include="EndingScene.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\PlayerManager\LandingAttackClass\LandingAttackClass.cpp" />
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\SlimeBase\SlimeBase.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\SlimeBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

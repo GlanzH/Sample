@@ -43,15 +43,15 @@ void HighSlime::Action() {
 			Jump();
 		}
 		else {
-			ExitRotate();
+		//	ExitRotate();
 		}
 		break;
 
-	case EXIT:
-		if (position.z >= EXIT_POS) {
-			jump_dist = EXIT_DIST;
-			EntryExitJump();
-		}
+	//case EXIT:
+	//	if (position.z >= EXIT_POS) {
+	//		jump_dist = EXIT_DIST;
+	//		//EntryExitJump();
+	//	}
 		break;
 	}
 }
