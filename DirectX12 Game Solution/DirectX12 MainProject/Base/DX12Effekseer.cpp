@@ -132,15 +132,15 @@ void DX12Effekseer::CEffekseer::Play(std::string effectName)
 	if (m_effects[effectName] == NULL)
 		return;
 
-	if (m_handles[effectName] == NULL) 
+	if (m_handles[effectName] == NULL)
 	{
 		m_handles[effectName] = m_manager->Play(m_effects[effectName], 0, 0, 0);
 	}
-	
+
 	if (!m_manager->Exists(m_handles[effectName]))
 	{
 		m_handles[effectName] = m_manager->Play(m_effects[effectName], 0, 0, 0);
-	}	
+	}
 }
 
 void DX12Effekseer::CEffekseer::Play(std::string effectName, Vector3 pos)
@@ -157,6 +157,13 @@ void DX12Effekseer::CEffekseer::Play(std::string effectName, Vector3 pos)
 	{
 		m_handles[effectName] = m_manager->Play(m_effects[effectName], pos.x, pos.y, pos.z);
 	}
+}
+
+EFFECTHANDLE DX12Effekseer::CEffekseer::Play(EFFECT effect ,Vector3 pos)
+{
+	EFFECTHANDLE handle = m_manager->Play(effect, pos.x, pos.y, pos.z);
+
+	return handle;
 }
 
 /**
@@ -188,6 +195,11 @@ void DX12Effekseer::CEffekseer::Stop(std::string effectName)
 	m_manager->StopEffect(m_handles[effectName]);
 }
 
+void DX12Effekseer::CEffekseer::Stop(EFFECTHANDLE handle)
+{
+	m_manager->StopEffect(handle);
+}
+
 void DX12Effekseer::CEffekseer::AllStop()
 {
 	m_manager->StopAllEffects();
@@ -204,6 +216,13 @@ void DX12Effekseer::CEffekseer::Pause(std::string effectName)
 	m_manager->SetShown(m_handles[effectName], flag);
 }
 
+void DX12Effekseer::CEffekseer::Pause(EFFECTHANDLE handle)
+{
+	auto flag = m_manager->GetPaused(handle);
+	m_manager->SetPaused(handle, !flag);
+	m_manager->SetShown(handle, flag);
+}
+
 /**
 	@brief	エフェクトのポジション変更
 	@param	effectName エフェクト名
@@ -213,6 +232,13 @@ void DX12Effekseer::CEffekseer::SetPosition(std::string effectName,Vector3 effec
 {
 	Effekseer::Vector3D position = Effekseer::Vector3D(effectPosition.x, effectPosition.y, effectPosition.z);
 	m_manager->SetLocation(m_handles[effectName], position);
+
+}
+
+void DX12Effekseer::CEffekseer::SetPosition(EFFECTHANDLE handle, Vector3 effectPosition)
+{
+	Effekseer::Vector3D position = Effekseer::Vector3D(effectPosition.x, effectPosition.y, effectPosition.z);
+	m_manager->SetLocation(handle, position);
 
 }
 
@@ -227,6 +253,12 @@ void DX12Effekseer::CEffekseer::MoveEffect(std::string effectName, Vector3 posit
 	m_manager->AddLocation(m_handles[effectName], pos);
 }
 
+void DX12Effekseer::CEffekseer::MoveEffect(EFFECTHANDLE handle, Vector3 position)
+{
+	Effekseer::Vector3D pos = Effekseer::Vector3D(position.x, position.y, position.z);
+	m_manager->AddLocation(handle, pos);
+}
+
 /**
 	@brief	エフェクトを回転させる
 	@param	effectName エフェクト名
@@ -237,6 +269,11 @@ void DX12Effekseer::CEffekseer::SetRotation(std::string effectName, Vector3 rota
 	m_manager->SetRotation(m_handles[effectName], rotation.x, rotation.y, rotation.z);
 }
 
+void DX12Effekseer::CEffekseer::SetRotation(EFFECTHANDLE handle, Vector3 rotation)
+{
+	m_manager->SetRotation(handle, rotation.x, rotation.y, rotation.z);
+}
+
 /**
 	@brief	エフェクトのスケール変更
 	@param	effectName エフェクト名
@@ -245,6 +282,11 @@ void DX12Effekseer::CEffekseer::SetRotation(std::string effectName, Vector3 rota
 void DX12Effekseer::CEffekseer::SetScale(std::string effectName, Vector3 scale)
 {
 	m_manager->SetScale(m_handles[effectName], scale.x, scale.y, scale.z);
+}
+
+void DX12Effekseer::CEffekseer::SetScale(EFFECTHANDLE handle, Vector3 scale)
+{
+	m_manager->SetScale(handle, scale.x, scale.y, scale.z);
 }
 
 /**
@@ -283,10 +325,16 @@ void DX12Effekseer::CEffekseer::SetSpeed(std::string effectName, float speed)
 	@param	fileName	ファイル名
 	@return	エフェクト
 */
-Effekseer::Effect* DX12Effekseer::CEffekseer::Create(LPCWSTR fileName, std::string effectName)
+EFFECT DX12Effekseer::CEffekseer::Create(LPCWSTR fileName, std::string effectName)
 {
 	EFFECT effect = Effekseer::Effect::Create(m_manager, (const EFK_CHAR*)fileName, 1.0f);
 	m_effects[effectName] = effect;
 
+	return effect;
+}
+
+EFFECT DX12Effekseer::CEffekseer::Create(LPCWSTR fileName)
+{
+	EFFECT effect = Effekseer::Effect::Create(m_manager, (const EFK_CHAR*)fileName, 1.0f);
 	return effect;
 }
