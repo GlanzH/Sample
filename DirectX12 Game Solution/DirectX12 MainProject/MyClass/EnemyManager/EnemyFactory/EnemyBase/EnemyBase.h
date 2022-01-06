@@ -10,10 +10,6 @@ using namespace DirectX;
 typedef struct Collision {
 	//“Gƒ‚ƒfƒ‹‚Ì“–‚½‚è”»’è
 	BoundingBox  box;
-	//‰Š‚Ì“–‚½‚è”»’è
-	BoundingBox  fire;
-	//’e‚Ì“–‚½‚è”»’è
-	BoundingSphere bullet;
 };
 
 class EnemyBase
@@ -24,8 +20,11 @@ public:
 
 	virtual bool Initialize(std::string tag, bool time_stop_flag, int hp);
 	void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
-	virtual int Update(SimpleMath::Vector3 player,bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
-	virtual void Render();
+	void LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
+
+	virtual int  Update(SimpleMath::Vector3 player,bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
+	virtual void AnimModelRender();
+	virtual void ModelRender();
 	virtual void OnDeviceLost();
 	void Retreat();
 
@@ -35,12 +34,11 @@ public:
 	void HitEffect();
 	void DeathEffect();
 
-	virtual void Damage(int damage);
+	virtual void Damage();
 	bool LifeDeathDecision();
 
 	DX9::SKINNEDMODEL& GetAnimModel() { return anim_model; }
 	DX9::MODEL& GetModel()			  { return model; }
-	BoundingBox GetAnimBox()		  { return anim_box; }
 	Collision GetBox()				  { return col; }
 
 	std::string GetTag() { return enemy_tag; }
@@ -48,6 +46,7 @@ public:
 private:
 	void TimeStopDecision();
 	void EnemyAnimation();
+	void IsRetreat();
 	
 	ExplodeMan explode;
 
@@ -82,8 +81,12 @@ private:
 	float damage_frame = 0.0f;
 	const float max_damage_frame = 1.0f;
 
+	//!ƒXƒ^ƒ“—p
+	float stun_frame = 0.0f;
+	const float max_stun = 10.0f;
+
 	const float anim_box_size = 2.0f;
-	const float box_size      = 1.5f;
+	const float box_size      = 2.0f;
 
 	const float anim_adjust_extents_col = 0.02f;
 	
@@ -91,16 +94,17 @@ protected:
 	virtual void Action() {}
 	virtual void Move()   {}
 	void SetAnimation(DX9::SKINNEDMODEL& model,const int enabletack,int max_motion);
+	void AdjustAnimCollision();
+	bool Stun();
 	bool IsDamage();
 	D3DMATERIAL9  material;
 	DX9::SKINNEDMODEL anim_model;
-	BoundingBox		  anim_box;
-	DX9::MODEL		  anim_collision;
 
 	DX9::MODEL   model;
 	DX9::MODEL	 collision;
 	DX9::MODEL	 obstacle_collision;
 
+	SimpleMath::Vector3  init_pos;
 	SimpleMath::Vector3  position;
 	SimpleMath::Vector3  enemy_speed;
 	SimpleMath::Vector3  player_pos;

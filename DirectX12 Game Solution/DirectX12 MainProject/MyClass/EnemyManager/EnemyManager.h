@@ -31,7 +31,7 @@ public:
 	bool IsTimeStop() { return enemy_stop_flag; }
 
 	void OnCollisionEnter(EnemyBase* base);
-	void NotCollisionEnter(EnemyBase* base);
+	void OnThrustCollisionEnter(EnemyBase* base);
 	void OnCollisionAudience(EnemyBase* base);
 	void OnCollisionSpecialMove(EnemyBase* base);
 private:
@@ -56,6 +56,8 @@ private:
 	const float max_frame = 60.0f;
 	const float fix_pos   = 10.0f;
 
+	int add_score = 0;
+
 	int enemy_num = 0;
 	int push_count = 0;
 
@@ -64,6 +66,21 @@ private:
 	bool foot_hold_flag    = false;
 
 	const int max_combo = 3;
+
+	enum KillNum {
+		ONE   = 1,
+		TWO   = 2,
+		THREE = 3,
+		FOUR  = 4
+	};
+
+	enum AddScore {
+		ONE_SCORE       = 20,
+		TWO_SCORE       = 40,
+		THREE_SCORE     = 80,
+		FOUR_SCORE      = 160,
+		OVER_FIVE_SCORE = 320
+	};
 
 	enum LoadFile {
 		DUMMY_LINE = 7,

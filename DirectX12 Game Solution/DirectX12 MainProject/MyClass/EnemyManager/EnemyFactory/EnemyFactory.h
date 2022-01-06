@@ -30,6 +30,7 @@ private:
 	int hp;
 	int enemy_hp;
 	int mid_boss_hp;
+	int arrow_hp;
 
 	std::vector<std::string> enemy_tag;
 
@@ -41,6 +42,7 @@ private:
 		SWORD_MAN,
 		SHIELDER,
 		MID_BOSS,
+		ARROW,
 		MODEL_MAX
 	};
 

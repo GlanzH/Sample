@@ -45,7 +45,7 @@ bool EnemyManager::Initialize(PlayerBase* player_base)
 int EnemyManager::Update(SimpleMath::Vector3 player,bool special_attack_flag, bool thorow_things_flag, const float deltaTime)
 {
 	for (auto& enemies : enemy) {
-		enemies->Update(player, special_attack_flag, thorow_things_flag,deltaTime);
+		enemies->Update(player, special_attack_flag, thorow_things_flag, deltaTime);
 	}
 
 	Iterator();
@@ -118,7 +118,10 @@ void EnemyManager::Generator() {
 void EnemyManager::Render()
 {
 	for (auto& enemies : enemy) {
-		enemies->Render();
+		if(enemies->GetTag() != "AR")
+			enemies->AnimModelRender();
+		else
+			enemies->ModelRender();
 	}
 }
 
@@ -145,19 +148,51 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	 std::string tag = base->GetTag();
 	
 		 hit->Play();
-		 base->Damage(player_data->GetDamage());
+		 base->Damage();
 		 base->HitEffect();
 
+		 StatusManager::Instance().AddAudience(10);
 
 		 if (tag != "C") {
-			 if (StatusManager::Instance().GetCombo() == max_combo)
+			 if (StatusManager::Instance().GetAtkCombo() == max_combo)
 				 base->Retreat();
 		 }
 }
 
+void EnemyManager::OnThrustCollisionEnter(EnemyBase* base) {
+	hit->Play();
+	base->Damage();
+
+	//!“G‚ð“|‚µ‚½Žž‚ÌƒRƒ“ƒ{”‚É‰ž‚¶‚Ä’l‚ðAddAudience‚Å’l‚ð“n‚·
+	int a;
+
+	switch (a) {
+	case ONE:
+		add_score = ONE_SCORE;
+		break;
+
+	case TWO:
+		add_score = TWO_SCORE;
+		break;
+
+	case THREE:
+		add_score = THREE_SCORE;
+		break;
+
+	case FOUR:
+		add_score = FOUR_SCORE;
+		break;
+	default:
+		add_score = OVER_FIVE_SCORE;
+		break;
+	}
+
+	StatusManager::Instance().AddAudience(add_score);
+}
+
 void EnemyManager::OnCollisionSpecialMove(EnemyBase* base) {
 	hit->Play();
-	base->Damage(20);
+	//base->Damage(20);
 	
 	auto pos = player_data->GetModel()->GetPosition();
 	DX12Effect.Play("special", SimpleMath::Vector3(pos.x, 0, pos.z));
@@ -167,7 +202,7 @@ void EnemyManager::OnCollisionSpecialMove(EnemyBase* base) {
 
 void EnemyManager::OnCollisionAudience(EnemyBase* base) {
 	hit->Play();
-	base->Damage(20);
+	//base->Damage(20);
 
 	auto pos = player_data->GetModel()->GetPosition();
 	DX12Effect.Play("special", SimpleMath::Vector3(pos.x, 0, pos.z));

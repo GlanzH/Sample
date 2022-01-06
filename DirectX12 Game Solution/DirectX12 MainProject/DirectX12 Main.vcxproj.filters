@@ -79,6 +79,9 @@
     <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\MidBoss">
       <UniqueIdentifier>{e49e65e3-2519-4562-b46a-767c296e5762}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Arrow">
+      <UniqueIdentifier>{844509d4-acbe-43d5-a9bf-94a45471b2a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -177,8 +180,6 @@
     <ClInclude Include="MyClass\Camera\C_Camera.h">
       <Filter>MyClass\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FootHold\FootHold.h" />
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FootHold\FootHoldBase\FootHoldBase.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan\SwordMan.h">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan</Filter>
     </ClInclude>
@@ -187,6 +188,9 @@
     </ClInclude>
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\MidBoss\MidBoss.h">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\MidBoss</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Arrow\Arrow.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Arrow</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -265,8 +269,6 @@
     <ClCompile Include="MyClass\Camera\C_Camera.cpp">
       <Filter>MyClass\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FootHold\FootHold.cpp" />
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FootHold\FootHoldBase\FootHoldBase.cpp" />
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan\SwordMan.cpp">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan</Filter>
     </ClCompile>
@@ -275,6 +277,9 @@
     </ClCompile>
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\MidBoss\MidBoss.cpp">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\MidBoss</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Arrow\Arrow.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Arrow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

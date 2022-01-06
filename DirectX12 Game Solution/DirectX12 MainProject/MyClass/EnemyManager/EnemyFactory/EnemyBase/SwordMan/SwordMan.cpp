@@ -11,9 +11,13 @@ bool SwordMan::Initialize(std::string tag, bool time_stop_flag, int hp) {
 int SwordMan::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime) {
 	EnemyBase::Update(player, special_attack_flag, thorow_things_flag, deltaTime);
 
-	if (!special_attack_flag && !thorow_things_flag)
+	if (!special_attack_flag && !thorow_things_flag && !Stun())
 		Action();
 
+	if (Stun())
+		SetAnimation(anim_model, (int)Motion::WAIT, (int)Motion::MAX_MOTION);
+
+	AdjustAnimCollision();
 	return 0;
 }
 void SwordMan::Action() {

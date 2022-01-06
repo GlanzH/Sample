@@ -2,6 +2,7 @@
 #include "EnemyBase/SwordMan/SwordMan.h"
 #include "EnemyBase/Shielder/Shielder.h"
 #include "EnemyBase/MidBoss/MidBoss.h"
+#include "EnemyBase/Arrow/Arrow.h"
 
 
 EnemyFactory::EnemyFactory()
@@ -9,6 +10,7 @@ EnemyFactory::EnemyFactory()
 	//敵のステータス設定
 	enemy_hp    = ENEMY_HP;
 	mid_boss_hp = MID_BOSS_HP;
+	arrow_hp    = INT_MAX;
 
 	//敵の種類のタグ
 	//兵士(剣)
@@ -17,11 +19,14 @@ EnemyFactory::EnemyFactory()
     enemy_tag.push_back("SH");
 	//中ボス
     enemy_tag.push_back("MB");
+	//矢
+	enemy_tag.push_back("AR");
 
 	///@敵のモデル@///
      enemy_model[SWORD_MAN] = L"Model\\Enemy\\SwordMan\\models_sord.X";
 	 enemy_model[SHIELDER]  = L"Model\\Enemy\\Shielder\\goblin_shield.X";
 	 enemy_model[MID_BOSS]  = L"Model\\Enemy\\MidBoss\\midolboss_goblin.X";
+	 enemy_model[ARROW]     = L"Model\\Enemy\\Arrow\\arrow_big.X";
 
 }
 
@@ -29,7 +34,11 @@ EnemyBase* EnemyFactory::Create(std::string tag, bool time_stop_flag,DirectX::Si
 {
 	EnemyBase* enemy_factory = CreateProduct(tag,time_stop_flag,position);
 	enemy_factory->Initialize(tag,time_stop_flag, SetHP(tag));
-	enemy_factory->LoadAsset(SetModel(tag), position);
+
+	if(tag != "AR")
+		enemy_factory->LoadAsset(SetModel(tag), position);
+	else
+		enemy_factory->LoadModel(SetModel(tag), position);
 	
 	return enemy_factory;
 }
@@ -40,7 +49,8 @@ EnemyBase* EnemyFactory::CreateProduct(std::string tag, bool time_stop_flag, Dir
 	{ 
 		new SwordMan,
 		new Shielder,
-		new MidBoss
+		new MidBoss,
+		new Arrow
 	};
 
 
@@ -58,7 +68,8 @@ LPCWSTR EnemyFactory::SetModel(std::string tag)
 	{ 
 		enemy_model[SWORD_MAN],
 		enemy_model[SHIELDER],
-		enemy_model[MID_BOSS]
+		enemy_model[MID_BOSS],
+		enemy_model[ARROW]
 	};
 
 	for (int i = 0; i < enemy_tag.size(); ++i)
@@ -74,7 +85,8 @@ int EnemyFactory::SetHP(std::string tag)
 	{ 
 		enemy_hp,
 		enemy_hp,
-		mid_boss_hp
+		mid_boss_hp,
+		arrow_hp
 	};
 
 	for (int i = 0; i < enemy_tag.size(); ++i)
