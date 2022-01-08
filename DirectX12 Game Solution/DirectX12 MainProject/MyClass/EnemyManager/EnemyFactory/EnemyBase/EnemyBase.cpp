@@ -9,10 +9,10 @@ EnemyBase::EnemyBase()
 
 bool EnemyBase::EffectInit() {
 	DX12Effect.Initialize();
-	DX12Effect.Create(L"Effect/EnemyEffect/hit/hit.efk", "hit_eff");
-	DX12Effect.Create(L"Effect/EnemyEffect/die/die.efk", "die");
-	DX12Effect.Create(L"Effect/EnemyEffect/star/star.efk", "star");
-	DX12Effect.Create(L"Effect/AudienceEffect/heart/heart.efk", "love");
+	hit  = DX12Effect.Create(L"Effect/EnemyEffect/hit/hit.efk");
+	die  = DX12Effect.Create(L"Effect/EnemyEffect/die/die.efk");
+	star = DX12Effect.Create(L"Effect/EnemyEffect/star/star.efk");
+	love = DX12Effect.Create(L"Effect/AudienceEffect/heart/heart.efk");
 	death_effect_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 	hit_effect_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 	return true;
@@ -162,15 +162,15 @@ void EnemyBase::HitEffect() {
 	//if (enemy_hp > 0) {
 		hit_effect_pos = position;
 
-		DX12Effect.PlayOneShot("hit_eff", hit_effect_pos);
+	//	DX12Effect.PlayOneShot("hit_eff", hit_effect_pos);
 	//}
 }
 
 void EnemyBase::DeathEffect() {
 	death_effect_pos = position;
 
-	if (death_effect_pos.z > 40)
-		DX12Effect.PlayOneShot("die", death_effect_pos);
+	//if (death_effect_pos.z > 40)
+	//	DX12Effect.PlayOneShot("die", death_effect_pos);
 }
 
 void EnemyBase::TimeStopDecision() {
@@ -203,14 +203,11 @@ void EnemyBase::Damage() {
 
 bool EnemyBase::Stun() {
 	if (enemy_hp == 1 && stun_frame < max_stun) {
-		DX12Effect.SetPosition("star",position + SimpleMath::Vector3(0,10,0));
-		DX12Effect.Play("star");
+		if (!DX12Effect.CheckAlive(star_handle))
+			star_handle = DX12Effect.Play(star, position + SimpleMath::Vector3(0,10,0));
 		stun_frame += delta;
 		return true;
 	}
-
-	if(enemy_hp <= 0)
-		DX12Effect.Stop("star");
 
 	return false;
 }
