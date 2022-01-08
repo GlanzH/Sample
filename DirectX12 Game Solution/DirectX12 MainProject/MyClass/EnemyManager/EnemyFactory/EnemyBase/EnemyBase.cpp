@@ -199,7 +199,6 @@ void EnemyBase::IsRetreat() {
 
 void EnemyBase::Damage() {
 	enemy_hp -= 1;
-	damage_flag = true;
 }
 
 bool EnemyBase::Stun() {
@@ -210,53 +209,8 @@ bool EnemyBase::Stun() {
 		return true;
 	}
 
+	if(enemy_hp <= 0)
+		DX12Effect.Stop("star");
+
 	return false;
-}
-
-bool EnemyBase::IsDamage() {
-	if (damage_flag && damage_frame < max_damage_frame) {
-		damage_frame += delta;
-		return true;
-	}
-	else {
-		damage_frame = 0.0f;
-		damage_flag = false;
-		return false;
-	}
-}
-
-bool EnemyBase::LifeDeathDecision() {
-	//!“G‚ÌŽ€–S
-	//if (enemy_tag == "S" || enemy_tag == "H") {
-	//	if (enemy_hp < 0 && dead_frame < max_dead) {
-	//		if (dead_frame == 0.0f)
-	//			Retreat();
-
-	//		SetAnimation(anim_model, DAMAGE);
-	//		anim_model->AdvanceTime(delta / 1.0f);
-	//		DX12Effect.PlayOneShot("love", SimpleMath::Vector3(position.x, 0, 20));
-	//		dead_frame += delta;
-	//	}
-	//	else if (enemy_hp < 0 && dead_frame > max_dead) {
-	//		TimeStopDecision();
-	//		return DEAD;
-	//	}
-	//}
-	//else {
-	//	if (enemy_hp < 0) {
-	//		TimeStopDecision();
-	//		return DEAD;
-	//	}
-	//}
-
-	//!“G‚ÌŽ©“®íœ
-	 //if (position.z <= 15.0f && auto_destroy_frame < max_auto_destroy) {
-		// auto_destroy_frame += delta;
-	 //}
-	 //else if (position.z <= 15.0f && auto_destroy_frame > max_auto_destroy) {
-		// TimeStopDecision();
-		//return AUTO;
- 	// }
-
-	return LIVE;
 }

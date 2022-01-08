@@ -153,9 +153,6 @@
     <ClInclude Include="MyClass\RankJudgeManager\RankJudgeManager.h">
       <Filter>MyClass\RankJudgeManager</Filter>
     </ClInclude>
-    <ClInclude Include="Base\DX12Effekseer.h">
-      <Filter>MyClass\Effekseer</Filter>
-    </ClInclude>
     <ClInclude Include="MyClass\AudianceManager\AudianceManager.h">
       <Filter>MyClass\AudianceManager</Filter>
     </ClInclude>
@@ -191,6 +188,9 @@
     </ClInclude>
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Arrow\Arrow.h">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Arrow</Filter>
+    </ClInclude>
+    <ClInclude Include="Base\DX12Effekseer.h">
+      <Filter>MyClass\Effekseer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -242,9 +242,6 @@
     <ClCompile Include="MyClass\RankJudgeManager\RankJudgeManager.cpp">
       <Filter>MyClass\RankJudgeManager</Filter>
     </ClCompile>
-    <ClCompile Include="Base\DX12Effekseer.cpp">
-      <Filter>MyClass\Effekseer</Filter>
-    </ClCompile>
     <ClCompile Include="MyClass\AudianceManager\AudianceManager.cpp">
       <Filter>MyClass\AudianceManager</Filter>
     </ClCompile>
@@ -280,6 +277,9 @@
     </ClCompile>
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Arrow\Arrow.cpp">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\DX12Effekseer.cpp">
+      <Filter>MyClass\Effekseer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

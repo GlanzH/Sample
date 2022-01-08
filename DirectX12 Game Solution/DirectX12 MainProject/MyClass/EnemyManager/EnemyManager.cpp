@@ -69,20 +69,19 @@ void EnemyManager::Iterator() {
 			itr++;
 		}
 		else {
-			//“G‚ª€–S‚µ‚½‚Æ‚«‚Ìˆ—
-			dead_enemy_count++;
 
 			if ((*itr)->GetTimeStopFlag())
 				StartTimeStop();
 
 			if ((*itr)->LifeDeathDecision() == DEAD) {
 
-					if ((*itr)->GetTag() != "C")
-						(*itr)->DeathEffect();
-					else
-						DX12Effect.PlayOneShot("boss", (*itr)->GetModel()->GetPosition());
-
-				kill->Play();
+				if ((*itr)->GetTag() != "AR") {
+					(*itr)->DeathEffect();
+					kill->Play();
+					dead_enemy_count++;
+				}
+					//else
+					//	DX12Effect.PlayOneShot("boss", (*itr)->GetModel()->GetPosition());
 
 				StatusManager::Instance().HeartCount();
 				itr = enemy.erase(itr);
@@ -151,7 +150,7 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 		 base->Damage();
 		 base->HitEffect();
 
-		 StatusManager::Instance().AddAudience(10);
+		// StatusManager::Instance().AddAudience(10);
 
 		 if (tag != "C") {
 			 if (StatusManager::Instance().GetAtkCombo() == max_combo)
@@ -164,30 +163,30 @@ void EnemyManager::OnThrustCollisionEnter(EnemyBase* base) {
 	base->Damage();
 
 	//!“G‚ğ“|‚µ‚½‚ÌƒRƒ“ƒ{”‚É‰‚¶‚Ä’l‚ğAddAudience‚Å’l‚ğ“n‚·
-	int a;
+	//int a;
 
-	switch (a) {
-	case ONE:
-		add_score = ONE_SCORE;
-		break;
+	//switch (a) {
+	//case ONE:
+	//	add_score = ONE_SCORE;
+	//	break;
 
-	case TWO:
-		add_score = TWO_SCORE;
-		break;
+	//case TWO:
+	//	add_score = TWO_SCORE;
+	//	break;
 
-	case THREE:
-		add_score = THREE_SCORE;
-		break;
+	//case THREE:
+	//	add_score = THREE_SCORE;
+	//	break;
 
-	case FOUR:
-		add_score = FOUR_SCORE;
-		break;
-	default:
-		add_score = OVER_FIVE_SCORE;
-		break;
-	}
+	//case FOUR:
+	//	add_score = FOUR_SCORE;
+	//	break;
+	//default:
+	//	add_score = OVER_FIVE_SCORE;
+	//	break;
+	//}
 
-	StatusManager::Instance().AddAudience(add_score);
+	//StatusManager::Instance().AddAudience(add_score);
 }
 
 void EnemyManager::OnCollisionSpecialMove(EnemyBase* base) {

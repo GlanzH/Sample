@@ -11,11 +11,14 @@ bool SwordMan::Initialize(std::string tag, bool time_stop_flag, int hp) {
 int SwordMan::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime) {
 	EnemyBase::Update(player, special_attack_flag, thorow_things_flag, deltaTime);
 
-	if (!special_attack_flag && !thorow_things_flag && !Stun())
+	if (!special_attack_flag && !thorow_things_flag &&
+		!Stun() && !LifeDeathDecision())
 		Action();
 
-	if (Stun())
-		SetAnimation(anim_model, (int)Motion::WAIT, (int)Motion::MAX_MOTION);
+	if (Stun() && !LifeDeathDecision())
+		SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
+
+	IsDeath();
 
 	AdjustAnimCollision();
 	return 0;
@@ -79,6 +82,13 @@ void SwordMan::Move() {
 		position.x += 35.0f * delta;
 }
 
+void SwordMan::IsDeath() {
+	if (enemy_hp <= 0 && death_frame < max_death) {
+		SetAnimation(anim_model, (int)Motion::DEATH, (int)Motion::MAX_MOTION);
+		death_frame += delta;
+	}
+}
+
 void SwordMan::Rotate() {
 	if (player_pos.x > position.x) {
 		anim_model->SetRotation(0, -rotate, 0);
@@ -88,4 +98,12 @@ void SwordMan::Rotate() {
 		anim_model->SetRotation(0, rotate, 0);
 		direct = LEFT;
 	}
+}
+
+bool SwordMan::LifeDeathDecision() {
+    
+    if (enemy_hp <= 0 && death_frame > max_death)
+    	return DEAD;
+    
+	return LIVE;
 }

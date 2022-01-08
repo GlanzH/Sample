@@ -4,7 +4,7 @@
 
 bool Arrow::Initialize(std::string tag, bool time_stop_flag, int hp) {
 	EnemyBase::Initialize(tag, time_stop_flag, hp);
-
+	stop_frame = 0.0f;
 	return true;
 }
 
@@ -31,21 +31,32 @@ void Arrow::Action() {
 		break;
 
 	case SHOT:
-		if (init_pos.x == 0.0f)
-			init_pos.x = 0.0000001f;
+		Move();
 
-		float dist  = SimpleMath::Vector3::Distance(SimpleMath::Vector3(shot_pos.x,0,0), position);
-		float speed = init_pos.x * distance_adjust_speed;
+		if (position.y < 0)
+			action = STOP;
+		break;
 
-		position.x -= (dist / (init_pos.y * distance_adjust_y)) * speed * delta;
-		position.y -= (dist / (init_pos.x * distance_adjust_y)) * speed * delta;
-
+	case STOP:
+		stop_frame += delta;
 		break;
 	}
 }
 
 void Arrow::Move() {
+	float dist = SimpleMath::Vector3::Distance(SimpleMath::Vector3(shot_pos.x, 0, 0), position);
 
+	if (init_pos.x > 0) {
+		position.x -= (dist / (init_pos.y * distance_adjust_y)) * speed * delta;
+		position.y -= (dist / (init_pos.x * distance_adjust_y)) * speed * delta;
+	}
+	else if (init_pos.x < 0) {
+		position.x += (dist / (init_pos.y * distance_adjust_y)) * speed * delta;
+		position.y += (dist / (init_pos.x * distance_adjust_y)) * speed * delta;
+	}
+	else {
+		position.y -= speed * delta;
+	}
 }
 
 void Arrow::Rotate() {
@@ -58,4 +69,11 @@ void Arrow::Rotate() {
 float Arrow::Atan2(float y,float x) {
      float arc_tan2 = atan2f(y, x) * (180.0f / pi);
 	return arc_tan2;
+}
+
+bool Arrow::LifeDeathDecision() {
+	if (stop_frame > max_stop)
+		return DEAD;
+
+	return LIVE;
 }

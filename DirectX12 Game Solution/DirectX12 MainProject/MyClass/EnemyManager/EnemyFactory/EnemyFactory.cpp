@@ -23,8 +23,8 @@ EnemyFactory::EnemyFactory()
 	enemy_tag.push_back("AR");
 
 	///@“G‚Ìƒ‚ƒfƒ‹@///
-     enemy_model[SWORD_MAN] = L"Model\\Enemy\\SwordMan\\models_sord.X";
-	 enemy_model[SHIELDER]  = L"Model\\Enemy\\Shielder\\goblin_shield.X";
+     enemy_model[SWORD_MAN] = L"Model\\Enemy\\SwordMan\\models_sord_2.X";
+	 enemy_model[SHIELDER]  = L"Model\\Enemy\\Shielder\\goblin_shield_v2.X";
 	 enemy_model[MID_BOSS]  = L"Model\\Enemy\\MidBoss\\midolboss_goblin.X";
 	 enemy_model[ARROW]     = L"Model\\Enemy\\Arrow\\arrow_big.X";
 

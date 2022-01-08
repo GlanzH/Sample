@@ -11,11 +11,18 @@ bool MidBoss::Initialize(std::string tag, bool time_stop_flag, int hp) {
 int MidBoss::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime) {
 	EnemyBase::Update(player, special_attack_flag, thorow_things_flag, deltaTime);
 
-	if (!special_attack_flag && !thorow_things_flag && !Stun())
+	//!’ÊíŽžˆ—
+	auto normal_state = !special_attack_flag && !thorow_things_flag && !Stun() && !IsDamage() && !LifeDeathDecision();
+
+	if (normal_state)
 		Action();
 
-	if (Stun())
-		SetAnimation(anim_model, (int)Motion::WAIT, (int)Motion::MAX_MOTION);
+	if (Stun() && !LifeDeathDecision())
+		SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
+
+
+	IsDamage();
+	IsDeath();
 
 	AdjustAnimCollision();
 	return 0;
@@ -88,4 +95,36 @@ void MidBoss::Rotate() {
 		anim_model->SetRotation(0, rotate, 0);
 		direct = LEFT;
 	}
+}
+
+void MidBoss::Damage() {
+	EnemyBase::Damage();
+	damage_flag = true;
+}
+
+bool MidBoss::IsDamage() {
+	if (damage_flag && enemy_hp > 1 && damage_frame < max_damage) {
+		SetAnimation(anim_model, (int)Motion::DAMAGE, (int)Motion::MAX_MOTION);
+		damage_frame += delta;
+		return true;
+	}
+	else {
+		damage_frame = 0.0f;
+		damage_flag = false;
+		return false;
+	}
+}
+
+void MidBoss::IsDeath() {
+	if (enemy_hp <= 0 && death_frame < max_death) {
+		SetAnimation(anim_model, (int)Motion::DEATH, (int)Motion::MAX_MOTION);
+		death_frame += delta;
+	}
+}
+
+bool MidBoss::LifeDeathDecision() {
+  if (enemy_hp <= 0 && death_frame > max_death)
+  		return DEAD;
+
+	return LIVE;
 }

@@ -35,7 +35,7 @@ public:
 	void DeathEffect();
 
 	virtual void Damage();
-	bool LifeDeathDecision();
+	virtual bool LifeDeathDecision() { return LIVE; }
 
 	DX9::SKINNEDMODEL& GetAnimModel() { return anim_model; }
 	DX9::MODEL& GetModel()			  { return model; }
@@ -48,6 +48,9 @@ private:
 	void EnemyAnimation();
 	void IsRetreat();
 	
+	EFFECTHANDLE hit_handle,star_handle,die_handle,love_handle;
+	EFFECT hit, star, die, love;
+
 	ExplodeMan explode;
 
 	SimpleMath::Vector3 death_effect_pos;
@@ -64,7 +67,6 @@ private:
 
 	const float retreat_dist = 15.0f;
 
-	bool damage_flag = false;
 	bool reduce_audience_flag = false;
 
 	//!演出をする敵かのフラグ
@@ -76,10 +78,6 @@ private:
 	//!ダメージモーション再生用変数
 	int is_damage = 0;
 	const int max_is_damage = 5;
-
-	//!ダメージ受けたときに止まる用
-	float damage_frame = 0.0f;
-	const float max_damage_frame = 1.0f;
 
 	//!スタン用
 	float stun_frame = 0.0f;
@@ -96,7 +94,7 @@ protected:
 	void SetAnimation(DX9::SKINNEDMODEL& model,const int enabletack,int max_motion);
 	void AdjustAnimCollision();
 	bool Stun();
-	bool IsDamage();
+
 	D3DMATERIAL9  material;
 	DX9::SKINNEDMODEL anim_model;
 

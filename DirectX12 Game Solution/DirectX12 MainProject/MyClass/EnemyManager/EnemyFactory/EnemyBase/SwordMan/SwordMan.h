@@ -7,8 +7,10 @@ public:
 	int Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 
 private:
+	bool LifeDeathDecision() override;
 	void Move()   override;
 	void Action() override;
+	void IsDeath();
 	void Rotate();
 
 
@@ -20,11 +22,15 @@ private:
 	float attack_frame = 0.0f;
 	const float max_attack = 2.5f;
 
+	float death_frame = 0.0f;
+	const float max_death = 1.f;
+
 	int direct;
 	bool end_move;
 
 	enum class Motion {
 		DEATH,
+		CONFUSE,
 		DAMAGE,
 		ATTACK,
 		WALK,

@@ -7,6 +7,7 @@ public:
 	int Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 
 private:
+	bool LifeDeathDecision() override;
 	void Move()   override;
 	void Action() override;
 	void Rotate();
@@ -14,13 +15,16 @@ private:
 
 	const float pi = 3.141592654f;
 	const float distance_adjust_y     = 0.067f;
-	//–î‚Ì‘¬“x
-	const float distance_adjust_speed = 0.06f;
+	const float speed = 1.f;
 	SimpleMath::Vector3 shot_pos;
+
+	float stop_frame = 0.0f;
+	const float max_stop = 5.0f;
 
 	enum Action {
 		WAIT,
-		SHOT
+		SHOT,
+		STOP
 	};
 
 	int action = WAIT;
