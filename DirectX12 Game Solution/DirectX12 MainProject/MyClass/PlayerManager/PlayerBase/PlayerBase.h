@@ -58,7 +58,7 @@ public:
 
 	bool IsAvoidance() { return avoidance_flag; }//‰ñ”ğƒtƒ‰ƒO
 
-	//int GetAttackTag(){return};
+	int GetAttackTag() { return attack_type; }//UŒ‚‚Ìí—Ş
 
 
 
