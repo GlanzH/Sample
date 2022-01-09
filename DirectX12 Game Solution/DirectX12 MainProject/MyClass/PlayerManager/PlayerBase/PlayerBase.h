@@ -54,7 +54,11 @@ public:
 
 	bool GetSpecialAttackFlag() { return special_attack_flag; }
 
-	bool IsInvincibleFlag() { return invincible_flag; }
+	bool IsInvincibleFlag() { return invincible_flag; }//–³“Gƒtƒ‰ƒO
+
+	bool IsAvoidance() { return avoidance_flag; }//‰ñ”ğƒtƒ‰ƒO
+
+	//int GetAttackTag(){return};
 
 
 
@@ -273,23 +277,18 @@ private:
 
 	bool assault_flag;
 
-	//’e‚­(Œ±—p)
-	enum PLAYER_FRIP
-	{
-		NOMAL_MODE,
-		ATTACK_MODE,
-		FRIP
-	};
-	PLAYER_FRIP player_frip_mode;
-
-	bool flip_flag_;
-	float flip_time;
-	float flip_back_time;
-
 	//‰ñ”ğ
 	bool  avoidance_flag;
 	float avoidance_start;
 	float avoidance_max;
+
+	//ãUŒ‚
+	bool n_attack_flag_ = false;
+	float n_attack_start = 0.0f;
+	float n_attack_end_ = 0.617f;
+
+	//UŒ‚‚Ìí—Ş 1:ãUŒ‚@2:“Ë‚«UŒ‚
+	int attack_type;
 
 
 };

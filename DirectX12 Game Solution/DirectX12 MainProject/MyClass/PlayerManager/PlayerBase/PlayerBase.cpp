@@ -83,11 +83,9 @@ PlayerBase::PlayerBase() {
 	assault_attack_time_max = 0.1f;
 	assault_flag            = false;
 
+	//攻撃の種類
+	attack_type = 0;
 
-	player_frip_mode = PLAYER_FRIP::NOMAL_MODE;
-	flip_flag_ = false;
-	flip_time = 0.0f;
-	flip_back_time = 0.0f;
 
 }
 
@@ -123,7 +121,11 @@ bool PlayerBase::Initialize()
 	//回避
 	avoidance_flag=false;
 	avoidance_start = 0.0f;
-	avoidance_max = 0.5f;
+	avoidance_max = 0.1f;
+
+	//攻撃の種類
+	attack_type = 0;
+
 
 
 	//アピール
@@ -166,7 +168,6 @@ bool PlayerBase::Initialize()
 	cannot_other = CANNOT_OTHER_ATTACK::NOMAL_STATE;
 
 
-	player_frip_mode = PLAYER_FRIP::NOMAL_MODE;
 
 	//プレイヤーのSE ファイル読み込み
 	//攻撃-SE
@@ -404,12 +405,14 @@ void PlayerBase::Player_limit()
 
 void PlayerBase::Player_jump(const float deltaTime) {
 	//ジャンプ
-	if (!invincible_flag || under_attack_state_mode == UNDER_ATTACK_STATE::NOMAL || !appeil_flag || !jump_flag_) {
-		if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
-			jump_start_flag = true;
-			jump_flag_ = true;
-			jump_time_ = 0;
-			jump_start_v_ = model->Position.y;
+	if (!invincible_flag || under_attack_state_mode == UNDER_ATTACK_STATE::NOMAL ){
+		if( !jump_flag_) {
+			if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
+				jump_start_flag = true;
+				jump_flag_ = true;
+				jump_time_ = 0;
+				jump_start_v_ = model->Position.y;
+			}
 		}
 	}
 
@@ -437,6 +440,7 @@ void PlayerBase::Player_jump(const float deltaTime) {
 //プレイヤーの攻撃(弱攻撃・強攻撃・突撃攻撃) 変更(3回目)
 void PlayerBase::Player_Attack_Three(const float deltaTime) {
 
+
 	if (DXTK->KeyState->A||DXTK->GamePadState[0].buttons.b) {
 		assault_attack_time += 100.0f * deltaTime;
 		assault_attack_flag = true;
@@ -445,12 +449,14 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 	}
 	else
 	{
-		if (assault_attack_flag) {
+		if (assault_attack_flag || assault_attack_flag && assault_attack_time >= 150.0f) {
 			SetAnimation(model, ACT3);
 			model->Move(0.0f, 0.0f, -100.0f * deltaTime);
 			assault_attack_time -= 100.0f * deltaTime;
 			assault_flag = true;
+			attack_type = 2;
 		}
+
 	}
 
 
@@ -459,61 +465,57 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 		assault_flag = false;
 		assault_attack_time = 0.0f;
 		canot_move_state_mode = CANNOT_MOVE_STATE::MOVE;
+		attack_type = 0;
+
 	}
 
 	assault_attack_time = std::clamp(assault_attack_time, 0.0f, 150.0f);
 
 
 
-	//弾く(試験用)
+	//弱攻撃
 	if (DXTK->KeyEvent->pressed.S) {
-		player_frip_mode = PLAYER_FRIP::ATTACK_MODE;
+		n_attack_flag_ = true;
 	}
-
-
-	if (player_frip_mode == PLAYER_FRIP::ATTACK_MODE) {
+	if (n_attack_flag_) {
 		SetAnimation(model, ACT1);
+		n_attack_start += deltaTime;
 		attack_flag = true;
-	}
-	if (IsAttack()) {
-		flip_time += deltaTime;
-		if (flip_time >= 0.4f) {
-			player_frip_mode = PLAYER_FRIP::FRIP;
-			model->SetTrackPosition(ACT1, 0.0);
-			flip_time = 0.0f;
-			damage = 10000;
+		if (IsAttack()) {
+			damage = 10;
+			attack_type = 1;
 		}
 	}
 
-
-	if (player_frip_mode == PLAYER_FRIP::FRIP) {
-		//SetAnimation(model, DAMAGE);
-		//model->Move(0.0f, 0.0f, 50.0f * deltaTime);
-		flip_back_time += deltaTime;
-		if (flip_back_time >= 0.15f) {
-			player_frip_mode = PLAYER_FRIP::NOMAL_MODE;
-			flip_back_time = 0.0f;
-		}
+	if (n_attack_start >= n_attack_end_) {
+		model->SetTrackPosition(ACT1, 0.0);
+		n_attack_start = 0.0f;
+		n_attack_flag_ = false;
+		attack_type = 0;
 	}
+
+
 }
 
 //回避
 void PlayerBase::Avoidance(const float deltaTime) {
 
-	if (!jump_flag_||!avoidance_flag) {
-		if (DXTK->KeyEvent->pressed.Z||DXTK->GamePadEvent->b==GamePad::ButtonStateTracker::PRESSED) {
-			avoidance_flag = true;
+	if (!jump_flag_){
+		if(!avoidance_flag) {
+			if (DXTK->KeyEvent->pressed.Z || DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
+				avoidance_flag = true;
+			}
 		}
 	}
 
 	if (avoidance_flag) {
 		avoidance_start += deltaTime;
-		if (avoidance_start < avoidance_max) {
-			model->Move(0.0f, 0.0, -5.0f * deltaTime);
-		}
+		
+		model->Move(0.0f, 0.0, -250.0f * deltaTime);
 	}
 
 	if (avoidance_start >= avoidance_max) {
+		avoidance_start = 0.0f;
 		avoidance_flag = false;
 	}
 }
@@ -669,10 +671,10 @@ void PlayerBase::BrackImage() {
 }
 
 void PlayerBase::Debug() {
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(1000.0f, 120.0f),
-	//	DX9::Colors::BlueViolet,
-	//	L"突き攻撃のパワー %f", assault_attack_time
-	//);
+	DX9::SpriteBatch->DrawString(font.Get(),
+		SimpleMath::Vector2(1000.0f, 120.0f),
+		DX9::Colors::BlueViolet,
+		L"突き攻撃のパワー %f", assault_attack_time
+	);
 
 }
