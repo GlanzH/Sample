@@ -274,6 +274,8 @@ private:
 	bool  assault_attack_flag;
 	float assault_attack_time;
 	float assault_attack_time_max;
+	//攻撃中チャージ不可
+	bool not_chage;
 
 	bool assault_flag;
 
