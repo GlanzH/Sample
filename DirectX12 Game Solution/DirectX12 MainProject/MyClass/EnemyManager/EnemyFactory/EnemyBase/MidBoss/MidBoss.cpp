@@ -51,8 +51,8 @@ int MidBoss::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool t
 
 void MidBoss::Render() {
 	anim_model->Draw();
-	collision->Draw();
-	sword_col->Draw();
+	//collision->Draw();
+	//sword_col->Draw();
 }
 
 void MidBoss::Action() {

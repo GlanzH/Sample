@@ -22,7 +22,7 @@ int C_Camera::Update(PlayerBase* base,int camera_pos_num,const float deltaTime) 
 	else if (base->GetAppealCoolFlag())
 		camera_z += 40.f * deltaTime;
 
-	camera_z = std::clamp(camera_z, -10.0f, 20.0f);
+	camera_z = std::clamp(camera_z, -10.0f, 40.0f);
 
 
 	camera->SetPosition(base->GetModel()->GetPosition().x, fixed_pos, -camera_z);

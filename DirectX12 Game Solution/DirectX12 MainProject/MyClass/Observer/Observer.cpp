@@ -15,12 +15,12 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 
 		//!ƒvƒŒƒCƒ„[SKINNEDMODELŒ^“–‚½‚è”»’è
 		if (player->GetBox().box.Intersects(enemies_roop->GetBox().box)) {
-				player->OnCollisionEnter();
+				player->OnCollisionEnter(enemies_roop->GetTag());
 		}
 
 
 		if (player->GetBox().box.Intersects(enemies_roop->GetBox().weapon)) {
-			player->OnCollisionEnter();
+			player->OnCollisionEnter(enemies_roop->GetTag());
 		}
 
 		if (player->GetSpecialAttackFlag()) {

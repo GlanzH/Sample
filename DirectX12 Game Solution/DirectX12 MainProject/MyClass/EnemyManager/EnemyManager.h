@@ -15,7 +15,7 @@ public:
 	~EnemyManager();
 
 	bool Initialize(PlayerBase* player_base);
-	int  Update(SimpleMath::Vector3 player,bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
+	int  Update(SimpleMath::Vector3 player,int attack_tag, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 	void OnDeviceLost();
 	void Render();
 
@@ -50,13 +50,14 @@ private:
 	
 	int dead_enemy_count = 0;
 	int time_stop_count  = 0;
+
 	float delta;
 
 	const float max_frame = 60.0f;
 	const float fix_pos   = 10.0f;
 
 	int add_score = 0;
-
+	int attack_num = 0;
 	int enemy_num = 0;
 	int push_count = 0;
 

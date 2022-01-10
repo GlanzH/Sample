@@ -47,8 +47,8 @@ int Shielder::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool 
 
 void Shielder::Render() {
 	anim_model->Draw();
-	collision->Draw();
-	sword_col->Draw();
+	//collision->Draw();
+	//sword_col->Draw();
 }
 
 void Shielder::Action() {

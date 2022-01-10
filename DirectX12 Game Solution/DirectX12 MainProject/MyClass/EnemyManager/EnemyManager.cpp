@@ -41,14 +41,17 @@ bool EnemyManager::Initialize(PlayerBase* player_base)
 	return true;
 }
 
-int EnemyManager::Update(SimpleMath::Vector3 player,bool special_attack_flag, bool thorow_things_flag, const float deltaTime)
-{
+int EnemyManager::Update(SimpleMath::Vector3 player, int attack_tag, bool special_attack_flag, bool thorow_things_flag, const float deltaTime)
+{	
+	delta      = deltaTime;
+	attack_num = attack_tag;
+	
 	for (auto& enemies : enemy) {
-		enemies->Update(player, special_attack_flag, thorow_things_flag, deltaTime);
+		enemies->Update(player, special_attack_flag, thorow_things_flag, delta);
 	}
 
 	Iterator();
-	delta = deltaTime;
+
 
 	if (count < ENEMY_NUM) {
 		if (dead_enemy_count >= destract_num[count]) {
@@ -75,7 +78,13 @@ void EnemyManager::Iterator() {
 			if ((*itr)->LifeDeathDecision() == DEAD) {
 
 				if ((*itr)->GetTag() != "AR") {
-					(*itr)->NormalDeathEffect();
+
+					if(attack_num == 1)
+						(*itr)->NormalDeathEffect();
+
+					if (attack_num == 2)
+						(*itr)->SpecialDeathEffect();
+
 					kill->Play();
 					dead_enemy_count++;
 				}

@@ -47,8 +47,8 @@ int SwordMan::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool 
 
 void SwordMan::Render() {
 	anim_model->Draw();
-	collision->Draw();
-	sword_col->Draw();
+	//collision->Draw();
+	//sword_col->Draw();
 }
 
 void SwordMan::Action() {
