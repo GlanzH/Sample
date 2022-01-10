@@ -36,7 +36,6 @@ bool EnemyManager::Initialize(PlayerBase* player_base)
 	kill = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/Audience/kill_se.wav");
 
 	player_data = player_base;
-	enemy_base.EffectInit();
 
 	LoadEnemyArrangement();
 	return true;
@@ -76,7 +75,7 @@ void EnemyManager::Iterator() {
 			if ((*itr)->LifeDeathDecision() == DEAD) {
 
 				if ((*itr)->GetTag() != "AR") {
-					(*itr)->DeathEffect();
+					(*itr)->NormalDeathEffect();
 					kill->Play();
 					dead_enemy_count++;
 				}
@@ -91,14 +90,6 @@ void EnemyManager::Iterator() {
 				continue;
 			}
 		}
-	}
-}
-
-void EnemyManager::OnDeviceLost() {
-	DX12Effect.Reset();
-
-	for (auto& enemies : enemy) {
-		enemies->OnDeviceLost();
 	}
 }
 
@@ -117,10 +108,15 @@ void EnemyManager::Generator() {
 void EnemyManager::Render()
 {
 	for (auto& enemies : enemy) {
-		if(enemies->GetTag() != "AR")
-			enemies->AnimModelRender();
-		else
-			enemies->ModelRender();
+		enemies->Render();
+	}
+}
+
+void EnemyManager::OnDeviceLost() {
+	DX12Effect.Reset();
+
+	for (auto& enemies : enemy) {
+		enemies->OnDeviceLost();
 	}
 }
 

@@ -10,6 +10,8 @@ using namespace DirectX;
 typedef struct Collision {
 	//“Gƒ‚ƒfƒ‹‚Ì“–‚½‚è”»’è
 	BoundingBox  box;
+
+	BoundingBox weapon;
 };
 
 class EnemyBase
@@ -19,20 +21,19 @@ public:
 	~EnemyBase() {};
 
 	virtual bool Initialize(std::string tag, bool time_stop_flag, int hp);
-	void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
+	virtual void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 	void LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 
 	virtual int  Update(SimpleMath::Vector3 player,bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
-	virtual void AnimModelRender();
-	virtual void ModelRender();
-	virtual void OnDeviceLost();
+	virtual void Render() {};
+	void OnDeviceLost();
 	void Retreat();
 
 	bool GetTimeStopFlag() { return do_time_stop_flag; }
 
-	bool EffectInit();
 	void HitEffect();
-	void DeathEffect();
+	void NormalDeathEffect();
+	void SpecialDeathEffect();
 
 	virtual void Damage();
 	virtual bool LifeDeathDecision() { return LIVE; }
@@ -45,11 +46,10 @@ public:
 
 private:
 	void TimeStopDecision();
-	void EnemyAnimation();
 	void IsRetreat();
 	
-	EFFECTHANDLE hit_handle,star_handle,die_handle,love_handle;
-	EFFECT hit, star, die, love;
+	EFFECTHANDLE hit_handle,star_handle,normal_die_handle,special_die_handle,love_handle;
+	EFFECT hit, star, normal_die,special_die, love;
 
 	ExplodeMan explode;
 
@@ -83,10 +83,7 @@ private:
 	float stun_frame = 0.0f;
 	const float max_stun = 10.0f;
 
-	const float anim_box_size = 2.0f;
-	const float box_size      = 2.0f;
-
-	const float anim_adjust_extents_col = 0.02f;
+	const float box_size = 2.0f;
 	
 protected:
 	virtual void Action() {}
@@ -109,7 +106,8 @@ protected:
 
 	std::string enemy_tag;
 
-	const float fit_collision_y = 4.0f;
+	const float anim_adjust_extents_col = 0.3f;
+	const float fit_collision_y = 3.0f;
 
 	const float rotate = 45.0f;
 

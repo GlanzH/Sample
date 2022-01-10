@@ -41,7 +41,6 @@ private:
 	void Iterator();
 
 	std::vector<EnemyBase*> enemy;
-	EnemyBase enemy_base;
 
 	PlayerBase* player_data;
 

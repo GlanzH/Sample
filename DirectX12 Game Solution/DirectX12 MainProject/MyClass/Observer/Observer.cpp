@@ -19,6 +19,10 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 		}
 
 
+		if (player->GetBox().box.Intersects(enemies_roop->GetBox().weapon)) {
+			player->OnCollisionEnter();
+		}
+
 		if (player->GetSpecialAttackFlag()) {
 			if (audience->GetBox().lv2_box.Intersects(enemies_roop->GetBox().box)) {
 				enemy->OnCollisionSpecialMove(enemies_roop);

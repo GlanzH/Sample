@@ -8,6 +8,7 @@ public:
 
 private:
 	bool LifeDeathDecision() override;
+	void Render() override;
 	void Move()   override;
 	void Action() override;
 	void Rotate();

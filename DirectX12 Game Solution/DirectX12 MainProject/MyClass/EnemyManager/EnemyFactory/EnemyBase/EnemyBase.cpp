@@ -7,17 +7,6 @@ EnemyBase::EnemyBase()
 {
 }
 
-bool EnemyBase::EffectInit() {
-	DX12Effect.Initialize();
-	DX12Effect.Create(L"Effect/EnemyEffect/hit/hit.efk", "hit_eff");
-	DX12Effect.Create(L"Effect/EnemyEffect/die/die.efk", "die");
-	DX12Effect.Create(L"Effect/EnemyEffect/star/star.efk", "star");
-	DX12Effect.Create(L"Effect/AudienceEffect/heart/heart.efk", "love");
-	death_effect_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
-	hit_effect_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
-	return true;
-}
-
 bool EnemyBase::Initialize(std::string tag, bool time_stop_flag, int hp)
 {
 	enemy_tag   = tag;
@@ -26,6 +15,13 @@ bool EnemyBase::Initialize(std::string tag, bool time_stop_flag, int hp)
 	enemy_stop_flag = time_stop_flag;
 	retreat_flag    = false;
 	
+	DX12Effect.Initialize();
+	hit          = DX12Effect.Create(L"Effect/EnemyEffect/hit/hit.efk");
+	normal_die   = DX12Effect.Create(L"Effect/EnemyEffect/die/die.efk");
+	special_die  = DX12Effect.Create(L"Effect/EnemyEffect/die2/die2.efk");
+	star		 = DX12Effect.Create(L"Effect/EnemyEffect/star/star.efk");
+	love		 = DX12Effect.Create(L"Effect/AudienceEffect/heart/heart.efk");
+
 	return true;
 }
 
@@ -48,14 +44,12 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	//コリジョンモデルの作成
 	collision = DX9::Model::CreateBox(
 		DXTK->Device9,
-		col.box.Extents.x * anim_box_size,
-		col.box.Extents.y * anim_box_size,
-		col.box.Extents.z * anim_box_size
+		col.box.Extents.x * box_size,
+		col.box.Extents.y * 5,
+		col.box.Extents.z * box_size
 	);
 
 	collision->SetMaterial(material);
-
-	//anim_collision->SetScale(anim_adjust_extents_col);
 	col.box.Center = position;
 
 	explode.LoadAssets(initial_position.x);
@@ -81,9 +75,9 @@ void EnemyBase::LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	//コリジョンモデルの作成
 	collision = DX9::Model::CreateBox(
 		DXTK->Device9,
-		col.box.Extents.x * anim_box_size,
-		col.box.Extents.y * anim_box_size,
-		col.box.Extents.z * anim_box_size
+		col.box.Extents.x * box_size,
+		col.box.Extents.y * box_size,
+		col.box.Extents.z * box_size
 	);
 
 	collision->SetMaterial(material);
@@ -120,19 +114,6 @@ void EnemyBase::OnDeviceLost() {
 	DX12Effect.Reset();
 }
 
-void EnemyBase::AnimModelRender() {
-	anim_model->Draw();
-
-	if (position.z < 15.0f)
-		explode.Render();
-	//anim_collision->Draw();
-}
-
-void EnemyBase::ModelRender() {
-	model->Draw();
-	collision->Draw();
-}
-
 void EnemyBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack, int max_motion)
 {
 	for (int i = 0; i < max_motion; i++)
@@ -149,28 +130,22 @@ void EnemyBase::AdjustAnimCollision() {
 	collision->SetPosition(anim_model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 }
 
-void EnemyBase::EnemyAnimation() {
-	//if (!IsDamage())
-	//	SetAnimation(anim_model, WAIT);
-	//else
-	//	SetAnimation(anim_model, DAMAGE);
-
-	//anim_model->AdvanceTime(delta / 1.0f);
-}
-
 void EnemyBase::HitEffect() {
 	//if (enemy_hp > 0) {
-		hit_effect_pos = position;
 
-		DX12Effect.PlayOneShot("hit_eff", hit_effect_pos);
+	if (!DX12Effect.CheckAlive(hit_handle))
+		hit_handle = DX12Effect.Play(hit, position);
 	//}
 }
 
-void EnemyBase::DeathEffect() {
-	death_effect_pos = position;
+void EnemyBase::NormalDeathEffect() {
+	if (enemy_hp <= 0)
+		normal_die_handle = DX12Effect.Play(normal_die, position);
+}
 
-	if (death_effect_pos.z > 40)
-		DX12Effect.PlayOneShot("die", death_effect_pos);
+void EnemyBase::SpecialDeathEffect() {
+	if (enemy_hp <= 0)
+		special_die_handle = DX12Effect.Play(special_die, position);
 }
 
 void EnemyBase::TimeStopDecision() {
@@ -203,14 +178,16 @@ void EnemyBase::Damage() {
 
 bool EnemyBase::Stun() {
 	if (enemy_hp == 1 && stun_frame < max_stun) {
-		DX12Effect.SetPosition("star",position + SimpleMath::Vector3(0,10,0));
-		DX12Effect.Play("star");
+
+	if (!DX12Effect.CheckAlive(star_handle))
+		star_handle = DX12Effect.Play(star, position + SimpleMath::Vector3(0, 10, 0));
+
 		stun_frame += delta;
 		return true;
 	}
 
 	if(enemy_hp <= 0)
-		DX12Effect.Stop("star");
+		DX12Effect.Stop(star_handle);
 
 	return false;
 }

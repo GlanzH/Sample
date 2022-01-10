@@ -8,6 +8,25 @@ bool Shielder::Initialize(std::string tag, bool time_stop_flag, int hp) {
 	return true;
 }
 
+void Shielder::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
+	EnemyBase::LoadAsset(model_name, initial_position);
+
+	col.weapon = col.box;
+
+	//ƒRƒŠƒWƒ‡ƒ“ƒ‚ƒfƒ‹‚Ìì¬
+	sword_col = DX9::Model::CreateBox(
+		DXTK->Device9,
+		col.weapon.Extents.x * 1.5,
+		col.weapon.Extents.y * 10,
+		col.weapon.Extents.z * 5
+	);
+
+	sword_col->SetMaterial(material);
+	sword_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
+
+	col.weapon.Center = sword_pos;
+}
+
 int Shielder::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime) {
 	EnemyBase::Update(player, special_attack_flag, thorow_things_flag, deltaTime);
 
@@ -19,9 +38,17 @@ int Shielder::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool 
 		SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
 
 	IsDeath();
-
 	AdjustAnimCollision();
+
+	sword_col->SetPosition(sword_pos);
+	col.weapon.Center = SimpleMath::Vector3(sword_pos.x, 0, sword_pos.z);
 	return 0;
+}
+
+void Shielder::Render() {
+	anim_model->Draw();
+	collision->Draw();
+	sword_col->Draw();
 }
 
 void Shielder::Action() {
@@ -39,6 +66,7 @@ void Shielder::Action() {
 		if (move_frame < max_move) {
 			move_frame += delta;
 			Move();
+			Attack();
 			LimitRange();
 		}
 		else {
@@ -55,15 +83,18 @@ void Shielder::Action() {
 		else {
 			action = (int)ActionNum::INIT;
 		}
+
+		sword_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
+
 		break;
 	}
 }
 
 void Shielder::Move() {
 	if (direct == LIGHT)
-		position.x += 40.0f * delta;
+		position.x += 50.0f * delta;
 	else
-		position.x -= 40.0f * delta;
+		position.x -= 50.0f * delta;
 }
 
 void Shielder::IsDeath() {
@@ -82,6 +113,14 @@ void Shielder::Rotate() {
 		anim_model->SetRotation(0, rotate, 0);
 		direct = LEFT;
 	}
+}
+
+void Shielder::Attack() {
+	if (direct == LIGHT)
+		sword_pos = SimpleMath::Vector3(position.x + 2.5f, fit_collision_y, position.z);
+
+	if (direct == LEFT)
+		sword_pos = SimpleMath::Vector3(position.x - 2.5f, fit_collision_y, position.z);
 }
 
 void Shielder::LimitRange() {

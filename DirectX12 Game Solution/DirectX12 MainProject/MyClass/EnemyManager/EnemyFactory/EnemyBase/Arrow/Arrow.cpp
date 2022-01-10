@@ -21,6 +21,10 @@ int Arrow::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool tho
 	return 0;
 }
 
+void Arrow::Render() {
+	model->Draw();
+}
+
 void Arrow::Action() {
 	switch (action)
 	{
