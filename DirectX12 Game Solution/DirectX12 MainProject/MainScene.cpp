@@ -109,7 +109,7 @@ void MainScene::Terminate()
 // Direct3D resource cleanup.
 void MainScene::OnDeviceLost()
 {
-	enemy->OnDeviceLost();
+	//enemy->OnDeviceLost();
 	DX12Effect.Reset();
 }
 
@@ -135,7 +135,7 @@ NextScene MainScene::Update(const float deltaTime)
 
 	if (!enemy->IsTimeStop()) {
 		player->Update(deltaTime);
-		enemy->Update(player->GetModel()->GetPosition(), player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
+		enemy->Update(player->GetModel()->GetPosition(),player->GetAttackTag(), player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
 		audience->Update(player->GetAppielTime(), player->GetAppealCoolFlag(), player->GetSpecialAttackFlag(), deltaTime);
 		camera.Update(player, OUT_ZOOM, deltaTime);
 		observer->Update(player, enemy, audience);
@@ -237,7 +237,7 @@ void MainScene::Render()
 
 	//2D•`‰æ
 	ui->Render(StatusManager::Instance().ReturnAudience(),StatusManager::Instance().ReturnRenderHeart());
-	player->_2DRender();
+	player->Debug();
 	player->BrackImage();
 	SceneManager::Instance().Render();
 

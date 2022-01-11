@@ -18,7 +18,7 @@ void PlayerManager::LoadAssets() {
 int PlayerManager::Update(const float deltaTime)
 {
 
-	player_base.Update(deltaTime);
+//	player_base.Update(deltaTime);
 
 	return 0;
 }
