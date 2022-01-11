@@ -1,10 +1,7 @@
 #include "PlayerBase.h"
 #include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/PlayerManager/PlayerBase/PlayerAttack/PlayerAttack.h"
-<<<<<<< HEAD
 #include"MyClass/PlayerManager/LandingAttackClass/LandingAttackClass.h"
-=======
-
 PlayerBase::PlayerBase() {
 
 	material.Diffuse = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.75f);
@@ -27,7 +24,6 @@ PlayerBase::PlayerBase() {
 	invincible_flag = false;
 	invincible_time = 0.0f;
 	invincible_time_max = 0.2f;
->>>>>>> ab3606188468a0804b161e3ffe459e1996d03397
 
 	//ジャンプしてるかのフラグ
 	jump_flag_ = false;
@@ -225,16 +221,13 @@ void PlayerBase::LoadAssets()
 	deathbrow_sprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"DeathBrowBG\\deathbrow_bg.png");
 
 	//エフェクト　ファイル読み込み
-<<<<<<< HEAD
 	DX12Effect.Initialize();
 	//DX12Effect.Create(L"Effect\\SwordEffect\\one\\first_attack.efk","first");
 	//DX12Effect.Create(L"Effect\\SwordEffect\\two\\second_attack.efk","second");
 	//DX12Effect.Create(L"Effect\\SwordEffect\\three\\third_attack.efk","third");
-=======
 	DX12Effect.Create(L"Effect\\SwordEffect\\one\\first_attack.efk","first");
 	DX12Effect.Create(L"Effect\\SwordEffect\\two\\second_attack.efk","second");
 	DX12Effect.Create(L"Effect\\SwordEffect\\three\\third_attack.efk","third");
->>>>>>> ab3606188468a0804b161e3ffe459e1996d03397
 
 	//必殺技のエフェクト
 	//DX12Effect.Create(L"Effect\\DeathBlow_Effect\\deathblow\\deathblow.efk", "deathblow_effect");
@@ -587,10 +580,6 @@ void PlayerBase::Avoidance(const float deltaTime) {
 	}
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> ab3606188468a0804b161e3ffe459e1996d03397
 void PlayerBase::Player_Special_Move(const float deltaTime) {
 	if (!jump_flag_) {
 		if (!appeil_flag ) {

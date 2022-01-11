@@ -87,7 +87,6 @@ private:
 	//回避
 	void Avoidance(const float deltaTime);
 
-<<<<<<< HEAD
 	//プレイヤーの攻撃(ボタン変更ver)
 	void Player_Attack_two(const float deltaTime);
 
@@ -100,9 +99,6 @@ private:
 	//エフェクト3撃目
 	void Attack_Third(const float deltaTime);
 	
-=======
->>>>>>> ab3606188468a0804b161e3ffe459e1996d03397
-
 	DX9::SPRITEFONT font;
 
 	D3DMATERIAL9 material;
