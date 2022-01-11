@@ -2,6 +2,8 @@
 #include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/PlayerManager/PlayerBase/PlayerAttack/PlayerAttack.h"
 #include"MyClass/PlayerManager/LandingAttackClass/LandingAttackClass.h"
+
+
 PlayerBase::PlayerBase() {
 
 	material.Diffuse = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.75f);
