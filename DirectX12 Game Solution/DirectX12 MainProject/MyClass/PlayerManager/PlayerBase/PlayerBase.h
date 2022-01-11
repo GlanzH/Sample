@@ -127,8 +127,8 @@ private:
 	const int player_box_size_x = 5;
 	const int player_box_size_z = 3;
 
-	const int box_size_x = 30;
-	const int box_size_y = 15;
+	const int box_size_x = 3;
+	const int box_size_y = 2;
 	const int box_size_z = 3;
 
 
@@ -282,6 +282,8 @@ private:
 	bool  assault_attack_flag;
 	float assault_attack_time;
 	float assault_attack_time_max;
+	//攻撃中チャージ不可
+	bool not_chage;
 
 	bool assault_flag;
 

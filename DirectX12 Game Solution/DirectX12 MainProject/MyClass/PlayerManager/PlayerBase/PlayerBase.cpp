@@ -126,6 +126,13 @@ bool PlayerBase::Initialize()
 	//攻撃の種類
 	attack_type = 0;
 
+	//ダッシュ攻撃
+	assault_attack_flag = false;
+	assault_attack_time = 0.0f;
+	assault_attack_time_max = 0.1f;
+	assault_flag = false;
+
+	not_chage = false;
 
 
 	//アピール
@@ -301,7 +308,7 @@ void PlayerBase::Render()
 	//プレイヤーの描画
 	model->Draw();
 	//collision->Draw();
-	//sword_collision->Draw();
+	sword_collision->Draw();
 	//parry_collision->Draw();
 }
 
@@ -473,30 +480,46 @@ void PlayerBase::Player_jump(const float deltaTime) {
 //プレイヤーの攻撃(弱攻撃・強攻撃・突撃攻撃) 変更(3回目)
 void PlayerBase::Player_Attack_Three(const float deltaTime) {
 
+	if (not_chage == false && assault_attack_time < 150.0f) {
+		if (DXTK->KeyState->A || DXTK->GamePadState[0].buttons.b) {
 
-	if (DXTK->KeyState->A||DXTK->GamePadState[0].buttons.b) {
-		assault_attack_time += 100.0f * deltaTime;
-		assault_attack_flag = true;
-		canot_move_state_mode = CANNOT_MOVE_STATE::CANNOT_MOVE;
-		SetAnimation(model, APPEIL);
+			assault_attack_time += 50.0f * deltaTime;
+			assault_attack_flag = true;
+			canot_move_state_mode = CANNOT_MOVE_STATE::CANNOT_MOVE;
+			SetAnimation(model, APPEIL);
+
+		}
+		else
+		{
+			if (assault_attack_flag) {
+				SetAnimation(model, ACT3);
+				model->Move(0.0f, 0.0f, -100.0f * deltaTime);
+				assault_attack_time -= 100.0f * deltaTime;
+				assault_flag = true;
+				not_chage = true;
+				attack_type = 2;
+			}
+
+		}
 	}
 	else
 	{
-		if (assault_attack_flag || assault_attack_flag && assault_attack_time >= 150.0f) {
+		if (assault_attack_flag) {
 			SetAnimation(model, ACT3);
 			model->Move(0.0f, 0.0f, -100.0f * deltaTime);
 			assault_attack_time -= 100.0f * deltaTime;
 			assault_flag = true;
+			not_chage = true;
 			attack_type = 2;
 		}
 
 	}
 
-
 	if (assault_attack_time <= 0.0f) {
 		assault_attack_flag = false;
 		assault_flag = false;
 		assault_attack_time = 0.0f;
+		not_chage = false;
 		canot_move_state_mode = CANNOT_MOVE_STATE::MOVE;
 
 	}
@@ -708,4 +731,22 @@ void PlayerBase::Debug() {
 		L"突き攻撃のパワー %f", assault_attack_time
 	);
 
+	if (not_chage) {
+		DX9::SpriteBatch->DrawString(font.Get(),
+			SimpleMath::Vector2(1000.0f, 140.0f),
+			DX9::Colors::BlueViolet,
+			L"チャージ不可" 
+		);
+	}
+	else
+	{
+		DX9::SpriteBatch->DrawString(font.Get(),
+			SimpleMath::Vector2(1000.0f, 140.0f),
+			DX9::Colors::BlueViolet,
+			L"チャージ可"
+		);
+
+	}
+
+	
 }
