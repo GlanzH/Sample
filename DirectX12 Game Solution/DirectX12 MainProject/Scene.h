@@ -9,12 +9,6 @@ enum class NextScene : int {
 	TitleScene,
 	MainScene,
 	ResultScene,
-<<<<<<< HEAD
-	EndScene,
-	StartScene = MainScene,
-=======
-	StartScene = MainScene
->>>>>>> ab3606188468a0804b161e3ffe459e1996d03397
 };
 
 class Scene {
