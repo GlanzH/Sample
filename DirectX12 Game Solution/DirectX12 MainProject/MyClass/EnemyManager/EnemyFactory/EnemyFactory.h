@@ -28,18 +28,29 @@ public:
 private:
 	EnemyBase* enemy;
 	int hp;
-	int slime_hp;
-	int high_slime_hp;
-	int faker_lamiel_hp;
-	int stone_statue_hp;
-	int stone_statue_core_hp;
+	int enemy_hp;
+	int mid_boss_hp;
+	int arrow_hp;
+
 	std::vector<std::string> enemy_tag;
 
-	LPCWSTR enemy_model[5];
-	LPCWSTR model_name;
 	/**
 　　* @enum EnemyType
 　　* 敵の種類
 　　*/
-	enum EnemyType { SLIME, HIGH_SLIME, FAKER_LAMIEL, STONE_STATUE,STONE_CORE };
+	enum EnemyType { 
+		SWORD_MAN,
+		SHIELDER,
+		MID_BOSS,
+		ARROW,
+		MODEL_MAX
+	};
+
+	enum EnemyHp {
+		ENEMY_HP    = 2,
+		MID_BOSS_HP = 4
+	};
+
+	LPCWSTR enemy_model[MODEL_MAX];
+	LPCWSTR model_name;
 };
