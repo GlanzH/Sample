@@ -25,7 +25,8 @@ public:
 	int Update(const float deltaTime);
 	void Render();
 
-	void OnCollisionEnter();
+	void OnCollisionEnter(std::string tag);
+	void OnWeaponCollisionEnter(std::string tag);
 	void OnParryArea();
 
 	bool IsAttack();
@@ -101,6 +102,13 @@ private:
 	Collisions col;
 
 	int damage = 0;
+	int reduce_num = 0;
+
+	const int body_reduce_num   = -20;
+	const int weapon_reduce_num = -40;
+
+	const int mb_reduce_num        = -30;
+	const int mb_weapon_reduce_num = -60;
 
 	//ÉvÉåÉCÉÑÅ[
 	DX9::SKINNEDMODEL model;
@@ -119,8 +127,8 @@ private:
 	const int player_box_size_x = 5;
 	const int player_box_size_z = 3;
 
-	const int box_size_x = 30;
-	const int box_size_y = 15;
+	const int box_size_x = 3;
+	const int box_size_y = 2;
 	const int box_size_z = 3;
 
 

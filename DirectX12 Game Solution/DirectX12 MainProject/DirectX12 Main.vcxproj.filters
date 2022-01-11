@@ -43,18 +43,6 @@
     <Filter Include="MyClass\StatusManager">
       <UniqueIdentifier>{6c6c639d-5e5b-4387-8311-b953fd8ddb0c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime">
-      <UniqueIdentifier>{629d2039-9391-4a80-a176-4eeacbc59399}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\HighSlime">
-      <UniqueIdentifier>{78bee7a9-8ccf-4ed7-88d7-070eda2fd015}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue">
-      <UniqueIdentifier>{070fa7d8-b151-4b6e-bbac-db737d6164e7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FakerLamiel">
-      <UniqueIdentifier>{cd53771a-d8ab-4b8c-a891-0e8fa70edf17}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MyClass\PlayerManager\PlayerBase">
       <UniqueIdentifier>{da6da9bd-3875-442d-8c5d-50637ea58f13}</UniqueIdentifier>
     </Filter>
@@ -66,9 +54,6 @@
     </Filter>
     <Filter Include="MyClass\Shader">
       <UniqueIdentifier>{c77963d0-7184-491d-86ec-712fe37dec65}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core">
-      <UniqueIdentifier>{5987d9f7-1833-4ea4-92a8-3971b7442bd8}</UniqueIdentifier>
     </Filter>
     <Filter Include="MyClass\AudianceManager">
       <UniqueIdentifier>{c73b9d16-015d-4ff2-8e17-fe45e1349e79}</UniqueIdentifier>
@@ -84,6 +69,18 @@
     </Filter>
     <Filter Include="MyClass\Camera\DialogueManager">
       <UniqueIdentifier>{22c7b9e1-5606-4f7c-8da4-0c19880adca7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Arrow">
+      <UniqueIdentifier>{815aef80-3e56-41c6-8e86-eff3d3abd67b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Shielder">
+      <UniqueIdentifier>{ed5b8bc8-aa65-4e4a-a140-649782ff6b88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\MidBoss">
+      <UniqueIdentifier>{f45b6c5f-593b-4cec-8a63-af3a14fa32eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan">
+      <UniqueIdentifier>{1d4c2b81-0c97-4681-8f9b-41a7dc265b11}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -141,18 +138,6 @@
     <ClInclude Include="MyClass\StatusManager\StatusManager.h">
       <Filter>MyClass\StatusManager</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FakerLamiel\FakerLamiel.h">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\FakerLamiel</Filter>
-    </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\HighSlime\HighSlime.h">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\HighSlime</Filter>
-    </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime\Slime.h">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime</Filter>
-    </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\StoneStatue.h">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue</Filter>
-    </ClInclude>
     <ClInclude Include="TitleScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
@@ -167,9 +152,6 @@
     </ClInclude>
     <ClInclude Include="MyClass\RankJudgeManager\RankJudgeManager.h">
       <Filter>MyClass\RankJudgeManager</Filter>
-    </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core\Core.h">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core</Filter>
     </ClInclude>
     <ClInclude Include="Base\DX12Effekseer.h">
       <Filter>MyClass\Effekseer</Filter>
@@ -197,6 +179,18 @@
     </ClInclude>
     <ClInclude Include="MyClass\Camera\C_Camera.h">
       <Filter>MyClass\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Arrow\Arrow.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Arrow</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Shielder\Shielder.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Shielder</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\MidBoss\MidBoss.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\MidBoss</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan\SwordMan.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -233,18 +227,6 @@
     <ClCompile Include="MyClass\StatusManager\StatusManager.cpp">
       <Filter>MyClass\StatusManager</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\FakerLamiel\FakerLamiel.cpp">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\FakerLamiel</Filter>
-    </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\HighSlime\HighSlime.cpp">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\HighSlime</Filter>
-    </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime\Slime.cpp">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime</Filter>
-    </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\StoneStatue.cpp">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue</Filter>
-    </ClCompile>
     <ClCompile Include="TitleScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -259,9 +241,6 @@
     </ClCompile>
     <ClCompile Include="MyClass\RankJudgeManager\RankJudgeManager.cpp">
       <Filter>MyClass\RankJudgeManager</Filter>
-    </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core\Core.cpp">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\StoneStatue\Core</Filter>
     </ClCompile>
     <ClCompile Include="Base\DX12Effekseer.cpp">
       <Filter>MyClass\Effekseer</Filter>
@@ -289,6 +268,18 @@
     </ClCompile>
     <ClCompile Include="MyClass\Camera\C_Camera.cpp">
       <Filter>MyClass\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Arrow\Arrow.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Shielder\Shielder.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Shielder</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\MidBoss\MidBoss.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\MidBoss</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan\SwordMan.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

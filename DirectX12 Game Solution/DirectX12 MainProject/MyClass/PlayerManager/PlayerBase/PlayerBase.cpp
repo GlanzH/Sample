@@ -308,16 +308,49 @@ void PlayerBase::Render()
 	//ƒvƒŒƒCƒ„[‚Ì•`‰æ
 	model->Draw();
 	//collision->Draw();
-	//sword_collision->Draw();
+	sword_collision->Draw();
 	//parry_collision->Draw();
 }
 
-void PlayerBase::OnCollisionEnter() {
+void PlayerBase::OnCollisionEnter(std::string tag) {
+	//“G‚É“–‚½‚Á‚½‚Æ‚«‚Ìˆ—
+	if (!invincible_flag) {
+		//–³“G
+		invincible_flag = true;
+
+		if (tag == "SW")
+			reduce_num = body_reduce_num;
+
+		if (tag == "SH")
+			reduce_num = body_reduce_num;
+
+		if (tag == "MB")
+			reduce_num = mb_reduce_num;
+
+		if (tag == "AR")
+			reduce_num = body_reduce_num;
+
+		StatusManager::Instance().AddAudience(reduce_num);
+	}
+}
+
+void PlayerBase::OnWeaponCollisionEnter(std::string tag) {
 
 	//“G‚É“–‚½‚Á‚½‚Æ‚«‚Ìˆ—
 	if (!invincible_flag) {
 		//–³“G
 		invincible_flag = true;
+
+		if (tag == "SW")
+			reduce_num = weapon_reduce_num;
+
+		if (tag == "SH")
+			reduce_num = weapon_reduce_num;
+
+		if (tag == "MB")
+			reduce_num = mb_weapon_reduce_num;
+
+		StatusManager::Instance().AddAudience(reduce_num);
 	}
 }
 
@@ -447,9 +480,9 @@ void PlayerBase::Player_jump(const float deltaTime) {
 //ƒvƒŒƒCƒ„[‚ÌUŒ‚(ãUŒ‚E‹­UŒ‚E“ËŒ‚UŒ‚) •ÏX(3‰ñ–Ú)
 void PlayerBase::Player_Attack_Three(const float deltaTime) {
 
-	if (assault_attack_time < 150.0f) {
+	if (not_chage == false && assault_attack_time < 150.0f) {
 		if (DXTK->KeyState->A || DXTK->GamePadState[0].buttons.b) {
-			if(not_chage ==false&&)
+
 			assault_attack_time += 50.0f * deltaTime;
 			assault_attack_flag = true;
 			canot_move_state_mode = CANNOT_MOVE_STATE::CANNOT_MOVE;
@@ -486,11 +519,8 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 		assault_attack_flag = false;
 		assault_flag = false;
 		assault_attack_time = 0.0f;
-
-		canot_move_state_mode = CANNOT_MOVE_STATE::MOVE;
-		attack_type = 0;
 		not_chage = false;
-
+		canot_move_state_mode = CANNOT_MOVE_STATE::MOVE;
 
 	}
 
@@ -516,7 +546,6 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 		model->SetTrackPosition(ACT1, 0.0);
 		n_attack_start = 0.0f;
 		n_attack_flag_ = false;
-		attack_type = 0;
 	}
 
 
