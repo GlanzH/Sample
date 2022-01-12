@@ -194,26 +194,30 @@ void EnemyManager::EndTimeStop() {
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	 std::string tag = base->GetTag();
-	
+
+	 if (!hit->IsInUse())
 		 hit->Play();
-		 base->Damage();
-		 base->HitEffect();
 
-		// StatusManager::Instance().AddAudience(10);
+	 base->Damage();
+	 base->HitEffect();
 
-		 if (tag != "C") {
-			 if (StatusManager::Instance().GetAtkCombo() == max_combo)
-				 base->Retreat();
-		 }
+	// StatusManager::Instance().AddAudience(10);
+
+	 if (tag != "C") {
+		 if (StatusManager::Instance().GetAtkCombo() == max_combo)
+			 base->Retreat();
+	 }
 }
 
 void EnemyManager::OnThrustCollisionEnter(EnemyBase* base) {
 	hit->Play();
+
 	base->Damage();
 }
 
 void EnemyManager::OnCollisionSpecialMove(EnemyBase* base) {
-	hit->Play();
+	if (!hit->IsInUse())
+		hit->Play();
 	//base->Damage(20);
 	
 	auto pos = player_data->GetModel()->GetPosition();
@@ -223,7 +227,8 @@ void EnemyManager::OnCollisionSpecialMove(EnemyBase* base) {
 }
 
 void EnemyManager::OnCollisionAudience(EnemyBase* base) {
-	hit->Play();
+	if (!hit->IsInUse())
+		hit->Play();
 	//base->Damage(20);
 
 	auto pos = player_data->GetModel()->GetPosition();
