@@ -26,7 +26,6 @@ public:
 
 	virtual int  Update(SimpleMath::Vector3 player,bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 	virtual void Render() {};
-	void OnDeviceLost();
 	void Retreat();
 
 	bool GetTimeStopFlag() { return do_time_stop_flag; }
@@ -46,6 +45,7 @@ public:
 
 private:
 	void TimeStopDecision();
+	void IsDamage();
 	void IsRetreat();
 	
 	EFFECTHANDLE hit_handle,star_handle,normal_die_handle,special_die_handle,love_handle;
@@ -59,11 +59,11 @@ private:
 	int   retreat_count   = 0;
 	const int max_retreat = 30;
 
-	float dead_frame = 0.0f;
-	const float max_dead = 0.5f;
-
 	float auto_destroy_frame = 0.0f;
 	const float max_auto_destroy = 1.5f;
+
+	float damage_frame = 0.0f;
+	const float max_damage = 2.0f;
 
 	const float retreat_dist = 15.0f;
 
@@ -75,15 +75,14 @@ private:
 	//!動きを止めるフラグ
 	bool do_time_stop_flag = false;
 
-	//!ダメージモーション再生用変数
-	int is_damage = 0;
-	const int max_is_damage = 5;
+	bool damage_flag = false;
 
 	//!スタン用
 	float stun_frame = 0.0f;
 	const float max_stun = 10.0f;
 
 	const float box_size = 2.0f;
+
 	
 protected:
 	virtual void Action() {}

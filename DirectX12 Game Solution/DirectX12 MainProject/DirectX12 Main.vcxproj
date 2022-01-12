@@ -211,6 +211,7 @@
     <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerBase.h" />
     <ClInclude Include="MyClass\PlayerManager\PlayerManager.h" />
     <ClInclude Include="MyClass\RankJudgeManager\RankJudgeManager.h" />
+    <ClInclude Include="MyClass\ResourceManager\ResourceManager.h" />
     <ClInclude Include="MyClass\Shader\SpotLight.h" />
     <ClInclude Include="MyClass\Shader\TextureLight.h" />
     <ClInclude Include="MyClass\StatusManager\StatusManager.h" />
@@ -294,6 +295,7 @@
     <ClCompile Include="MyClass\RankJudgeManager\RankJudgeManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="MyClass\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="MyClass\Shader\SpotLight.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
