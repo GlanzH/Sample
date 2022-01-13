@@ -27,9 +27,8 @@ EnemyManager::~EnemyManager() {
 
 bool EnemyManager::Initialize(PlayerBase* player_base)
 {
-	DX12Effect.Initialize();
-	DX12Effect.Create(L"Effect/EnemyEffect/deathblow_hit/deathblow_hit.efk", "special");
-	DX12Effect.Create(L"Effect/EnemyEffect/boss_death/boss_death.efk", "boss");
+	//DX12Effect.Create(L"Effect/EnemyEffect/deathblow_hit/deathblow_hit.efk", "special");
+	//DX12Effect.Create(L"Effect/EnemyEffect/boss_death/boss_death.efk", "boss");
 
 	hit  = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/Enemy/hit_se.wav");
 	die  = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/Enemy/enemy_die_se.wav");
@@ -51,6 +50,9 @@ int EnemyManager::Update(SimpleMath::Vector3 player, int attack_tag, bool specia
 	}
 
 	Iterator();
+	NowDestEnemyCount();
+	StatusManager::Instance().CalcAudience(delta);
+
 
 
 	if (count < ENEMY_NUM) {
@@ -85,8 +87,12 @@ void EnemyManager::Iterator() {
 					if (attack_num == 2)
 						(*itr)->SpecialDeathEffect();
 
-					kill->Play();
+					if(!kill->IsInUse())
+						kill->Play();
+
+					now_dead_enemy++;
 					dead_enemy_count++;
+					CalcScore();
 				}
 					//else
 					//	DX12Effect.PlayOneShot("boss", (*itr)->GetModel()->GetPosition());
@@ -102,6 +108,13 @@ void EnemyManager::Iterator() {
 	}
 }
 
+void EnemyManager::Render()
+{
+	for (auto& enemies : enemy) {
+		enemies->Render();
+	}
+}
+
 void EnemyManager::Generator() {
 	std::unique_ptr<EnemyFactory> factory = std::make_unique<EnemyFactory>();
 
@@ -114,18 +127,49 @@ void EnemyManager::Generator() {
 
 }
 
-void EnemyManager::Render()
-{
-	for (auto& enemies : enemy) {
-		enemies->Render();
+void EnemyManager::NowDestEnemyCount() {
+	if (now_dead_enemy > 0)
+		count_dest_flag = true;
+
+	if (count_dest_flag) {
+		if (count_frame < max_count) {
+			count_frame += delta;
+		}
+		else {
+			CalcScore();
+			count_frame = 0.0f;
+			now_dead_enemy = 0.0f;
+			count_dest_flag = false;
+		}
 	}
 }
 
-void EnemyManager::OnDeviceLost() {
-	DX12Effect.Reset();
+void EnemyManager::CalcScore() {
+	if (count_dest_flag) {
+		switch (now_dead_enemy)
+		{
+		case ONE:
+			add_score = ONE_SCORE;
+			break;
 
-	for (auto& enemies : enemy) {
-		enemies->OnDeviceLost();
+		case TWO:
+			add_score = TWO_SCORE;
+			break;
+
+		case THREE:
+			add_score = THREE_SCORE;
+			break;
+
+		case FOUR:
+			add_score = FOUR_SCORE;
+			break;
+
+		default:
+			add_score = OVER_FIVE_SCORE;
+			break;
+		}
+
+		StatusManager::Instance().AddAudience(add_score);
 	}
 }
 
@@ -150,52 +194,30 @@ void EnemyManager::EndTimeStop() {
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	 std::string tag = base->GetTag();
-	
+
+	 if (!hit->IsInUse())
 		 hit->Play();
-		 base->Damage();
-		 base->HitEffect();
 
-		// StatusManager::Instance().AddAudience(10);
+	 base->Damage();
+	 base->HitEffect();
 
-		 if (tag != "C") {
-			 if (StatusManager::Instance().GetAtkCombo() == max_combo)
-				 base->Retreat();
-		 }
+	// StatusManager::Instance().AddAudience(10);
+
+	 if (tag != "C") {
+		 if (StatusManager::Instance().GetAtkCombo() == max_combo)
+			 base->Retreat();
+	 }
 }
 
 void EnemyManager::OnThrustCollisionEnter(EnemyBase* base) {
 	hit->Play();
+
 	base->Damage();
-
-	//!“G‚ð“|‚µ‚½Žž‚ÌƒRƒ“ƒ{”‚É‰ž‚¶‚Ä’l‚ðAddAudience‚Å’l‚ð“n‚·
-	//int a;
-
-	//switch (a) {
-	//case ONE:
-	//	add_score = ONE_SCORE;
-	//	break;
-
-	//case TWO:
-	//	add_score = TWO_SCORE;
-	//	break;
-
-	//case THREE:
-	//	add_score = THREE_SCORE;
-	//	break;
-
-	//case FOUR:
-	//	add_score = FOUR_SCORE;
-	//	break;
-	//default:
-	//	add_score = OVER_FIVE_SCORE;
-	//	break;
-	//}
-
-	//StatusManager::Instance().AddAudience(add_score);
 }
 
 void EnemyManager::OnCollisionSpecialMove(EnemyBase* base) {
-	hit->Play();
+	if (!hit->IsInUse())
+		hit->Play();
 	//base->Damage(20);
 	
 	auto pos = player_data->GetModel()->GetPosition();
@@ -205,7 +227,8 @@ void EnemyManager::OnCollisionSpecialMove(EnemyBase* base) {
 }
 
 void EnemyManager::OnCollisionAudience(EnemyBase* base) {
-	hit->Play();
+	if (!hit->IsInUse())
+		hit->Play();
 	//base->Damage(20);
 
 	auto pos = player_data->GetModel()->GetPosition();

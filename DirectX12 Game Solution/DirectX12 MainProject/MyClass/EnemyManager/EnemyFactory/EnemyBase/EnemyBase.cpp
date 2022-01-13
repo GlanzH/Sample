@@ -1,6 +1,7 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 #include "MyClass/StatusManager/StatusManager.h"
+#include "MyClass/ResourceManager/ResourceManager.h"
 #include "EnemyBase.h"
 
 EnemyBase::EnemyBase()
@@ -15,12 +16,11 @@ bool EnemyBase::Initialize(std::string tag, bool time_stop_flag, int hp)
 	enemy_stop_flag = time_stop_flag;
 	retreat_flag    = false;
 	
-	DX12Effect.Initialize();
-	hit          = DX12Effect.Create(L"Effect/EnemyEffect/hit/hit.efk");
-	normal_die   = DX12Effect.Create(L"Effect/EnemyEffect/die/die.efk");
-	special_die  = DX12Effect.Create(L"Effect/EnemyEffect/die2/die2.efk");
-	star		 = DX12Effect.Create(L"Effect/EnemyEffect/star/star.efk");
-	love		 = DX12Effect.Create(L"Effect/AudienceEffect/heart/heart.efk");
+	//hit          = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
+	//normal_die   = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die/die.efk");
+	//special_die  = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die2/die2.efk");
+	star		 = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
+	love		 = ResourceManager::Instance().LoadEffect(L"Effect/AudienceEffect/heart/heart.efk");
 
 	return true;
 }
@@ -90,28 +90,16 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool
 	delta      = deltaTime;
 	player_pos = player;
 	
-	
+	IsDamage();
 	IsRetreat();
 
 	if (position.z < 15.0f) {
 		explode.Update(position, delta);
-
-		//if (!reduce_audience_flag) {
-		//	if(enemy_tag == "S")
-		//		StatusManager::Instance().AddAudience(6);
-	 //  else if (enemy_tag == "H")
-		//		StatusManager::Instance().AddAudience(8);
-		//	reduce_audience_flag = true;
-		//}
 	}
 
 	StatusManager::Instance().CalcAudience(delta);
 
 	return 0;
-}
-
-void EnemyBase::OnDeviceLost() {
-	DX12Effect.Reset();
 }
 
 void EnemyBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack, int max_motion)
@@ -133,19 +121,19 @@ void EnemyBase::AdjustAnimCollision() {
 void EnemyBase::HitEffect() {
 	//if (enemy_hp > 0) {
 
-	if (!DX12Effect.CheckAlive(hit_handle))
-		hit_handle = DX12Effect.Play(hit, position);
+	//if (!DX12Effect.CheckAlive(hit_handle))
+	//	hit_handle = DX12Effect.Play(hit, position);
 	//}
 }
 
 void EnemyBase::NormalDeathEffect() {
-	if (enemy_hp <= 0)
-		normal_die_handle = DX12Effect.Play(normal_die, position);
+	//if (enemy_hp <= 0)
+	//	normal_die_handle = DX12Effect.Play(normal_die, position);
 }
 
 void EnemyBase::SpecialDeathEffect() {
-	if (enemy_hp <= 0)
-		special_die_handle = DX12Effect.Play(special_die, position);
+	//if (enemy_hp <= 0)
+	//	special_die_handle = DX12Effect.Play(special_die, position);
 }
 
 void EnemyBase::TimeStopDecision() {
@@ -173,7 +161,22 @@ void EnemyBase::IsRetreat() {
 }
 
 void EnemyBase::Damage() {
-	enemy_hp -= 1;
+	if (!damage_flag) {
+		enemy_hp -= 1;
+		damage_flag = true;
+	}
+}
+
+void EnemyBase::IsDamage() {
+	if (damage_flag) {
+		if (damage_frame < max_damage) {
+			damage_frame += delta;
+		}
+		else {
+			damage_frame = 0.0f;
+			damage_flag = false;
+		}
+	}
 }
 
 bool EnemyBase::Stun() {

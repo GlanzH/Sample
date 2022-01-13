@@ -22,7 +22,6 @@ public:
 	std::vector<EnemyBase*> GetEnemy() { return enemy; }
 	int  GetDeathEnemyCount()		   { return dead_enemy_count; }
 	int  GetTimeStopCount()			   { return time_stop_count; }
-	bool GetFootHoldFlag()             { return foot_hold_flag; }
 
 
 	int  GetEnemyNum() { return enemy_num; }
@@ -36,7 +35,9 @@ public:
 	void OnCollisionSpecialMove(EnemyBase* base);
 private:
 	void LoadEnemyArrangement();
+	void NowDestEnemyCount();
 	void EndEnemy();
+	void CalcScore();
 	void Generator();
 	void Iterator();
 
@@ -48,10 +49,14 @@ private:
 	
 	std::unique_ptr<SoundEffect> hit,die,kill;
 	
+	int now_dead_enemy   = 0;
 	int dead_enemy_count = 0;
 	int time_stop_count  = 0;
 
 	float delta;
+
+	float count_frame = 0.0f;
+	const float max_count = 0.1f;
 
 	const float max_frame = 60.0f;
 	const float fix_pos   = 10.0f;
@@ -63,7 +68,8 @@ private:
 
 	bool enemy_stop_flag   = false;
 	bool special_move_flag = false;
-	bool foot_hold_flag    = false;
+	bool count_dest_flag   = false;
+	bool sound_hit_flag    = false;
 
 	const int max_combo = 3;
 

@@ -109,7 +109,6 @@ void MainScene::Terminate()
 // Direct3D resource cleanup.
 void MainScene::OnDeviceLost()
 {
-	//enemy->OnDeviceLost();
 	DX12Effect.Reset();
 }
 
