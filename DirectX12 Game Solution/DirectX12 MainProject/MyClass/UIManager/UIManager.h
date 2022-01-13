@@ -27,7 +27,8 @@ private:
 	const float AUDIENCE_EMPTY_UI_POS_Z = -99.0f;
 	const float AUDIENCE_MAX_UI_POS_Z	= -100.0f;
 
-	const int AUDIENCE_MAX_HIGH = 64;
+	const int AUDIENCE_MAX_HIGH = 85;
+	const int AUDIENCE_MIN_WIDTH = 74;
 
 	//ÉnÅ[Ég
 	const float HEART_UI_POS_X = 84.0f;
