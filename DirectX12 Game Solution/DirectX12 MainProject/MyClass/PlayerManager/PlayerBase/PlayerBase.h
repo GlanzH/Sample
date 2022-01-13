@@ -36,9 +36,10 @@ public:
 	bool IsAttack();
 
 	void Debug();
-	void BrackImage();
 	void OnDeviceLost();
 
+	//アニメーション
+	void SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack);
 
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
@@ -49,7 +50,6 @@ public:
 	DX9::MODEL& GetRightModel() { return right_collision; }
 	DX9::MODEL& GetLeftModel() { return left_collision; }
 
-	bool GetParryFlag() { return parry_flag; }
 
 	int GetDamage() { return damage; }
 
@@ -61,7 +61,6 @@ public:
 
 	bool GetAppealCoolFlag() { return appeil_cool_flag; }
 
-	bool GetSpecialAttackFlag() { return special_attack_flag; }
 
 	bool IsInvincibleFlag() { return invincible_flag; }//無敵フラグ
 
@@ -69,11 +68,9 @@ public:
 
 	int GetAttackTag() { return attack_type; }//攻撃の種類
 
-
+	bool GetSpecialAttackFlag() { return not_flag; }
 
 private:
-	//アニメーション
-	void SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack);
 
 	//移動
 	void Player_move(const float deltaTime);
@@ -85,12 +82,12 @@ private:
 	void Parry(const float deltaTime);
 	//無敵時間
 	void Invincible(const float deltaTime);
-	//アピール
-	void Appeal(const float deltaTime);
-	//必殺技
-	void Player_Special_Move(const float deltaTime);
+	//ノックバック
+	void Knock_Back();
 	//プレイヤーの攻撃(3回目変更)
 	void Player_Attack_Three(const float deltaTime);
+	//三連撃
+	void Burst_Attack(const float deltaTime);
 	//回避
 	void Avoidance(const float deltaTime);
 
@@ -172,13 +169,6 @@ private:
 
 	bool jump_end_flag;
 
-	//パリィ
-	const float  max_parry_count = 0.5f;
-	float		 parry_count;
-	bool	     parry_flag;
-
-	//必殺技
-	bool special_attack_flag;
 
 
 	//攻撃の時間
@@ -318,5 +308,23 @@ private:
 	//攻撃の種類 1:弱攻撃　2:突き攻撃
 	int attack_type;
 
+	//ノックバック
+	bool knock_back_flag;
+	float knock_back_start;
+	float knock_back_end;
+	float time_other;
+
+	//三連撃
+	enum  BURST_STATE
+	{
+		NOT_BURST,
+		FIRST,
+		SECOND,
+		THIRD
+	};
+	BURST_STATE burst_state_mode;
+
+	//使わないフラグ
+	bool not_flag = false;
 
 };

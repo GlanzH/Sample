@@ -21,6 +21,8 @@ PlayerBase::PlayerBase() {
 
 	under_attack_state_mode = UNDER_ATTACK_STATE::NOMAL;
 
+	burst_state_mode = BURST_STATE::NOT_BURST;
+
 
 	//無敵時間
 	invincible_flag = false;
@@ -59,8 +61,6 @@ PlayerBase::PlayerBase() {
 
 	specialmove_time = 0.0f;
 	specialmove_time_max = 0.0f;
-	//必殺技
-	special_attack_flag = false;
 
 
 	Transparency = 0;
@@ -72,9 +72,6 @@ PlayerBase::PlayerBase() {
 	bright_flag = false;
 	Ming_Turn = 0;
 
-	//パリィ
-	parry_count = 0.0f;
-	parry_flag = false;
 
 
 	//ダッシュ攻撃
@@ -99,7 +96,11 @@ PlayerBase::PlayerBase() {
 	n_attack_start = 0.0f;
 	n_attack_end_ = 0.383f;
 
-
+	//ノックバック
+	knock_back_flag = false;
+	knock_back_start = 0.0f;
+	knock_back_end = 0.0f;
+	time_other = 0.0f;
 
 }
 
@@ -120,8 +121,6 @@ bool PlayerBase::Initialize()
 	jump_start_time_max = 0.133f;
 	jump_end_flag = false;
 
-	//必殺技
-	special_attack_flag = false;
 
 	//攻撃の時間
 	attack_flag = false;
@@ -134,7 +133,7 @@ bool PlayerBase::Initialize()
 	invincible_time_max = 0.5f;
 
 	//回避
-	avoidance_flag=false;
+	avoidance_flag = false;
 	avoidance_start = 0.0f;
 	avoidance_max = 0.1f;
 
@@ -186,6 +185,13 @@ bool PlayerBase::Initialize()
 	bright_flag = false;
 	Ming_Turn = 55;
 
+	//ノックバック
+	knock_back_flag = false;
+	knock_back_start = 0.0f;
+	knock_back_end = 0.2f;
+	time_other = 0.0f;
+
+
 
 	direction_state_mode = Direction_State::RIGHT;
 
@@ -193,6 +199,7 @@ bool PlayerBase::Initialize()
 
 	cannot_other = CANNOT_OTHER_ATTACK::NOMAL_STATE;
 
+	burst_state_mode = BURST_STATE::NOT_BURST;
 
 
 	//プレイヤーのSE ファイル読み込み
@@ -288,24 +295,21 @@ int PlayerBase::Update(const float deltaTime)
 	//ランバージャック(移動制限)
 	Player_limit();
 
-	////パリィ
-	//Parry(deltaTime);
 
-	//アピール
-	//Appeal(deltaTime);
+	////プレイヤーの攻撃(弱攻撃、ダッシュ攻撃)
+	//Player_Attack_Three(deltaTime);
 
-	////必殺技
-	//Player_Special_Move(deltaTime);
-
-
-	//プレイヤーの攻撃(弱攻撃、ダッシュ攻撃)
-	Player_Attack_Three(deltaTime);
+	//三連撃
+	Burst_Attack(deltaTime);
 
 	//回避
 	Avoidance(deltaTime);
 
 	//無敵時間
 	Invincible(deltaTime);
+
+	//ノックバック
+	Knock_Back();
 
 	StatusManager::Instance().Update(deltaTime);
 
@@ -330,6 +334,8 @@ int PlayerBase::Update(const float deltaTime)
 		attack_flag = false;
 		attack_zeit = 0.0f;
 	}
+
+	time_other = deltaTime;
 
 	player_pos = model->GetPosition();
 	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 1, 0));
@@ -359,6 +365,9 @@ void PlayerBase::OnCollisionEnter(std::string tag) {
 	if (!invincible_flag) {
 		//無敵
 		invincible_flag = true;
+		
+		//ノックバック
+		knock_back_flag = true;
 
 		if (tag == "SW")
 			reduce_num = body_reduce_num;
@@ -371,6 +380,9 @@ void PlayerBase::OnCollisionEnter(std::string tag) {
 
 		if (tag == "AR")
 			reduce_num = body_reduce_num;
+
+
+		Knock_Back();
 
 		StatusManager::Instance().AddAudience(reduce_num);
 	}
@@ -405,15 +417,26 @@ void PlayerBase::Invincible(const float deltaTime)
 		invincible_flag = false;
 		invincible_time = 0.0f;
 	}
+}
 
-	if (invincible_flag) {
-		SetAnimation(model, DAMAGE);
-		if (direction_state_mode == Direction_State::RIGHT) {
-			model->Move(0, 0, 30.0f * deltaTime);
+void PlayerBase::Knock_Back() {
+
+	if (knock_back_flag) {
+		knock_back_start += time_other;
+		if (knock_back_start < knock_back_end) {
+			SetAnimation(model, DAMAGE);
+			if (direction_state_mode == Direction_State::RIGHT) {
+				model->Move(0, 0, 80.0f * time_other);
+			}
+			else if (direction_state_mode == Direction_State::LEFT) {
+				model->Move(0, 0, 80.0f * time_other);
+			}
 		}
-		else if (direction_state_mode == Direction_State::LEFT) {
-			model->Move(0, 0, 30.0f * deltaTime);
-		}
+	}
+
+	if (knock_back_start >= knock_back_end) {
+		knock_back_flag = false;
+		knock_back_start = 0.0f;
 	}
 
 }
@@ -422,23 +445,6 @@ void PlayerBase::OnParryArea() {
 	//パリィ成功時の処理
 	//パリィカウントを増やす
 
-}
-void PlayerBase::Parry(const float deltaTime) {
-	if (!parry_flag) {
-		if (DXTK->KeyEvent->pressed.P || DXTK->GamePadEvent[0].leftShoulder) {
-			parry_flag = true;
-		}
-	}
-
-	else {
-		parry_count += deltaTime;
-		SetAnimation(model, PARRY);
-
-	}
-	if (parry_count >= max_parry_count) {
-		parry_flag = false;
-		parry_count = 0.0f;
-	}
 }
 
 //指定されたモーションはTRUE,それ以外はFALSE
@@ -534,7 +540,7 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 		}
 		else
 		{
-			if (assault_attack_flag) {
+			if (assault_attack_flag && assault_attack_time >= 50.0f) {
 				SetAnimation(model, ACT3);
 				model->Move(0.0f, 0.0f, -100.0f * deltaTime);
 				assault_attack_time -= 100.0f * deltaTime;
@@ -542,6 +548,9 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 				assault_flag = true;
 				not_chage = true;
 				attack_type = 2;
+			}
+			else if (assault_attack_time < 50.0f) {
+				assault_attack_time = 0.0f;
 			}
 
 		}
@@ -604,6 +613,25 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 
 }
 
+//三連撃
+void PlayerBase::Burst_Attack(const float deltaTime) {
+
+	switch (burst_state_mode)
+	{
+	case BURST_STATE::NOT_BURST:
+		if (DXTK->KeyEvent->pressed.S)
+			burst_state_mode = BURST_STATE::FIRST;
+		break;
+	case BURST_STATE::FIRST:
+		SetAnimation(model, ACT1);
+		break;
+	case BURST_STATE::SECOND:
+		break;
+	case BURST_STATE::THIRD:
+		break;
+	}
+}
+
 //回避
 void PlayerBase::Avoidance(const float deltaTime) {
 
@@ -628,72 +656,6 @@ void PlayerBase::Avoidance(const float deltaTime) {
 	}
 }
 
-
-void PlayerBase::Player_Special_Move(const float deltaTime) {
-	if (!jump_flag_) {
-		if (!appeil_flag ) {
-			if (StatusManager::Instance().ReturnHeart() >= 20) {
-				if (DXTK->KeyEvent->pressed.L || DXTK->GamePadEvent->rightShoulder == GamePad::ButtonStateTracker::PRESSED) {
-					deathbrow_flag = true;
-				}
-			}
-		}
-	}
-
-	if (deathbrow_flag) {
-		specialmove_time += deltaTime;
-		Blackout_flag = true;
-
-	}
-
-	//暗転
-	if (Blackout_flag) {
-		Transparency += Blackout;
-		if (Transparency >= Blackout_max) {
-			Transparency = Blackout_max;
-
-		}
-	}
-
-	if (specialmove_time >= 0.1f) {
-		deathbrow_attack = true;
-
-		Blackout_flag = false;
-		DX12Effect.PlayOneShot("deathblow_effect", Vector3(player_pos.x, 10, 0));
-
-
-	}
-	//明転
-	if (specialmove_time >= 3.666f)
-		bright_flag = true;
-
-	if (bright_flag) {
-		Transparency -= Ming_Turn;
-		if (Transparency <= 0) {
-			Transparency = 0;
-
-			bright_flag = false;
-
-		}
-	}
-
-	if (specialmove_time >= 3.9f && !special_attack_flag)
-		special_attack_flag = true;
-
-	//必殺技終了
-	if (specialmove_time >= specialmove_time_max) {
-		deathbrow_flag = false;
-		special_attack_flag = false;
-		specialmove_time = 0.0f;
-
-		deathbrow_attack = false;
-
-		//必殺技ゲージリセット呼び出し
-		StatusManager::Instance().HeartReset();
-	}
-
-}
-
 bool PlayerBase::IsAttack() {
 
 	if (attack_flag || assault_flag) {
@@ -704,78 +666,6 @@ bool PlayerBase::IsAttack() {
 	return false;
 }
 
-	//アピール
-void PlayerBase::Appeal(const float deltaTime)
-{
-	//アピール
-	if (!jump_flag_) {
-		if (!deathbrow_flag) {
-			if (!appeil_cool_flag) {
-				if (DXTK->KeyState->W || DXTK->GamePadState->triggers.left) {
-					appeil_flag = true;
-				}
-				else
-				{
-					appeil_flag = false;
-
-					model->SetTrackPosition(APPEIL, 0.0);
-
-					if (!appeil_flag) {
-						appeil_cool_flag = true;
-					}
-
-					if (direction_state_mode == Direction_State::LEFT) {
-						model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
-					}
-
-				}
-			}
-		}
-	}
-
-	if (appeil_flag) {
-		if (direction_state_mode == Direction_State::RIGHT) {
-			SetAnimation(model, APPEIL);
-		}
-		else if (direction_state_mode == Direction_State::LEFT)
-		{
-			SetAnimation(model, APPEIL);
-			model->SetRotation(Vector3(0.0f, XMConvertToRadians(-90.0f), 0.0f));
-		}
-
-		appeil_time += deltaTime;
-	}
-
-	if (appeil_time >= appeil_time_max) {//ボタン話したときもNOMALに戻す
-		appeil_flag = false;
-		model->SetTrackPosition(APPEIL, 0.0);
-		appeil_cool_flag = true;
-
-
-		if (direction_state_mode == Direction_State::LEFT) {
-			model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
-		}
-	}
-
-	if (appeil_cool_flag) {
-		appeil_cool_time += deltaTime;
-	}
-
-	if (appeil_cool_time >= appeil_cool_time_max) {
-		appeil_cool_flag = false;
-		appeil_cool_time = 0.0f;
-		appeil_time = 0.0f;
-	}
-}
-
-
-void PlayerBase::BrackImage() {
-	DX9::SpriteBatch->DrawSimple(deathbrow_sprite.Get(),
-		SimpleMath::Vector3(0, 0, 0),
-		nullptr,
-		DX9::Colors::RGBA(0, 0, 0, Transparency)
-	);
-}
 
 void PlayerBase::Debug() {
 	DX9::SpriteBatch->DrawString(font.Get(),

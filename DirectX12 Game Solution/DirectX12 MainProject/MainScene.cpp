@@ -237,7 +237,6 @@ void MainScene::Render()
 	//2D•`‰æ
 	ui->Render(StatusManager::Instance().ReturnAudience(),StatusManager::Instance().ReturnRenderHeart());
 	player->Debug();
-	player->BrackImage();
 	SceneManager::Instance().Render();
 
 	if (enemy->IsTimeStop())
