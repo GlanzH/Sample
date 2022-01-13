@@ -131,7 +131,7 @@ bool PlayerBase::Initialize()
 	//–³“GŽžŠÔ
 	invincible_flag = false;
 	invincible_time = 0.0f;
-	invincible_time_max = 0.2f;
+	invincible_time_max = 0.5f;
 
 	//‰ñ”ð
 	avoidance_flag=false;
@@ -406,15 +406,15 @@ void PlayerBase::Invincible(const float deltaTime)
 		invincible_time = 0.0f;
 	}
 
-	//if (invincible_flag) {
-	//	SetAnimation(model, DAMAGE);
-	//	if (direction_state_mode == Direction_State::RIGHT) {
-	//		model->Move(0, 0, 30.0f * deltaTime);
-	//	}
-	//	else if (direction_state_mode == Direction_State::LEFT) {
-	//		model->Move(0, 0, 30.0f * deltaTime);
-	//	}
-	//}
+	if (invincible_flag) {
+		SetAnimation(model, DAMAGE);
+		if (direction_state_mode == Direction_State::RIGHT) {
+			model->Move(0, 0, 30.0f * deltaTime);
+		}
+		else if (direction_state_mode == Direction_State::LEFT) {
+			model->Move(0, 0, 30.0f * deltaTime);
+		}
+	}
 
 }
 
@@ -528,6 +528,8 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 			assault_attack_time += 50.0f * deltaTime;
 			assault_attack_flag = true;
 			canot_move_state_mode = CANNOT_MOVE_STATE::CANNOT_MOVE;
+
+			cannot_other = CANNOT_OTHER_ATTACK::ACCUMULATION;
 			SetAnimation(model, CHAGE);//ƒ`ƒƒ[ƒW ):
 		}
 		else
@@ -575,14 +577,16 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 
 
 	//ŽãUŒ‚
-	if (DXTK->KeyEvent->pressed.S) {
-		n_attack_flag_ = true;
-
+	if (cannot_other == CANNOT_OTHER_ATTACK::NOMAL_STATE) {
+		if (DXTK->KeyEvent->pressed.S) {
+			n_attack_flag_ = true;
+		}
 	}
 	
 	if (n_attack_flag_) {
 		SetAnimation(model, ACT1);
 		n_attack_start += deltaTime;
+		cannot_other = CANNOT_OTHER_ATTACK::LIGHT;
 		attack_flag = true;
 		if (IsAttack()) {
 			damage = 10;
