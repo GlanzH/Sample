@@ -48,21 +48,12 @@ void AudienceManager::LoadAssets() {
 	collision->SetMaterial(material);
 }
 
-int AudienceManager::Update(float appeal_time, bool cool_flag,bool special_flag, const float deltaTime) {
+int AudienceManager::Update(float appeal_time, bool cool_flag, const float deltaTime) {
 
 	delta = deltaTime;
 
 	if (cool_flag && appeal_time >= 3.0f) {
 			time = appeal_time;
-	}
-
-	if (special_flag) {
-		SpecialAttackCollision(0.01f);
-	}
-	else {
-		col.lv2_box.Center = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
-		collision->SetPosition(INT_MAX, INT_MAX, INT_MAX);
-		collision->SetScale(SimpleMath::Vector3::One);
 	}
 
 
