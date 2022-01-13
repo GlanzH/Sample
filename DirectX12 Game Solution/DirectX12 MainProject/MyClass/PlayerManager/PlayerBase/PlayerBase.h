@@ -68,7 +68,6 @@ public:
 
 	int GetAttackTag() { return attack_type; }//攻撃の種類
 
-	bool GetSpecialAttackFlag() { return not_flag; }
 
 private:
 
@@ -78,8 +77,6 @@ private:
 	void Player_limit();
 	//ジャンプ
 	void Player_jump(const float deltaTime);
-	//パリィ
-	void Parry(const float deltaTime);
 	//無敵時間
 	void Invincible(const float deltaTime);
 	//ノックバック
@@ -324,7 +321,9 @@ private:
 	};
 	BURST_STATE burst_state_mode;
 
-	//使わないフラグ
-	bool not_flag = false;
+	//First
+	float first_burst_start = 0.0f;
+	float first_burst_end   = 0.383f;
+
 
 };

@@ -624,6 +624,10 @@ void PlayerBase::Burst_Attack(const float deltaTime) {
 		break;
 	case BURST_STATE::FIRST:
 		SetAnimation(model, ACT1);
+		first_burst_start += deltaTime;
+		if (first_burst_start >= 0.1f) {
+
+		}
 		break;
 	case BURST_STATE::SECOND:
 		break;
