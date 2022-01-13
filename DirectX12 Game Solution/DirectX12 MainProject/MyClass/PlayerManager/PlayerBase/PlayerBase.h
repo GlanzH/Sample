@@ -45,7 +45,7 @@ public:
 
 	Collisions GetBox() { return col; }
 
-	//左右の当たり判定
+	//左右の当たり判定(ノックバック用)
 	DX9::MODEL& GetRightModel() { return right_collision; }
 	DX9::MODEL& GetLeftModel() { return left_collision; }
 

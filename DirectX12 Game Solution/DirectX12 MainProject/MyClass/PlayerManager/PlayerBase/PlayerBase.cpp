@@ -350,8 +350,8 @@ void PlayerBase::Render()
 	//collision->Draw();
 	//sword_collision->Draw();
 	//parry_collision->Draw();
-	right_collision->Draw();
-	left_collision->Draw();
+	//right_collision->Draw();
+	//left_collision->Draw();
 }
 
 void PlayerBase::OnCollisionEnter(std::string tag) {
