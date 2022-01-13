@@ -1,10 +1,10 @@
 #include "MyClass/UIManager/UIManager.h"
 
 void UIManager::LoadAsset() {
-	audience_empty = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/audience_empty.png");
-	audience_max   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/audience_gauge.png"  );
-	heart_empty = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/sword3.png");
-	heart_max	= DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/sword_gauge.png"  );
+	audience_empty = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/score_empty.png");
+	audience_max   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/score_gauge.png");
+	heart_empty	   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/sword3.png"	 );
+	heart_max	   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/sword_gauge.png");
 }
 
 void UIManager::Render(float audience, float parry) {
@@ -15,7 +15,7 @@ void UIManager::Render(float audience, float parry) {
 	DX9::SpriteBatch->DrawSimple(
 		audience_max.Get(),
 		SimpleMath::Vector3(AUDIENCE_UI_POS_X, AUDIENCE_UI_POS_Y, AUDIENCE_MAX_UI_POS_Z),
-		RectWH(0, 0, (int)audience, AUDIENCE_MAX_HIGH)
+		RectWH(0, 0, AUDIENCE_MIN_WIDTH + (int)audience, AUDIENCE_MAX_HIGH)
 	);
 
 	DX9::SpriteBatch->DrawSimple(
