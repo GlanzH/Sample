@@ -83,8 +83,22 @@ PlayerBase::PlayerBase() {
 	assault_attack_time_max = 0.1f;
 	assault_flag            = false;
 
+	not_chage = false;
+
+
 	//UŒ‚‚ÌŽí—Þ
 	attack_type = 0;
+
+	//‰ñ”ð
+	avoidance_flag = false;
+	avoidance_start = 0.0f;
+	avoidance_max = 0.0f;
+
+	//ŽãUŒ‚
+	n_attack_flag_ = false;
+	n_attack_start = 0.0f;
+	n_attack_end_ = 0.0f;
+
 
 
 }
@@ -209,9 +223,9 @@ void PlayerBase::LoadAssets()
 	//‰E‚Ì“–‚½‚è”»’è
 	right_collision = DX9::Model::CreateBox(
 		DXTK->Device9,
-		right_box.Extents.x * sidebox_size_x,
-		right_box.Extents.y * sidebox_size_y,
-		right_box.Extents.z * sidebox_size_z
+		col.right_box.Extents.x * sidebox_size_x,
+		col.right_box.Extents.y * sidebox_size_y,
+		col.right_box.Extents.z * sidebox_size_z
 	);
 	right_collision->SetMaterial(material);
 
@@ -333,8 +347,8 @@ void PlayerBase::Render()
 	//collision->Draw();
 	//sword_collision->Draw();
 	//parry_collision->Draw();
-	//right_collision->Draw();
-	//left_collision->Draw();
+	right_collision->Draw();
+	left_collision->Draw();
 }
 
 void PlayerBase::OnCollisionEnter(std::string tag) {
@@ -507,7 +521,7 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 
 	if (not_chage == false && assault_attack_time < 150.0f) {
 		if (DXTK->KeyState->A || DXTK->GamePadState[0].buttons.b) {
-
+			cannot_other = CANNOT_OTHER_ATTACK::ACCUMULATION;
 			assault_attack_time += 50.0f * deltaTime;
 			assault_attack_flag = true;
 			canot_move_state_mode = CANNOT_MOVE_STATE::CANNOT_MOVE;
@@ -540,12 +554,14 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 
 	}
 
+
 	if (assault_attack_time <= 0.0f) {
 		assault_attack_flag = false;
 		assault_flag = false;
 		assault_attack_time = 0.0f;
 		not_chage = false;
 		canot_move_state_mode = CANNOT_MOVE_STATE::MOVE;
+		cannot_other = CANNOT_OTHER_ATTACK::NOMAL_STATE;
 		model->SetTrackPosition(CHAGE, 0.0);
 		model->SetTrackPosition(ACT3, 0.0);
 
@@ -556,8 +572,11 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 
 
 	//ŽãUŒ‚
-	if (DXTK->KeyEvent->pressed.S) {
-		n_attack_flag_ = true;
+	if (cannot_other == CANNOT_OTHER_ATTACK::NOMAL_STATE) {
+		if (DXTK->KeyEvent->pressed.S) {
+			n_attack_flag_ = true;
+			cannot_other = CANNOT_OTHER_ATTACK::LIGHT;
+		}
 	}
 	if (n_attack_flag_) {
 		SetAnimation(model, ACT1);
@@ -571,6 +590,7 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 
 	if (n_attack_start >= n_attack_end_) {
 		model->SetTrackPosition(ACT1, 0.0);
+		cannot_other = CANNOT_OTHER_ATTACK::NOMAL_STATE;
 		n_attack_start = 0.0f;
 		n_attack_flag_ = false;
 	}
@@ -748,7 +768,6 @@ void PlayerBase::BrackImage() {
 		nullptr,
 		DX9::Colors::RGBA(0, 0, 0, Transparency)
 	);
-
 }
 
 void PlayerBase::Debug() {

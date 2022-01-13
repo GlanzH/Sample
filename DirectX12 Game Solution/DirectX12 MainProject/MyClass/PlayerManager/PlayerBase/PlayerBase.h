@@ -11,6 +11,10 @@ using namespace DirectX;
 typedef struct Collisions {
 	BoundingBox  sword_box;
 	BoundingBox  box;
+
+	BoundingBox right_box;
+	BoundingBox left_box;
+
 };
 
 class PlayerBase
@@ -205,9 +209,8 @@ private:
 	enum CANNOT_OTHER_ATTACK
 	{
 		NOMAL_STATE,
-		FIRST,
-		SECOND,
-		THIRD
+		ACCUMULATION,
+		LIGHT
 	};
 
 	CANNOT_OTHER_ATTACK cannot_other;
