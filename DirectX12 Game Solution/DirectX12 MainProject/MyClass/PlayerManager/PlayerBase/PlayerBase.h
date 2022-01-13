@@ -41,6 +41,10 @@ public:
 
 	Collisions GetBox() { return col; }
 
+	//左右の当たり判定
+	DX9::MODEL& GetRightModel() { return right_collision; }
+	DX9::MODEL& GetLeftModel() { return left_collision; }
+
 	bool GetParryFlag() { return parry_flag; }
 
 	int GetDamage() { return damage; }
@@ -96,10 +100,16 @@ private:
 	BoundingBox box;
 
 
+	BoundingBox right_box;
+	BoundingBox left_box;
+
 	//当たり判定用モデル
 	DX9::MODEL sword_collision;
 	DX9::MODEL collision;
 	Collisions col;
+
+	DX9::MODEL right_collision;
+	DX9::MODEL left_collision;
 
 	int damage = 0;
 	int reduce_num = 0;
@@ -113,7 +123,7 @@ private:
 	//プレイヤー
 	DX9::SKINNEDMODEL model;
 	SimpleMath::Vector3 player_pos = SimpleMath::Vector3(0.0f, 0.0f, 50.0f);
-	float model_scale = 0.1f;
+	float model_scale = 0.25f;
 	float model_rotetion = -90.0f;
 
 	//プレイヤーの移動制限(幅)
@@ -123,13 +133,17 @@ private:
 	const float model_collision_detection_Z = 100.0f;
 
 	//当たり判定モデルの大きさ
-	const int player_box_size_y = 7;
+	const int player_box_size_y = 5;
 	const int player_box_size_x = 5;
 	const int player_box_size_z = 3;
 
 	const int box_size_x = 3;
 	const int box_size_y = 2;
 	const int box_size_z = 3;
+
+	const int sidebox_size_x = 2;
+	const int sidebox_size_y = 9;
+	const int sidebox_size_z = 1;
 
 
 	//プレイヤーのスピード
@@ -211,6 +225,7 @@ private:
 		RUN,
 		ACT1,
 		ACT2,
+		CHAGE,
 		ACT3,
 		APPEIL,
 		JUMP,
@@ -295,7 +310,7 @@ private:
 	//弱攻撃
 	bool n_attack_flag_ = false;
 	float n_attack_start = 0.0f;
-	float n_attack_end_ = 0.617f;
+	float n_attack_end_ = 0.383f;
 
 	//攻撃の種類 1:弱攻撃　2:突き攻撃
 	int attack_type;

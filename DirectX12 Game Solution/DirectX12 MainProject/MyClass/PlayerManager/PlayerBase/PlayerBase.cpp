@@ -186,7 +186,7 @@ bool PlayerBase::Initialize()
 
 void PlayerBase::LoadAssets()
 {
-	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v1207_.X");
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v0111c_.X");
 	model->SetScale(model_scale);
 	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
@@ -206,6 +206,24 @@ void PlayerBase::LoadAssets()
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	collision->SetMaterial(material); 
 
+	//右の当たり判定
+	right_collision = DX9::Model::CreateBox(
+		DXTK->Device9,
+		right_box.Extents.x * sidebox_size_x,
+		right_box.Extents.y * sidebox_size_y,
+		right_box.Extents.z * sidebox_size_z
+	);
+	right_collision->SetMaterial(material);
+
+	//左の当たり判定
+	left_collision = DX9::Model::CreateBox(
+		DXTK->Device9,
+		left_box.Extents.x * sidebox_size_x,
+		left_box.Extents.y * sidebox_size_y,
+		left_box.Extents.z * sidebox_size_z
+	);
+	left_collision->SetMaterial(material);
+
 
 	col.sword_box = model->GetBoundingBox();
 	col.sword_box.Extents = SimpleMath::Vector3(col.sword_box.Extents) * 7.0f;
@@ -215,6 +233,7 @@ void PlayerBase::LoadAssets()
 		col.sword_box.Extents.y * box_size_y,
 		col.sword_box.Extents.z * box_size_z
 	);
+	sword_collision->SetMaterial(material);
 
 
 	//フォント
@@ -295,9 +314,13 @@ int PlayerBase::Update(const float deltaTime)
 		attack_zeit = 0.0f;
 	}
 
-	col.box.Center = model->GetPosition();
 	player_pos = model->GetPosition();
-	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 6, 0));
+	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 1, 0));
+	col.box.Center = collision->GetPosition();
+
+	right_collision->SetPosition(player_pos.x + 1.1f, player_pos.y + 5.0f, player_pos.z);
+	left_collision ->SetPosition(player_pos.x - 1.1f, player_pos.y + 5.0f, player_pos.z);
+
 
 	model->AdvanceTime(deltaTime);
 	return 0;
@@ -308,8 +331,10 @@ void PlayerBase::Render()
 	//プレイヤーの描画
 	model->Draw();
 	//collision->Draw();
-	sword_collision->Draw();
+	//sword_collision->Draw();
 	//parry_collision->Draw();
+	//right_collision->Draw();
+	//left_collision->Draw();
 }
 
 void PlayerBase::OnCollisionEnter(std::string tag) {
@@ -486,7 +511,7 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 			assault_attack_time += 50.0f * deltaTime;
 			assault_attack_flag = true;
 			canot_move_state_mode = CANNOT_MOVE_STATE::CANNOT_MOVE;
-			SetAnimation(model, APPEIL);
+			SetAnimation(model, CHAGE);
 
 		}
 		else
@@ -521,6 +546,8 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 		assault_attack_time = 0.0f;
 		not_chage = false;
 		canot_move_state_mode = CANNOT_MOVE_STATE::MOVE;
+		model->SetTrackPosition(CHAGE, 0.0);
+		model->SetTrackPosition(ACT3, 0.0);
 
 	}
 
@@ -729,24 +756,5 @@ void PlayerBase::Debug() {
 		SimpleMath::Vector2(1000.0f, 120.0f),
 		DX9::Colors::BlueViolet,
 		L"突き攻撃のパワー %f", assault_attack_time
-	);
-
-	if (not_chage) {
-		DX9::SpriteBatch->DrawString(font.Get(),
-			SimpleMath::Vector2(1000.0f, 140.0f),
-			DX9::Colors::BlueViolet,
-			L"チャージ不可" 
-		);
-	}
-	else
-	{
-		DX9::SpriteBatch->DrawString(font.Get(),
-			SimpleMath::Vector2(1000.0f, 140.0f),
-			DX9::Colors::BlueViolet,
-			L"チャージ可"
-		);
-
-	}
-
-	
+	);	
 }
