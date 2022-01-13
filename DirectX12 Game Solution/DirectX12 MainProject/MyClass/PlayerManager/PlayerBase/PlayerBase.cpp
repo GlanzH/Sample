@@ -83,8 +83,22 @@ PlayerBase::PlayerBase() {
 	assault_attack_time_max = 0.1f;
 	assault_flag            = false;
 
+	not_chage = false;
+
+
 	//攻撃の種類
 	attack_type = 0;
+
+	//回避
+	avoidance_flag = false;
+	avoidance_start = 0.0f;
+	avoidance_max = 0.0f;
+
+	//弱攻撃
+	n_attack_flag_ = false;
+	n_attack_start = 0.0f;
+	n_attack_end_ = 0.383f;
+
 
 
 }
@@ -117,6 +131,7 @@ bool PlayerBase::Initialize()
 	//無敵時間
 	invincible_flag = false;
 	invincible_time = 0.0f;
+	invincible_time_max = 0.2f;
 
 	//回避
 	avoidance_flag=false;
@@ -154,6 +169,12 @@ bool PlayerBase::Initialize()
 	specialmove_time = 0.0f;
 	specialmove_time_max = 4.0f;
 
+	//弱攻撃
+	n_attack_flag_ = false;
+	n_attack_start = 0.0f;
+	n_attack_end_ = 0.383f;
+
+
 
 	//暗転
 	Transparency = 0;
@@ -167,8 +188,6 @@ bool PlayerBase::Initialize()
 
 
 	direction_state_mode = Direction_State::RIGHT;
-
-	under_attack_state_mode = UNDER_ATTACK_STATE::NOMAL;
 
 	canot_move_state_mode = CANNOT_MOVE_STATE::MOVE;
 
@@ -186,7 +205,7 @@ bool PlayerBase::Initialize()
 
 void PlayerBase::LoadAssets()
 {
-	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v1207_.X");
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v0111c_.X");
 	model->SetScale(model_scale);
 	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
@@ -206,6 +225,24 @@ void PlayerBase::LoadAssets()
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	collision->SetMaterial(material); 
 
+	//右の当たり判定
+	right_collision = DX9::Model::CreateBox(
+		DXTK->Device9,
+		col.right_box.Extents.x * sidebox_size_x,
+		col.right_box.Extents.y * sidebox_size_y,
+		col.right_box.Extents.z * sidebox_size_z
+	);
+	right_collision->SetMaterial(material);
+
+	//左の当たり判定
+	left_collision = DX9::Model::CreateBox(
+		DXTK->Device9,
+		left_box.Extents.x * sidebox_size_x,
+		left_box.Extents.y * sidebox_size_y,
+		left_box.Extents.z * sidebox_size_z
+	);
+	left_collision->SetMaterial(material);
+
 
 	col.sword_box = model->GetBoundingBox();
 	col.sword_box.Extents = SimpleMath::Vector3(col.sword_box.Extents) * 7.0f;
@@ -215,6 +252,7 @@ void PlayerBase::LoadAssets()
 		col.sword_box.Extents.y * box_size_y,
 		col.sword_box.Extents.z * box_size_z
 	);
+	sword_collision->SetMaterial(material);
 
 
 	//フォント
@@ -247,8 +285,6 @@ int PlayerBase::Update(const float deltaTime)
 	//プレイヤー:ジャンプ
 	Player_jump(deltaTime);
 
-
-
 	//ランバージャック(移動制限)
 	Player_limit();
 
@@ -262,7 +298,7 @@ int PlayerBase::Update(const float deltaTime)
 	//Player_Special_Move(deltaTime);
 
 
-	//プレイヤーの攻撃(ダッシュ攻撃)
+	//プレイヤーの攻撃(弱攻撃、ダッシュ攻撃)
 	Player_Attack_Three(deltaTime);
 
 	//回避
@@ -295,9 +331,13 @@ int PlayerBase::Update(const float deltaTime)
 		attack_zeit = 0.0f;
 	}
 
-	col.box.Center = model->GetPosition();
 	player_pos = model->GetPosition();
-	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 6, 0));
+	collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(0, 1, 0));
+	col.box.Center = collision->GetPosition();
+
+	right_collision->SetPosition(player_pos.x + 1.1f, player_pos.y + 5.0f, player_pos.z);
+	left_collision ->SetPosition(player_pos.x - 1.1f, player_pos.y + 5.0f, player_pos.z);
+
 
 	model->AdvanceTime(deltaTime);
 	return 0;
@@ -310,6 +350,8 @@ void PlayerBase::Render()
 	//collision->Draw();
 	//sword_collision->Draw();
 	//parry_collision->Draw();
+	right_collision->Draw();
+	left_collision->Draw();
 }
 
 void PlayerBase::OnCollisionEnter(std::string tag) {
@@ -364,15 +406,15 @@ void PlayerBase::Invincible(const float deltaTime)
 		invincible_time = 0.0f;
 	}
 
-	if (invincible_flag) {
-		SetAnimation(model, DAMAGE);
-		if (direction_state_mode == Direction_State::RIGHT) {
-			model->Move(0, 0, 30.0f * deltaTime);
-		}
-		else if (direction_state_mode == Direction_State::LEFT) {
-			model->Move(0, 0, 30.0f * deltaTime);
-		}
-	}
+	//if (invincible_flag) {
+	//	SetAnimation(model, DAMAGE);
+	//	if (direction_state_mode == Direction_State::RIGHT) {
+	//		model->Move(0, 0, 30.0f * deltaTime);
+	//	}
+	//	else if (direction_state_mode == Direction_State::LEFT) {
+	//		model->Move(0, 0, 30.0f * deltaTime);
+	//	}
+	//}
 
 }
 
@@ -410,7 +452,7 @@ void PlayerBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack)
 
 void PlayerBase::Player_move(const float deltaTime)
 {
-	if (!invincible_flag || !appeil_flag) {
+	if (!invincible_flag) {
 		if (canot_move_state_mode == CANNOT_MOVE_STATE::MOVE) {
 			//プレイヤー:移動(キーボード) & ゲームパッド十字キー
 			if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
@@ -445,8 +487,8 @@ void PlayerBase::Player_limit()
 
 void PlayerBase::Player_jump(const float deltaTime) {
 	//ジャンプ
-	if (!invincible_flag || under_attack_state_mode == UNDER_ATTACK_STATE::NOMAL ){
-		if( !jump_flag_) {
+	if (!invincible_flag) {
+		if (!jump_flag_) {
 			if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
 				jump_start_flag = true;
 				jump_flag_ = true;
@@ -482,12 +524,11 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 
 	if (not_chage == false && assault_attack_time < 150.0f) {
 		if (DXTK->KeyState->A || DXTK->GamePadState[0].buttons.b) {
-
+			cannot_other = CANNOT_OTHER_ATTACK::ACCUMULATION;
 			assault_attack_time += 50.0f * deltaTime;
 			assault_attack_flag = true;
 			canot_move_state_mode = CANNOT_MOVE_STATE::CANNOT_MOVE;
-			SetAnimation(model, APPEIL);
-
+			SetAnimation(model, CHAGE);//チャージ ):
 		}
 		else
 		{
@@ -495,6 +536,7 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 				SetAnimation(model, ACT3);
 				model->Move(0.0f, 0.0f, -100.0f * deltaTime);
 				assault_attack_time -= 100.0f * deltaTime;
+				invincible_flag = true;
 				assault_flag = true;
 				not_chage = true;
 				attack_type = 2;
@@ -509,11 +551,13 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 			model->Move(0.0f, 0.0f, -100.0f * deltaTime);
 			assault_attack_time -= 100.0f * deltaTime;
 			assault_flag = true;
+			invincible_flag = true;
 			not_chage = true;
 			attack_type = 2;
 		}
 
 	}
+
 
 	if (assault_attack_time <= 0.0f) {
 		assault_attack_flag = false;
@@ -521,7 +565,9 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 		assault_attack_time = 0.0f;
 		not_chage = false;
 		canot_move_state_mode = CANNOT_MOVE_STATE::MOVE;
-
+		cannot_other = CANNOT_OTHER_ATTACK::NOMAL_STATE;
+		model->SetTrackPosition(CHAGE, 0.0);
+		model->SetTrackPosition(ACT3, 0.0);
 	}
 
 	assault_attack_time = std::clamp(assault_attack_time, 0.0f, 150.0f);
@@ -531,7 +577,9 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 	//弱攻撃
 	if (DXTK->KeyEvent->pressed.S) {
 		n_attack_flag_ = true;
+
 	}
+	
 	if (n_attack_flag_) {
 		SetAnimation(model, ACT1);
 		n_attack_start += deltaTime;
@@ -544,6 +592,7 @@ void PlayerBase::Player_Attack_Three(const float deltaTime) {
 
 	if (n_attack_start >= n_attack_end_) {
 		model->SetTrackPosition(ACT1, 0.0);
+		cannot_other = CANNOT_OTHER_ATTACK::NOMAL_STATE;
 		n_attack_start = 0.0f;
 		n_attack_flag_ = false;
 	}
@@ -566,6 +615,7 @@ void PlayerBase::Avoidance(const float deltaTime) {
 		avoidance_start += deltaTime;
 		
 		model->Move(0.0f, 0.0, -250.0f * deltaTime);
+		invincible_flag = true;
 	}
 
 	if (avoidance_start >= avoidance_max) {
@@ -721,7 +771,6 @@ void PlayerBase::BrackImage() {
 		nullptr,
 		DX9::Colors::RGBA(0, 0, 0, Transparency)
 	);
-
 }
 
 void PlayerBase::Debug() {
@@ -729,24 +778,5 @@ void PlayerBase::Debug() {
 		SimpleMath::Vector2(1000.0f, 120.0f),
 		DX9::Colors::BlueViolet,
 		L"突き攻撃のパワー %f", assault_attack_time
-	);
-
-	if (not_chage) {
-		DX9::SpriteBatch->DrawString(font.Get(),
-			SimpleMath::Vector2(1000.0f, 140.0f),
-			DX9::Colors::BlueViolet,
-			L"チャージ不可" 
-		);
-	}
-	else
-	{
-		DX9::SpriteBatch->DrawString(font.Get(),
-			SimpleMath::Vector2(1000.0f, 140.0f),
-			DX9::Colors::BlueViolet,
-			L"チャージ可"
-		);
-
-	}
-
-	
+	);	
 }
