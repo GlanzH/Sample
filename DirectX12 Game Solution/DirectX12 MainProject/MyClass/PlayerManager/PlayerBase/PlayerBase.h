@@ -312,6 +312,7 @@ private:
 	float time_other;
 
 	//ŽO˜AŒ‚
+	
 	enum  BURST_STATE
 	{
 		NOT_BURST,
@@ -321,9 +322,19 @@ private:
 	};
 	BURST_STATE burst_state_mode;
 
+	void Not_Burst(const float deltaTime);
+
 	//First
+	void First_Burst(const float deltaTime);
+	bool first_burst_flag;
 	float first_burst_start = 0.0f;
 	float first_burst_end   = 0.383f;
+
+	//Second
+	void Second_Burst(const float deltaTime);
+	bool second_burst_flag;
+	float second_burst_start = 0.0f;
+	float second_burst_end = 0.383f;
 
 
 };

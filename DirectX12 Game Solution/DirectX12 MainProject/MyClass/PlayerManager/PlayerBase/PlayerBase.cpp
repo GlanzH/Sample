@@ -102,6 +102,11 @@ PlayerBase::PlayerBase() {
 	knock_back_end = 0.0f;
 	time_other = 0.0f;
 
+	first_burst_flag  = false;
+	first_burst_start = 0.0f;
+	first_burst_end   = 0.0f;
+
+
 }
 
 void PlayerBase::OnDeviceLost() {
@@ -191,6 +196,13 @@ bool PlayerBase::Initialize()
 	knock_back_end = 0.2f;
 	time_other = 0.0f;
 
+	//三連撃
+	burst_state_mode = BURST_STATE::NOT_BURST;
+
+	//First
+	first_burst_flag = false;
+	first_burst_start = 0.0f;
+	first_burst_end = 0.383f;
 
 
 	direction_state_mode = Direction_State::RIGHT;
@@ -199,7 +211,6 @@ bool PlayerBase::Initialize()
 
 	cannot_other = CANNOT_OTHER_ATTACK::NOMAL_STATE;
 
-	burst_state_mode = BURST_STATE::NOT_BURST;
 
 
 	//プレイヤーのSE ファイル読み込み
@@ -619,21 +630,49 @@ void PlayerBase::Burst_Attack(const float deltaTime) {
 	switch (burst_state_mode)
 	{
 	case BURST_STATE::NOT_BURST:
-		if (DXTK->KeyEvent->pressed.S)
-			burst_state_mode = BURST_STATE::FIRST;
+		Not_Burst(deltaTime);
 		break;
 	case BURST_STATE::FIRST:
-		SetAnimation(model, ACT1);
-		first_burst_start += deltaTime;
-		if (first_burst_start >= 0.1f) {
-
-		}
+		First_Burst(deltaTime);
 		break;
 	case BURST_STATE::SECOND:
 		break;
 	case BURST_STATE::THIRD:
 		break;
 	}
+}
+
+//最初(三連撃開始)
+void PlayerBase::Not_Burst(const float deltaTime) {
+	if (DXTK->KeyEvent->pressed.S)
+		burst_state_mode = BURST_STATE::FIRST;
+
+}
+//一撃目
+void PlayerBase::First_Burst(const float deltaTime) {
+	SetAnimation(model, ACT1);
+	first_burst_start += deltaTime;
+	if (first_burst_start >= 0.1f && DXTK->KeyEvent->pressed.S) {
+		first_burst_flag = true;
+	}
+	if (first_burst_start >= first_burst_end && first_burst_flag) {
+		burst_state_mode = BURST_STATE::SECOND;
+		model->SetTrackPosition(ACT1, 0.0);
+		first_burst_start = 0.0f;
+		first_burst_flag  = false;
+	}
+	else if (first_burst_start >= first_burst_end) {
+		burst_state_mode = BURST_STATE::NOT_BURST;
+		model->SetTrackPosition(ACT1, 0.0);
+		first_burst_start = 0.0f;
+		first_burst_flag = false;
+	}
+
+}
+
+//二撃目
+void PlayerBase::Second_Burst(const float deltaTime) {
+	SetAnimation(model, ACT2);
 }
 
 //回避
