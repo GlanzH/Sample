@@ -77,6 +77,7 @@ void StatusManager::KillComboTime(const float deltaTime) {
 }
 
 void StatusManager::ResetKillCombo() {
+	BonusScore();
 	kill_combo = 0;
 	kill_combo_flag = false;
 	return;
