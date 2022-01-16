@@ -557,6 +557,12 @@ void PlayerBase::Not_Burst(const float deltaTime) {
 void PlayerBase::First_Burst(const float deltaTime) {
 	SetAnimation(model, ACT1);
 	first_burst_start += deltaTime;
+
+	attack_flag = true;
+	if (IsAttack()) {
+
+	}
+
 	if (first_burst_start >= 0.15f && DXTK->KeyEvent->pressed.S) {
 		first_burst_flag = true;
 	}
@@ -580,12 +586,19 @@ void PlayerBase::Second_Burst(const float deltaTime) {
 	SetAnimation(model, ACT2);
 	second_burst_start += deltaTime;
 
+	attack_flag = true;
+	if (IsAttack()) {
+
+	}
+
+
 	if (second_burst_start >= 0.15f && DXTK->KeyEvent->pressed.S)
 		second_burst_flag = true;
 
 	if (second_burst_start >= second_burst_end && second_burst_flag) {
 		burst_state_mode = BURST_STATE::THIRD;
 		model->SetTrackPosition(ACT2, 0.0);
+
 		second_burst_start = 0.0f;
 		second_burst_flag = false;
 	}
@@ -602,6 +615,12 @@ void PlayerBase::Second_Burst(const float deltaTime) {
 void PlayerBase::Third_Burst(const float deltaTime) {
 	SetAnimation(model, ACT3);
 	third_burst_start += deltaTime;
+
+	attack_flag = true;
+	if (IsAttack()) {
+
+	}
+
 
 	if (third_burst_start >= 0.15f && DXTK->KeyEvent->pressed.S)
 		third_burst_flag = true;
