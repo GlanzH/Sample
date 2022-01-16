@@ -74,13 +74,6 @@ PlayerBase::PlayerBase() {
 
 
 
-	//ダッシュ攻撃
-	assault_attack_flag     = false;
-	assault_attack_time     = 0.0f;
-	assault_attack_time_max = 0.1f;
-	assault_flag            = false;
-
-	not_chage = false;
 
 
 	//攻撃の種類
@@ -91,16 +84,17 @@ PlayerBase::PlayerBase() {
 	avoidance_start = 0.0f;
 	avoidance_max = 0.0f;
 
-	//弱攻撃
-	n_attack_flag_ = false;
-	n_attack_start = 0.0f;
-	n_attack_end_ = 0.383f;
 
 	//ノックバック
 	knock_back_flag = false;
 	knock_back_start = 0.0f;
 	knock_back_end = 0.0f;
 	time_other = 0.0f;
+
+	first_burst_flag  = false;
+	first_burst_start = 0.0f;
+	first_burst_end   = 0.0f;
+
 
 }
 
@@ -140,13 +134,6 @@ bool PlayerBase::Initialize()
 	//攻撃の種類
 	attack_type = 0;
 
-	//ダッシュ攻撃
-	assault_attack_flag = false;
-	assault_attack_time = 0.0f;
-	assault_attack_time_max = 0.1f;
-	assault_flag = false;
-
-	not_chage = false;
 
 
 	//アピール
@@ -168,10 +155,6 @@ bool PlayerBase::Initialize()
 	specialmove_time = 0.0f;
 	specialmove_time_max = 4.0f;
 
-	//弱攻撃
-	n_attack_flag_ = false;
-	n_attack_start = 0.0f;
-	n_attack_end_ = 0.383f;
 
 
 
@@ -191,6 +174,25 @@ bool PlayerBase::Initialize()
 	knock_back_end = 0.2f;
 	time_other = 0.0f;
 
+	//三連撃
+	burst_state_mode = BURST_STATE::NOT_BURST;
+
+	//First
+	first_burst_flag = false;
+	first_burst_start = 0.0f;
+	first_burst_end = 0.383f;
+
+	//Second
+	second_burst_flag = false;
+	second_burst_start = 0.0f;
+	second_burst_end = 0.333f;
+
+	//Third
+	third_burst_flag = false;
+	third_burst_start = 0.0f;
+	third_burst_end = 0.650f;
+
+
 
 
 	direction_state_mode = Direction_State::RIGHT;
@@ -199,7 +201,6 @@ bool PlayerBase::Initialize()
 
 	cannot_other = CANNOT_OTHER_ATTACK::NOMAL_STATE;
 
-	burst_state_mode = BURST_STATE::NOT_BURST;
 
 
 	//プレイヤーのSE ファイル読み込み
@@ -212,7 +213,7 @@ bool PlayerBase::Initialize()
 
 void PlayerBase::LoadAssets()
 {
-	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v0111c_.X");
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v0114b_.X");
 	model->SetScale(model_scale);
 	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
@@ -525,93 +526,6 @@ void PlayerBase::Player_jump(const float deltaTime) {
 	}
 }
 
-//プレイヤーの攻撃(弱攻撃・強攻撃・突撃攻撃) 変更(3回目)
-void PlayerBase::Player_Attack_Three(const float deltaTime) {
-
-	if (not_chage == false && assault_attack_time < 150.0f) {
-		if (DXTK->KeyState->A || DXTK->GamePadState[0].buttons.b) {
-			cannot_other = CANNOT_OTHER_ATTACK::ACCUMULATION;
-			assault_attack_time += 50.0f * deltaTime;
-			assault_attack_flag = true;
-			canot_move_state_mode = CANNOT_MOVE_STATE::CANNOT_MOVE;
-
-			cannot_other = CANNOT_OTHER_ATTACK::ACCUMULATION;
-			SetAnimation(model, CHAGE);//チャージ ):
-		}
-		else
-		{
-			if (assault_attack_flag && assault_attack_time >= 50.0f) {
-				SetAnimation(model, ACT3);
-				model->Move(0.0f, 0.0f, -100.0f * deltaTime);
-				assault_attack_time -= 100.0f * deltaTime;
-				invincible_flag = true;
-				assault_flag = true;
-				not_chage = true;
-				attack_type = 2;
-			}
-			else if (assault_attack_time < 50.0f) {
-				assault_attack_time = 0.0f;
-			}
-
-		}
-	}
-	else
-	{
-		if (assault_attack_flag) {
-			SetAnimation(model, ACT3);
-			model->Move(0.0f, 0.0f, -100.0f * deltaTime);
-			assault_attack_time -= 100.0f * deltaTime;
-			assault_flag = true;
-			invincible_flag = true;
-			not_chage = true;
-			attack_type = 2;
-		}
-
-	}
-
-
-	if (assault_attack_time <= 0.0f) {
-		assault_attack_flag = false;
-		assault_flag = false;
-		assault_attack_time = 0.0f;
-		not_chage = false;
-		canot_move_state_mode = CANNOT_MOVE_STATE::MOVE;
-		cannot_other = CANNOT_OTHER_ATTACK::NOMAL_STATE;
-		model->SetTrackPosition(CHAGE, 0.0);
-		model->SetTrackPosition(ACT3, 0.0);
-	}
-
-	assault_attack_time = std::clamp(assault_attack_time, 0.0f, 150.0f);
-
-
-
-	//弱攻撃
-	if (cannot_other == CANNOT_OTHER_ATTACK::NOMAL_STATE) {
-		if (DXTK->KeyEvent->pressed.S) {
-			n_attack_flag_ = true;
-		}
-	}
-	
-	if (n_attack_flag_) {
-		SetAnimation(model, ACT1);
-		n_attack_start += deltaTime;
-		cannot_other = CANNOT_OTHER_ATTACK::LIGHT;
-		attack_flag = true;
-		if (IsAttack()) {
-			damage = 10;
-			attack_type = 1;
-		}
-	}
-
-	if (n_attack_start >= n_attack_end_) {
-		model->SetTrackPosition(ACT1, 0.0);
-		cannot_other = CANNOT_OTHER_ATTACK::NOMAL_STATE;
-		n_attack_start = 0.0f;
-		n_attack_flag_ = false;
-	}
-
-
-}
 
 //三連撃
 void PlayerBase::Burst_Attack(const float deltaTime) {
@@ -619,18 +533,87 @@ void PlayerBase::Burst_Attack(const float deltaTime) {
 	switch (burst_state_mode)
 	{
 	case BURST_STATE::NOT_BURST:
-		if (DXTK->KeyEvent->pressed.S)
-			burst_state_mode = BURST_STATE::FIRST;
+		Not_Burst(deltaTime);
 		break;
 	case BURST_STATE::FIRST:
-		SetAnimation(model, ACT1);
+		First_Burst(deltaTime);
 		break;
 	case BURST_STATE::SECOND:
+		Second_Burst(deltaTime);
 		break;
 	case BURST_STATE::THIRD:
+		Third_Burst(deltaTime);
 		break;
 	}
 }
+
+//最初(三連撃開始)
+void PlayerBase::Not_Burst(const float deltaTime) {
+	if (DXTK->KeyEvent->pressed.S)
+		burst_state_mode = BURST_STATE::FIRST;
+
+}
+//一撃目
+void PlayerBase::First_Burst(const float deltaTime) {
+	SetAnimation(model, ACT1);
+	first_burst_start += deltaTime;
+	if (first_burst_start >= 0.15f && DXTK->KeyEvent->pressed.S) {
+		first_burst_flag = true;
+	}
+	if (first_burst_start >= first_burst_end && first_burst_flag) {
+		burst_state_mode = BURST_STATE::SECOND;
+		model->SetTrackPosition(ACT1, 0.0);
+		first_burst_start = 0.0f;
+		first_burst_flag  = false;
+	}
+	else if (first_burst_start >= first_burst_end) {
+		burst_state_mode = BURST_STATE::NOT_BURST;
+		model->SetTrackPosition(ACT1, 0.0);
+		first_burst_start = 0.0f;
+		first_burst_flag = false;
+	}
+
+}
+
+//二撃目
+void PlayerBase::Second_Burst(const float deltaTime) {
+	SetAnimation(model, ACT2);
+	second_burst_start += deltaTime;
+
+	if (second_burst_start >= 0.15f && DXTK->KeyEvent->pressed.S)
+		second_burst_flag = true;
+
+	if (second_burst_start >= second_burst_end && second_burst_flag) {
+		burst_state_mode = BURST_STATE::THIRD;
+		model->SetTrackPosition(ACT2, 0.0);
+		second_burst_start = 0.0f;
+		second_burst_flag = false;
+	}
+	else if (second_burst_start >= second_burst_end) {
+		burst_state_mode = BURST_STATE::NOT_BURST;
+		model->SetTrackPosition(ACT2, 0.0);
+		second_burst_start = 0.0f;
+		second_burst_flag = false;
+	}
+	
+}
+
+//Third
+void PlayerBase::Third_Burst(const float deltaTime) {
+	SetAnimation(model, ACT3);
+	third_burst_start += deltaTime;
+
+	if (third_burst_start >= 0.15f && DXTK->KeyEvent->pressed.S)
+		third_burst_flag = true;
+
+	if (third_burst_start >= third_burst_end) {
+		burst_state_mode = BURST_STATE::NOT_BURST;
+		model->SetTrackPosition(ACT3, 0.0);
+		third_burst_start = 0.0f;
+		third_burst_flag = false;
+	}
+}
+
 
 //回避
 void PlayerBase::Avoidance(const float deltaTime) {
@@ -658,7 +641,7 @@ void PlayerBase::Avoidance(const float deltaTime) {
 
 bool PlayerBase::IsAttack() {
 
-	if (attack_flag || assault_flag) {
+	if (attack_flag ) {
 
 
 		return true;
@@ -668,9 +651,9 @@ bool PlayerBase::IsAttack() {
 
 
 void PlayerBase::Debug() {
-	DX9::SpriteBatch->DrawString(font.Get(),
-		SimpleMath::Vector2(1000.0f, 120.0f),
-		DX9::Colors::BlueViolet,
-		L"突き攻撃のパワー %f", assault_attack_time
-	);	
+	//DX9::SpriteBatch->DrawString(font.Get(),
+	//	SimpleMath::Vector2(1000.0f, 120.0f),
+	//	DX9::Colors::BlueViolet,
+	//	L"突き攻撃のパワー %f", 
+	//);	
 }
