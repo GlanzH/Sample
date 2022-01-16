@@ -220,6 +220,7 @@ private:
 		JUMP,
 		PARRY,
 		DAMAGE,
+		ROLL,
 		MOTION_MAX
 	};
 
