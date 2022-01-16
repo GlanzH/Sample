@@ -166,8 +166,12 @@ void EnemyManager::CalcScore() {
 			add_score = FOUR_SCORE;
 			break;
 
+		case FIVE:
+			add_score = FIVE_SCORE;
+			break;
+
 		default:
-			add_score = OVER_FIVE_SCORE;
+			add_score = OVER_SIX_SCORE;
 			break;
 		}
 

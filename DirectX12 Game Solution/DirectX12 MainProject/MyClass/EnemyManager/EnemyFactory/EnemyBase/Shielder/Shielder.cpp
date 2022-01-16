@@ -54,18 +54,23 @@ void Shielder::Render() {
 void Shielder::Action() {
 	switch (action)
 	{
-	case (int)ActionNum::INIT:
+	case (int)ActionNum::FIRST_WAIT:
 		if (init_wait_frame < max_init_wait) {
 			init_wait_frame += delta;
 			Rotate();
-			wait_frame = 0.0f;
-			move_frame = 0.0f;
 			SetAnimation(anim_model, (int)Motion::WAIT, (int)Motion::MAX_MOTION);
 		}
 		else {
+			action = (int)ActionNum::INIT;
+		}
+		break;
+
+	case (int)ActionNum::INIT:
+			Rotate();
+			wait_frame = 0.0f;
+			move_frame = 0.0f;
 			SetAnimation(anim_model, (int)Motion::RUN, (int)Motion::MAX_MOTION);
 			action = (int)ActionNum::RUN;
-		}
 		break;
 
 	case (int)ActionNum::RUN:

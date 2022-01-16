@@ -46,6 +46,7 @@ private:
 	};
 
 	enum class ActionNum {
+		FIRST_WAIT,
 		MOVE,
 		ATTACK,
 		WAIT,

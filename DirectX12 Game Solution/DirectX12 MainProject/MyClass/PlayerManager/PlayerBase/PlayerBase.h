@@ -112,10 +112,10 @@ private:
 	int damage = 0;
 	int reduce_num = 0;
 
-	const int body_reduce_num   = -20;
+	const int body_reduce_num = -20;
 	const int weapon_reduce_num = -40;
 
-	const int mb_reduce_num        = -30;
+	const int mb_reduce_num = -30;
 	const int mb_weapon_reduce_num = -60;
 
 	//プレイヤー
@@ -298,7 +298,7 @@ private:
 	float time_other;
 
 	//三連撃
-	
+
 	enum  BURST_STATE
 	{
 		NOT_BURST,

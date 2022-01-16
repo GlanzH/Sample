@@ -77,15 +77,17 @@ private:
 		ONE   = 1,
 		TWO   = 2,
 		THREE = 3,
-		FOUR  = 4
+		FOUR  = 4,
+		FIVE  = 5
 	};
 
 	enum AddScore {
-		ONE_SCORE       = 20,
-		TWO_SCORE       = 40,
-		THREE_SCORE     = 80,
-		FOUR_SCORE      = 160,
-		OVER_FIVE_SCORE = 320
+		ONE_SCORE       = 5,
+		TWO_SCORE       = 10,
+		THREE_SCORE     = 25,
+		FOUR_SCORE      = 50,
+		FIVE_SCORE      = 100,
+		OVER_SIX_SCORE  = 150
 	};
 
 	enum LoadFile {

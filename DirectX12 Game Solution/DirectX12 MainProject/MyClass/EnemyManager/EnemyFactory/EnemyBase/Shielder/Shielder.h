@@ -43,6 +43,7 @@ private:
 	};
 
 	enum class ActionNum {
+		FIRST_WAIT,
 		RUN,
 		WAIT,
 		INIT
@@ -53,6 +54,6 @@ private:
 		LEFT
 	};
 
-	int action = (int)ActionNum::INIT;
+	int action = (int)ActionNum::FIRST_WAIT;
 
 };
