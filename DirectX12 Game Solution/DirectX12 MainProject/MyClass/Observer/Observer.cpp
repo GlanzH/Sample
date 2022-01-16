@@ -28,12 +28,12 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 			player->OnCollisionEnter(enemies_roop->GetTag());
 		}
 
-		if (player->GetSpecialAttackFlag()) {
-			if (audience->GetBox().lv2_box.Intersects(enemies_roop->GetBox().box)) {
-				enemy->OnCollisionSpecialMove(enemies_roop);
-			}
+		//if (player->GetSpecialAttackFlag()) {
+		//	if (audience->GetBox().lv2_box.Intersects(enemies_roop->GetBox().box)) {
+		//		enemy->OnCollisionSpecialMove(enemies_roop);
+		//	}
 
-		}
+		//}
 		else {
 			if (audience->GetBox().lv2_box.Intersects(enemies_roop->GetBox().box)) {
 				enemy->OnCollisionAudience(enemies_roop);

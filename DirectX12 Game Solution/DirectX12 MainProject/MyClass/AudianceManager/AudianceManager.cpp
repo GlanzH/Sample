@@ -48,12 +48,12 @@ void AudienceManager::LoadAssets() {
 	collision->SetMaterial(material);
 }
 
-int AudienceManager::Update(float appeal_time, bool cool_flag, const float deltaTime) {
-
+int AudienceManager::Update(float appeal_time, bool cool_flag, const float deltaTime)
+{
 	delta = deltaTime;
 
 	if (cool_flag && appeal_time >= 3.0f) {
-			time = appeal_time;
+		time = appeal_time;
 	}
 
 
@@ -79,10 +79,8 @@ int AudienceManager::Update(float appeal_time, bool cool_flag, const float delta
 		}
 	}
 
-
 	return 0;
 }
-
 void AudienceManager::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack)
 {
 	for (int i = 0; i < MAX_MOTION; i++)

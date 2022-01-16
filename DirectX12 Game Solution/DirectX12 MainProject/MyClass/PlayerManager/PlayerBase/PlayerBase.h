@@ -145,7 +145,7 @@ private:
 
 
 	//プレイヤーのスピード
-	const float player_speed_ = 25.0f;
+	const float player_speed_ = 40.0f;
 
 	//ジャンプしてるかのフラグ
 	bool jump_flag_;
@@ -215,7 +215,6 @@ private:
 		RUN,
 		ACT1,
 		ACT2,
-		CHAGE,
 		ACT3,
 		APPEIL,
 		JUMP,
@@ -282,25 +281,12 @@ private:
 
 	//************************************//
 
-	//プレイヤーの攻撃_　Three
-	//ダッシュ攻撃
-	bool  assault_attack_flag;
-	float assault_attack_time;
-	float assault_attack_time_max;
-	//攻撃中チャージ不可
-	bool not_chage;
-
-	bool assault_flag;
 
 	//回避
 	bool  avoidance_flag;
 	float avoidance_start;
 	float avoidance_max;
 
-	//弱攻撃
-	bool n_attack_flag_ = false;
-	float n_attack_start = 0.0f;
-	float n_attack_end_ = 0.383f;
 
 	//攻撃の種類 1:弱攻撃　2:突き攻撃
 	int attack_type;
@@ -327,14 +313,19 @@ private:
 	//First
 	void First_Burst(const float deltaTime);
 	bool first_burst_flag;
-	float first_burst_start = 0.0f;
-	float first_burst_end   = 0.383f;
+	float first_burst_start;
+	float first_burst_end;
 
 	//Second
 	void Second_Burst(const float deltaTime);
 	bool second_burst_flag;
-	float second_burst_start = 0.0f;
-	float second_burst_end = 0.383f;
+	float second_burst_start;
+	float second_burst_end;
 
+	//THIRD
+	void Third_Burst(const float deltaTime);
+	bool third_burst_flag;
+	float third_burst_start;
+	float third_burst_end;
 
 };
