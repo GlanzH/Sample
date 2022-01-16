@@ -20,7 +20,7 @@ public:
 	EnemyBase();
 	~EnemyBase() {};
 
-	virtual bool Initialize(std::string tag, bool time_stop_flag, int hp);
+	virtual bool Initialize(std::string tag, int init_wait, bool time_stop_flag, int hp);
 	virtual void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 	void LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 
@@ -55,6 +55,8 @@ private:
 
 	SimpleMath::Vector3 death_effect_pos;
 	SimpleMath::Vector3 hit_effect_pos;
+
+	std::string enemy_tag;
 
 	int   retreat_count   = 0;
 	const int max_retreat = 30;
@@ -103,12 +105,13 @@ protected:
 	SimpleMath::Vector3  enemy_speed;
 	SimpleMath::Vector3  player_pos;
 
-	std::string enemy_tag;
-
 	const float anim_adjust_extents_col = 0.3f;
 	const float fit_collision_y = 3.0f;
 
 	const float rotate = 45.0f;
+
+	float init_wait_frame = 0.0f;
+	float max_init_wait;
 
 	int enemy_hp;
 	float delta;

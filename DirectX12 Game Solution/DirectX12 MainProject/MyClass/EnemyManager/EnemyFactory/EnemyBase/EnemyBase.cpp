@@ -8,10 +8,12 @@ EnemyBase::EnemyBase()
 {
 }
 
-bool EnemyBase::Initialize(std::string tag, bool time_stop_flag, int hp)
+bool EnemyBase::Initialize(std::string tag, int init_wait, bool time_stop_flag, int hp)
 {
 	enemy_tag   = tag;
 	enemy_hp    = hp;
+
+	max_init_wait = init_wait;
 
 	enemy_stop_flag = time_stop_flag;
 	retreat_flag    = false;

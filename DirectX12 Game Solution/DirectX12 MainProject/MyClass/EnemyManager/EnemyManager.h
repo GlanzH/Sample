@@ -104,5 +104,7 @@ private:
 	Vector3		 appear_pos[ENEMY_NUM];     //!敵の出現座標
 	double		 destract_num[ENEMY_NUM];   //!敵の出現時間
 	bool		 appear_flag[ENEMY_NUM];    //!敵の出現フラグ
+	int          wave_num[ENEMY_NUM];       //!ウェーブ数
+	float        init_wait[ENEMY_NUM];      //!初期待機時間
 	bool         time_stop_flag[ENEMY_NUM]; //!敵の演出フラグ
 };

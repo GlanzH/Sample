@@ -15,6 +15,8 @@ EnemyManager::EnemyManager()
 		appear_pos[i]     = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 		destract_num[i]   = INT_MAX;
 		appear_flag[i]    = false;
+		wave_num[i]       = INT_MAX;
+		init_wait[i]      = FLT_MAX;
 		time_stop_flag[i] = false;
 	}
 }
@@ -56,7 +58,7 @@ int EnemyManager::Update(SimpleMath::Vector3 player, int attack_tag, bool specia
 
 
 	if (count < ENEMY_NUM) {
-		if (dead_enemy_count >= destract_num[count]) {
+		if (dead_enemy_count >= destract_num[count] && wave_num[count] == 1) {
 			Generator();
 			count++;
 		}
@@ -121,7 +123,7 @@ void EnemyManager::Generator() {
 	if (!appear_flag[count])
 	{
 		//!ìGÇÃéÌóﬁÅEèâä˙ç¿ïWÇìnÇµÇƒìGÇêªë¢
-		enemy.push_back(factory->Create(tag[count],time_stop_flag[count], appear_pos[count]));
+		enemy.push_back(factory->Create(tag[count],init_wait[count], time_stop_flag[count], appear_pos[count]));
 		appear_flag[count] = true;
 	}
 
@@ -249,7 +251,7 @@ void EnemyManager::LoadEnemyArrangement() {
 
 	//!ÉfÅ[É^ì«Ç›çûÇ›
 	for (int i = 0; i < ENEMY_NUM; ++i) {
-		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> destract_num[i] >> time_stop_flag[i];
+		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> destract_num[i] >> wave_num[i] >> init_wait[i] >> time_stop_flag[i];
 	}
 
 	EndEnemy();

@@ -30,10 +30,10 @@ EnemyFactory::EnemyFactory()
 
 }
 
-EnemyBase* EnemyFactory::Create(std::string tag, bool time_stop_flag,DirectX::SimpleMath::Vector3 position)
+EnemyBase* EnemyFactory::Create(std::string tag,int init_wait, bool time_stop_flag,DirectX::SimpleMath::Vector3 position)
 {
-	EnemyBase* enemy_factory = CreateProduct(tag,time_stop_flag,position);
-	enemy_factory->Initialize(tag,time_stop_flag, SetHP(tag));
+	EnemyBase* enemy_factory = CreateProduct(tag,position);
+	enemy_factory->Initialize(tag,init_wait,time_stop_flag, SetHP(tag));
 
 	if(tag != "AR")
 		enemy_factory->LoadAsset(SetModel(tag), position);
@@ -43,7 +43,7 @@ EnemyBase* EnemyFactory::Create(std::string tag, bool time_stop_flag,DirectX::Si
 	return enemy_factory;
 }
 
-EnemyBase* EnemyFactory::CreateProduct(std::string tag, bool time_stop_flag, DirectX::SimpleMath::Vector3 position)
+EnemyBase* EnemyFactory::CreateProduct(std::string tag, DirectX::SimpleMath::Vector3 position)
 {
 	EnemyBase* classes[] = 
 	{ 
