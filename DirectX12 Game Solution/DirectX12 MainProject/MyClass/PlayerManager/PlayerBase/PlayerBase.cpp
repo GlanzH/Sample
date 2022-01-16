@@ -129,7 +129,7 @@ bool PlayerBase::Initialize()
 	//‰ñ”ð
 	avoidance_flag = false;
 	avoidance_start = 0.0f;
-	avoidance_max = 0.1f;
+	avoidance_max = 0.483f;
 
 	//UŒ‚‚ÌŽí—Þ
 	attack_type = 0;
@@ -213,7 +213,7 @@ bool PlayerBase::Initialize()
 
 void PlayerBase::LoadAssets()
 {
-	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v0114b_.X");
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v0116_.X");
 	model->SetScale(model_scale);
 	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
@@ -629,13 +629,15 @@ void PlayerBase::Avoidance(const float deltaTime) {
 	if (avoidance_flag) {
 		avoidance_start += deltaTime;
 		
-		model->Move(0.0f, 0.0, -250.0f * deltaTime);
+		model->Move(0.0f, 0.0, -100.0f * deltaTime);
+		SetAnimation(model, ROLL);
 		invincible_flag = true;
 	}
 
 	if (avoidance_start >= avoidance_max) {
 		avoidance_start = 0.0f;
 		avoidance_flag = false;
+		model->SetTrackPosition(ROLL, 0.0);
 	}
 }
 
