@@ -44,6 +44,8 @@ public:
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
 
+	
+
 	Collisions GetBox() { return col; }
 
 	//左右の当たり判定(ノックバック用)
@@ -81,8 +83,6 @@ private:
 	void Invincible(const float deltaTime);
 	//ノックバック
 	void Knock_Back();
-	//プレイヤーの攻撃(3回目変更)
-	void Player_Attack_Three(const float deltaTime);
 	//三連撃
 	void Burst_Attack(const float deltaTime);
 	//回避

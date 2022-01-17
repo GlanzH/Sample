@@ -11,23 +11,35 @@ using namespace DirectX;
 class PlayerAttack
 {
 public:
-	 PlayerAttack();
-	 virtual ~PlayerAttack() = 0;
-	
-	 void Initialize();
-	 void LoadAssets();
+	PlayerAttack();
+	virtual ~PlayerAttack() = 0;
 
+	void Initialize();
+	void LoadAssets();
 
-	void Player_Attack(const float deltaTime);
+	//First
+	void First_Burst(const float deltaTime);
+	//Second
+	void Second_Burst(const float deltaTime);
+	//Third
+	void Third_Burst(const float deltaTime);
+
 
 private:
-	//ŽO˜AŒ‚
-	enum  BURST_STATE
-	{
-		FIRST,
-		SECOND,
-		THIRD
-	};
-	BURST_STATE burst_state_mode;
+
+	//First
+	bool first_burst_flag;
+	float first_burst_start;
+	float first_burst_end;
+
+	//Second
+	bool second_burst_flag;
+	float second_burst_start;
+	float second_burst_end;
+
+	//THIRD
+	bool third_burst_flag;
+	float third_burst_start;
+	float third_burst_end;
 
 };

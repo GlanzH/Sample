@@ -95,6 +95,15 @@ PlayerBase::PlayerBase() {
 	first_burst_start = 0.0f;
 	first_burst_end   = 0.0f;
 
+	//Second
+	second_burst_flag  = false;
+	second_burst_start = 0.0f;
+	second_burst_end   = 0.0f;
+
+	//THIRD
+	third_burst_flag  = false;
+	third_burst_start = 0.0f;
+	third_burst_end   = 0.0f;
 
 }
 
@@ -295,10 +304,6 @@ int PlayerBase::Update(const float deltaTime)
 
 	//ランバージャック(移動制限)
 	Player_limit();
-
-
-	////プレイヤーの攻撃(弱攻撃、ダッシュ攻撃)
-	//Player_Attack_Three(deltaTime);
 
 	//三連撃
 	Burst_Attack(deltaTime);
@@ -611,7 +616,7 @@ void PlayerBase::Second_Burst(const float deltaTime) {
 	
 }
 
-//Third
+//3撃目
 void PlayerBase::Third_Burst(const float deltaTime) {
 	SetAnimation(model, ACT3);
 	third_burst_start += deltaTime;
@@ -648,7 +653,7 @@ void PlayerBase::Avoidance(const float deltaTime) {
 	if (avoidance_flag) {
 		avoidance_start += deltaTime;
 		
-		model->Move(0.0f, 0.0, -100.0f * deltaTime);
+		model->Move(0.0f, 0.0, -50.0f * deltaTime);
 		SetAnimation(model, ROLL);
 		invincible_flag = true;
 	}
