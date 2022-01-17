@@ -43,15 +43,15 @@ namespace DX12Effekseer
 
 		void SetCamera(DX12::CAMERA camera);
 
-		EFFECT Create(LPCWSTR fileName,std::string effectName);
+		EFFECT Create(LPCWSTR fileName, std::string effectName);
 		EFFECT Create(LPCWSTR fileName);
 
 		void Play(std::string effectName);
-		void Play(std::string effectName,Vector3 pos);
+		void Play(std::string effectName, Vector3 pos);
 		EFFECTHANDLE Play(EFFECT effect, Vector3 pos);
 
 		void PlayOneShot(std::string effectName);
-		void PlayOneShot(std::string effectName,Vector3 pos);
+		void PlayOneShot(std::string effectName, Vector3 pos);
 		void Stop(std::string effectName);
 		void Stop(EFFECTHANDLE handle);
 		void AllStop();
@@ -59,7 +59,7 @@ namespace DX12Effekseer
 		void Pause(std::string effectName);
 		void Pause(EFFECTHANDLE handle);
 
-		void SetPosition(std::string effectName,Vector3 effectPosition);
+		void SetPosition(std::string effectName, Vector3 effectPosition);
 		void SetPosition(EFFECTHANDLE handle, Vector3 effectPosition);
 
 		void MoveEffect(std::string effectName, Vector3 position);
@@ -74,19 +74,19 @@ namespace DX12Effekseer
 		void SetTarget(std::string effectName, Vector3 position);
 
 		float GetSpeed(std::string effectName);
-		void SetSpeed(std::string effectName,float speed);
+		void SetSpeed(std::string effectName, float speed);
 
 		bool CheckAlive(std::string effectName) { return m_manager->Exists(m_handles[effectName]); }
 		bool CheckAlive(EFFECTHANDLE handle) { return m_manager->Exists(handle); }
 
 	private:
-		Effekseer::Manager*			m_manager;
-		EffekseerRenderer::Renderer*	m_renderer;
+		Effekseer::Manager* m_manager;
+		EffekseerRenderer::Renderer* m_renderer;
 		EffekseerRenderer::SingleFrameMemoryPool* m_sfMemoryPoolEfk;
-		EffekseerRenderer::CommandList*			m_commandListEfk;
+		EffekseerRenderer::CommandList* m_commandListEfk;
 
-		std::map<std::string,EFFECT> m_effects;
-		std::map<std::string,EFFECTHANDLE> m_handles;
+		std::map<std::string, EFFECT> m_effects;
+		std::map<std::string, EFFECTHANDLE> m_handles;
 
 	private:
 		CEffekseer();

@@ -82,6 +82,9 @@
     <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan">
       <UniqueIdentifier>{1d4c2b81-0c97-4681-8f9b-41a7dc265b11}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\LandingAttack">
+      <UniqueIdentifier>{0336cc9d-fe8d-46a2-8428-07059caf3ce0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -192,6 +195,12 @@
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan\SwordMan.h">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan</Filter>
     </ClInclude>
+    <ClInclude Include="EndingScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\PlayerManager\LandingAttackClass\LandingAttackClass.h">
+      <Filter>MyClass\LandingAttack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -280,6 +289,12 @@
     </ClCompile>
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan\SwordMan.cpp">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan</Filter>
+    </ClCompile>
+    <ClCompile Include="EndingScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\PlayerManager\LandingAttackClass\LandingAttackClass.cpp">
+      <Filter>MyClass\LandingAttack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
