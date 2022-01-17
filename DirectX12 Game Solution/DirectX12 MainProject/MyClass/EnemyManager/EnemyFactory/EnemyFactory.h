@@ -19,8 +19,8 @@ class EnemyFactory {
 public:
 	EnemyFactory();
 	~EnemyFactory() {};
-	EnemyBase* Create(std::string tag, bool time_stop_flag,DirectX::SimpleMath::Vector3 position);
-	EnemyBase* CreateProduct(std::string tag, bool time_stop_flag,DirectX::SimpleMath::Vector3 position);
+	EnemyBase* Create(std::string tag, int init_wait, bool time_stop_flag,DirectX::SimpleMath::Vector3 position);
+	EnemyBase* CreateProduct(std::string tag,DirectX::SimpleMath::Vector3 position);
 	LPCWSTR SetModel(std::string tag);
 	int SetHP(std::string tag);
 

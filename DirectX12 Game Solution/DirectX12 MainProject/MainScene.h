@@ -17,7 +17,6 @@
 #include "MyClass/UIManager/UIManager.h"
 #include "MyClass/Shader//SpotLight.h"
 #include "MyClass/Shader/TextureLight.h"
-
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
 using std::make_unique;

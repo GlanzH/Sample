@@ -15,6 +15,8 @@ EnemyManager::EnemyManager()
 		appear_pos[i]     = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 		destract_num[i]   = INT_MAX;
 		appear_flag[i]    = false;
+		wave_num[i]       = INT_MAX;
+		init_wait[i]      = FLT_MAX;
 		time_stop_flag[i] = false;
 	}
 }
@@ -27,9 +29,8 @@ EnemyManager::~EnemyManager() {
 
 bool EnemyManager::Initialize(PlayerBase* player_base)
 {
-	DX12Effect.Initialize();
-	DX12Effect.Create(L"Effect/EnemyEffect/deathblow_hit/deathblow_hit.efk", "special");
-	DX12Effect.Create(L"Effect/EnemyEffect/boss_death/boss_death.efk", "boss");
+	//DX12Effect.Create(L"Effect/EnemyEffect/deathblow_hit/deathblow_hit.efk", "special");
+	//DX12Effect.Create(L"Effect/EnemyEffect/boss_death/boss_death.efk", "boss");
 
 	hit  = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/Enemy/hit_se.wav");
 	die  = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/Enemy/enemy_die_se.wav");
@@ -51,10 +52,13 @@ int EnemyManager::Update(SimpleMath::Vector3 player, int attack_tag, bool specia
 	}
 
 	Iterator();
+	NowDestEnemyCount();
+	StatusManager::Instance().CalcAudience(delta);
+
 
 
 	if (count < ENEMY_NUM) {
-		if (dead_enemy_count >= destract_num[count]) {
+		if (dead_enemy_count >= destract_num[count] && wave_num[count] == 1) {
 			Generator();
 			count++;
 		}
@@ -85,8 +89,12 @@ void EnemyManager::Iterator() {
 					if (attack_num == 2)
 						(*itr)->SpecialDeathEffect();
 
-					kill->Play();
+					if(!kill->IsInUse())
+						kill->Play();
+
+					now_dead_enemy++;
 					dead_enemy_count++;
+					CalcScore();
 				}
 					//else
 					//	DX12Effect.PlayOneShot("boss", (*itr)->GetModel()->GetPosition());
@@ -102,18 +110,6 @@ void EnemyManager::Iterator() {
 	}
 }
 
-void EnemyManager::Generator() {
-	std::unique_ptr<EnemyFactory> factory = std::make_unique<EnemyFactory>();
-
-	if (!appear_flag[count])
-	{
-		//!ìGÇÃéÌóﬁÅEèâä˙ç¿ïWÇìnÇµÇƒìGÇêªë¢
-		enemy.push_back(factory->Create(tag[count],time_stop_flag[count], appear_pos[count]));
-		appear_flag[count] = true;
-	}
-
-}
-
 void EnemyManager::Render()
 {
 	for (auto& enemies : enemy) {
@@ -121,11 +117,65 @@ void EnemyManager::Render()
 	}
 }
 
-void EnemyManager::OnDeviceLost() {
-	DX12Effect.Reset();
+void EnemyManager::Generator() {
+	std::unique_ptr<EnemyFactory> factory = std::make_unique<EnemyFactory>();
 
-	for (auto& enemies : enemy) {
-		enemies->OnDeviceLost();
+	if (!appear_flag[count])
+	{
+		//!ìGÇÃéÌóﬁÅEèâä˙ç¿ïWÇìnÇµÇƒìGÇêªë¢
+		enemy.push_back(factory->Create(tag[count],init_wait[count], time_stop_flag[count], appear_pos[count]));
+		appear_flag[count] = true;
+	}
+
+}
+
+void EnemyManager::NowDestEnemyCount() {
+	if (now_dead_enemy > 0)
+		count_dest_flag = true;
+
+	if (count_dest_flag) {
+		if (count_frame < max_count) {
+			count_frame += delta;
+		}
+		else {
+			CalcScore();
+			count_frame = 0.0f;
+			now_dead_enemy = 0.0f;
+			count_dest_flag = false;
+		}
+	}
+}
+
+void EnemyManager::CalcScore() {
+	if (count_dest_flag) {
+		switch (now_dead_enemy)
+		{
+		case ONE:
+			add_score = ONE_SCORE;
+			break;
+
+		case TWO:
+			add_score = TWO_SCORE;
+			break;
+
+		case THREE:
+			add_score = THREE_SCORE;
+			break;
+
+		case FOUR:
+			add_score = FOUR_SCORE;
+			break;
+
+		case FIVE:
+			add_score = FIVE_SCORE;
+			break;
+
+		default:
+			add_score = OVER_SIX_SCORE;
+			break;
+		}
+
+		StatusManager::Instance().AddAudience(add_score);
 	}
 }
 
@@ -150,52 +200,30 @@ void EnemyManager::EndTimeStop() {
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	 std::string tag = base->GetTag();
-	
+
+	 if (!hit->IsInUse())
 		 hit->Play();
-		 base->Damage();
-		 base->HitEffect();
 
-		// StatusManager::Instance().AddAudience(10);
+	 base->Damage();
+	 base->HitEffect();
 
-		 if (tag != "C") {
-			 if (StatusManager::Instance().GetAtkCombo() == max_combo)
-				 base->Retreat();
-		 }
+	// StatusManager::Instance().AddAudience(10);
+
+	 if (tag != "C") {
+		 if (StatusManager::Instance().GetAtkCombo() == max_combo)
+			 base->Retreat();
+	 }
 }
 
 void EnemyManager::OnThrustCollisionEnter(EnemyBase* base) {
 	hit->Play();
+
 	base->Damage();
-
-	//!ìGÇì|ÇµÇΩéûÇÃÉRÉìÉ{êîÇ…âûÇ∂ÇƒílÇAddAudienceÇ≈ílÇìnÇ∑
-	//int a;
-
-	//switch (a) {
-	//case ONE:
-	//	add_score = ONE_SCORE;
-	//	break;
-
-	//case TWO:
-	//	add_score = TWO_SCORE;
-	//	break;
-
-	//case THREE:
-	//	add_score = THREE_SCORE;
-	//	break;
-
-	//case FOUR:
-	//	add_score = FOUR_SCORE;
-	//	break;
-	//default:
-	//	add_score = OVER_FIVE_SCORE;
-	//	break;
-	//}
-
-	//StatusManager::Instance().AddAudience(add_score);
 }
 
 void EnemyManager::OnCollisionSpecialMove(EnemyBase* base) {
-	hit->Play();
+	if (!hit->IsInUse())
+		hit->Play();
 	//base->Damage(20);
 	
 	auto pos = player_data->GetModel()->GetPosition();
@@ -205,7 +233,8 @@ void EnemyManager::OnCollisionSpecialMove(EnemyBase* base) {
 }
 
 void EnemyManager::OnCollisionAudience(EnemyBase* base) {
-	hit->Play();
+	if (!hit->IsInUse())
+		hit->Play();
 	//base->Damage(20);
 
 	auto pos = player_data->GetModel()->GetPosition();
@@ -226,7 +255,7 @@ void EnemyManager::LoadEnemyArrangement() {
 
 	//!ÉfÅ[É^ì«Ç›çûÇ›
 	for (int i = 0; i < ENEMY_NUM; ++i) {
-		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> destract_num[i] >> time_stop_flag[i];
+		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> destract_num[i] >> wave_num[i] >> init_wait[i] >> time_stop_flag[i];
 	}
 
 	EndEnemy();

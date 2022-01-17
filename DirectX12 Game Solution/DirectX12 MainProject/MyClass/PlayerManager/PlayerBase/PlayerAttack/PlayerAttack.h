@@ -21,8 +21,13 @@ public:
 	void Player_Attack(const float deltaTime);
 
 private:
-	bool attack_flag;
-
-	int damage;
+	//ŽO˜AŒ‚
+	enum  BURST_STATE
+	{
+		FIRST,
+		SECOND,
+		THIRD
+	};
+	BURST_STATE burst_state_mode;
 
 };

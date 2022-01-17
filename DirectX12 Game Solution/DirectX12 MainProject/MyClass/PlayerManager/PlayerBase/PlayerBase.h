@@ -5,13 +5,16 @@
 #include "Base/dxtk.h"
 
 #include "MyClass/PlayerManager/PlayerBase/PlayerAttack/PlayerAttack.h"
-#include "MyClass/PlayerManager/LandingAttackClass/LandingAttackClass.h"
 
 using namespace DirectX;
 
 typedef struct Collisions {
 	BoundingBox  sword_box;
 	BoundingBox  box;
+
+	BoundingBox right_box;
+	BoundingBox left_box;
+
 };
 
 class PlayerBase
@@ -33,16 +36,20 @@ public:
 	bool IsAttack();
 
 	void Debug();
-	void BrackImage();
 	void OnDeviceLost();
 
+	//アニメーション
+	void SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack);
 
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
 
 	Collisions GetBox() { return col; }
 
-	bool GetParryFlag() { return parry_flag; }
+	//左右の当たり判定(ノックバック用)
+	DX9::MODEL& GetRightModel() { return right_collision; }
+	DX9::MODEL& GetLeftModel() { return left_collision; }
+
 
 	int GetDamage() { return damage; }
 
@@ -54,7 +61,6 @@ public:
 
 	bool GetAppealCoolFlag() { return appeil_cool_flag; }
 
-	bool GetSpecialAttackFlag() { return special_attack_flag; }
 
 	bool IsInvincibleFlag() { return invincible_flag; }//無敵フラグ
 
@@ -63,10 +69,7 @@ public:
 	int GetAttackTag() { return attack_type; }//攻撃の種類
 
 
-
 private:
-	//アニメーション
-	void SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack);
 
 	//移動
 	void Player_move(const float deltaTime);
@@ -74,31 +77,18 @@ private:
 	void Player_limit();
 	//ジャンプ
 	void Player_jump(const float deltaTime);
-	//パリィ
-	void Parry(const float deltaTime);
 	//無敵時間
 	void Invincible(const float deltaTime);
-	//アピール
-	void Appeal(const float deltaTime);
-	//必殺技
-	void Player_Special_Move(const float deltaTime);
+	//ノックバック
+	void Knock_Back();
 	//プレイヤーの攻撃(3回目変更)
 	void Player_Attack_Three(const float deltaTime);
+	//三連撃
+	void Burst_Attack(const float deltaTime);
 	//回避
 	void Avoidance(const float deltaTime);
 
-	//プレイヤーの攻撃(ボタン変更ver)
-	void Player_Attack_two(const float deltaTime);
 
-	void Attack(const float deltaTime);
-
-	//エフェクト1撃目
-	void Attack_First(const float deltaTime);
-	//エフェクト2撃目
-	void Attack_Secnod(const float deltaTime);
-	//エフェクト3撃目
-	void Attack_Third(const float deltaTime);
-	
 	DX9::SPRITEFONT font;
 
 	D3DMATERIAL9 material;
@@ -107,27 +97,31 @@ private:
 	BoundingBox sword_box;
 	BoundingBox box;
 
-	DX9::MODEL T;
+
+	BoundingBox right_box;
+	BoundingBox left_box;
 
 	//当たり判定用モデル
 	DX9::MODEL sword_collision;
 	DX9::MODEL collision;
 	Collisions col;
 
-	LandingAttackClass fall;
+	DX9::MODEL right_collision;
+	DX9::MODEL left_collision;
+
 	int damage = 0;
 	int reduce_num = 0;
 
-	const int body_reduce_num   = -20;
+	const int body_reduce_num = -20;
 	const int weapon_reduce_num = -40;
 
-	const int mb_reduce_num        = -30;
+	const int mb_reduce_num = -30;
 	const int mb_weapon_reduce_num = -60;
 
 	//プレイヤー
 	DX9::SKINNEDMODEL model;
 	SimpleMath::Vector3 player_pos = SimpleMath::Vector3(0.0f, 0.0f, 50.0f);
-	float model_scale = 0.1f;
+	float model_scale = 0.25f;
 	float model_rotetion = -90.0f;
 
 	//プレイヤーの移動制限(幅)
@@ -137,7 +131,7 @@ private:
 	const float model_collision_detection_Z = 100.0f;
 
 	//当たり判定モデルの大きさ
-	const int player_box_size_y = 7;
+	const int player_box_size_y = 5;
 	const int player_box_size_x = 5;
 	const int player_box_size_z = 3;
 
@@ -145,9 +139,13 @@ private:
 	const int box_size_y = 2;
 	const int box_size_z = 3;
 
+	const int sidebox_size_x = 2;
+	const int sidebox_size_y = 9;
+	const int sidebox_size_z = 1;
+
 
 	//プレイヤーのスピード
-	const float player_speed_ = 25.0f;
+	const float player_speed_ = 40.0f;
 
 	//ジャンプしてるかのフラグ
 	bool jump_flag_;
@@ -168,13 +166,6 @@ private:
 
 	bool jump_end_flag;
 
-	//パリィ
-	const float  max_parry_count = 0.5f;
-	float		 parry_count;
-	bool	     parry_flag;
-
-	//必殺技
-	bool special_attack_flag;
 
 
 	//攻撃の時間
@@ -205,9 +196,8 @@ private:
 	enum CANNOT_OTHER_ATTACK
 	{
 		NOMAL_STATE,
-		FIRST,
-		SECOND,
-		THIRD
+		ACCUMULATION,
+		LIGHT
 	};
 
 	CANNOT_OTHER_ATTACK cannot_other;
@@ -230,6 +220,7 @@ private:
 		JUMP,
 		PARRY,
 		DAMAGE,
+		ROLL,
 		MOTION_MAX
 	};
 
@@ -288,32 +279,54 @@ private:
 	//アピール
 	XAudio::SOUNDEFFECT appeal_se;
 
-	
 
 	//************************************//
 
-	//プレイヤーの攻撃_　Three
-	//ダッシュ攻撃
-	bool  assault_attack_flag;
-	float assault_attack_time;
-	float assault_attack_time_max;
-	//攻撃中チャージ不可
-	bool not_chage;
-
-	bool assault_flag;
 
 	//回避
 	bool  avoidance_flag;
 	float avoidance_start;
 	float avoidance_max;
 
-	//弱攻撃
-	bool n_attack_flag_ = false;
-	float n_attack_start = 0.0f;
-	float n_attack_end_ = 0.617f;
 
 	//攻撃の種類 1:弱攻撃　2:突き攻撃
 	int attack_type;
 
+	//ノックバック
+	bool knock_back_flag;
+	float knock_back_start;
+	float knock_back_end;
+	float time_other;
+
+	//三連撃
+
+	enum  BURST_STATE
+	{
+		NOT_BURST,
+		FIRST,
+		SECOND,
+		THIRD
+	};
+	BURST_STATE burst_state_mode;
+
+	void Not_Burst(const float deltaTime);
+
+	//First
+	void First_Burst(const float deltaTime);
+	bool first_burst_flag;
+	float first_burst_start;
+	float first_burst_end;
+
+	//Second
+	void Second_Burst(const float deltaTime);
+	bool second_burst_flag;
+	float second_burst_start;
+	float second_burst_end;
+
+	//THIRD
+	void Third_Burst(const float deltaTime);
+	bool third_burst_flag;
+	float third_burst_start;
+	float third_burst_end;
 
 };

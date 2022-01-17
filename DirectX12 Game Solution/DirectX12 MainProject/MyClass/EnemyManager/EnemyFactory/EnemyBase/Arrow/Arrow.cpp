@@ -2,8 +2,8 @@
 #include "Base/dxtk.h"
 #include "Arrow.h"
 
-bool Arrow::Initialize(std::string tag, bool time_stop_flag, int hp) {
-	EnemyBase::Initialize(tag, time_stop_flag, hp);
+bool Arrow::Initialize(std::string tag, int init_wait, bool time_stop_flag, int hp) {
+	EnemyBase::Initialize(tag,init_wait, time_stop_flag, hp);
 	stop_frame = 0.0f;
 	return true;
 }

@@ -2,8 +2,8 @@
 #include "Base/dxtk.h"
 #include "MidBoss.h"
 
-bool MidBoss::Initialize(std::string tag, bool time_stop_flag, int hp) {
-	EnemyBase::Initialize(tag, time_stop_flag, hp);
+bool MidBoss::Initialize(std::string tag, int init_wait, bool time_stop_flag, int hp) {
+	EnemyBase::Initialize(tag,init_wait, time_stop_flag, hp);
 
 	return true;
 }
@@ -59,6 +59,16 @@ void MidBoss::Action() {
 
 	switch (action)
 	{
+	case (int)ActionNum::FIRST_WAIT:
+		if (init_wait_frame < max_init_wait) {
+			init_wait_frame += delta;
+			SetAnimation(anim_model, (int)Motion::WAIT, (int)Motion::MAX_MOTION);
+		}
+		else {
+			action = (int)ActionNum::INIT;
+		}
+		break;
+
 	case (int)ActionNum::INIT:
 		wait_frame = 0.0f;
 		attack_frame = 0.0f;

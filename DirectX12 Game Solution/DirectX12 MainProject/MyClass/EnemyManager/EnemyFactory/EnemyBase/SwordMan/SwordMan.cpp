@@ -2,8 +2,8 @@
 #include "Base/dxtk.h"
 #include "SwordMan.h"
 
-bool SwordMan::Initialize(std::string tag, bool time_stop_flag, int hp) {
-	EnemyBase::Initialize(tag, time_stop_flag, hp);
+bool SwordMan::Initialize(std::string tag, int init_wait, bool time_stop_flag, int hp) {
+	EnemyBase::Initialize(tag,init_wait, time_stop_flag, hp);
 
 	return true;
 }
@@ -55,13 +55,22 @@ void SwordMan::Action() {
 
 	switch (action)
 	{
-	case (int)ActionNum::INIT:
-		wait_frame   = 0.0f;
-		attack_frame = 0.0f;
-		move_pos_x   = player_pos.x;
-		SetAnimation(anim_model, (int)Motion::WALK, (int)Motion::MAX_MOTION);
+	case (int)ActionNum::FIRST_WAIT:
+		if (init_wait_frame < max_init_wait) {
+			init_wait_frame += delta;
+			SetAnimation(anim_model, (int)Motion::WAIT, (int)Motion::MAX_MOTION);
+		}
+		else {
+			action = (int)ActionNum::INIT;
+		}
+		break;
 
-		action = (int)ActionNum::MOVE;
+	case (int)ActionNum::INIT:
+			wait_frame = 0.0f;
+			attack_frame = 0.0f;
+			move_pos_x = player_pos.x;
+			SetAnimation(anim_model, (int)Motion::WALK, (int)Motion::MAX_MOTION);
+			action = (int)ActionNum::MOVE;
 		break;
 
 	case (int)ActionNum::MOVE:

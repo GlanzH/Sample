@@ -15,7 +15,7 @@ public:
 	AudienceManager() {}
 	~AudienceManager() {}
 	void LoadAssets();
-	int  Update(float appeal_time,bool cool_flag,bool special_flag, const float deltaTime);
+	int  Update(float appeal_time,bool cool_flag, const float deltaTime);
 	void Render();
 	bool GetThrowThingsFlag() { return throw_things_flag; }
 
