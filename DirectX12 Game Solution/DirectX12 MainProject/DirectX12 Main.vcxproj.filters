@@ -82,6 +82,9 @@
     <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan">
       <UniqueIdentifier>{1d4c2b81-0c97-4681-8f9b-41a7dc265b11}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\ResourceManager">
+      <UniqueIdentifier>{099ca506-e1fe-4229-b940-a348c66a8b1f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -192,6 +195,9 @@
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan\SwordMan.h">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan</Filter>
     </ClInclude>
+    <ClInclude Include="MyClass\ResourceManager\ResourceManager.h">
+      <Filter>MyClass\ResourceManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -280,6 +286,9 @@
     </ClCompile>
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan\SwordMan.cpp">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\ResourceManager\ResourceManager.cpp">
+      <Filter>MyClass\ResourceManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

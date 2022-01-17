@@ -13,9 +13,14 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 			}
 		}
 
-		//!ƒvƒŒƒCƒ„[SKINNEDMODELŒ^“–‚½‚è”»’è
-		if (player->GetBox().box.Intersects(enemies_roop->GetBox().box)) {
-				player->OnCollisionEnter(enemies_roop->GetTag());
+		//!“Ë‚«UŒ‚‚Ì”»’è‚ª‚È‚¢‚Æ‚«
+		if (player->GetBox().box.Intersects(enemies_roop->GetBox().box) && !player->IsInvincibleFlag()) {
+			player->OnCollisionEnter(enemies_roop->GetTag());
+		}
+		
+		if (player->GetBox().box.Intersects(enemies_roop->GetBox().box) && 
+			player->IsInvincibleFlag() && enemies_roop->GetTag() == "AR") {
+			player->OnCollisionEnter(enemies_roop->GetTag());
 		}
 
 
@@ -23,12 +28,12 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 			player->OnCollisionEnter(enemies_roop->GetTag());
 		}
 
-		if (player->GetSpecialAttackFlag()) {
-			if (audience->GetBox().lv2_box.Intersects(enemies_roop->GetBox().box)) {
-				enemy->OnCollisionSpecialMove(enemies_roop);
-			}
+		//if (player->GetSpecialAttackFlag()) {
+		//	if (audience->GetBox().lv2_box.Intersects(enemies_roop->GetBox().box)) {
+		//		enemy->OnCollisionSpecialMove(enemies_roop);
+		//	}
 
-		}
+		//}
 		else {
 			if (audience->GetBox().lv2_box.Intersects(enemies_roop->GetBox().box)) {
 				enemy->OnCollisionAudience(enemies_roop);

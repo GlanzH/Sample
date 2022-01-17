@@ -2,8 +2,8 @@
 #include "Base/dxtk.h"
 #include "Shielder.h"
 
-bool Shielder::Initialize(std::string tag, bool time_stop_flag, int hp) {
-	EnemyBase::Initialize(tag, time_stop_flag, hp);
+bool Shielder::Initialize(std::string tag, int init_wait, bool time_stop_flag, int hp) {
+	EnemyBase::Initialize(tag,init_wait, time_stop_flag, hp);
 
 	return true;
 }
@@ -54,12 +54,23 @@ void Shielder::Render() {
 void Shielder::Action() {
 	switch (action)
 	{
+	case (int)ActionNum::FIRST_WAIT:
+		if (init_wait_frame < max_init_wait) {
+			init_wait_frame += delta;
+			Rotate();
+			SetAnimation(anim_model, (int)Motion::WAIT, (int)Motion::MAX_MOTION);
+		}
+		else {
+			action = (int)ActionNum::INIT;
+		}
+		break;
+
 	case (int)ActionNum::INIT:
-		Rotate();
-		SetAnimation(anim_model, (int)Motion::RUN, (int)Motion::MAX_MOTION);
-		wait_frame = 0.0f;
-		move_frame = 0.0f;
-		action = (int)ActionNum::RUN;
+			Rotate();
+			wait_frame = 0.0f;
+			move_frame = 0.0f;
+			SetAnimation(anim_model, (int)Motion::RUN, (int)Motion::MAX_MOTION);
+			action = (int)ActionNum::RUN;
 		break;
 
 	case (int)ActionNum::RUN:

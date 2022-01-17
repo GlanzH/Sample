@@ -3,7 +3,7 @@
 
 class MidBoss : public EnemyBase {
 public:
-	bool Initialize(std::string tag, bool time_stop_flag, int hp);
+	bool Initialize(std::string tag, int init_wait, bool time_stop_flag, int hp);
 	void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 	int  Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 
@@ -50,6 +50,7 @@ private:
 	};
 
 	enum class ActionNum {
+		FIRST_WAIT,
 		MOVE,
 		ATTACK,
 		WAIT,
