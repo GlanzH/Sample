@@ -8,7 +8,6 @@ public:
 
 
 	void Initialize();
-	void AddCombo(const float deltaTime);
 	int Update(const float deltaTime);
 
 
@@ -19,36 +18,40 @@ public:
 		return instance;
 	}
 
-	//プレイヤーのコンボ
-	int GetAtkCombo() { return atk_combo; }	//攻撃コンボ時使用
-	float GetKillComboTime(const float deltaTime);	//とどめ攻撃のコンボ増加可能時間
+	//敵撃破コンボ
+	void AddKillCombo();	//コンボ増加
+	void ResetKillCombo();	//コンボ数リセット
+	void KillComboTime(const float deltaTime);	//コンボ時間計る
+	bool GetKillFlag() { return kill_combo_flag; }	//コンボフラグの返し
 
 	//オーディエンス
+	void BonusScore();	//
 	void AddAudience (float add_size	   );	//値を取得
 	void CalcAudience(const float deltaTime);	//オーディエンス計算
 	void UpAudience	 (const float deltaTime);	//アップ
 	void DownAudience(const float deltaTime);	//ダウン
 	float ReturnAudience() { return audience * AUDIENCE_GAUGE_DIVIDE; }	//ゲージ描画時呼び出し
 	float ReturnScore() { return audience; }	//スコア判定時使用
-	void BonusScore(int kill_combo);
 
-	//ハート(必殺技ゲージ)
+	//ソード(必殺技ゲージ)
 	void HeartCount();	//敵撃破時呼び出し
 	void HeartReset();	//必殺技発動時呼び出し
 	float ReturnHeart() { return heart; }	//必殺技使用時呼び出し
 	float ReturnRenderHeart() { return heart * HEART_GAUGE_DIVIDE; }//ゲージ描画時呼び出し
 
-private:
-	//プレイヤーの攻撃コンボ
-	int atk_combo;
-	int atk_combo_count;
-	float atk_combo_time;
-	float kill_combo_time;
-	bool atk_combo_flag;
+	//ウェーブ
+	void SetWave(int wave_num);//ウェーブ数設定
+	void WaveTimeLimit(const float deltaTime);//ウェーブの時間
+	int GetWave() { return wave; }//ウェーブ数返し
+	bool GetWaveFlag() { return wave_change_flag; }//ウェーブ切り替えフラグ返し
 
-	const int ATK_COMBO_MAX = 4;
-	const float ATK_COMBO_TIME_MAX[3]{ 0.617f,0.517f,0.583f };
-	const float KILL_COMBO_TIME_MAX = 3.0f;
+private:
+	//敵撃破コンボ
+	int kill_combo;//コンボ数
+	float kill_combo_time;//コンボ継続時間
+	bool kill_combo_flag;//true:コンボ継続可能 false:継続不可
+
+	const float WAVE_ONE_TIME_LIMIT = 30.0f;//1ウェーブ目の制限時間
 
 	//オーディエンス
 	float audience;
@@ -61,9 +64,13 @@ private:
 	const float AUIDENCE_DN_SPEED	  =  300.0f;	//オーディエンス減スピード
 	const float AUDIENCE_GAUGE_DIVIDE =  0.334f;	//人ゲージ1000分の1の数(描画時使用)
 
-
-	//ハート
+	//剣ゲージ(必殺技ゲージ)
 	float heart;
 	const float HEART_MAX = 20.0f;
 	const float HEART_GAUGE_DIVIDE = 4.45f;
+
+	//ウェーブ
+	int wave;	//現在のウェーブ
+	float wave_time;	//ウェーブの制限時間
+	bool wave_change_flag;	//true:ウェーブ切り替え可能 false:切り替え不可
 };
