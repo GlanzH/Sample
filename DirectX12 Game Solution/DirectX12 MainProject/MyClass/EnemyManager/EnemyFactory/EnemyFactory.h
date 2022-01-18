@@ -47,7 +47,7 @@ private:
 	};
 
 	enum EnemyHp {
-		ENEMY_HP    = 2,
+		ENEMY_HP    = 1,
 		MID_BOSS_HP = 4
 	};
 

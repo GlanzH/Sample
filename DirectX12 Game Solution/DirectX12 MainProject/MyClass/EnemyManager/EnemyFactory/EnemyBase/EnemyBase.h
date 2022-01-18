@@ -28,7 +28,9 @@ public:
 	virtual void Render() {};
 	void Retreat();
 
-	bool GetTimeStopFlag() { return do_time_stop_flag; }
+	void TemporaryDeath(float max_death);
+	bool GetTimeStopFlag()       { return do_time_stop_flag; }
+	bool GetTemporaryDeathFlag() { return temporary_death_flag; }
 
 	void HitEffect();
 	void NormalDeathEffect();
@@ -111,12 +113,14 @@ protected:
 	const float rotate = 45.0f;
 
 	float init_wait_frame = 0.0f;
+	float death_frame     = 0.0f;
 	float max_init_wait;
 
 	int enemy_hp;
 	float delta;
 
 	bool retreat_flag;
+	bool temporary_death_flag;
 
 	Collision col;
 };

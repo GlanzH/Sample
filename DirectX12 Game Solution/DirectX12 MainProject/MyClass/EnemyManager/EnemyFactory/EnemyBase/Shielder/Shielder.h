@@ -30,7 +30,6 @@ private:
 	float wait_frame = 0.0f;
 	const float max_wait = 10.0f;
 
-	float death_frame = 0.0f;
 	const float max_death = 2.0f;
 
 	enum class Motion {

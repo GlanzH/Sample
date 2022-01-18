@@ -30,15 +30,15 @@ void Shielder::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positio
 int Shielder::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime) {
 	EnemyBase::Update(player, special_attack_flag, thorow_things_flag, deltaTime);
 
-	if (!special_attack_flag && !thorow_things_flag &&
-		!Stun() && !LifeDeathDecision())
+	if (!temporary_death_flag)
 		Action();
 
-	if (Stun() && !LifeDeathDecision())
-		SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
+	//if (Stun() && !LifeDeathDecision())
+	//	SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
 
 	IsDeath();
 	AdjustAnimCollision();
+	TemporaryDeath(max_death);
 
 	sword_col->SetPosition(sword_pos);
 	col.weapon.Center = SimpleMath::Vector3(sword_pos.x, 0, sword_pos.z);
@@ -110,7 +110,7 @@ void Shielder::Move() {
 
 void Shielder::IsDeath() {
 	if (enemy_hp <= 0 && death_frame < max_death) {
-		SetAnimation(anim_model, (int)Motion::DEATH, (int)Motion::MAX_MOTION);
+		SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
 		death_frame += delta;
 	}
 }
@@ -143,8 +143,9 @@ void Shielder::LimitRange() {
 }
 
 bool Shielder::LifeDeathDecision() {
-	if (enemy_hp <= 0 && death_frame > max_death)
+	if (temporary_death_flag && DXTK->KeyEvent->pressed.C) {
 		return DEAD;
+	}
 
 	return LIVE;
 }

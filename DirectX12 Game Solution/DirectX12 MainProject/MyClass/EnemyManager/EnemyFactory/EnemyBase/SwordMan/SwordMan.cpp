@@ -9,7 +9,7 @@ bool SwordMan::Initialize(std::string tag, int init_wait, bool time_stop_flag, i
 }
 
 void SwordMan::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
-	EnemyBase::LoadAsset(model_name,initial_position);
+	EnemyBase::LoadAsset(model_name, initial_position);
 
 	col.weapon = col.box;
 
@@ -30,15 +30,15 @@ void SwordMan::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positio
 int SwordMan::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime) {
 	EnemyBase::Update(player, special_attack_flag, thorow_things_flag, deltaTime);
 
-	if (!special_attack_flag && !thorow_things_flag &&
-		!Stun() && !LifeDeathDecision())
+	if (!temporary_death_flag)
 		Action();
 
-	if (Stun() && !LifeDeathDecision())
-		SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
+	//if (Stun() && !LifeDeathDecision())
+	//	SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
 
 	IsDeath();
 	AdjustAnimCollision();
+	TemporaryDeath(max_death);
 
 	sword_col->SetPosition(sword_pos);
 	col.weapon.Center = SimpleMath::Vector3(sword_pos.x,0,sword_pos.z);
@@ -58,6 +58,7 @@ void SwordMan::Action() {
 	case (int)ActionNum::FIRST_WAIT:
 		if (init_wait_frame < max_init_wait) {
 			init_wait_frame += delta;
+			Rotate();
 			SetAnimation(anim_model, (int)Motion::WAIT, (int)Motion::MAX_MOTION);
 		}
 		else {
@@ -123,7 +124,7 @@ void SwordMan::Move() {
 
 void SwordMan::IsDeath() {
 	if (enemy_hp <= 0 && death_frame < max_death) {
-		SetAnimation(anim_model, (int)Motion::DEATH, (int)Motion::MAX_MOTION);
+		SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
 		death_frame += delta;
 	}
 }
@@ -151,9 +152,9 @@ void SwordMan::Attack() {
 }
 
 bool SwordMan::LifeDeathDecision() {
-    
-    if (enemy_hp <= 0 && death_frame > max_death)
-    	return DEAD;
+	if (temporary_death_flag && DXTK->KeyEvent->pressed.C) {
+		return DEAD;
+	}
     
 	return LIVE;
 }

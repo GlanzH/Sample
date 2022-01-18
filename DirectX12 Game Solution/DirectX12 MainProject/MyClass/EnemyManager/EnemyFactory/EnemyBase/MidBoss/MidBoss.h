@@ -33,7 +33,6 @@ private:
 	float attack_frame = 0.0f;
 	const float max_attack = 4.0f;
 
-	float death_frame = 0.0f;
 	const float max_death = 2.5f;
 
 	int direct;

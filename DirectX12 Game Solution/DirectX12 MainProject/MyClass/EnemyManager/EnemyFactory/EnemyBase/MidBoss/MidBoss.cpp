@@ -34,15 +34,16 @@ int MidBoss::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool t
 	//!’ÊíŽžˆ—
 	auto normal_state = !special_attack_flag && !thorow_things_flag && !Stun() && !IsDamage() && !LifeDeathDecision();
 
-	if (normal_state)
+	if (!temporary_death_flag)
 		Action();
 
-	if (Stun() && !LifeDeathDecision())
-		SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
+	//if (Stun() && !LifeDeathDecision())
+	//	SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
 
 	IsDamage();
 	IsDeath();
 	AdjustAnimCollision();
+	TemporaryDeath(max_death);
 
 	sword_col->SetPosition(sword_pos);
 	col.weapon.Center = SimpleMath::Vector3(sword_pos.x, 0, sword_pos.z);
@@ -167,14 +168,14 @@ bool MidBoss::IsDamage() {
 
 void MidBoss::IsDeath() {
 	if (enemy_hp <= 0 && death_frame < max_death) {
-		SetAnimation(anim_model, (int)Motion::DEATH, (int)Motion::MAX_MOTION);
+		SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
 		death_frame += delta;
 	}
 }
 
 bool MidBoss::LifeDeathDecision() {
-  if (enemy_hp <= 0 && death_frame > max_death)
-  		return DEAD;
+	if (temporary_death_flag && DXTK->KeyEvent->pressed.C)
+		return DEAD;
 
 	return LIVE;
 }

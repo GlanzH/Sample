@@ -181,6 +181,29 @@ void EnemyBase::IsDamage() {
 	}
 }
 
+void EnemyBase::TemporaryDeath(float max_death) {
+	if (enemy_hp <= 0) {
+		temporary_death_flag = true;
+
+		if (!DX12Effect.CheckAlive(star_handle))
+			star_handle = DX12Effect.Play(star, position + SimpleMath::Vector3(0, 5, 0));
+	}
+	else {
+		temporary_death_flag = false;
+	}
+	if (DXTK->KeyEvent->pressed.X) {
+		//‰¼Ž€ó‘Ô‰ðœ‚·‚é‚â‚Â
+		DX12Effect.Stop(star_handle);
+		enemy_hp = 1;
+		death_frame = 0.0f;
+		temporary_death_flag = false;
+	}
+
+	if (DXTK->KeyEvent->pressed.C) {
+		DX12Effect.Stop(star_handle);
+	}
+}
+
 bool EnemyBase::Stun() {
 	if (enemy_hp == 1 && stun_frame < max_stun) {
 

@@ -14,18 +14,20 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 		}
 
 		//!“Ë‚«UŒ‚‚Ì”»’è‚ª‚È‚¢‚Æ‚«
-		if (player->GetBox().box.Intersects(enemies_roop->GetBox().box) && !player->IsInvincibleFlag()) {
-			player->OnCollisionEnter(enemies_roop->GetTag());
-		}
-		
-		if (player->GetBox().box.Intersects(enemies_roop->GetBox().box) && 
-			player->IsInvincibleFlag() && enemies_roop->GetTag() == "AR") {
-			player->OnCollisionEnter(enemies_roop->GetTag());
-		}
+		if (!enemies_roop->GetTemporaryDeathFlag()) {
+			if (player->GetBox().box.Intersects(enemies_roop->GetBox().box) && !player->IsInvincibleFlag()) {
+				player->OnCollisionEnter(enemies_roop->GetTag());
+			}
+
+			if (player->GetBox().box.Intersects(enemies_roop->GetBox().box) &&
+				player->IsInvincibleFlag() && enemies_roop->GetTag() == "AR") {
+				player->OnCollisionEnter(enemies_roop->GetTag());
+			}
 
 
-		if (player->GetBox().box.Intersects(enemies_roop->GetBox().weapon)) {
-			player->OnCollisionEnter(enemies_roop->GetTag());
+			if (player->GetBox().box.Intersects(enemies_roop->GetBox().weapon)) {
+				player->OnCollisionEnter(enemies_roop->GetTag());
+			}
 		}
 
 		//if (player->GetSpecialAttackFlag()) {
