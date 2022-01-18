@@ -208,11 +208,6 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	 base->HitEffect();
 
 	// StatusManager::Instance().AddAudience(10);
-
-	 if (tag != "C") {
-		 if (StatusManager::Instance().GetAtkCombo() == max_combo)
-			 base->Retreat();
-	 }
 }
 
 void EnemyManager::OnThrustCollisionEnter(EnemyBase* base) {
