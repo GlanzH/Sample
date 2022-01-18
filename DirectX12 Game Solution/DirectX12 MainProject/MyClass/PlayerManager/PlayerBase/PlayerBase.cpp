@@ -12,16 +12,11 @@ PlayerBase::PlayerBase() {
 
 	//攻撃の時間
 	attack_flag = false;
-	attack_zeit = 0.0f;
+	attack_time = 0.0f;
 	attack_zeit_max = 0.0f;
 
-	cannot_other = CANNOT_OTHER_ATTACK::NOMAL_STATE;
-	canot_move_state_mode = CANNOT_MOVE_STATE::MOVE;
 	direction_state_mode = Direction_State::RIGHT;
-
 	under_attack_state_mode = UNDER_ATTACK_STATE::NOMAL;
-
-	burst_state_mode = BURST_STATE::NOT_BURST;
 
 
 	//無敵時間
@@ -45,34 +40,10 @@ PlayerBase::PlayerBase() {
 
 	//アピール
 	appeil_flag = false;
-
 	appeil_time = 0.0f;
-	appeil_time_max = 0.0f;
-
-	appeil_cool_time = 0.0f;
-	appeil_cool_time_max = 0.0f;
-
 	appeil_cool_flag = false;
-
 	//必殺技
 	deathbrow_flag = false;//必殺技発動フラグ
-
-	deathbrow_attack = false;//必殺技の当たり判定
-
-	specialmove_time = 0.0f;
-	specialmove_time_max = 0.0f;
-
-
-	Transparency = 0;
-	Blackout = 0;
-	Blackout_max = 0;
-	Blackout_flag = false;
-
-	//明転
-	bright_flag = false;
-	Ming_Turn = 0;
-
-
 
 
 
@@ -83,6 +54,7 @@ PlayerBase::PlayerBase() {
 	avoidance_flag = false;
 	avoidance_start = 0.0f;
 	avoidance_max = 0.0f;
+	avoidance_move = 0.0f;
 
 
 	//ノックバック
@@ -91,11 +63,24 @@ PlayerBase::PlayerBase() {
 	knock_back_end = 0.0f;
 	time_other = 0.0f;
 
-	first_burst_flag  = false;
-	first_burst_start = 0.0f;
-	first_burst_end   = 0.0f;
+	//起き上がる
+	rize_start = 0.0f;
+	rize_end   = 0.0f;
 
 
+	damage_mode_state = Damage_Mode::NOMAL_STATE;
+
+
+
+	//上段(変数宣言)
+	upper_state_mode = Upper_State::NOT_UPPER;
+	upper_start = 0.0f;
+	upper_end = 0.383f;
+
+	//下段(変数宣言)
+	lower_sate_mode = Lower_State::NOT_LOWER;
+	lower_start = 0.0f;
+	lower_end = 0.333f;
 }
 
 void PlayerBase::OnDeviceLost() {
@@ -118,7 +103,7 @@ bool PlayerBase::Initialize()
 
 	//攻撃の時間
 	attack_flag = false;
-	attack_zeit = 0.0f;
+	attack_time = 0.0f;
 	attack_zeit_max = 0.03309f;
 
 	//無敵時間
@@ -130,6 +115,8 @@ bool PlayerBase::Initialize()
 	avoidance_flag = false;
 	avoidance_start = 0.0f;
 	avoidance_max = 0.483f;
+	avoidance_move = -50.0f;
+
 
 	//攻撃の種類
 	attack_type = 0;
@@ -138,68 +125,43 @@ bool PlayerBase::Initialize()
 
 	//アピール
 	appeil_flag = false;
-
 	appeil_time = 0.0f;
-	appeil_time_max = 5.0f;
-
-	appeil_cool_time = 0.0f;
-	appeil_cool_time_max = 1.0f;
-
 	appeil_cool_flag = false;
-
 	//必殺技
 	deathbrow_flag = false;//必殺技発動フラグ
 
-	deathbrow_attack = false;//必殺技の当たり判定
-
-	specialmove_time = 0.0f;
-	specialmove_time_max = 4.0f;
-
-
-
-
-	//暗転
-	Transparency = 0;
-	Blackout = 15;
-	Blackout_max = 255;
-	Blackout_flag = false;
-
-	//明転
-	bright_flag = false;
-	Ming_Turn = 55;
 
 	//ノックバック
-	knock_back_flag = false;
+	knock_back_flag  = false;
 	knock_back_start = 0.0f;
-	knock_back_end = 0.2f;
-	time_other = 0.0f;
+	knock_back_end   = 0.2f;
+	time_other       = 0.0f;
 
-	//三連撃
-	burst_state_mode = BURST_STATE::NOT_BURST;
+	//起き上がる
+	rize_start = 0.0f;
+	rize_end   = 0.2f;
 
-	//First
-	first_burst_flag = false;
-	first_burst_start = 0.0f;
-	first_burst_end = 0.383f;
 
-	//Second
-	second_burst_flag = false;
-	second_burst_start = 0.0f;
-	second_burst_end = 0.333f;
+	damage_mode_state = Damage_Mode::NOMAL_STATE;
 
-	//Third
-	third_burst_flag = false;
-	third_burst_start = 0.0f;
-	third_burst_end = 0.650f;
+
+
+	//上段(変数宣言)
+	upper_state_mode = Upper_State::NOT_UPPER;
+	upper_start      = 0.0f;
+	upper_end        = 0.383f;
+
+	//下段(変数宣言)
+	lower_sate_mode = Lower_State::NOT_LOWER;
+	lower_start     = 0.0f;
+	lower_end       = 0.333f;
 
 
 
 
 	direction_state_mode = Direction_State::RIGHT;
 
-	canot_move_state_mode = CANNOT_MOVE_STATE::MOVE;
 
-	cannot_other = CANNOT_OTHER_ATTACK::NOMAL_STATE;
 
 
 
@@ -266,7 +228,6 @@ void PlayerBase::LoadAssets()
 	//フォント
 	font = DX9::SpriteFont::CreateDefaultFont(DXTK->Device9);
 
-	deathbrow_sprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"DeathBrowBG\\deathbrow_bg.png");
 
 	//エフェクト　ファイル読み込み
 	DX12Effect.Create(L"Effect\\SwordEffect\\one\\first_attack.efk","first");
@@ -296,12 +257,15 @@ int PlayerBase::Update(const float deltaTime)
 	//ランバージャック(移動制限)
 	Player_limit();
 
+	//振り下ろし
+	Swing_Down(deltaTime);
 
-	////プレイヤーの攻撃(弱攻撃、ダッシュ攻撃)
-	//Player_Attack_Three(deltaTime);
+	//切り上げ
+	Reverse_Slash(deltaTime);
 
-	//三連撃
-	Burst_Attack(deltaTime);
+	//納刀
+	Sword_Delivery();
+
 
 	//回避
 	Avoidance(deltaTime);
@@ -330,10 +294,10 @@ int PlayerBase::Update(const float deltaTime)
 
 	//攻撃判定の時間
 	if (attack_flag)
-		attack_zeit += deltaTime;
-	if (attack_zeit >= attack_zeit_max) {
+		attack_time += deltaTime;
+	if (attack_time >= attack_zeit_max) {
 		attack_flag = false;
-		attack_zeit = 0.0f;
+		attack_time = 0.0f;
 	}
 
 	time_other = deltaTime;
@@ -422,6 +386,42 @@ void PlayerBase::Invincible(const float deltaTime)
 
 void PlayerBase::Knock_Back() {
 
+	switch (damage_mode_state) {
+	case Damage_Mode::NOMAL_STATE:
+		if (knock_back_flag) {
+			damage_mode_state = Damage_Mode::KNOCK_BACK;
+		}
+		break;
+	case Damage_Mode::KNOCK_BACK:
+		knock_back_start += time_other;
+		SetAnimation(model, DAMAGE);
+		if (direction_state_mode == Direction_State::RIGHT) {
+			model->Move(0, 0, 80.0f * time_other);
+		}
+		else if (direction_state_mode == Direction_State::LEFT) {
+			model->Move(0, 0, 80.0f * time_other);
+		}
+
+
+		if (knock_back_start >= knock_back_end) {
+			knock_back_flag = false;
+			knock_back_start = 0.0f;
+			damage_mode_state = Damage_Mode::RISE;
+		}
+		break;
+	case Damage_Mode::RISE:
+		SetAnimation(model, PARRY);
+		rize_start += time_other;
+
+		if (rize_start >= rize_end) {
+			rize_start = 0.0f;
+			damage_mode_state = Damage_Mode::NOMAL_STATE;
+		}
+
+		break;
+	}
+
+
 	if (knock_back_flag) {
 		knock_back_start += time_other;
 		if (knock_back_start < knock_back_end) {
@@ -460,24 +460,23 @@ void PlayerBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack)
 void PlayerBase::Player_move(const float deltaTime)
 {
 	if (!invincible_flag) {
-		if (canot_move_state_mode == CANNOT_MOVE_STATE::MOVE) {
-			//プレイヤー:移動(キーボード) & ゲームパッド十字キー
-			if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
-				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-				model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
-				col.sword_box.Center = model->GetRotation();
-				direction_state_mode = Direction_State::RIGHT;
-				SetAnimation(model, RUN);
-			}
-			if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left) {
-				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-				model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
-				col.sword_box.Center = model->GetRotation();
-				direction_state_mode = Direction_State::LEFT;
-				SetAnimation(model, RUN);
-			}
+		//プレイヤー:移動(キーボード) & ゲームパッド十字キー
+		if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
+			model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+			model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
+			col.sword_box.Center = model->GetRotation();
+			direction_state_mode = Direction_State::RIGHT;
+			SetAnimation(model, RUN);
+		}
+		if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left) {
+			model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+			model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
+			col.sword_box.Center = model->GetRotation();
+			direction_state_mode = Direction_State::LEFT;
+			SetAnimation(model, RUN);
 		}
 	}
+	
 }
 
 void PlayerBase::Player_limit()
@@ -527,110 +526,71 @@ void PlayerBase::Player_jump(const float deltaTime) {
 }
 
 
-//三連撃
-void PlayerBase::Burst_Attack(const float deltaTime) {
-
-	switch (burst_state_mode)
+//降り下ろし
+void PlayerBase::Swing_Down(const float deltaTime) {
+	switch (upper_state_mode)
 	{
-	case BURST_STATE::NOT_BURST:
-		Not_Burst(deltaTime);
+	case Upper_State::NOT_UPPER:
+		if (lower_sate_mode == Lower_State::NOT_LOWER || upper_state_mode == Upper_State::NOT_UPPER) {
+			if (DXTK->KeyEvent->pressed.A || DXTK->GamePadEvent[0].y == GamePad::ButtonStateTracker::PRESSED) {
+				upper_state_mode = Upper_State::UPPER_ATTACK;
+			}
+		}
 		break;
-	case BURST_STATE::FIRST:
-		First_Burst(deltaTime);
-		break;
-	case BURST_STATE::SECOND:
-		Second_Burst(deltaTime);
-		break;
-	case BURST_STATE::THIRD:
-		Third_Burst(deltaTime);
+	case Upper_State::UPPER_ATTACK:
+		upper_start += deltaTime;
+		SetAnimation(model, ACT1);
+
+		attack_flag = true;
+		if (IsAttack()) {
+
+		}
+
+		if (upper_start >= upper_end) {
+			upper_state_mode = Upper_State::NOT_UPPER;
+			upper_start = 0.0f;
+			model->SetTrackPosition(ACT1, 0.0);
+		}
+
 		break;
 	}
 }
 
-//最初(三連撃開始)
-void PlayerBase::Not_Burst(const float deltaTime) {
-	if (DXTK->KeyEvent->pressed.S)
-		burst_state_mode = BURST_STATE::FIRST;
 
-}
-//一撃目
-void PlayerBase::First_Burst(const float deltaTime) {
-	SetAnimation(model, ACT1);
-	first_burst_start += deltaTime;
+//切り上げ
+void PlayerBase::Reverse_Slash(const float deltaTime) {
+	switch (lower_sate_mode)
+	{
+	case Lower_State::NOT_LOWER:
+		if (lower_sate_mode == Lower_State::NOT_LOWER || upper_state_mode == Upper_State::NOT_UPPER) {
+			if (DXTK->KeyEvent->pressed.S || DXTK->GamePadEvent[0].x == GamePad::ButtonStateTracker::PRESSED) {
+				lower_sate_mode = Lower_State::LOWER_ATTACK;
+			}
+		}
+		break;
+	case Lower_State::LOWER_ATTACK:
+		lower_start += deltaTime;
+		SetAnimation(model, ACT2);
 
-	attack_flag = true;
-	if (IsAttack()) {
+		attack_flag = true;
+		if (IsAttack()) {
 
-	}
+		}
 
-	if (first_burst_start >= 0.15f && DXTK->KeyEvent->pressed.S) {
-		first_burst_flag = true;
-	}
-	if (first_burst_start >= first_burst_end && first_burst_flag) {
-		burst_state_mode = BURST_STATE::SECOND;
-		model->SetTrackPosition(ACT1, 0.0);
-		first_burst_start = 0.0f;
-		first_burst_flag  = false;
-	}
-	else if (first_burst_start >= first_burst_end) {
-		burst_state_mode = BURST_STATE::NOT_BURST;
-		model->SetTrackPosition(ACT1, 0.0);
-		first_burst_start = 0.0f;
-		first_burst_flag = false;
+		if (lower_start >= lower_end) {
+			lower_sate_mode = Lower_State::NOT_LOWER;
+			lower_start = 0.0f;
+			model->SetTrackPosition(ACT2, 0.0);
+		}
+
+		break;
 	}
 
 }
 
-//二撃目
-void PlayerBase::Second_Burst(const float deltaTime) {
-	SetAnimation(model, ACT2);
-	second_burst_start += deltaTime;
+//納刀
+void PlayerBase::Sword_Delivery() {
 
-	attack_flag = true;
-	if (IsAttack()) {
-
-	}
-
-
-	if (second_burst_start >= 0.15f && DXTK->KeyEvent->pressed.S)
-		second_burst_flag = true;
-
-	if (second_burst_start >= second_burst_end && second_burst_flag) {
-		burst_state_mode = BURST_STATE::THIRD;
-		model->SetTrackPosition(ACT2, 0.0);
-
-		second_burst_start = 0.0f;
-		second_burst_flag = false;
-	}
-	else if (second_burst_start >= second_burst_end) {
-		burst_state_mode = BURST_STATE::NOT_BURST;
-		model->SetTrackPosition(ACT2, 0.0);
-		second_burst_start = 0.0f;
-		second_burst_flag = false;
-	}
-	
-}
-
-//Third
-void PlayerBase::Third_Burst(const float deltaTime) {
-	SetAnimation(model, ACT3);
-	third_burst_start += deltaTime;
-
-	attack_flag = true;
-	if (IsAttack()) {
-
-	}
-
-
-	if (third_burst_start >= 0.15f && DXTK->KeyEvent->pressed.S)
-		third_burst_flag = true;
-
-	if (third_burst_start >= third_burst_end) {
-		burst_state_mode = BURST_STATE::NOT_BURST;
-		model->SetTrackPosition(ACT3, 0.0);
-		third_burst_start = 0.0f;
-		third_burst_flag = false;
-	}
 }
 
 
@@ -648,15 +608,24 @@ void PlayerBase::Avoidance(const float deltaTime) {
 	if (avoidance_flag) {
 		avoidance_start += deltaTime;
 		
-		model->Move(0.0f, 0.0, -100.0f * deltaTime);
+		model->Move(0.0f, 0.0, avoidance_move * deltaTime);
 		SetAnimation(model, ROLL);
 		invincible_flag = true;
+
+		//減速(何かに使うかも)
+		//avoidance_move += 70 * deltaTime;
+		//if (avoidance_move >= 0.0f) {
+		//	avoidance_move = 0;
+		//}
+
 	}
 
 	if (avoidance_start >= avoidance_max) {
 		avoidance_start = 0.0f;
 		avoidance_flag = false;
 		model->SetTrackPosition(ROLL, 0.0);
+
+		avoidance_move = -50.0f;
 	}
 }
 
@@ -672,9 +641,22 @@ bool PlayerBase::IsAttack() {
 
 
 void PlayerBase::Debug() {
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(1000.0f, 120.0f),
-	//	DX9::Colors::BlueViolet,
-	//	L"突き攻撃のパワー %f", 
-	//);	
+
+
+
+	if (invincible_flag) {
+		DX9::SpriteBatch->DrawString(font.Get(),
+			SimpleMath::Vector2(1100.0f, 120.0f),
+			DX9::Colors::BlueViolet,
+			L"ON"
+		);
+	}
+	else {
+		DX9::SpriteBatch->DrawString(font.Get(),
+			SimpleMath::Vector2(1100.0f, 120.0f),
+			DX9::Colors::BlueViolet,
+			L"OFF"
+		);
+	}
+
 }
