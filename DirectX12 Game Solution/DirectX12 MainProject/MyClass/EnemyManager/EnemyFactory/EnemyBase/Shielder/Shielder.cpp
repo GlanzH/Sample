@@ -2,12 +2,6 @@
 #include "Base/dxtk.h"
 #include "Shielder.h"
 
-bool Shielder::Initialize(std::string tag, int init_wait, bool time_stop_flag, int hp) {
-	EnemyBase::Initialize(tag,init_wait, time_stop_flag, hp);
-
-	return true;
-}
-
 void Shielder::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
 	EnemyBase::LoadAsset(model_name, initial_position);
 
@@ -103,9 +97,9 @@ void Shielder::Action() {
 
 void Shielder::Move() {
 	if (direct == LIGHT)
-		position.x += 50.0f * delta;
+		position.x += move_speed * delta;
 	else
-		position.x -= 50.0f * delta;
+		position.x -= move_speed * delta;
 }
 
 void Shielder::IsDeath() {

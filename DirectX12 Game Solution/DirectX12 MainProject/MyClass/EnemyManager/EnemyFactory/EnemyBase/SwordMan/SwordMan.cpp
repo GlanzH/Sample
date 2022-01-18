@@ -2,12 +2,6 @@
 #include "Base/dxtk.h"
 #include "SwordMan.h"
 
-bool SwordMan::Initialize(std::string tag, int init_wait, bool time_stop_flag, int hp) {
-	EnemyBase::Initialize(tag,init_wait, time_stop_flag, hp);
-
-	return true;
-}
-
 void SwordMan::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
 	EnemyBase::LoadAsset(model_name, initial_position);
 
@@ -116,10 +110,10 @@ void SwordMan::Action() {
 
 void SwordMan::Move() {
 	if (move_pos_x < position.x)
-		position.x -= 35.0f * delta;
+		position.x -= move_speed * delta;
 
 	if (move_pos_x > position.x)
-		position.x += 35.0f * delta;
+		position.x += move_speed * delta;
 }
 
 void SwordMan::IsDeath() {

@@ -4,15 +4,12 @@
 #include "MyClass/ResourceManager/ResourceManager.h"
 #include "EnemyBase.h"
 
-EnemyBase::EnemyBase()
+bool EnemyBase::Initialize(std::string tag, int init_wait, bool time_stop_flag, double speed,int posture, int hp)
 {
-}
-
-bool EnemyBase::Initialize(std::string tag, int init_wait, bool time_stop_flag, int hp)
-{
-	enemy_tag   = tag;
-	enemy_hp    = hp;
-
+	enemy_tag     = tag;
+	enemy_hp      = hp;
+	enemy_posture = posture;
+	move_speed    = speed;
 	max_init_wait = init_wait;
 
 	enemy_stop_flag = time_stop_flag;

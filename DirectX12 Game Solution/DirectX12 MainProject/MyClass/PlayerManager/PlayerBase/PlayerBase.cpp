@@ -312,7 +312,7 @@ int PlayerBase::Update(const float deltaTime)
 	//ノックバック
 	Knock_Back();
 
-	StatusManager::Instance().Update(deltaTime);
+	//StatusManager::Instance().Update(deltaTime);
 
 
 

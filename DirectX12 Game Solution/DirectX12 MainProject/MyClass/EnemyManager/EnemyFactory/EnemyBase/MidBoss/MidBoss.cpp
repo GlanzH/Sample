@@ -2,12 +2,6 @@
 #include "Base/dxtk.h"
 #include "MidBoss.h"
 
-bool MidBoss::Initialize(std::string tag, int init_wait, bool time_stop_flag, int hp) {
-	EnemyBase::Initialize(tag,init_wait, time_stop_flag, hp);
-
-	return true;
-}
-
 void MidBoss::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
 	EnemyBase::LoadAsset(model_name, initial_position);
 
@@ -120,10 +114,10 @@ void MidBoss::Action() {
 
 void MidBoss::Move() {
 	if (move_pos_x < position.x)
-		position.x -= 35.0f * delta;
+		position.x -= move_speed * delta;
 
 	if (move_pos_x > position.x)
-		position.x += 35.0f * delta;
+		position.x += move_speed * delta;
 }
 
 void MidBoss::Rotate() {

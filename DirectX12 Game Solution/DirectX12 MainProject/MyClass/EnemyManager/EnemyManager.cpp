@@ -12,11 +12,13 @@ EnemyManager::EnemyManager()
 
 	for (int i = 0; i < ENEMY_NUM; ++i) {
 		tag[i]            = "";
-		appear_pos[i]     = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
-		destract_num[i]   = INT_MAX;
+		appear_pos[i]     = SimpleMath::Vector3(DBL_MAX, DBL_MAX, DBL_MAX);
+		appear_time[i]    = DBL_MAX;
 		appear_flag[i]    = false;
 		wave_num[i]       = INT_MAX;
-		init_wait[i]      = FLT_MAX;
+		init_wait[i]      = DBL_MAX;
+		move_speed[i]     = DBL_MAX;
+		posture[i]        = INT_MAX;
 		time_stop_flag[i] = false;
 	}
 }
@@ -37,6 +39,8 @@ bool EnemyManager::Initialize(PlayerBase* player_base)
 	kill = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/Audience/kill_se.wav");
 
 	player_data = player_base;
+	appear_frame = 0.0f;
+	now_time = 0.0f;
 
 	LoadEnemyArrangement();
 	return true;
@@ -58,7 +62,7 @@ int EnemyManager::Update(SimpleMath::Vector3 player, int attack_tag, bool specia
 
 
 	if (count < ENEMY_NUM) {
-		if (dead_enemy_count >= destract_num[count] && wave_num[count] == 1) {
+		if (AppearTime() >= appear_time[count] && wave_num[count] == 1) {
 			Generator();
 			count++;
 		}
@@ -102,10 +106,10 @@ void EnemyManager::Iterator() {
 				StatusManager::Instance().HeartCount();
 				itr = enemy.erase(itr);
 			}
-			else {
-				itr = enemy.erase(itr);
-				continue;
-			}
+			//else {
+			//	itr = enemy.erase(itr);
+			//	continue;
+			//}
 		}
 	}
 }
@@ -123,10 +127,22 @@ void EnemyManager::Generator() {
 	if (!appear_flag[count])
 	{
 		//!“G‚ÌŽí—ÞE‰ŠúÀ•W‚ð“n‚µ‚Ä“G‚ð»‘¢
-		enemy.push_back(factory->Create(tag[count],init_wait[count], time_stop_flag[count], appear_pos[count]));
+		enemy.push_back(factory->Create(tag[count],init_wait[count], time_stop_flag[count], appear_pos[count],posture[count], move_speed[count]));
 		appear_flag[count] = true;
 	}
 
+}
+
+float EnemyManager::AppearTime() {
+	if (appear_frame < max_appear_frame) {
+		appear_frame++;
+	}
+	else {
+		appear_frame = 0;
+		now_time++;
+	}
+
+	return now_time;
 }
 
 void EnemyManager::NowDestEnemyCount() {
@@ -250,7 +266,8 @@ void EnemyManager::LoadEnemyArrangement() {
 
 	//!ƒf[ƒ^“Ç‚Ýž‚Ý
 	for (int i = 0; i < ENEMY_NUM; ++i) {
-		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> destract_num[i] >> wave_num[i] >> init_wait[i] >> time_stop_flag[i];
+		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> appear_time[i]
+			            >> wave_num[i] >> init_wait[i] >> move_speed[i] >> posture[i] >> time_stop_flag[i];
 	}
 
 	EndEnemy();

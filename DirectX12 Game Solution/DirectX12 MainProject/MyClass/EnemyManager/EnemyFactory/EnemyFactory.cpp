@@ -30,10 +30,10 @@ EnemyFactory::EnemyFactory()
 
 }
 
-EnemyBase* EnemyFactory::Create(std::string tag,int init_wait, bool time_stop_flag,DirectX::SimpleMath::Vector3 position)
+EnemyBase* EnemyFactory::Create(std::string tag,double init_wait, bool time_stop_flag,DirectX::SimpleMath::Vector3 position, double speed,int postune)
 {
 	EnemyBase* enemy_factory = CreateProduct(tag,position);
-	enemy_factory->Initialize(tag,init_wait,time_stop_flag, SetHP(tag));
+	enemy_factory->Initialize(tag,init_wait,time_stop_flag, speed,postune, SetHP(tag));
 
 	if(tag != "AR")
 		enemy_factory->LoadAsset(SetModel(tag), position);

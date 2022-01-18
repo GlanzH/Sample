@@ -17,10 +17,10 @@ typedef struct Collision {
 class EnemyBase
 {
 public:
-	EnemyBase();
+	EnemyBase() {};
 	~EnemyBase() {};
 
-	virtual bool Initialize(std::string tag, int init_wait, bool time_stop_flag, int hp);
+	virtual bool Initialize(std::string tag, int init_wait, bool time_stop_flag,double speed,int posture, int hp);
 	virtual void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 	void LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 
@@ -116,7 +116,9 @@ protected:
 	float death_frame     = 0.0f;
 	float max_init_wait;
 
-	int enemy_hp;
+	int    enemy_posture;
+	int    enemy_hp;
+	double move_speed;
 	float delta;
 
 	bool retreat_flag;
