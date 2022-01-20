@@ -245,6 +245,8 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	 if (DXTK->KeyEvent->pressed.S) {
 		 base->Retreat();
 	 }
+
+	 int a;
 }
 
 void EnemyManager::OnThrustCollisionEnter(EnemyBase* base) {
