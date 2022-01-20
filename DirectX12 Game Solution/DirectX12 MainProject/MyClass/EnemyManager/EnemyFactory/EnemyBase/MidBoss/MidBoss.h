@@ -34,7 +34,6 @@ private:
 
 	const float max_death = 2.5f;
 
-	int direct;
 	bool end_move;
 
 	enum class Motion {
@@ -53,11 +52,6 @@ private:
 		ATTACK,
 		WAIT,
 		INIT
-	};
-
-	enum Direction {
-		LIGHT,
-		LEFT
 	};
 
 	int action = (int)ActionNum::INIT;

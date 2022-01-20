@@ -57,6 +57,7 @@ void MidBoss::Action() {
 	case (int)ActionNum::FIRST_WAIT:
 		if (init_wait_frame < max_init_wait) {
 			init_wait_frame += delta;
+			Rotate();
 			SetAnimation(anim_model, (int)Motion::WAIT, (int)Motion::MAX_MOTION);
 		}
 		else {
@@ -93,8 +94,10 @@ void MidBoss::Action() {
 		if (attack_frame < max_attack) {
 			SetAnimation(anim_model, (int)Motion::ATTACK, (int)Motion::MAX_MOTION);
 			attack_frame += delta;
+			attack_flag = true;
 		}
 		else {
+			attack_flag = false;
 			action = (int)ActionNum::WAIT;
 		}
 		break;
@@ -107,36 +110,33 @@ void MidBoss::Action() {
 		else {
 			action = (int)ActionNum::INIT;
 		}
-
 		break;
 	}
 }
 
 void MidBoss::Move() {
-	if (move_pos_x < position.x)
-		position.x -= move_speed * delta;
-
-	if (move_pos_x > position.x)
+	if (enemy_direct == "L")
 		position.x += move_speed * delta;
+	else
+		position.x -= move_speed * delta;
 }
 
 void MidBoss::Rotate() {
-	if (player_pos.x > position.x) {
+	if (enemy_direct == "L")
 		anim_model->SetRotation(0, -rotate, 0);
-		direct = LIGHT;
-	}
-	else {
+	else
 		anim_model->SetRotation(0, rotate, 0);
-		direct = LEFT;
-	}
 }
 
 void MidBoss::Attack() {
-	if (direct == LIGHT && attack_frame >= 2.0f)
-		sword_pos = SimpleMath::Vector3(position.x + 4.0f, fit_collision_y, position.z);
-
-	if (direct == LEFT && attack_frame >= 2.0f)
-		sword_pos = SimpleMath::Vector3(position.x - 4.0f, fit_collision_y, position.z);
+	if (enemy_direct == "L") {
+		if ( attack_frame >= 2.0f)
+			sword_pos = SimpleMath::Vector3(position.x + 4.0f, fit_collision_y, position.z);
+	}
+	else {
+		if (attack_frame >= 2.0f)
+			sword_pos = SimpleMath::Vector3(position.x + 4.0f, fit_collision_y, position.z);
+	}
 
 	if (attack_frame >= max_attack)
 		sword_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);

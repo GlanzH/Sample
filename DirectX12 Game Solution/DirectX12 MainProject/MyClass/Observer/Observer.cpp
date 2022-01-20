@@ -9,7 +9,16 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 	for (auto enemies_roop : enemy->GetEnemy()) {
 		if (player->IsAttack()) {
 			if (player->GetBox().sword_box.Intersects(enemies_roop->GetBox().box)) {
-				enemy->OnCollisionEnter(enemies_roop);
+				if (enemies_roop->GetAttackFlag() && enemies_roop->GetPostune() == "U" &&
+					DXTK->KeyEvent->pressed.A
+				){
+					//はじかれるフラグをtrueにする関数を呼び出す
+					//trueなら弾かれた時の処理を行う関数は別に作る
+
+				}
+				else {
+					enemy->OnCollisionEnter(enemies_roop);
+				}
 			}
 		}
 

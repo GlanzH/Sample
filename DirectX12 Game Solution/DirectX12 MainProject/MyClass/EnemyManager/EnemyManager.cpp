@@ -17,9 +17,11 @@ EnemyManager::EnemyManager()
 		appear_flag[i]    = false;
 		wave_num[i]       = INT_MAX;
 		init_wait[i]      = DBL_MAX;
+		stop_pos[i]       = DBL_MAX;
 		move_speed[i]     = DBL_MAX;
-		posture[i]        = INT_MAX;
-		time_stop_flag[i] = false;
+		posture[i]        = "";
+		move_direct[i]    = "";
+		time_stop_flag[i] = "";
 	}
 }
 
@@ -87,7 +89,8 @@ void EnemyManager::Iterator() {
 
 				if ((*itr)->GetTag() != "AR") {
 
-					if(attack_num == 1)
+					(*itr)->GetTimeStopFlag();
+
 						(*itr)->NormalDeathEffect();
 
 					if (attack_num == 2)
@@ -106,10 +109,11 @@ void EnemyManager::Iterator() {
 				StatusManager::Instance().HeartCount();
 				itr = enemy.erase(itr);
 			}
-			//else {
-			//	itr = enemy.erase(itr);
-			//	continue;
-			//}
+			
+			else if((*itr)->LifeDeathDecision() == AUTO) {
+				itr = enemy.erase(itr);
+				continue;
+			}
 		}
 	}
 }
@@ -127,7 +131,19 @@ void EnemyManager::Generator() {
 	if (!appear_flag[count])
 	{
 		//!“G‚Ìí—ŞE‰ŠúÀ•W‚ğ“n‚µ‚Ä“G‚ğ»‘¢
-		enemy.push_back(factory->Create(tag[count],init_wait[count], time_stop_flag[count], appear_pos[count],posture[count], move_speed[count]));
+		enemy.push_back
+		(
+			factory->Create(
+				tag[count],
+				init_wait[count], 
+				stop_pos[count],
+				time_stop_flag[count], 
+				appear_pos[count],
+				move_speed[count],
+				move_direct[count],
+				posture[count]
+			)
+		);
 		appear_flag[count] = true;
 	}
 
@@ -220,10 +236,15 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	 if (!hit->IsInUse())
 		 hit->Play();
 
-	 base->Damage();
-	 base->HitEffect();
+	 //ã’iUŒ‚
+	 if (DXTK->KeyEvent->pressed.A) {
+		 base->Damage();
+		 base->HitEffect();
+	 }
 
-	// StatusManager::Instance().AddAudience(10);
+	 if (DXTK->KeyEvent->pressed.S) {
+		 base->Retreat();
+	 }
 }
 
 void EnemyManager::OnThrustCollisionEnter(EnemyBase* base) {
@@ -259,15 +280,15 @@ void EnemyManager::LoadEnemyArrangement() {
 
 	std::string dummy_line;
 
-	//! 1`3s‚ğ“Ç‚İ”ò‚Î‚µ
+	//!“Ç‚İ”ò‚Î‚µ
 	for (int i = 0; i < DUMMY_LINE; ++i) {
 		getline(pos_time_infile, dummy_line);
 	}
 
 	//!ƒf[ƒ^“Ç‚İ‚İ
 	for (int i = 0; i < ENEMY_NUM; ++i) {
-		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> appear_time[i]
-			            >> wave_num[i] >> init_wait[i] >> move_speed[i] >> posture[i] >> time_stop_flag[i];
+		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> appear_time[i] >> wave_num[i] 
+			            >> init_wait[i] >> stop_pos[i] >> move_speed[i] >> move_direct[i] >> posture[i] >> time_stop_flag[i];
 	}
 
 	EndEnemy();

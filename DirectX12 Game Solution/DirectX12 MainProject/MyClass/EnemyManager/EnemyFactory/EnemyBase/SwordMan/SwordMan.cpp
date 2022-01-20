@@ -89,8 +89,10 @@ void SwordMan::Action() {
 		if (attack_frame < max_attack) {
 			SetAnimation(anim_model, (int)Motion::ATTACK, (int)Motion::MAX_MOTION);
 			attack_frame += delta;
+			attack_flag = true;
 		}
 		else {
+			attack_flag = false;
 			action = (int)ActionNum::WAIT;
 		}
 		break;
@@ -109,11 +111,17 @@ void SwordMan::Action() {
 }
 
 void SwordMan::Move() {
-	if (move_pos_x < position.x)
-		position.x -= move_speed * delta;
-
-	if (move_pos_x > position.x)
+	if (enemy_direct == "L")
 		position.x += move_speed * delta;
+	else
+		position.x -= move_speed * delta;
+}
+
+void SwordMan::IsRetreat() {
+	EnemyBase::IsRetreat();
+
+	if(enemy_hp > 0 && retreat_flag)
+	SetAnimation(anim_model, (int)Motion::DAMAGE, (int)Motion::MAX_MOTION);
 }
 
 void SwordMan::IsDeath() {
@@ -124,31 +132,32 @@ void SwordMan::IsDeath() {
 }
 
 void SwordMan::Rotate() {
-	if (player_pos.x > position.x) {
+	if (enemy_direct == "L") 
 		anim_model->SetRotation(0, -rotate, 0);
-		direct = LIGHT;
-	}
-	else {
-		anim_model->SetRotation(0, rotate, 0);
-		direct = LEFT;
-	}
+	else
+		anim_model->SetRotation(0,  rotate, 0);
 }
 
 void SwordMan::Attack() {
-	if (direct == LIGHT && attack_frame >= 0.8f)
-		sword_pos = SimpleMath::Vector3(position.x + 3.5f,fit_collision_y,position.z);
-
-	if (direct == LEFT && attack_frame >= 0.8f)
-		sword_pos = SimpleMath::Vector3(position.x - 3.5f, fit_collision_y, position.z);
+	if (enemy_direct == "L") {
+		if (attack_frame >= 0.8f)
+			sword_pos = SimpleMath::Vector3(position.x + 3.5f, fit_collision_y, position.z);
+	}
+	else {
+		if (attack_frame >= 0.8f)
+			sword_pos = SimpleMath::Vector3(position.x - 3.5f, fit_collision_y, position.z);
+	}
 
 	if(attack_frame >= max_attack)
 		sword_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 }
 
 bool SwordMan::LifeDeathDecision() {
-	if (temporary_death_flag && DXTK->KeyEvent->pressed.C) {
+	if (temporary_death_flag && DXTK->KeyEvent->pressed.C)
 		return DEAD;
-	}
+
+	if (position.x <= -90.0f || position.x > 90.0f)
+		return AUTO;
     
 	return LIVE;
 }

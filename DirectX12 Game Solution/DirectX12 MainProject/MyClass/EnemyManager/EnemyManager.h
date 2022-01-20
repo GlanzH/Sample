@@ -7,6 +7,7 @@
 
 using namespace DirectX;
 
+
 class EnemyManager
 {
 public:
@@ -97,7 +98,7 @@ private:
 	};
 
 	enum LoadFile {
-		DUMMY_LINE = 7,
+		DUMMY_LINE = 9,
 		ENEMY_NUM = 250 
 	};
 
@@ -114,7 +115,9 @@ private:
 	bool		appear_flag[ENEMY_NUM];    //!敵の出現フラグ
 	int         wave_num[ENEMY_NUM];       //!ウェーブ数
 	double      init_wait[ENEMY_NUM];      //!初期待機時間
+	double      stop_pos[ENEMY_NUM];       //!一時停止X座標
 	double      move_speed[ENEMY_NUM];     //!移動速度
-	int         posture[ENEMY_NUM];        //!構え
-	bool        time_stop_flag[ENEMY_NUM]; //!敵の演出フラグ
+	std::string posture[ENEMY_NUM];        //!構え
+	std::string move_direct[ENEMY_NUM];    //!移動方向
+	std::string time_stop_flag[ENEMY_NUM]; //!敵の演出フラグ
 };
