@@ -307,7 +307,7 @@ int PlayerBase::Update(const float deltaTime)
 	//無敵時間
 	Invincible(deltaTime);
 
-	StatusManager::Instance().Update(deltaTime);
+	//StatusManager::Instance().Update(deltaTime);
 
 
 
@@ -372,7 +372,7 @@ void PlayerBase::OnCollisionEnter(std::string tag) {
 		if (tag == "AR")
 			reduce_num = body_reduce_num;
 
-		StatusManager::Instance().AddAudience(reduce_num);
+		StatusManager::Instance().SetAddScore(reduce_num);
 	}
 }
 
@@ -392,7 +392,7 @@ void PlayerBase::OnWeaponCollisionEnter(std::string tag) {
 		if (tag == "MB")
 			reduce_num = mb_weapon_reduce_num;
 
-		StatusManager::Instance().AddAudience(reduce_num);
+		StatusManager::Instance().SetAddScore(reduce_num);
 	}
 }
 
@@ -628,10 +628,10 @@ void PlayerBase::Avoidance(const float deltaTime) {
 void PlayerBase::Player_Special_Move(const float deltaTime) {
 	if (!jump_flag_) {
 		if (!appeil_flag ) {
-			if (StatusManager::Instance().ReturnHeart() >= 20) {
+			//if (StatusManager::Instance().ReturnHeart() >= 20) {
 				if (DXTK->KeyEvent->pressed.L || DXTK->GamePadEvent->rightShoulder == GamePad::ButtonStateTracker::PRESSED) {
 					deathbrow_flag = true;
-				}
+				//}
 			}
 		}
 	}
@@ -685,7 +685,7 @@ void PlayerBase::Player_Special_Move(const float deltaTime) {
 		deathbrow_attack = false;
 
 		//必殺技ゲージリセット呼び出し
-		StatusManager::Instance().HeartReset();
+		//StatusManager::Instance().HeartReset();
 	}
 
 }

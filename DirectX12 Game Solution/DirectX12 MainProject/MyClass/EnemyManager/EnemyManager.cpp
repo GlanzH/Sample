@@ -51,7 +51,7 @@ int EnemyManager::Update(SimpleMath::Vector3 player, int attack_tag, bool specia
 
 	Iterator();
 	NowDestEnemyCount();
-	StatusManager::Instance().CalcAudience(delta);
+	StatusManager::Instance().CalcScore(delta);
 
 
 
@@ -169,7 +169,7 @@ void EnemyManager::CalcScore() {
 			break;
 		}
 
-		StatusManager::Instance().AddAudience(add_score);
+		StatusManager::Instance().SetAddScore(add_score);
 	}
 }
 
@@ -201,7 +201,7 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	 base->Damage();
 	 base->HitEffect();
 
-	// StatusManager::Instance().AddAudience(10);
+	 //StatusManager::Instance().SetAddScore(10);
 
 	 if (tag != "C") {
 		 if (StatusManager::Instance().GetAtkCombo() == max_combo)

@@ -127,8 +127,8 @@ NextScene MainScene::Update(const float deltaTime)
 	// TODO: Add your game logic here.
 
 	//!I—¹ˆ—
-	auto end_flag = StatusManager::Instance().ReturnAudience() <= 0.0f;
-	//auto end_flag = enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum() || StatusManager::Instance().ReturnAudience() <= 0.0f;
+	auto end_flag = StatusManager::Instance().GetScoreGauge() <= 0.0f;
+	//auto end_flag = enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum() || StatusManager::Instance().GetScoreGauge() <= 0.0f;
 
 	ChangeLightRenge(deltaTime);
 
@@ -235,7 +235,7 @@ void MainScene::Render()
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ
-	ui->Render(StatusManager::Instance().ReturnAudience(),StatusManager::Instance().ReturnRenderHeart());
+	ui->Render(StatusManager::Instance().GetScoreGauge(), StatusManager::Instance().ReturnRenderHeart());
 	player->Debug();
 	player->BrackImage();
 	SceneManager::Instance().Render();
