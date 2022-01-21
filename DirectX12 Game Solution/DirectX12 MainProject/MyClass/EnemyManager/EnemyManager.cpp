@@ -85,37 +85,30 @@ void EnemyManager::Iterator() {
 			if ((*itr)->GetTimeStopFlag())
 				StartTimeStop();
 
-			if ((*itr)->LifeDeathDecision() == DEAD) {
+			if ((*itr)->LifeDeathDecision() != LIVE) {
 
 				if ((*itr)->GetTag() != "AR") {
 
 					(*itr)->GetTimeStopFlag();
 
+					if ((*itr)->GetTemporaryDeathFlag()) {
 						(*itr)->NormalDeathEffect();
 
-					if (attack_num == 2)
-						(*itr)->SpecialDeathEffect();
+						if (!kill->IsInUse())
+							kill->Play();
 
-					if(!kill->IsInUse())
-						kill->Play();
-
-					now_dead_enemy++;
-					dead_enemy_count++;
-					CalcScore();
+						now_dead_enemy++;
+						dead_enemy_count++;
+						CalcScore();
+					}
 				}
-					//else
-					//	DX12Effect.PlayOneShot("boss", (*itr)->GetModel()->GetPosition());
 
 				StatusManager::Instance().HeartCount();
 				itr = enemy.erase(itr);
 			}
-			
-			else if((*itr)->LifeDeathDecision() == AUTO) {
-				itr = enemy.erase(itr);
-				continue;
-			}
 		}
 	}
+	
 }
 
 void EnemyManager::Render()

@@ -132,7 +132,7 @@ void EnemyBase::HitEffect() {
 }
 
 void EnemyBase::NormalDeathEffect() {
-	//if (enemy_hp <= 0)
+	if (temporary_death_flag)
 		normal_die_handle = DX12Effect.Play(normal_die, position);
 }
 
