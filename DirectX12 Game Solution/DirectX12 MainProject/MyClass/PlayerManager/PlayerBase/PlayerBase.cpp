@@ -149,12 +149,12 @@ bool PlayerBase::Initialize()
 	//上段(変数宣言)
 	upper_state_mode = Upper_State::NOT_UPPER;
 	upper_start      = 0.0f;
-	upper_end        = 0.383f;
+	upper_end        = 0.650f;
 
 	//下段(変数宣言)
 	lower_sate_mode = Lower_State::NOT_LOWER;
 	lower_start     = 0.0f;
-	lower_end       = 0.333f;
+	lower_end       = 0.750f;
 
 
 
@@ -175,7 +175,7 @@ bool PlayerBase::Initialize()
 
 void PlayerBase::LoadAssets()
 {
-	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v0116_.X");
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v0119_.X");
 	model->SetScale(model_scale);
 	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
@@ -230,9 +230,8 @@ void PlayerBase::LoadAssets()
 
 
 	//エフェクト　ファイル読み込み
-	DX12Effect.Create(L"Effect\\SwordEffect\\one\\first_attack.efk","first");
-	DX12Effect.Create(L"Effect\\SwordEffect\\two\\second_attack.efk","second");
-	DX12Effect.Create(L"Effect\\SwordEffect\\three\\third_attack.efk","third");
+	DX12Effect.Create(L"Effect\\SwordEffect\\upper_attack\\upper_attack.efk","upper");
+	DX12Effect.Create(L"Effect\\SwordEffect\\lower_attack\\lower_attack.efk","lower");
 
 	//必殺技のエフェクト
 	DX12Effect.Create(L"Effect\\DeathBlow_Effect\\deathblow\\deathblow.efk", "deathblow_effect");
@@ -538,23 +537,64 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 		}
 		break;
 	case Upper_State::UPPER_ATTACK:
+		Upper_Effect();
+
+		
+
 		upper_start += deltaTime;
 		SetAnimation(model, ACT1);
 
+		//当たり判定
 		attack_flag = true;
 		if (IsAttack()) {
 
 		}
 
+		//エフェクト
+
 		if (upper_start >= upper_end) {
 			upper_state_mode = Upper_State::NOT_UPPER;
 			upper_start = 0.0f;
 			model->SetTrackPosition(ACT1, 0.0);
+
+			u_start = 0.0f;
 		}
 
 		break;
 	}
 }
+
+void PlayerBase::Upper_Effect() {
+
+	if (direction_state_mode == Direction_State::RIGHT) {
+		if (DX12Effect.CheckAlive("upper")) {
+			DX12Effect.Stop("upper");
+			DX12Effect.PlayOneShot("upper", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
+
+		}
+		else
+		{
+			DX12Effect.PlayOneShot("upper", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
+			
+
+		}
+		DX12Effect.SetRotation("upper", Vector3(0.0f, 0.0f, 0.0f));
+	}
+	else if (direction_state_mode == Direction_State::LEFT) {
+		if (DX12Effect.CheckAlive("upper")) {
+			DX12Effect.Stop("upper");
+			DX12Effect.PlayOneShot("upper", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
+		}
+		else
+		{
+			DX12Effect.PlayOneShot("upper", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
+		}
+		DX12Effect.SetRotation("upper", Vector3(0.0f, 180.0f, 0.0f));
+	}
+
+
+}
+
 
 
 //切り上げ
@@ -574,6 +614,30 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 
 		attack_flag = true;
 		if (IsAttack()) {
+			if (direction_state_mode == Direction_State::RIGHT) {
+				if (DX12Effect.CheckAlive("lower")) {
+					DX12Effect.Stop("lower");
+					DX12Effect.PlayOneShot("lower", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
+
+				}
+				else
+				{
+					DX12Effect.PlayOneShot("lower", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
+
+				}
+				DX12Effect.SetRotation("lower", Vector3(0.0f, 0.0f, 0.0f));
+			}
+			else if (direction_state_mode == Direction_State::LEFT) {
+				if (DX12Effect.CheckAlive("lower")) {
+					DX12Effect.Stop("lower");
+					DX12Effect.PlayOneShot("lower", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
+				}
+				else
+				{
+					DX12Effect.PlayOneShot("lower", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
+				}
+				DX12Effect.SetRotation("lower", Vector3(0.0f, 180.0f, 0.0f));
+			}
 
 		}
 

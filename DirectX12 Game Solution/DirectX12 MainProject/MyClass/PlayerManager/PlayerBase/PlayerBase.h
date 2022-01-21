@@ -296,6 +296,14 @@ private:
 	float lower_start;
 	float lower_end;
 
+
+	void Upper_Effect();
+	float u_start = 0.0f;
+	float u_end   = 0.0f;
+
+	float l_start = 0.0f;
+	float l_end = 0.0f;
+
 	//”[“
 	void Sword_Delivery();
 };
