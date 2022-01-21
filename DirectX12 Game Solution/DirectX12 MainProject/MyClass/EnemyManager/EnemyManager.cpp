@@ -12,12 +12,16 @@ EnemyManager::EnemyManager()
 
 	for (int i = 0; i < ENEMY_NUM; ++i) {
 		tag[i]            = "";
-		appear_pos[i]     = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
-		destract_num[i]   = INT_MAX;
+		appear_pos[i]     = SimpleMath::Vector3(DBL_MAX, DBL_MAX, DBL_MAX);
+		appear_time[i]    = DBL_MAX;
 		appear_flag[i]    = false;
 		wave_num[i]       = INT_MAX;
-		init_wait[i]      = FLT_MAX;
-		time_stop_flag[i] = false;
+		init_wait[i]      = DBL_MAX;
+		stop_pos[i]       = DBL_MAX;
+		move_speed[i]     = DBL_MAX;
+		posture[i]        = "";
+		move_direct[i]    = "";
+		time_stop_flag[i] = "";
 	}
 }
 
@@ -37,6 +41,8 @@ bool EnemyManager::Initialize(PlayerBase* player_base)
 	kill = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/Audience/kill_se.wav");
 
 	player_data = player_base;
+	appear_frame = 0.0f;
+	now_time = 0.0f;
 
 	LoadEnemyArrangement();
 	return true;
@@ -58,7 +64,7 @@ int EnemyManager::Update(SimpleMath::Vector3 player, int attack_tag, bool specia
 
 
 	if (count < ENEMY_NUM) {
-		if (dead_enemy_count >= destract_num[count] && wave_num[count] == 1) {
+		if (AppearTime() >= appear_time[count] && wave_num[count] == 1) {
 			Generator();
 			count++;
 		}
@@ -83,7 +89,8 @@ void EnemyManager::Iterator() {
 
 				if ((*itr)->GetTag() != "AR") {
 
-					if(attack_num == 1)
+					(*itr)->GetTimeStopFlag();
+
 						(*itr)->NormalDeathEffect();
 
 					if (attack_num == 2)
@@ -102,7 +109,8 @@ void EnemyManager::Iterator() {
 				StatusManager::Instance().HeartCount();
 				itr = enemy.erase(itr);
 			}
-			else {
+			
+			else if((*itr)->LifeDeathDecision() == AUTO) {
 				itr = enemy.erase(itr);
 				continue;
 			}
@@ -123,10 +131,34 @@ void EnemyManager::Generator() {
 	if (!appear_flag[count])
 	{
 		//!“G‚Ìí—ŞE‰ŠúÀ•W‚ğ“n‚µ‚Ä“G‚ğ»‘¢
-		enemy.push_back(factory->Create(tag[count],init_wait[count], time_stop_flag[count], appear_pos[count]));
+		enemy.push_back
+		(
+			factory->Create(
+				tag[count],
+				init_wait[count], 
+				stop_pos[count],
+				time_stop_flag[count], 
+				appear_pos[count],
+				move_speed[count],
+				move_direct[count],
+				posture[count]
+			)
+		);
 		appear_flag[count] = true;
 	}
 
+}
+
+float EnemyManager::AppearTime() {
+	if (appear_frame < max_appear_frame) {
+		appear_frame++;
+	}
+	else {
+		appear_frame = 0;
+		now_time++;
+	}
+
+	return now_time;
 }
 
 void EnemyManager::NowDestEnemyCount() {
@@ -204,14 +236,14 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	 if (!hit->IsInUse())
 		 hit->Play();
 
-	 base->Damage();
-	 base->HitEffect();
+	 //ã’iUŒ‚
+	 if (DXTK->KeyEvent->pressed.A) {
+		 base->Damage();
+		 base->HitEffect();
+	 }
 
-	// StatusManager::Instance().AddAudience(10);
-
-	 if (tag != "C") {
-		 if (StatusManager::Instance().GetAtkCombo() == max_combo)
-			 base->Retreat();
+	 if (DXTK->KeyEvent->pressed.S) {
+		 base->Retreat();
 	 }
 }
 
@@ -248,14 +280,15 @@ void EnemyManager::LoadEnemyArrangement() {
 
 	std::string dummy_line;
 
-	//! 1`3s‚ğ“Ç‚İ”ò‚Î‚µ
+	//!“Ç‚İ”ò‚Î‚µ
 	for (int i = 0; i < DUMMY_LINE; ++i) {
 		getline(pos_time_infile, dummy_line);
 	}
 
 	//!ƒf[ƒ^“Ç‚İ‚İ
 	for (int i = 0; i < ENEMY_NUM; ++i) {
-		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> destract_num[i] >> wave_num[i] >> init_wait[i] >> time_stop_flag[i];
+		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> appear_time[i] >> wave_num[i] 
+			            >> init_wait[i] >> stop_pos[i] >> move_speed[i] >> move_direct[i] >> posture[i] >> time_stop_flag[i];
 	}
 
 	EndEnemy();

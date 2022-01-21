@@ -7,6 +7,7 @@
 
 using namespace DirectX;
 
+
 class EnemyManager
 {
 public:
@@ -34,12 +35,13 @@ public:
 	void OnCollisionAudience(EnemyBase* base);
 	void OnCollisionSpecialMove(EnemyBase* base);
 private:
-	void LoadEnemyArrangement();
-	void NowDestEnemyCount();
-	void EndEnemy();
-	void CalcScore();
-	void Generator();
-	void Iterator();
+	float AppearTime();
+	void  LoadEnemyArrangement();
+	void  NowDestEnemyCount();
+	void  EndEnemy();
+	void  CalcScore();
+	void  Generator();
+	void  Iterator();
 
 	std::vector<EnemyBase*> enemy;
 
@@ -54,6 +56,11 @@ private:
 	int time_stop_count  = 0;
 
 	float delta;
+
+	int appear_frame = 0;
+	const int max_appear_frame = 60;
+
+	float now_time = 0.0f;
 
 	float count_frame = 0.0f;
 	const float max_count = 0.1f;
@@ -91,7 +98,7 @@ private:
 	};
 
 	enum LoadFile {
-		DUMMY_LINE = 7,
+		DUMMY_LINE = 9,
 		ENEMY_NUM = 250 
 	};
 
@@ -102,11 +109,15 @@ private:
 	};
 
 	int count = 0;                          //!敵の累計出現数カウント 
-	std::string  tag[ENEMY_NUM];            //!敵の種類         
-	Vector3		 appear_pos[ENEMY_NUM];     //!敵の出現座標
-	double		 destract_num[ENEMY_NUM];   //!敵の出現時間
-	bool		 appear_flag[ENEMY_NUM];    //!敵の出現フラグ
-	int          wave_num[ENEMY_NUM];       //!ウェーブ数
-	float        init_wait[ENEMY_NUM];      //!初期待機時間
-	bool         time_stop_flag[ENEMY_NUM]; //!敵の演出フラグ
+	std::string tag[ENEMY_NUM];            //!敵の種類         
+	Vector3		appear_pos[ENEMY_NUM];     //!敵の出現座標
+	double		appear_time[ENEMY_NUM];    //!敵の出現時間
+	bool		appear_flag[ENEMY_NUM];    //!敵の出現フラグ
+	int         wave_num[ENEMY_NUM];       //!ウェーブ数
+	double      init_wait[ENEMY_NUM];      //!初期待機時間
+	double      stop_pos[ENEMY_NUM];       //!一時停止X座標
+	double      move_speed[ENEMY_NUM];     //!移動速度
+	std::string posture[ENEMY_NUM];        //!構え
+	std::string move_direct[ENEMY_NUM];    //!移動方向
+	std::string time_stop_flag[ENEMY_NUM]; //!敵の演出フラグ
 };
