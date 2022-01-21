@@ -68,7 +68,6 @@ private:
 	AudienceManager* audience;
 	DialogueManager  dialogue;
 	Observer*        observer;
-	UIManager*       ui;
 
 	SpotLight point;
 	TextureLight texLight;

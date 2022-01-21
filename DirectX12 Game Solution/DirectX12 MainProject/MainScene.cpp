@@ -13,7 +13,6 @@ MainScene::MainScene(): dx9GpuDescriptor{}
 	enemy    = new EnemyManager;
 	audience = new AudienceManager;
 	observer = new Observer;
-	ui       = new UIManager;
 }
 
 MainScene::~MainScene() {
@@ -21,7 +20,6 @@ MainScene::~MainScene() {
 	delete enemy;
 	delete audience;
 	delete observer;
-	delete ui;
 
 	Terminate();
 }
@@ -35,6 +33,9 @@ void MainScene::Initialize()
 	enemy->Initialize(player);
 	SceneManager::Instance().Initialize();
 	StatusManager::Instance().Initialize();
+	StatusManager::Instance().SetWave(1);
+	UIManager::Instance().Initialize();
+
 
 	point.Init(1);
 	point.SetAmbientColor(Vector4(0, 0, 255, 1.0f),0);
@@ -92,7 +93,7 @@ void MainScene::LoadAssets()
 	player->LoadAssets();
 	audience->LoadAssets();
 	dialogue.LoadAssets();
-	ui->LoadAsset();
+	UIManager::Instance().LoadAsset();
 	SceneManager::Instance().LoadAsset();
 }
 
@@ -127,10 +128,12 @@ NextScene MainScene::Update(const float deltaTime)
 	// TODO: Add your game logic here.
 
 	//!I—¹ˆ—
-	auto end_flag = StatusManager::Instance().ReturnAudience() <= 0.0f;
-	//auto end_flag = enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum() || StatusManager::Instance().ReturnAudience() <= 0.0f;
+	auto end_flag = StatusManager::Instance().GetScoreGauge() <= 0.0f;
+	//auto end_flag = enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum() || StatusManager::Instance().GetScoreGauge() <= 0.0f;
 
 	ChangeLightRenge(deltaTime);
+	StatusManager::Instance().Update(deltaTime);
+	UIManager::Instance().Update(deltaTime);
 
 	if (!enemy->IsTimeStop()) {
 		player->Update(deltaTime);
@@ -234,7 +237,7 @@ void MainScene::Render()
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ
-	ui->Render(StatusManager::Instance().ReturnAudience(),StatusManager::Instance().ReturnRenderHeart());
+	UIManager::Instance(). Render();
 	player->Debug();
 	SceneManager::Instance().Render();
 

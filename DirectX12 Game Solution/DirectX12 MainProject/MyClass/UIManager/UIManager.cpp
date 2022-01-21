@@ -1,30 +1,88 @@
 #include "MyClass/UIManager/UIManager.h"
+#include "MyClass/StatusManager/StatusManager.h"
 
-void UIManager::LoadAsset() {
-	audience_empty = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/score_empty.png");
-	audience_max   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/score_gauge.png");
-	heart_empty	   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/sword3.png"	 );
-	heart_max	   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/sword_gauge.png");
+void UIManager::Initialize() {
+	score_width = 0.0;
+	combo_anime = 0.0f;
+	combo_gauge_width = 0.0f;
 }
 
-void UIManager::Render(float audience, float parry) {
-	DX9::SpriteBatch->DrawSimple(
-		audience_empty.Get(),
-		SimpleMath::Vector3(AUDIENCE_UI_POS_X, AUDIENCE_UI_POS_Y, AUDIENCE_EMPTY_UI_POS_Z)
-	);
-	DX9::SpriteBatch->DrawSimple(
-		audience_max.Get(),
-		SimpleMath::Vector3(AUDIENCE_UI_POS_X, AUDIENCE_UI_POS_Y, AUDIENCE_MAX_UI_POS_Z),
-		RectWH(0, 0, AUDIENCE_MIN_WIDTH + (int)audience, AUDIENCE_MAX_HIGH)
-	);
+void UIManager::LoadAsset() {
+	score_good_empty = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/scoreui_nice_bottom.png");
+	score_good_max   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/scoreui_nice_top.png"   );
+	score_bad_empty	 = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/scoreui_bad_bottom.png");
+	score_bad_max	 = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/scoreui_bad_top.png"	  );
 
-	DX9::SpriteBatch->DrawSimple(
-		heart_empty.Get(),
-		SimpleMath::Vector3(HEART_UI_POS_X, HEART_UI_POS_Y, 1.0f)
-	);
-	DX9::SpriteBatch->DrawSimple(
-		heart_max.Get(),
-		SimpleMath::Vector3(HEART_UI_POS_X, HEART_UI_POS_Y, 0.0f),
-		RectWH(0, 0, HEART_MAX_WIDTH, HEART_MAX_HIGH - parry)
-	);
+	combo_base = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Combo_Anim.png");
+	combo_gauge = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/combo_gauge.png");
+}
+
+void UIManager::Update(const float deltaTime) {
+	Animation(deltaTime);
+	score_width = SCORE_MIN_WIDTH + (int)StatusManager::Instance().GetScoreGauge();
+	combo_anime = COMBO_HIGHT * (int)combo_frame;
+	combo_gauge_width = COMBO_GAUGE_DIVIDE * StatusManager::Instance().GetKillComboTime();
+}
+
+void UIManager::Render() {
+	//スコアゲージ
+	if (StatusManager::Instance().GetGoodFlag()) {
+		DX9::SpriteBatch->DrawSimple(
+			score_good_empty.Get(),
+			SimpleMath::Vector3(SCORE_POS_X, SCORE_POS_Y, SCORE_EMPTY_POS_Z)
+		);
+		DX9::SpriteBatch->DrawSimple(
+			score_good_max.Get(),
+			SimpleMath::Vector3(SCORE_POS_X, SCORE_POS_Y, SCORE_MAX_POS_Z),
+			RectWH(0, 0, score_width, SCORE_MAX_HIGHT)
+		);
+	}
+	else {
+		DX9::SpriteBatch->DrawSimple(
+			score_bad_empty.Get(),
+			SimpleMath::Vector3(SCORE_POS_X, SCORE_POS_Y, SCORE_EMPTY_POS_Z)
+		);
+		DX9::SpriteBatch->DrawSimple(
+			score_bad_max.Get(),
+			SimpleMath::Vector3(SCORE_POS_X, SCORE_POS_Y, SCORE_MAX_POS_Z),
+			RectWH(0, 0, score_width, SCORE_MAX_HIGHT)
+		);
+	}
+
+	if (StatusManager::Instance().GetKillFlag()) {
+		//コンボ吹き出し
+		DX9::SpriteBatch->DrawSimple(
+			combo_base.Get(),
+			SimpleMath::Vector3(COMBO_BASE_POS_X, COMBO_BASE_POS_Y, 0.0f),
+			RectWH(0, combo_anime, COMBO_WIDTH, COMBO_HIGHT)
+		);
+
+		//コンボゲージ
+		DX9::SpriteBatch->DrawSimple(
+			combo_gauge.Get(),
+			SimpleMath::Vector3(COMBO_GAUGE_POS_X, COMBO_GAUGE_POS_Y, 0.0f),
+			RectWH(0, 0, combo_gauge_width, COMBO_GAUGE_HIGHT)
+		);
+	}
+}
+
+void UIManager::Animation(const float deltaTime) {
+	if (StatusManager::Instance().GetAnimeFlag()) {
+		combo_frame += 10.0f * deltaTime;
+	}
+	else {
+		ResetAnimeFrame();
+	}
+
+	if (combo_frame > 9.0f) {
+		StatusManager::Instance().ResetaAnimeFlag();
+		ResetAnimeFrame();
+	}
+
+	return;
+}
+
+void UIManager::ResetAnimeFrame() {
+	combo_frame = 0.0f;
+	return;
 }

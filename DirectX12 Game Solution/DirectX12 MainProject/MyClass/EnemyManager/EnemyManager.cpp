@@ -59,12 +59,11 @@ int EnemyManager::Update(SimpleMath::Vector3 player, int attack_tag, bool specia
 
 	Iterator();
 	NowDestEnemyCount();
-	StatusManager::Instance().CalcAudience(delta);
 
 
 
 	if (count < ENEMY_NUM) {
-		if (AppearTime() >= appear_time[count] && wave_num[count] == 1) {
+		if (AppearTime() >= appear_time[count] && wave_num[count] == StatusManager::Instance().GetWave()) {
 			Generator();
 			count++;
 		}
@@ -103,7 +102,6 @@ void EnemyManager::Iterator() {
 					}
 				}
 
-				StatusManager::Instance().HeartCount();
 				itr = enemy.erase(itr);
 			}
 		}
@@ -200,7 +198,7 @@ void EnemyManager::CalcScore() {
 			break;
 		}
 
-		StatusManager::Instance().AddAudience(add_score);
+		StatusManager::Instance().SetAddScore(add_score);
 	}
 }
 

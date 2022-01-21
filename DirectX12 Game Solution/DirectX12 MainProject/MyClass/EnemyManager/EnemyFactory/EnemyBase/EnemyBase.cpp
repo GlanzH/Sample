@@ -102,8 +102,6 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool
 		explode.Update(position, delta);
 	}
 
-	StatusManager::Instance().CalcAudience(delta);
-
 	return 0;
 }
 
