@@ -93,7 +93,7 @@ void SwordMan::Action() {
 		}
 		else {
 			attack_flag = false;
-			action = (int)ActionNum::WAIT;
+			action = (int)ActionNum::INIT;
 		}
 		break;
 
