@@ -140,7 +140,7 @@ NextScene MainScene::Update(const float deltaTime)
 		camera.Update(player, OUT_ZOOM, deltaTime);
 		observer->Update(player, enemy, audience);
 		dialogue.ResetCount();
-		time.Update(deltaTime);
+		time.Update(enemy,deltaTime);
 
 		//ChangeBGM(MAIN);
 		light_mode = OUT_ZOOM;

@@ -25,6 +25,8 @@ public:
 	int  GetWaveEnemy();
 	int  GetRemainEnemy()     { return remain_enemy_count; }
 	int  GetDeathEnemyCount() { return dead_enemy_count; }
+	int  ResetRemainEnemy()   { return remain_enemy_count = 0; }
+	int  ResetDeathEnemy()    { return dead_enemy_count = 0; }
 	int  GetTimeStopCount()	  { return time_stop_count; }
 
 	void StartTimeStop();

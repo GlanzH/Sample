@@ -15,7 +15,7 @@ bool Timer::Initialize() {
 	return true;
 }
 
-int Timer::Update(const float deltaTime) {
+int Timer::Update(EnemyManager* enemy, const float deltaTime) {
 	StatusManager::Instance().WaveTimeLimit(deltaTime);
 
 	if (StatusManager::Instance().GetWave() < 3 && StatusManager::Instance().GetTime() == 0.0f) {
@@ -25,6 +25,8 @@ int Timer::Update(const float deltaTime) {
 		}
 		else {
 			StatusManager::Instance().SetWave(stage_num++);
+			enemy->ResetRemainEnemy();
+			enemy->ResetDeathEnemy();
 			stop_frame = 0.0f; 
 		}
 	}

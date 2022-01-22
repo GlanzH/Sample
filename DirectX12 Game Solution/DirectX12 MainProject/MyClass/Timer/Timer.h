@@ -1,6 +1,7 @@
 #pragma once
 #include "Base/pch.h"
 #include "Base/dxtk.h"
+#include "MyClass/EnemyManager/EnemyManager.h"
 
 using namespace DirectX;
 
@@ -9,7 +10,7 @@ public:
 	Timer();
 	~Timer();
 	bool Initialize();
-	int Update(const float deltaTime);
+	int Update(EnemyManager* enemy, const float deltaTime);
 	void Render();
 private:
 	DX9::SPRITEFONT font;
@@ -19,4 +20,6 @@ private:
 
 	const int init_stage_num = 1;
 	int stage_num = init_stage_num;
+
+	int a = 0;
 };
