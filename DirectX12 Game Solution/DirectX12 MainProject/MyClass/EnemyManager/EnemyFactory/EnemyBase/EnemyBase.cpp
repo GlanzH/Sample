@@ -21,8 +21,8 @@ bool EnemyBase::Initialize(
 	enemy_stop_flag = time_stop_flag;
 	retreat_flag    = false;
 	
-	//hit          = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
-	normal_die   = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die/die.efk");
+	hit          = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
+	normal_die   = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/confetti/confetti.efk");
 	//special_die  = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die2/die2.efk");
 	star		 = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
 	love		 = ResourceManager::Instance().LoadEffect(L"Effect/AudienceEffect/heart/heart.efk");
@@ -124,13 +124,12 @@ void EnemyBase::AdjustAnimCollision() {
 void EnemyBase::HitEffect() {
 	//if (enemy_hp > 0) {
 
-	//if (!DX12Effect.CheckAlive(hit_handle))
-	//	hit_handle = DX12Effect.Play(hit, position);
+	if (!DX12Effect.CheckAlive(hit_handle))
+		hit_handle = DX12Effect.Play(hit, SimpleMath::Vector3(position.x , position.y ,200));
 	//}
 }
 
 void EnemyBase::NormalDeathEffect() {
-	if (temporary_death_flag)
 		normal_die_handle = DX12Effect.Play(normal_die, position);
 }
 

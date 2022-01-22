@@ -38,6 +38,9 @@ public:
 	int  GetWave() { return wave; }	//現在のウェーブ
 	bool GetWaveFlag() { return wave_change_flag; }	//ウェーブ切り替えフラグ
 	
+	void WaveTimeLimit(const float deltaTime);	//ウェーブの時間
+	int GetTime() { return wave_time; } //時間の取得
+
 private:
 	void KillComboTime(const float deltaTime);	//コンボ時間計る
 
@@ -45,8 +48,6 @@ private:
 	void CalcScore(const float deltaTime);	//スコア計算
 	void ScoreUp(const float deltaTime);	//アップ
 	void ScoreDown(const float deltaTime);	//ダウン
-
-	void WaveTimeLimit(const float deltaTime);	//ウェーブの時間
 
 
 	//敵撃破コンボ
