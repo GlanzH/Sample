@@ -21,11 +21,14 @@ public:
 	void Render();
 
 	std::vector<EnemyBase*> GetEnemy() { return enemy; }
-	int  GetDeathEnemyCount()		   { return dead_enemy_count; }
-	int  GetTimeStopCount()			   { return time_stop_count; }
 
+	int  GetWaveEnemy();
+	int  GetRemainEnemy()     { return remain_enemy_count; }
+	int  GetDeathEnemyCount() { return dead_enemy_count; }
+	int  ResetRemainEnemy()   { return remain_enemy_count = 0; }
+	int  ResetDeathEnemy()    { return dead_enemy_count = 0; }
+	int  GetTimeStopCount()	  { return time_stop_count; }
 
-	int  GetEnemyNum() { return enemy_num; }
 	void StartTimeStop();
 	void EndTimeStop();
 	bool IsTimeStop() { return enemy_stop_flag; }
@@ -37,9 +40,7 @@ public:
 private:
 	float AppearTime();
 	void  LoadEnemyArrangement();
-	void  NowDestEnemyCount();
 	void  EndEnemy();
-	void  CalcScore();
 	void  Generator();
 	void  Iterator();
 
@@ -51,8 +52,9 @@ private:
 	
 	std::unique_ptr<SoundEffect> hit,die,kill;
 	
-	int now_dead_enemy   = 0;
 	int dead_enemy_count = 0;
+	int remain_enemy_count = 0;
+
 	int time_stop_count  = 0;
 
 	float delta;

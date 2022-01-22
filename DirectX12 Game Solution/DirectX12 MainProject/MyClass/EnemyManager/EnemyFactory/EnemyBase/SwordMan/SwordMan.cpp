@@ -93,7 +93,7 @@ void SwordMan::Action() {
 		}
 		else {
 			attack_flag = false;
-			action = (int)ActionNum::WAIT;
+			action = (int)ActionNum::INIT;
 		}
 		break;
 
@@ -153,10 +153,12 @@ void SwordMan::Attack() {
 }
 
 bool SwordMan::LifeDeathDecision() {
-	if (temporary_death_flag && DXTK->KeyEvent->pressed.C)
+	if (temporary_death_flag && death_frame > max_death)
 		return DEAD;
 
-	if (position.x <= -90.0f || position.x > 90.0f)
+	if (position.x <= -90.0f || position.x > 90.0f || 
+		StatusManager::Instance().GetTime() == 0.0f
+		)
 		return AUTO;
     
 	return LIVE;

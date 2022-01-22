@@ -127,7 +127,7 @@ void RankJudgeManager::Render() {
 }
 
 void RankJudgeManager::GetAudience() {
-	now_score = StatusManager::Instance().ReturnScore();
+	now_score = StatusManager::Instance().GetScore();
 }
 
 void RankJudgeManager::JudgeRnak() {

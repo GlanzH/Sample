@@ -42,8 +42,6 @@ bool EnemyManager::Initialize(PlayerBase* player_base)
 
 	player_data = player_base;
 	appear_frame = 0.0f;
-	now_time = 0.0f;
-
 	LoadEnemyArrangement();
 	return true;
 }
@@ -58,13 +56,9 @@ int EnemyManager::Update(SimpleMath::Vector3 player, int attack_tag, bool specia
 	}
 
 	Iterator();
-	NowDestEnemyCount();
-	StatusManager::Instance().CalcAudience(delta);
-
-
 
 	if (count < ENEMY_NUM) {
-		if (AppearTime() >= appear_time[count] && wave_num[count] == 1) {
+		if (AppearTime() >= appear_time[count] && wave_num[count] == StatusManager::Instance().GetWave()) {
 			Generator();
 			count++;
 		}
@@ -85,37 +79,38 @@ void EnemyManager::Iterator() {
 			if ((*itr)->GetTimeStopFlag())
 				StartTimeStop();
 
-			if ((*itr)->LifeDeathDecision() == DEAD) {
+			if ((*itr)->LifeDeathDecision() != LIVE) {
 
 				if ((*itr)->GetTag() != "AR") {
 
 					(*itr)->GetTimeStopFlag();
 
+					if ((*itr)->GetTemporaryDeathFlag()) {
 						(*itr)->NormalDeathEffect();
 
-					if (attack_num == 2)
-						(*itr)->SpecialDeathEffect();
+						if (!kill->IsInUse())
+							kill->Play();
 
-					if(!kill->IsInUse())
-						kill->Play();
+						dead_enemy_count++;
 
-					now_dead_enemy++;
-					dead_enemy_count++;
-					CalcScore();
+						StatusManager::Instance().AddKillCombo();
+						//CalcScore();
+					}
 				}
-					//else
-					//	DX12Effect.PlayOneShot("boss", (*itr)->GetModel()->GetPosition());
 
-				StatusManager::Instance().HeartCount();
+				if (StatusManager::Instance().GetTime() == 0.0f) {
+					(*itr)->AutoDestoryEffect();
+					remain_enemy_count++;
+				}
+				else {
+					remain_enemy_count = 0;
+				}
+
 				itr = enemy.erase(itr);
-			}
-			
-			else if((*itr)->LifeDeathDecision() == AUTO) {
-				itr = enemy.erase(itr);
-				continue;
 			}
 		}
 	}
+	
 }
 
 void EnemyManager::Render()
@@ -161,56 +156,6 @@ float EnemyManager::AppearTime() {
 	return now_time;
 }
 
-void EnemyManager::NowDestEnemyCount() {
-	if (now_dead_enemy > 0)
-		count_dest_flag = true;
-
-	if (count_dest_flag) {
-		if (count_frame < max_count) {
-			count_frame += delta;
-		}
-		else {
-			CalcScore();
-			count_frame = 0.0f;
-			now_dead_enemy = 0.0f;
-			count_dest_flag = false;
-		}
-	}
-}
-
-void EnemyManager::CalcScore() {
-	if (count_dest_flag) {
-		switch (now_dead_enemy)
-		{
-		case ONE:
-			add_score = ONE_SCORE;
-			break;
-
-		case TWO:
-			add_score = TWO_SCORE;
-			break;
-
-		case THREE:
-			add_score = THREE_SCORE;
-			break;
-
-		case FOUR:
-			add_score = FOUR_SCORE;
-			break;
-
-		case FIVE:
-			add_score = FIVE_SCORE;
-			break;
-
-		default:
-			add_score = OVER_SIX_SCORE;
-			break;
-		}
-
-		StatusManager::Instance().AddAudience(add_score);
-	}
-}
-
 void EnemyManager::StartTimeStop() {
 	time_stop_count++;
 	enemy_stop_flag = true;
@@ -237,13 +182,25 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 		 hit->Play();
 
 	 //ã’iUŒ‚
-	 if (DXTK->KeyEvent->pressed.A) {
-		 base->Damage();
-		 base->HitEffect();
-	 }
+	 if (base->GetPostune() == "U") {
+		 if (DXTK->KeyEvent->pressed.A) {
+			 base->Damage();
+			 base->HitEffect();
+		 }
 
-	 if (DXTK->KeyEvent->pressed.S) {
-		 base->Retreat();
+		 if (DXTK->KeyEvent->pressed.S) {
+			 base->Retreat();
+		 }
+	 }
+	 else {
+		 if (DXTK->KeyEvent->pressed.A) {
+			 base->Retreat();
+		 }
+
+		 if (DXTK->KeyEvent->pressed.S) {
+			 base->Damage();
+			 base->HitEffect();
+		 }
 	 }
 }
 
@@ -290,15 +247,13 @@ void EnemyManager::LoadEnemyArrangement() {
 		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> appear_time[i] >> wave_num[i] 
 			            >> init_wait[i] >> stop_pos[i] >> move_speed[i] >> move_direct[i] >> posture[i] >> time_stop_flag[i];
 	}
-
-	EndEnemy();
 }
 
-void EnemyManager::EndEnemy() {
+int EnemyManager::GetWaveEnemy() {
 	for (int i = 0; i < ENEMY_NUM; ++i) {
-		if (tag[i] == "") {
-			enemy_num = i - 1;
-			break;
-		}
+		if (wave_num[i] == StatusManager::Instance().GetWave())
+			enemy_num++;
 	}
+
+	return enemy_num;
 }

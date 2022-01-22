@@ -1,6 +1,5 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
-#include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/ResourceManager/ResourceManager.h"
 #include "EnemyBase.h"
 
@@ -21,11 +20,12 @@ bool EnemyBase::Initialize(
 	enemy_stop_flag = time_stop_flag;
 	retreat_flag    = false;
 	
-	//hit          = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
-	normal_die   = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die/die.efk");
+	hit          = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
+	normal_die   = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/confetti/confetti.efk");
 	//special_die  = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die2/die2.efk");
 	star		 = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
 	love		 = ResourceManager::Instance().LoadEffect(L"Effect/AudienceEffect/heart/heart.efk");
+	del          = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/delete/delete.efk");
 
 	return true;
 }
@@ -102,8 +102,6 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool
 		explode.Update(position, delta);
 	}
 
-	StatusManager::Instance().CalcAudience(delta);
-
 	return 0;
 }
 
@@ -126,19 +124,23 @@ void EnemyBase::AdjustAnimCollision() {
 void EnemyBase::HitEffect() {
 	//if (enemy_hp > 0) {
 
-	//if (!DX12Effect.CheckAlive(hit_handle))
-	//	hit_handle = DX12Effect.Play(hit, position);
+	if (!DX12Effect.CheckAlive(hit_handle))
+		hit_handle = DX12Effect.Play(hit, SimpleMath::Vector3(position.x , position.y ,200));
 	//}
 }
 
 void EnemyBase::NormalDeathEffect() {
-	//if (enemy_hp <= 0)
 		normal_die_handle = DX12Effect.Play(normal_die, position);
 }
 
 void EnemyBase::SpecialDeathEffect() {
 	//if (enemy_hp <= 0)
 	//	special_die_handle = DX12Effect.Play(special_die, position);
+}
+
+void EnemyBase::AutoDestoryEffect() {
+	if (!DX12Effect.CheckAlive(del_handle))
+		del_handle = DX12Effect.Play(del, position);
 }
 
 void EnemyBase::TimeStopDecision() {

@@ -275,9 +275,6 @@ int PlayerBase::Update(const float deltaTime)
 	//ノックバック
 	Knock_Back();
 
-	//StatusManager::Instance().Update(deltaTime);
-
-
 
 	//攻撃の向き
 	if (direction_state_mode == Direction_State::RIGHT) {
@@ -348,7 +345,7 @@ void PlayerBase::OnCollisionEnter(std::string tag) {
 
 		Knock_Back();
 
-		StatusManager::Instance().AddAudience(reduce_num);
+		StatusManager::Instance().SetAddScore(reduce_num);
 	}
 }
 
@@ -368,7 +365,7 @@ void PlayerBase::OnWeaponCollisionEnter(std::string tag) {
 		if (tag == "MB")
 			reduce_num = mb_weapon_reduce_num;
 
-		StatusManager::Instance().AddAudience(reduce_num);
+		StatusManager::Instance().SetAddScore(reduce_num);
 	}
 }
 
