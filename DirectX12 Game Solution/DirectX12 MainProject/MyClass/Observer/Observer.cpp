@@ -16,6 +16,13 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 					//trueなら弾かれた時の処理を行う関数は別に作る
 
 				}
+				else if (enemies_roop->GetAttackFlag() && enemies_roop->GetPostune() == "D" &&
+					DXTK->KeyEvent->pressed.S
+					) {
+					//はじかれるフラグをtrueにする関数を呼び出す
+					//trueなら弾かれた時の処理を行う関数は別に作る
+
+				}
 				else {
 					enemy->OnCollisionEnter(enemies_roop);
 				}
