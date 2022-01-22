@@ -25,7 +25,6 @@ void StatusManager::Initialize() {
 void StatusManager::Update(const float deltaTime) {
 	CalcScore(deltaTime);
 	KillComboTime(deltaTime);
-	WaveTimeLimit(deltaTime);
 }
 
 void StatusManager::SetAddScore(float add_size) {

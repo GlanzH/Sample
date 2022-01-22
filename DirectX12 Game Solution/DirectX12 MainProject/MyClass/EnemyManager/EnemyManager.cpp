@@ -228,13 +228,25 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 		 hit->Play();
 
 	 //ã’iUŒ‚
-	 if (DXTK->KeyEvent->pressed.A) {
-		 base->Damage();
-		 base->HitEffect();
-	 }
+	 if (base->GetPostune() == "U") {
+		 if (DXTK->KeyEvent->pressed.A) {
+			 base->Damage();
+			 base->HitEffect();
+		 }
 
-	 if (DXTK->KeyEvent->pressed.S) {
-		 base->Retreat();
+		 if (DXTK->KeyEvent->pressed.S) {
+			 base->Retreat();
+		 }
+	 }
+	 else {
+		 if (DXTK->KeyEvent->pressed.A) {
+			 base->Retreat();
+		 }
+
+		 if (DXTK->KeyEvent->pressed.S) {
+			 base->Damage();
+			 base->HitEffect();
+		 }
 	 }
 }
 

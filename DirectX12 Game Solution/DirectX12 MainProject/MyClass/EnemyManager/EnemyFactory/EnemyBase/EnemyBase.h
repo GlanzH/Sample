@@ -95,6 +95,7 @@ private:
 protected:
 	virtual void Action() {}
 	virtual void Move() {}
+	//virtual void IsDeath();
 	virtual void IsRetreat();
 
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack, int max_motion);

@@ -85,6 +85,9 @@
     <Filter Include="MyClass\ResourceManager">
       <UniqueIdentifier>{099ca506-e1fe-4229-b940-a348c66a8b1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\Timer">
+      <UniqueIdentifier>{013e3be7-28cd-4a88-bb81-7eb5acc1e8f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -198,6 +201,9 @@
     <ClInclude Include="MyClass\ResourceManager\ResourceManager.h">
       <Filter>MyClass\ResourceManager</Filter>
     </ClInclude>
+    <ClInclude Include="MyClass\Timer\Timer.h">
+      <Filter>MyClass\Timer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -289,6 +295,9 @@
     </ClCompile>
     <ClCompile Include="MyClass\ResourceManager\ResourceManager.cpp">
       <Filter>MyClass\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\Timer\Timer.cpp">
+      <Filter>MyClass\Timer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -35,7 +35,7 @@ void MainScene::Initialize()
 	StatusManager::Instance().Initialize();
 	StatusManager::Instance().SetWave(1);
 	UIManager::Instance().Initialize();
-
+	time.Initialize();
 
 	point.Init(1);
 	point.SetAmbientColor(Vector4(0, 0, 255, 1.0f),0);
@@ -141,6 +141,7 @@ NextScene MainScene::Update(const float deltaTime)
 		camera.Update(player, OUT_ZOOM, deltaTime);
 		observer->Update(player, enemy, audience);
 		dialogue.ResetCount();
+		time.Update(deltaTime);
 
 		//ChangeBGM(MAIN);
 		light_mode = OUT_ZOOM;
@@ -238,6 +239,7 @@ void MainScene::Render()
 
 	//2D•`‰æ
 	UIManager::Instance(). Render();
+	time.Render();
 	player->Debug();
 	SceneManager::Instance().Render();
 
