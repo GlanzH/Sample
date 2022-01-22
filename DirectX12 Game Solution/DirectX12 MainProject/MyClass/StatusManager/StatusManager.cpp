@@ -130,6 +130,14 @@ void StatusManager::SetWave(int wave_num) {
 	case 1:
 		wave_time = WAVE_TIME_LIMIT_ONE;
 		break;
+
+	case 2:
+		wave_time = WAVE_TIME_LIMIT_ONE;
+		break;
+
+	case 3:
+		wave_time = WAVE_TIME_LIMIT_ONE;
+		break;
 	}
 
 	wave_change_flag = false;

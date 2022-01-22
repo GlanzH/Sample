@@ -15,12 +15,14 @@ void UIManager::LoadAsset() {
 
 	combo_base = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Combo_Anim.png");
 	combo_gauge = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/combo_gauge.png");
+
+	time = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/TIME.png");
 }
 
 void UIManager::Update(const float deltaTime) {
 	Animation(deltaTime);
 	score_width = SCORE_MIN_WIDTH + (int)StatusManager::Instance().GetScoreGauge();
-	combo_anime = COMBO_HIGHT * (int)combo_frame;
+	combo_anime = COMBO_BASE_HIGHT * (int)combo_anime_frame;
 	combo_gauge_width = COMBO_GAUGE_DIVIDE * StatusManager::Instance().GetKillComboTime();
 }
 
@@ -54,7 +56,7 @@ void UIManager::Render() {
 		DX9::SpriteBatch->DrawSimple(
 			combo_base.Get(),
 			SimpleMath::Vector3(COMBO_BASE_POS_X, COMBO_BASE_POS_Y, 0.0f),
-			RectWH(0, combo_anime, COMBO_WIDTH, COMBO_HIGHT)
+			RectWH(0, combo_anime, COMBO_BASE_WIDTH, COMBO_BASE_HIGHT)
 		);
 
 		//コンボゲージ
@@ -64,17 +66,23 @@ void UIManager::Render() {
 			RectWH(0, 0, combo_gauge_width, COMBO_GAUGE_HIGHT)
 		);
 	}
+
+	//時間
+	DX9::SpriteBatch->DrawSimple(
+		time.Get(),
+		SimpleMath::Vector3(TIME_POS_X, TIME_POS_Y, 0.0f)
+	);
 }
 
 void UIManager::Animation(const float deltaTime) {
 	if (StatusManager::Instance().GetAnimeFlag()) {
-		combo_frame += 10.0f * deltaTime;
+		combo_anime_frame += 10.0f * deltaTime;
 	}
 	else {
 		ResetAnimeFrame();
 	}
 
-	if (combo_frame > 9.0f) {
+	if (combo_anime_frame > 9.0f) {
 		StatusManager::Instance().ResetaAnimeFlag();
 		ResetAnimeFrame();
 	}
@@ -83,6 +91,6 @@ void UIManager::Animation(const float deltaTime) {
 }
 
 void UIManager::ResetAnimeFrame() {
-	combo_frame = 0.0f;
+	combo_anime_frame = 0.0f;
 	return;
 }

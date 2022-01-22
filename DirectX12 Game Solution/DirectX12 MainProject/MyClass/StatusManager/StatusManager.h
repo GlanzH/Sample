@@ -34,7 +34,6 @@ public:
 
 
 	//ウェーブ
-
 	void SetWave(int wave_num);	//ウェーブ数設定
 	int  GetWave() { return wave; }	//現在のウェーブ
 	bool GetWaveFlag() { return wave_change_flag; }	//ウェーブ切り替えフラグ
