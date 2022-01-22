@@ -42,8 +42,6 @@ bool EnemyManager::Initialize(PlayerBase* player_base)
 
 	player_data = player_base;
 	appear_frame = 0.0f;
-	now_time = 0.0f;
-
 	LoadEnemyArrangement();
 	return true;
 }
@@ -58,9 +56,6 @@ int EnemyManager::Update(SimpleMath::Vector3 player, int attack_tag, bool specia
 	}
 
 	Iterator();
-	NowDestEnemyCount();
-
-
 
 	if (count < ENEMY_NUM) {
 		if (AppearTime() >= appear_time[count] && wave_num[count] == StatusManager::Instance().GetWave()) {
@@ -96,10 +91,19 @@ void EnemyManager::Iterator() {
 						if (!kill->IsInUse())
 							kill->Play();
 
-						now_dead_enemy++;
 						dead_enemy_count++;
-						CalcScore();
+
+						StatusManager::Instance().AddKillCombo();
+						//CalcScore();
 					}
+				}
+
+				if (StatusManager::Instance().GetTime() == 0.0f) {
+					(*itr)->AutoDestoryEffect();
+					remain_enemy_count++;
+				}
+				else {
+					remain_enemy_count = 0;
 				}
 
 				itr = enemy.erase(itr);
@@ -150,56 +154,6 @@ float EnemyManager::AppearTime() {
 	}
 
 	return now_time;
-}
-
-void EnemyManager::NowDestEnemyCount() {
-	if (now_dead_enemy > 0)
-		count_dest_flag = true;
-
-	if (count_dest_flag) {
-		if (count_frame < max_count) {
-			count_frame += delta;
-		}
-		else {
-			CalcScore();
-			count_frame = 0.0f;
-			now_dead_enemy = 0.0f;
-			count_dest_flag = false;
-		}
-	}
-}
-
-void EnemyManager::CalcScore() {
-	if (count_dest_flag) {
-		switch (now_dead_enemy)
-		{
-		case ONE:
-			add_score = ONE_SCORE;
-			break;
-
-		case TWO:
-			add_score = TWO_SCORE;
-			break;
-
-		case THREE:
-			add_score = THREE_SCORE;
-			break;
-
-		case FOUR:
-			add_score = FOUR_SCORE;
-			break;
-
-		case FIVE:
-			add_score = FIVE_SCORE;
-			break;
-
-		default:
-			add_score = OVER_SIX_SCORE;
-			break;
-		}
-
-		StatusManager::Instance().SetAddScore(add_score);
-	}
 }
 
 void EnemyManager::StartTimeStop() {
@@ -293,15 +247,13 @@ void EnemyManager::LoadEnemyArrangement() {
 		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> appear_time[i] >> wave_num[i] 
 			            >> init_wait[i] >> stop_pos[i] >> move_speed[i] >> move_direct[i] >> posture[i] >> time_stop_flag[i];
 	}
-
-	EndEnemy();
 }
 
-void EnemyManager::EndEnemy() {
+int EnemyManager::GetWaveEnemy() {
 	for (int i = 0; i < ENEMY_NUM; ++i) {
-		if (tag[i] == "") {
-			enemy_num = i - 1;
-			break;
-		}
+		if (wave_num[i] == StatusManager::Instance().GetWave())
+			enemy_num++;
 	}
+
+	return enemy_num;
 }

@@ -2,6 +2,7 @@
 
 #include"MyClass/EnumManager/EnumManager.h"
 #include "MyClass/PlayerManager/PlayerBase/PlayerBase.h"
+#include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/AudianceManager/ExplodeMan/ExplodeMan.h"
 #include "Base/DX12Effekseer.h"
 
@@ -40,6 +41,7 @@ public:
 	void HitEffect();
 	void NormalDeathEffect();
 	void SpecialDeathEffect();
+	void AutoDestoryEffect();
 
 	virtual void Damage();
 	virtual bool LifeDeathDecision() { return LIVE; }
@@ -54,8 +56,8 @@ private:
 	void TimeStopDecision();
 	void IsDamage();
 
-	EFFECTHANDLE hit_handle, star_handle, normal_die_handle, special_die_handle, love_handle;
-	EFFECT hit, star, normal_die, special_die, love;
+	EFFECTHANDLE hit_handle, star_handle, normal_die_handle, special_die_handle, love_handle,del_handle;
+	EFFECT hit, star, normal_die, special_die, love,del;
 
 	ExplodeMan explode;
 

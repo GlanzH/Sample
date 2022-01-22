@@ -1,6 +1,5 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
-#include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/ResourceManager/ResourceManager.h"
 #include "EnemyBase.h"
 
@@ -26,6 +25,7 @@ bool EnemyBase::Initialize(
 	//special_die  = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die2/die2.efk");
 	star		 = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
 	love		 = ResourceManager::Instance().LoadEffect(L"Effect/AudienceEffect/heart/heart.efk");
+	del          = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/delete/delete.efk");
 
 	return true;
 }
@@ -136,6 +136,11 @@ void EnemyBase::NormalDeathEffect() {
 void EnemyBase::SpecialDeathEffect() {
 	//if (enemy_hp <= 0)
 	//	special_die_handle = DX12Effect.Play(special_die, position);
+}
+
+void EnemyBase::AutoDestoryEffect() {
+	if (!DX12Effect.CheckAlive(del_handle))
+		del_handle = DX12Effect.Play(del, position);
 }
 
 void EnemyBase::TimeStopDecision() {

@@ -33,7 +33,6 @@ void MainScene::Initialize()
 	enemy->Initialize(player);
 	SceneManager::Instance().Initialize();
 	StatusManager::Instance().Initialize();
-	StatusManager::Instance().SetWave(1);
 	UIManager::Instance().Initialize();
 	time.Initialize();
 
@@ -155,11 +154,8 @@ NextScene MainScene::Update(const float deltaTime)
 
 	if (end_flag) {
 		end_frame += deltaTime;
-
-		if (enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum())
-			max_end = 10.0f;
-		else
-			max_end = 2.0f;
+	
+		max_end = 2.0f;
 
 		if(end_frame > max_end) {
 			DX12Effect.AllStop();

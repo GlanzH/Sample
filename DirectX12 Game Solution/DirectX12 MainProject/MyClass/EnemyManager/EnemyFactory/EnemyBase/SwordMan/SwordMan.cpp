@@ -156,7 +156,9 @@ bool SwordMan::LifeDeathDecision() {
 	if (temporary_death_flag && death_frame > max_death)
 		return DEAD;
 
-	if (position.x <= -90.0f || position.x > 90.0f)
+	if (position.x <= -90.0f || position.x > 90.0f || 
+		StatusManager::Instance().GetTime() == 0.0f
+		)
 		return AUTO;
     
 	return LIVE;
