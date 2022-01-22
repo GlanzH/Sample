@@ -11,7 +11,7 @@ Timer::~Timer() {
 
 bool Timer::Initialize() {
 	font = DX9::SpriteFont::CreateFromFontName(DXTK->Device9,L"Ÿà–¾’©",40);
-	stage_num = init_stage_num;
+	stage_num = 0;
 	return true;
 }
 
@@ -24,7 +24,7 @@ int Timer::Update(EnemyManager* enemy, const float deltaTime) {
 			stop_frame += deltaTime;
 		}
 		else {
-			StatusManager::Instance().SetWave(stage_num++);
+			 StatusManager::Instance().SetWave(stage_num++);
 			enemy->ResetRemainEnemy();
 			enemy->ResetDeathEnemy();
 			stop_frame = 0.0f; 

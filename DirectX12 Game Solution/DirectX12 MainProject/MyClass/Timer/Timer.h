@@ -18,8 +18,5 @@ private:
 	float stop_frame = 0.0f;
 	const float max_stop = 2.f;
 
-	const int init_stage_num = 1;
-	int stage_num = init_stage_num;
-
-	int a = 0;
+	int stage_num = 0;
 };
