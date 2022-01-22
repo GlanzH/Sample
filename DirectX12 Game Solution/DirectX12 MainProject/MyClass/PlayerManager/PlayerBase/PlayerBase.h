@@ -201,11 +201,12 @@ private:
 		ACT1,
 		ACT2,
 		ACT3,
-		APPEIL,
+		FINISH,
+		REBOUND,
 		JUMP,
 		PARRY,
-		DAMAGE,
 		ROLL,
+		DAMAGE1,
 		MOTION_MAX
 	};
 
@@ -258,22 +259,26 @@ private:
 	int attack_type;
 
 	//ノックバック
+	void Knock_back();
+
 	bool knock_back_flag;
 	float knock_back_start;
 	float knock_back_end;
 	float time_other;
 
 	//起き上がる
+	void Rize();
+
 	float rize_start;
 	float rize_end;
 
 	enum Damage_Mode
 	{
 		NOMAL_STATE, //通常状態
-		KNOCK_BACK,  //ノックバック
-		RISE         //起き上がる
+		KNOCK_BACK   //ノックバック
 	};
 	Damage_Mode damage_mode_state;
+
 
 
 	//上段(変数宣言)

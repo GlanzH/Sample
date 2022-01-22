@@ -134,12 +134,12 @@ bool PlayerBase::Initialize()
 	//ノックバック
 	knock_back_flag  = false;
 	knock_back_start = 0.0f;
-	knock_back_end   = 0.2f;
+	knock_back_end   = 0.7f;
 	time_other       = 0.0f;
 
 	//起き上がる
 	rize_start = 0.0f;
-	rize_end   = 0.2f;
+	rize_end   = 1.017f;
 
 
 	damage_mode_state = Damage_Mode::NOMAL_STATE;
@@ -175,7 +175,7 @@ bool PlayerBase::Initialize()
 
 void PlayerBase::LoadAssets()
 {
-	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v0119_.X");
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v0121_.X");
 	model->SetScale(model_scale);
 	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
@@ -393,52 +393,50 @@ void PlayerBase::Knock_Back() {
 		break;
 	case Damage_Mode::KNOCK_BACK:
 		knock_back_start += time_other;
-		SetAnimation(model, DAMAGE);
-		if (direction_state_mode == Direction_State::RIGHT) {
-			model->Move(0, 0, 80.0f * time_other);
-		}
-		else if (direction_state_mode == Direction_State::LEFT) {
-			model->Move(0, 0, 80.0f * time_other);
-		}
+		SetAnimation(model, DAMAGE1);
 
+		invincible_flag = true;
 
-		if (knock_back_start >= knock_back_end) {
-			knock_back_flag = false;
-			knock_back_start = 0.0f;
-			damage_mode_state = Damage_Mode::RISE;
-		}
-		break;
-	case Damage_Mode::RISE:
-		SetAnimation(model, PARRY);
-		rize_start += time_other;
-
-		if (rize_start >= rize_end) {
-			rize_start = 0.0f;
-			damage_mode_state = Damage_Mode::NOMAL_STATE;
-		}
+		Knock_back();
+		
+		Rize();
 
 		break;
 	}
+}
 
+//ノックバック
+void PlayerBase::Knock_back() {
 
-	if (knock_back_flag) {
-		knock_back_start += time_other;
-		if (knock_back_start < knock_back_end) {
-			SetAnimation(model, DAMAGE);
-			if (direction_state_mode == Direction_State::RIGHT) {
-				model->Move(0, 0, 80.0f * time_other);
-			}
-			else if (direction_state_mode == Direction_State::LEFT) {
-				model->Move(0, 0, 80.0f * time_other);
-			}
+	if (knock_back_start < knock_back_end) {
+		if (direction_state_mode == Direction_State::RIGHT) {
+			model->Move(0, 0, 30.0f * time_other);
+		}
+		else if (direction_state_mode == Direction_State::LEFT) {
+			model->Move(0, 0, 30.0f * time_other);
 		}
 	}
 
 	if (knock_back_start >= knock_back_end) {
-		knock_back_flag = false;
 		knock_back_start = 0.0f;
+
+		//起き上がる
+		rize_start += time_other;
 	}
 
+}
+
+//起き上がる
+void PlayerBase::Rize() {
+
+	if (rize_start >= rize_end) {
+		rize_start = 0.0f;
+		knock_back_flag = false;
+
+		model->SetTrackPosition(DAMAGE1, 0.0);	
+		damage_mode_state = Damage_Mode::NOMAL_STATE;
+
+	}
 }
 
 void PlayerBase::OnParryArea() {
