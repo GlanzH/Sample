@@ -64,7 +64,6 @@ PlayerBase::PlayerBase() {
 	time_other = 0.0f;
 
 	//起き上がる
-	rize_start = 0.0f;
 	rize_end   = 0.0f;
 
 
@@ -138,8 +137,7 @@ bool PlayerBase::Initialize()
 	time_other       = 0.0f;
 
 	//起き上がる
-	rize_start = 0.0f;
-	rize_end   = 1.017f;
+	rize_end   = 1.733f;
 
 
 	damage_mode_state = Damage_Mode::NOMAL_STATE;
@@ -397,7 +395,6 @@ void PlayerBase::Knock_Back() {
 		Knock_back();
 		
 		Rize();
-
 		break;
 	}
 }
@@ -414,25 +411,15 @@ void PlayerBase::Knock_back() {
 		}
 	}
 
-	if (knock_back_start >= knock_back_end) {
-		knock_back_start = 0.0f;
-
-		//起き上がる
-		rize_start += time_other;
-	}
 
 }
 
 //起き上がる
 void PlayerBase::Rize() {
-
-	if (rize_start >= rize_end) {
-		rize_start = 0.0f;
+	if (knock_back_start >= rize_end) {
+		knock_back_start = 0.0f;
 		knock_back_flag = false;
-
-		model->SetTrackPosition(DAMAGE1, 0.0);	
 		damage_mode_state = Damage_Mode::NOMAL_STATE;
-
 	}
 }
 

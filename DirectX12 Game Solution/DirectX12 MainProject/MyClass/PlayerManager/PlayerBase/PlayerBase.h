@@ -269,7 +269,6 @@ private:
 	//‹N‚«ã‚ª‚é
 	void Rize();
 
-	float rize_start;
 	float rize_end;
 
 	enum Damage_Mode
@@ -311,4 +310,7 @@ private:
 
 	//”[“
 	void Sword_Delivery();
+
+	//UŒ‚ ’e‚©‚ê‚é
+
 };
