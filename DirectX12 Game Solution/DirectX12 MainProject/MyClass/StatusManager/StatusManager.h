@@ -11,7 +11,7 @@ public:
 	void Update(const float deltaTime);
 
 
-	static StatusManager& Instance(){
+	static StatusManager& Instance() {
 		static StatusManager instance;
 		return instance;
 	}
@@ -21,7 +21,7 @@ public:
 	void ResetKillCombo();	//コンボ数リセット
 	float GetKillComboTime() { return kill_combo_time; }	//撃破コンボ継続時間
 	bool GetKillFlag() { return kill_combo_flag; }	//コンボフラグ
-	
+
 	//アニメーション
 	void ResetaAnimeFlag() { anime_flag = false; }	//アニメフラグのリセット
 	bool GetAnimeFlag() { return anime_flag; }	//アニメーション再生フラグ
@@ -33,13 +33,13 @@ public:
 	float GetScore() { return now_score; }	//現在のスコア
 	float SetRemainEnemy(int remain_enemy) { enemy_num = remain_enemy; return 0; }
 	bool GetGoodFlag() { return good_flag; }	//スコアUI描画時使用
-	
+
 
 	//ウェーブ
 	void SetWave(int wave_num);	//ウェーブ数設定
 	int  GetWave() { return wave; }	//現在のウェーブ
 	bool GetWaveFlag() { return wave_change_flag; }	//ウェーブ切り替えフラグ
-	
+
 	void WaveTimeLimit(const float deltaTime);	//ウェーブの時間
 	void ResetWaveTime();	//ウェーブ時間を0にする
 	float GetTime() { return wave_time; } //時間の取得
@@ -69,9 +69,9 @@ private:
 	bool plus_score_flag;	//true:スコアアップ false:スコアダウン
 	bool good_flag;
 
-	const float SCORE_START_VALUE  = 100.0f;	//初期値設定
-	const float SCORE_MAX_VALUE	   = 1000.0f;	//スコアの最大値
-	const float SCORE_UPDN_SPEED   = 300.0f;	//スコア増減スピード
+	const float SCORE_START_VALUE = 100.0f;	//初期値設定
+	const float SCORE_MAX_VALUE = 1000.0f;	//スコアの最大値
+	const float SCORE_UPDN_SPEED = 300.0f;	//スコア増減スピード
 	const float SCORE_GAUGE_DIVIDE = 0.422f;	//スコアゲージ1000分の1の数(描画時使用)
 
 
