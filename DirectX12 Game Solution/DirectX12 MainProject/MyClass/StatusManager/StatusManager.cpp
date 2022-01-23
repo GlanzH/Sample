@@ -13,6 +13,8 @@ void StatusManager::Initialize() {
 	//スコア
 	score = SCORE_START_VALUE;
 	now_score = score;
+	add_score_size = 0.0f;
+	enemy_num = 0.0f;
 	plus_score_flag = false;
 	good_flag = false;
 
@@ -27,8 +29,9 @@ void StatusManager::Update(const float deltaTime) {
 	KillComboTime(deltaTime);
 }
 
-void StatusManager::SetAddScore(float add_size) {
-	now_score += add_size;	//現在のオーディエンス
+void StatusManager::SetAddScore(float score_size) {
+	add_score_size = score_size;
+	now_score += add_score_size;	//現在のスコア
 
 	now_score = std::clamp(now_score, 0.0f, SCORE_MAX_VALUE);
 
@@ -40,7 +43,7 @@ void StatusManager::SetAddScore(float add_size) {
 		plus_score_flag = false;
 	}
 
-	if (add_size < 0) {
+	if (add_score_size < 0) {
 		good_flag = false;
 	}
 	else {
@@ -92,32 +95,34 @@ void StatusManager::KillComboTime(const float deltaTime) {
 }
 
 void StatusManager::ResetKillCombo() {
-	BonusScore();
+	ComboScore();
 	kill_combo = 0;
 	kill_combo_flag = false;
 	return;
 }
 
-void StatusManager::BonusScore() {
+void StatusManager::ComboScore() {
 	switch (kill_combo) {
 	case 1:
-		SetAddScore(5.0f);
-		break;
-	case 2:
 		SetAddScore(10.0f);
 		break;
+	case 2:
+		SetAddScore(30.0f);
+		break;
 	case 3:
-		SetAddScore(25.0f);
+		SetAddScore(60.0f);
 		break;
 	case 4:
-		SetAddScore(50.0f);
-		break;
-	case 5:
 		SetAddScore(100.0f);
 		break;
-	case 6:
-		SetAddScore(150.0f);
+	default:
+		if (kill_combo >= 5) {
+			float BonusScore = (kill_combo * 50.0f) - 100.0f;
+			SetAddScore(BonusScore);
+		}
+		break;
 	}
+	
 	return;
 }
 
@@ -147,7 +152,17 @@ void StatusManager::WaveTimeLimit(const float deltaTime) {
 	wave_time = std::max(wave_time - deltaTime, 0.0f);
 
 	if (wave_time <= 0.0f) {
-		wave_change_flag = true;
+		ResetWaveTime();
 	}
 	return;
+}
+
+void StatusManager::ResetWaveTime() {
+	if (!wave_change_flag) {
+		float TimeBonus = wave_time * 5.0f;
+		float LostEnemy = enemy_num * -30.0f;
+		SetAddScore(TimeBonus + LostEnemy);
+		wave_time = 0.0f;
+		wave_change_flag = true;
+	}
 }

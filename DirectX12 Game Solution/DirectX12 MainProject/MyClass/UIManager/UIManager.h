@@ -2,6 +2,7 @@
 #include "Base/pch.h"
 #include <DirectXTK9.h>
 #include <Base/dxtk.h>
+#include "Base/DX12Effekseer.h"
 
 using namespace DirectX;
 
@@ -20,17 +21,21 @@ public:
 		return instance;
 	}
 
-	void ResetAnimeFrame();
-
+	void ResetAnimeFrame();	//アニメーション再生をリセット
+	void SetAddScore(int add_size);
+	void SetWaveTime(float wave_time);
 private:
 	void Animation(const float deltaTime);
 
 
-	//スコア(観客)
+	//スコア
 	DX9::SPRITE score_good_empty;
 	DX9::SPRITE score_good_max;
 	DX9::SPRITE score_bad_empty;
 	DX9::SPRITE score_bad_max;
+	EFFECT good_effect;
+	EFFECTHANDLE good_handle;
+	EFFECT bad_effect;
 	int score_width;
 
 	const int SCORE_MAX_HIGHT = 119;
@@ -62,6 +67,19 @@ private:
 
 	//時間
 	DX9::SPRITE time;
+	DX9::SPRITE time_number;
+
+	float time_one_digit;
+	int time_two_digit;
+
+	const int TIME_NUM_WIDTH = 56;
+	const int TIME_NUM_HIGHT = 70;
+
 	const float TIME_POS_X = 1160.0f;
 	const float TIME_POS_Y = 20.0f;
+
+	const float ONE_DIGIT_POS_X = TIME_POS_X + 40;
+	const float TWO_DIGIT_POS_X = TIME_POS_X - 10;
+
+	const float TIME_NUM_POS_Y = TIME_POS_Y + 40.0f;
 };
