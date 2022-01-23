@@ -7,7 +7,7 @@ void UIManager::Initialize() {
 	combo_anime = 0.0f;
 	combo_gauge_width = 0.0f;
 
-	//good_effect = ResourceManager::Instance().LoadEffect(L"Effect/UIEffect/bad/bad.efk");
+	//good_effect = ResourceManager::Instance().LoadEffect(L"Effect/UIEffect/nice/nice.efk");
 }
 
 void UIManager::LoadAsset() {

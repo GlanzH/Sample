@@ -14,6 +14,7 @@ void StatusManager::Initialize() {
 	score = SCORE_START_VALUE;
 	now_score = score;
 	add_score_size = 0.0f;
+	enemy_num = 0.0f;
 	plus_score_flag = false;
 	good_flag = false;
 
@@ -158,7 +159,9 @@ void StatusManager::WaveTimeLimit(const float deltaTime) {
 
 void StatusManager::ResetWaveTime() {
 	if (!wave_change_flag) {
-		SetAddScore(wave_time * 5.0f);
+		float TimeBonus = wave_time * 5.0f;
+		float LostEnemy = enemy_num * -30.0f;
+		SetAddScore(TimeBonus + LostEnemy);
 		wave_time = 0.0f;
 		wave_change_flag = true;
 	}

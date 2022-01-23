@@ -31,8 +31,9 @@ public:
 	float GetAddScore() { return add_score_size; }
 	float GetScoreGauge() { return score * SCORE_GAUGE_DIVIDE; }	//ゲージ描画時呼び出し
 	float GetScore() { return now_score; }	//現在のスコア
+	float SetRemainEnemy(int remain_enemy) { enemy_num = remain_enemy; return 0; }
 	bool GetGoodFlag() { return good_flag; }	//スコアUI描画時使用
-
+	
 
 	//ウェーブ
 	void SetWave(int wave_num);	//ウェーブ数設定
@@ -64,6 +65,7 @@ private:
 	float score;
 	float now_score;    //現在のスコア
 	float add_score_size;
+	float enemy_num;
 	bool plus_score_flag;	//true:スコアアップ false:スコアダウン
 	bool good_flag;
 
