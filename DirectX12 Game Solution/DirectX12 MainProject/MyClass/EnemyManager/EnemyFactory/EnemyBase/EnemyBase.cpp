@@ -21,7 +21,7 @@ bool EnemyBase::Initialize(
 	retreat_flag    = false;
 	
 	hit          = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
-	normal_die   = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die/die.efk");
+	normal_die   = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/confetti/confetti.efk");
 	//special_die  = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die2/die2.efk");
 	star		 = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
 	love		 = ResourceManager::Instance().LoadEffect(L"Effect/AudienceEffect/heart/heart.efk");

@@ -84,7 +84,7 @@ PlayerBase::PlayerBase() {
 }
 
 void PlayerBase::OnDeviceLost() {
-	DX12Effect.Reset();
+	//DX12Effect.Reset();
 }
 
 bool PlayerBase::Initialize()
