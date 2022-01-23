@@ -1,10 +1,13 @@
 #include "MyClass/UIManager/UIManager.h"
 #include "MyClass/StatusManager/StatusManager.h"
+#include "MyClass/ResourceManager/ResourceManager.h"
 
 void UIManager::Initialize() {
 	score_width = 0.0;
 	combo_anime = 0.0f;
 	combo_gauge_width = 0.0f;
+
+	//good_effect = ResourceManager::Instance().LoadEffect(L"Effect/UIEffect/bad/bad.efk");
 }
 
 void UIManager::LoadAsset() {
@@ -15,8 +18,6 @@ void UIManager::LoadAsset() {
 
 	combo_base = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Combo_Anim.png");
 	combo_gauge = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/combo_gauge.png");
-
-	time = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/TIME.png");
 }
 
 void UIManager::Update(const float deltaTime) {
@@ -24,6 +25,10 @@ void UIManager::Update(const float deltaTime) {
 	score_width = SCORE_MIN_WIDTH + (int)StatusManager::Instance().GetScoreGauge();
 	combo_anime = COMBO_BASE_HIGHT * (int)combo_anime_frame;
 	combo_gauge_width = COMBO_GAUGE_DIVIDE * StatusManager::Instance().GetKillComboTime();
+
+	//if (!DX12Effect.CheckAlive(good_handle))
+	//	good_handle = DX12Effect.Play(good_effect, SimpleMath::Vector3(0.0f, 0.0f, 0.0f));
+
 }
 
 void UIManager::Render() {
@@ -68,10 +73,23 @@ void UIManager::Render() {
 	}
 
 	//ŽžŠÔ
-	DX9::SpriteBatch->DrawSimple(
-		time.Get(),
-		SimpleMath::Vector3(TIME_POS_X, TIME_POS_Y, 0.0f)
-	);
+	//DX9::SpriteBatch->DrawSimple(
+	//	time.Get(),
+	//	SimpleMath::Vector3(TIME_POS_X, TIME_POS_Y, 0.0f)
+	//);
+
+	//DX9::SpriteBatch->DrawSimple(
+	//	time_number.Get(),
+	//	SimpleMath::Vector3(ONE_DIGIT_POS_X, TIME_NUM_POS_Y, 0.0f),
+	//	RectWH(((int)time_one_digit % 10) * TIME_NUM_WIDTH, 0, TIME_NUM_WIDTH, TIME_NUM_HIGHT)
+	//);
+
+	//DX9::SpriteBatch->DrawSimple(
+	//	time_number.Get(),
+	//	SimpleMath::Vector3(TWO_DIGIT_POS_X, TIME_NUM_POS_Y, 0.0f),
+	//	RectWH(((int)time_one_digit / 10) * TIME_NUM_WIDTH, 0, TIME_NUM_WIDTH, TIME_NUM_HIGHT)
+	//);
+
 }
 
 void UIManager::Animation(const float deltaTime) {
@@ -86,7 +104,6 @@ void UIManager::Animation(const float deltaTime) {
 		StatusManager::Instance().ResetaAnimeFlag();
 		ResetAnimeFrame();
 	}
-
 	return;
 }
 

@@ -28,6 +28,7 @@ public:
 
 	//スコア
 	void SetAddScore(float score_size);	//スコアの値を入力
+	float GetAddScore() { return add_score_size; }
 	float GetScoreGauge() { return score * SCORE_GAUGE_DIVIDE; }	//ゲージ描画時呼び出し
 	float GetScore() { return now_score; }	//現在のスコア
 	bool GetGoodFlag() { return good_flag; }	//スコアUI描画時使用
@@ -39,12 +40,13 @@ public:
 	bool GetWaveFlag() { return wave_change_flag; }	//ウェーブ切り替えフラグ
 	
 	void WaveTimeLimit(const float deltaTime);	//ウェーブの時間
-	int GetTime() { return wave_time; } //時間の取得
+	void ResetWaveTime();	//ウェーブ時間を0にする
+	float GetTime() { return wave_time; } //時間の取得
 
 private:
 	void KillComboTime(const float deltaTime);	//コンボ時間計る
 
-	void BonusScore();	//
+	void ComboScore();	//
 	void CalcScore(const float deltaTime);	//スコア計算
 	void ScoreUp(const float deltaTime);	//アップ
 	void ScoreDown(const float deltaTime);	//ダウン
@@ -61,6 +63,7 @@ private:
 	//スコア
 	float score;
 	float now_score;    //現在のスコア
+	float add_score_size;
 	bool plus_score_flag;	//true:スコアアップ false:スコアダウン
 	bool good_flag;
 
