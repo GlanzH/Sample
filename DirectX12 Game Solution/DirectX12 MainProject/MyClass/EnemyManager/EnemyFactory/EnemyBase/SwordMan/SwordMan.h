@@ -14,6 +14,7 @@ private:
 	void IsRetreat();
 	void Attack();
 	void IsDeath();
+	void InitDirect();
 	void Rotate();
 
 	DX9::MODEL sword_col;
@@ -21,13 +22,11 @@ private:
 
 	float move_pos_x;
 
-	float wait_frame = 0.0f;
-	const float max_wait = 3.0f;
-
 	float attack_frame = 0.0f;
 	const float max_attack = 2.5f;
 
 	const float max_death = 2.f;
+	const float max_range = 100.0f;
 
 	bool end_move;
 
@@ -45,10 +44,15 @@ private:
 		FIRST_WAIT,
 		MOVE,
 		ATTACK,
-		WAIT,
 		INIT
 	};
 
-	int action = (int)ActionNum::INIT;
+	enum Direction {
+		RIGHT,
+		LEFT
+	};
+	
+	int action = (int)ActionNum::FIRST_WAIT;
+	int direct;
 	
 };
