@@ -312,5 +312,6 @@ private:
 	void Sword_Delivery();
 
 	//UŒ‚ ’e‚©‚ê‚é
+	void Frip();
 
 };
