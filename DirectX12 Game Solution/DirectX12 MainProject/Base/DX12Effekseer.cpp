@@ -71,8 +71,6 @@ bool DX12Effekseer::CEffekseer::Initialize()
 	if (m_manager == nullptr || m_renderer == nullptr || m_commandListEfk == nullptr)
 		return false;
 
-
-
 	return true;
 }
 
@@ -110,18 +108,31 @@ void DX12Effekseer::CEffekseer::Renderer()
 	EffekseerRendererDX12::EndCommandList(m_commandListEfk);
 }
 
+void DX12Effekseer::CEffekseer::SetCamera(DX12::CAMERA* camera) 
+{
+	_camera = camera; 
+
+	int a = 9;
+}
+
 /**
 	@brief	カメラ設定
 	@param	camera DX12のカメラ
 */
-void DX12Effekseer::CEffekseer::SetCamera(DX12::CAMERA camera)
+void DX12Effekseer::CEffekseer::SetCameraPosition(DX12::CAMERA* camera)
 {
 	auto view = camera->GetViewMatrix();
 	m_renderer->SetCameraMatrix(*(Effekseer::Matrix44*)&view);
 
 	auto proj = camera->GetProjectionMatrix();
 	m_renderer->SetProjectionMatrix(*(Effekseer::Matrix44*)&proj);
+
+	_camera = camera;
+
+	int i = 0;
 }
+
+
 
 /**
 	@brief	エフェクトのループ再生
@@ -166,6 +177,15 @@ EFFECTHANDLE DX12Effekseer::CEffekseer::Play(EFFECT effect ,Vector3 pos)
 	return handle;
 }
 
+EFFECTHANDLE DX12Effekseer::CEffekseer::Play2D(EFFECT effect, Vector3 effectPosition)
+{
+	auto pos = DXTK->Direct3D9->ScreenToWorldPoint(Vector3(effectPosition.x, effectPosition.y, effectPosition.z), *_camera);
+
+	EFFECTHANDLE handle = m_manager->Play(effect, pos.x, pos.y, pos.z);
+
+	return handle;
+}
+
 /**
 	@brief	エフェクト一度だけ再生
 	@param	effectName エフェクト名
@@ -180,6 +200,16 @@ void DX12Effekseer::CEffekseer::PlayOneShot(std::string effectName)
 
 void DX12Effekseer::CEffekseer::PlayOneShot(std::string effectName, Vector3 pos)
 {
+	if (m_handles[effectName] == NULL || !m_manager->Exists(m_handles[effectName]))
+	{
+		m_handles[effectName] = m_manager->Play(m_effects[effectName], pos.x, pos.y, pos.z);
+	}
+}
+
+void DX12Effekseer::CEffekseer::PlayOneShot2D(std::string effectName, Vector3 effectPosition)
+{
+	auto pos = DXTK->Direct3D9->ScreenToWorldPoint(Vector3(effectPosition.x, effectPosition.y, effectPosition.z), *_camera);
+
 	if (m_handles[effectName] == NULL || !m_manager->Exists(m_handles[effectName]))
 	{
 		m_handles[effectName] = m_manager->Play(m_effects[effectName], pos.x, pos.y, pos.z);
@@ -241,19 +271,20 @@ void DX12Effekseer::CEffekseer::SetPosition(EFFECTHANDLE handle, Vector3 effectP
 	m_manager->SetLocation(handle, position);
 }
 
-void DX12Effekseer::CEffekseer::SetPosition2D(std::string effectName, Vector2 effectPosition)
+void DX12Effekseer::CEffekseer::SetPosition2D(std::string effectName, Vector3 effectPosition)
 {
-	auto c_pos = m_renderer->GetCameraPosition();
+	auto pos = DXTK->Direct3D9->ScreenToWorldPoint(Vector3(effectPosition.x, effectPosition.y, effectPosition.z), *_camera);
 
-	Effekseer::Vector3D position = Effekseer::Vector3D(effectPosition.x + c_pos.X, effectPosition.y + c_pos.Y, 0);
+	Effekseer::Vector3D position = Effekseer::Vector3D(pos.x, pos.y, pos.z);
 	m_manager->SetLocation(m_handles[effectName], position);
 }
 
-void DX12Effekseer::CEffekseer::SetPosition2D(EFFECTHANDLE handle, Vector2 effectPosition)
+void DX12Effekseer::CEffekseer::SetPosition2D(EFFECTHANDLE handle, Vector3 effectPosition)
 {
-	auto c_pos = m_renderer->GetCameraPosition();
+	auto pos = DXTK->Direct3D9->ScreenToWorldPoint(Vector3(effectPosition.x, effectPosition.y, effectPosition.z), *_camera);
 
-	Effekseer::Vector3D position = Effekseer::Vector3D(effectPosition.x + c_pos.X, effectPosition.y + c_pos.Y, 0);
+	Effekseer::Vector3D position = Effekseer::Vector3D(pos.x, pos.y, pos.z);
+
 	m_manager->SetLocation(handle, position);
 }
 
