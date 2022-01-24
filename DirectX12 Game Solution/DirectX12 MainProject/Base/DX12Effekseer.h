@@ -16,7 +16,7 @@
 #include <Effekseer.h>
 #include <EffekseerRendererDX12.h>
 
-typedef DirectX::SimpleMath::Vector3 Vector3;
+using namespace  DirectX::SimpleMath;
 typedef Effekseer::Effect*   EFFECT;
 typedef Effekseer::Handle    EFFECTHANDLE;
 
@@ -61,6 +61,9 @@ namespace DX12Effekseer
 
 		void SetPosition(std::string effectName,Vector3 effectPosition);
 		void SetPosition(EFFECTHANDLE handle, Vector3 effectPosition);
+
+		void SetPosition2D(std::string effectName, Vector2 effectPosition);
+		void SetPosition2D(EFFECTHANDLE handle, Vector2 effectPosition);
 
 		void MoveEffect(std::string effectName, Vector3 position);
 		void MoveEffect(EFFECTHANDLE handle, Vector3 position);
