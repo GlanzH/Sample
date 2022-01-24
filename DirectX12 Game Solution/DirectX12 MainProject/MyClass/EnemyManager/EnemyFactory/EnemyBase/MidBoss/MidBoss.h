@@ -14,7 +14,9 @@ private:
 	void Attack();
 	void Damage();
 	bool IsDamage();
+	void IsRetreat();
 	void IsDeath();
+	void InitDirect();
 	void Rotate();
 
 	DX9::MODEL sword_col;
@@ -33,6 +35,7 @@ private:
 	const float max_attack = 4.0f;
 
 	const float max_death = 2.5f;
+	const float max_range = 100.0f;
 
 	bool end_move;
 
@@ -50,10 +53,14 @@ private:
 		FIRST_WAIT,
 		MOVE,
 		ATTACK,
-		WAIT,
 		INIT
 	};
 
-	int action = (int)ActionNum::INIT;
+	enum Direction {
+		RIGHT,
+		LEFT
+	};
 
+	int action = (int)ActionNum::FIRST_WAIT;
+	int direct;
 };

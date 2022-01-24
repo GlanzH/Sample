@@ -48,7 +48,7 @@ private:
 	};
 
 	enum Direction {
-		LIGHT,
+		RIGHT,
 		LEFT
 	};
 

@@ -19,24 +19,12 @@ bool EnemyBase::Initialize(
 
 	enemy_stop_flag = time_stop_flag;
 	retreat_flag    = false;
-	
-	hit          = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
-	normal_die   = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/confetti/confetti.efk");
-	//special_die  = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die2/die2.efk");
-	star		 = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
-	love		 = ResourceManager::Instance().LoadEffect(L"Effect/AudienceEffect/heart/heart.efk");
-	del          = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/delete/delete.efk");
 
 	return true;
 }
 
 void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
 	position = initial_position;
-
-	D3DMATERIAL9 material;
-	material.Diffuse = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.0f);
-	material.Ambient = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
-	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 
 	//!アニメーションモデルの作成
 	anim_model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
@@ -54,8 +42,20 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 		col.box.Extents.z * box_size
 	);
 
+	D3DMATERIAL9 material;
+	material.Diffuse = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.0f);
+	material.Ambient = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
+	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
+
 	collision->SetMaterial(material);
 	col.box.Center = position;
+
+	hit = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
+	//special_die  = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die2/die2.efk");
+	star = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
+	love = ResourceManager::Instance().LoadEffect(L"Effect/AudienceEffect/heart/heart.efk");
+	del = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/delete/delete.efk");
+	normal_die = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die/die.efk");
 
 	explode.LoadAssets(initial_position.x);
 
@@ -70,7 +70,7 @@ void EnemyBase::LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	material.Ambient = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 
-	//!アニメーションモデルの作成
+	//!モデルの作成
 	model = DX9::Model::CreateFromFile(DXTK->Device9, model_name);
 	model->SetPosition(position);
 
@@ -82,7 +82,7 @@ void EnemyBase::LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 		DXTK->Device9,
 		col.box.Extents.x * box_size,
 		col.box.Extents.y * box_size,
-		col.box.Extents.z * box_size
+		col.box.Extents.z
 	);
 
 	collision->SetMaterial(material);
@@ -130,7 +130,8 @@ void EnemyBase::HitEffect() {
 }
 
 void EnemyBase::NormalDeathEffect() {
-		normal_die_handle = DX12Effect.Play(normal_die, position);
+	if (!DX12Effect.CheckAlive(die_handle))
+ 		die_handle = DX12Effect.Play(normal_die, position);
 }
 
 void EnemyBase::SpecialDeathEffect() {

@@ -120,6 +120,15 @@ void EnemyManager::Render()
 	}
 }
 
+bool EnemyManager::GetTemporaryDeath() {
+	for (auto& enemies : enemy) {
+		if (enemies->GetTemporaryDeathFlag())
+			return true;
+		else
+			return false;
+	}
+}
+
 void EnemyManager::Generator() {
 	std::unique_ptr<EnemyFactory> factory = std::make_unique<EnemyFactory>();
 

@@ -42,7 +42,7 @@ int SwordMan::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool 
 void SwordMan::Render() {
 	anim_model->Draw();
 	//collision->Draw();
-	//sword_col->Draw();
+	sword_col->Draw();
 }
 
 void SwordMan::Action() {
@@ -50,9 +50,10 @@ void SwordMan::Action() {
 	switch (action)
 	{
 	case (int)ActionNum::FIRST_WAIT:
+		InitDirect();
+
 		if (init_wait_frame < max_init_wait) {
 			init_wait_frame += delta;
-			Rotate();
 			SetAnimation(anim_model, (int)Motion::WAIT, (int)Motion::MAX_MOTION);
 		}
 		else {
@@ -61,20 +62,19 @@ void SwordMan::Action() {
 		break;
 
 	case (int)ActionNum::INIT:
-			wait_frame = 0.0f;
-			attack_frame = 0.0f;
-			move_pos_x = player_pos.x;
-			SetAnimation(anim_model, (int)Motion::WALK, (int)Motion::MAX_MOTION);
-			action = (int)ActionNum::MOVE;
+		attack_frame = 0.0f;
+		move_pos_x = player_pos.x;
+		SetAnimation(anim_model, (int)Motion::WALK, (int)Motion::MAX_MOTION);
+		action = (int)ActionNum::MOVE;
 		break;
 
 	case (int)ActionNum::MOVE:
 
 		//!移動終了条件(プレイヤーがいた座標に到着したら)
 		end_move = position.x > player_pos.x && position.x - 0.5f < move_pos_x ||
-			       position.x < player_pos.x && position.x + 0.5f > move_pos_x;
+			position.x < player_pos.x&& position.x + 0.5f > move_pos_x;
 
-		if(end_move)
+		if (end_move)
 			action = (int)ActionNum::ATTACK;
 		else {
 			Move();
@@ -83,7 +83,6 @@ void SwordMan::Action() {
 		break;
 
 	case (int)ActionNum::ATTACK:
-		Rotate();
 		Attack();
 
 		if (attack_frame < max_attack) {
@@ -96,25 +95,38 @@ void SwordMan::Action() {
 			action = (int)ActionNum::INIT;
 		}
 		break;
+	}
+}
 
-	case (int)ActionNum::WAIT:
-		if (wait_frame < max_wait) {
-			SetAnimation(anim_model, (int)Motion::WAIT,(int)Motion::MAX_MOTION);
-			wait_frame += delta;
-		}
-		else {
-			action = (int)ActionNum::INIT;
-		}
-
-		break;
+void SwordMan::InitDirect() {
+	if (enemy_direct == "L") {
+		anim_model->SetRotation(0, -rotate, 0);
+		direct = LEFT;
+	}
+	else {
+		anim_model->SetRotation(0, rotate, 0);
+		direct = RIGHT;
 	}
 }
 
 void SwordMan::Move() {
-	if (enemy_direct == "L")
+	if (direct == LEFT)
 		position.x += move_speed * delta;
-	else
+
+	else if(direct == RIGHT)
 		position.x -= move_speed * delta;
+}
+
+void SwordMan::Rotate() {
+	if (direct == LEFT && position.x >= max_range) {
+		anim_model->SetRotation(0, rotate, 0);
+		direct = RIGHT;
+	}
+
+	if (direct == RIGHT && position.x <= -max_range) {
+		anim_model->SetRotation(0, -rotate, 0);
+		direct = LEFT;
+	}
 }
 
 void SwordMan::IsRetreat() {
@@ -125,27 +137,21 @@ void SwordMan::IsRetreat() {
 }
 
 void SwordMan::IsDeath() {
-	if (enemy_hp <= 0 && death_frame < max_death) {
+	if (enemy_hp <= 0 && death_frame < max_death || DXTK->KeyEvent->pressed.A) {
 		SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
 		death_frame += delta;
+		enemy_hp = 0;
 	}
-}
-
-void SwordMan::Rotate() {
-	if (enemy_direct == "L") 
-		anim_model->SetRotation(0, -rotate, 0);
-	else
-		anim_model->SetRotation(0,  rotate, 0);
 }
 
 void SwordMan::Attack() {
-	if (enemy_direct == "L") {
+	if (direct == LEFT) {
 		if (attack_frame >= 0.8f)
-			sword_pos = SimpleMath::Vector3(position.x + 3.5f, fit_collision_y, position.z);
+			sword_pos = SimpleMath::Vector3(position.x + 5.0f, fit_collision_y, position.z);
 	}
 	else {
 		if (attack_frame >= 0.8f)
-			sword_pos = SimpleMath::Vector3(position.x - 3.5f, fit_collision_y, position.z);
+			sword_pos = SimpleMath::Vector3(position.x - 5.0f, fit_collision_y, position.z);
 	}
 
 	if(attack_frame >= max_attack)
@@ -156,9 +162,7 @@ bool SwordMan::LifeDeathDecision() {
 	if (temporary_death_flag && death_frame > max_death)
 		return DEAD;
 
-	if (position.x <= -90.0f || position.x > 90.0f || 
-		StatusManager::Instance().GetTime() == 0.0f
-		)
+	if (StatusManager::Instance().GetTime() == 0.0f)
 		return AUTO;
     
 	return LIVE;

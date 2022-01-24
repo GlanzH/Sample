@@ -96,7 +96,7 @@ void Shielder::Action() {
 }
 
 void Shielder::Move() {
-	if (direct == LIGHT)
+	if (direct == RIGHT)
 		position.x += move_speed * delta;
 	else
 		position.x -= move_speed * delta;
@@ -112,7 +112,7 @@ void Shielder::IsDeath() {
 void Shielder::Rotate() {
 	if (player_pos.x > position.x) {
 		anim_model->SetRotation(0, -rotate, 0);
-		direct = LIGHT;
+		direct = RIGHT;
 	}
 	else {
 		anim_model->SetRotation(0, rotate, 0);
@@ -121,7 +121,7 @@ void Shielder::Rotate() {
 }
 
 void Shielder::Attack() {
-	if (direct == LIGHT)
+	if (direct == RIGHT)
 		sword_pos = SimpleMath::Vector3(position.x + 2.5f, fit_collision_y, position.z);
 
 	if (direct == LEFT)
