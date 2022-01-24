@@ -10,6 +10,7 @@ void UIManager::Initialize() {
 	effect_pos = SimpleMath::Vector3(0.0f, 0.0f, 0.0f);
 	time_ = 0.0f;
 	flag = false;
+	handle = 0;
 	//good_effect = ResourceManager::Instance().LoadEffect(L"Effect/UIEffect/bad/bad.efk");
 }
 
@@ -24,10 +25,8 @@ void UIManager::LoadAsset() {
 
 	DX12Effect.Create(L"Effect\\UIEffect\\nice\\nice.efk", "nice");
 	DX12Effect.Create(L"Effect\\UIEffect\\bad\\bad.efk", "bad");
-}
 
-void UIManager::OnDeviceLost() {
-	DX12Effect.Reset();
+	effect = DX12Effect.Create(L"Effect\\UIEffect\\nice\\nice.efk", "nice");
 }
 
 void UIManager::Update(const float deltaTime, SimpleMath::Vector3 player_pos) {
@@ -37,17 +36,11 @@ void UIManager::Update(const float deltaTime, SimpleMath::Vector3 player_pos) {
 	combo_anime = COMBO_BASE_HIGHT * (int)combo_anime_frame;
 	combo_gauge_width = COMBO_GAUGE_DIVIDE * StatusManager::Instance().GetKillComboTime();
 
-	//if (!DX12Effect.CheckAlive(good_handle))
-	//	good_handle = DX12Effect.Play(good_effect, SimpleMath::Vector3(0.0f, 0.0f, 0.0f));
-
+	
 	effect_pos = player_pos;
 	if (flag) {
-		//time_ = std::min(time_ + deltaTime, 0.1f);
-
 		if (StatusManager::Instance().GetGoodFlag()) {
-			EFFECT effect = DX12Effect.Create(L"Effect\\UIEffect\\nice\\nice.efk", "nice");
-			EFFECTHANDLE handle = DX12Effect.Play(effect, Vector3(effect_pos.x - 36.0f, effect_pos.y + 17.0f, effect_pos.z + 70.0f));
-			DX12Effect.SetPosition(handle, Vector3(effect_pos.x - 36.0f, effect_pos.y + 17.0f, effect_pos.z + 70.0f));
+			handle = DX12Effect.Play2D(effect, Vector3(100.0f, 50.0f, 60.0f));
 			flag = false;
 		}
 		else {
@@ -57,10 +50,8 @@ void UIManager::Update(const float deltaTime, SimpleMath::Vector3 player_pos) {
 			flag = false;
 		}
 	}
+	DX12Effect.SetPosition2D(handle, Vector3(100.0f, 50.0f, 60.0f));
 
-	//if (time_ >= 0.1f) {
-	//	flag = false;
-	//}
 }
 
 void UIManager::Render() {
@@ -145,17 +136,5 @@ void UIManager::ResetAnimeFrame() {
 }
 
 void UIManager::PlayUIEffect() {
-	//if (StatusManager::Instance().GetGoodFlag()) {
-	//	EFFECT effect = DX12Effect.Create(L"Effect\\UIEffect\\nice\\nice.efk", "nice");
-	//	EFFECTHANDLE handle = DX12Effect.Play(effect, Vector3(effect_pos.x - 36.0f, effect_pos.y + 17.0f, effect_pos.z + 70.0f));
-	//	DX12Effect.SetPosition(handle, Vector3(effect_pos.x - 36.0f, effect_pos.y + 17.0f, effect_pos.z + 70.0f));
-	//	flag = false;
-	//}
-	//else {
-	//	EFFECT effect = DX12Effect.Create(L"Effect\\UIEffect\\bad\\bad.efk", "bad");
-	//	EFFECTHANDLE handle = DX12Effect.Play(effect, Vector3(effect_pos.x - 36.0f, effect_pos.y + 17.0f, effect_pos.z + 70.0f));
-	//	DX12Effect.SetPosition(handle, Vector3(effect_pos.x - 36.0f, effect_pos.y + 17.0f, effect_pos.z + 70.0f));
-	//	flag = false;
-	//}
 	flag = true;
 }

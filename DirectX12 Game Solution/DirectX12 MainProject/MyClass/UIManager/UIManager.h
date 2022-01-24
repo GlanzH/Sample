@@ -16,8 +16,6 @@ public:
 	void Update(const float deltaTime, SimpleMath::Vector3 player_pos);
 	void Render();
 
-	void OnDeviceLost();
-
 	static UIManager& Instance() {
 		static UIManager instance;
 		return instance;
@@ -39,6 +37,9 @@ private:
 	EFFECT good_effect;
 	EFFECTHANDLE good_handle;
 	EFFECT bad_effect;
+	EFFECT effect;
+	EFFECTHANDLE handle;
+
 	SimpleMath::Vector3 effect_pos;
 	float time_;
 	float delta;

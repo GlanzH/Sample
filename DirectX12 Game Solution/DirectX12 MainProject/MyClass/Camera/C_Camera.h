@@ -17,7 +17,7 @@ public:
 	int  Update(PlayerBase* base,int camera_pos_num, const float deltaTime);
 	void Render();
 
-	DX9::CAMERA GetCamera() { return camera; }
+	DX9::CAMERA* GetCamera() { return &camera; }
 
 private:
 	DX9::CAMERA  camera;
