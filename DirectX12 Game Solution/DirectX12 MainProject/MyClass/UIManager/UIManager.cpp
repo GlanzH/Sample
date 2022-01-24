@@ -7,7 +7,7 @@ void UIManager::Initialize() {
 	combo_anime = 0.0f;
 	combo_gauge_width = 0.0f;
 
-	//good_effect = ResourceManager::Instance().LoadEffect(L"Effect/UIEffect/nice/nice.efk");
+	//good_effect = ResourceManager::Instance().LoadEffect(L"Effect/UIEffect/bad/bad.efk");
 }
 
 void UIManager::LoadAsset() {
@@ -71,6 +71,25 @@ void UIManager::Render() {
 			RectWH(0, 0, combo_gauge_width, COMBO_GAUGE_HIGHT)
 		);
 	}
+
+	//ŽžŠÔ
+	//DX9::SpriteBatch->DrawSimple(
+	//	time.Get(),
+	//	SimpleMath::Vector3(TIME_POS_X, TIME_POS_Y, 0.0f)
+	//);
+
+	//DX9::SpriteBatch->DrawSimple(
+	//	time_number.Get(),
+	//	SimpleMath::Vector3(ONE_DIGIT_POS_X, TIME_NUM_POS_Y, 0.0f),
+	//	RectWH(((int)time_one_digit % 10) * TIME_NUM_WIDTH, 0, TIME_NUM_WIDTH, TIME_NUM_HIGHT)
+	//);
+
+	//DX9::SpriteBatch->DrawSimple(
+	//	time_number.Get(),
+	//	SimpleMath::Vector3(TWO_DIGIT_POS_X, TIME_NUM_POS_Y, 0.0f),
+	//	RectWH(((int)time_one_digit / 10) * TIME_NUM_WIDTH, 0, TIME_NUM_WIDTH, TIME_NUM_HIGHT)
+	//);
+
 }
 
 void UIManager::Animation(const float deltaTime) {

@@ -201,11 +201,12 @@ private:
 		ACT1,
 		ACT2,
 		ACT3,
-		APPEIL,
+		FINISH,
+		REBOUND,
 		JUMP,
 		PARRY,
-		DAMAGE,
 		ROLL,
+		DAMAGE1,
 		MOTION_MAX
 	};
 
@@ -258,22 +259,25 @@ private:
 	int attack_type;
 
 	//ノックバック
+	void Knock_back();
+
 	bool knock_back_flag;
 	float knock_back_start;
 	float knock_back_end;
 	float time_other;
 
 	//起き上がる
-	float rize_start;
+	void Rize();
+
 	float rize_end;
 
 	enum Damage_Mode
 	{
 		NOMAL_STATE, //通常状態
-		KNOCK_BACK,  //ノックバック
-		RISE         //起き上がる
+		KNOCK_BACK   //ノックバック
 	};
 	Damage_Mode damage_mode_state;
+
 
 
 	//上段(変数宣言)
@@ -296,6 +300,34 @@ private:
 	float lower_start;
 	float lower_end;
 
+
+	void Upper_Effect();
+	float u_start;
+	float u_end;
+
+	float l_start;
+	float l_end;
+
 	//納刀
-	void Sword_Delivery();
+	void Sword_Delivery(const float deltaTime);
+	bool  s_del_flag = false;
+	float s_del_start = 0.0f;
+	float s_del_end = 2.0f;
+
+	//攻撃 弾かれる
+	void Frip(const float deltaTime);
+	
+	enum Frip_State
+	{
+		NOT_FRIP,
+		ATTACK_TEST,
+		FRIP
+	};
+	Frip_State frip_state_mode;
+
+	float not_attack_start = 0.0f;
+	float not_attack_end = 0.3f;
+
+	float frip_start = 0.0f;
+	float frip_end = 0.783f;
 };
