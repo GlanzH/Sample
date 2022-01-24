@@ -139,7 +139,7 @@ protected:
 	bool retreat_flag;
 	bool die_flag    = false;
 	bool attack_flag = false;
-	bool temporary_death_flag;
+	bool temporary_death_flag = false;
 
 	Collision col;
 };

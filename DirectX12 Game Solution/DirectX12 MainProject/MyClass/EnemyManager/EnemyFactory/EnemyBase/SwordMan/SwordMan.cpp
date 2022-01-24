@@ -132,8 +132,8 @@ void SwordMan::Rotate() {
 void SwordMan::IsRetreat() {
 	EnemyBase::IsRetreat();
 
-	if(enemy_hp > 0 && retreat_flag)
-	SetAnimation(anim_model, (int)Motion::DAMAGE, (int)Motion::MAX_MOTION);
+	//if(enemy_hp > 0 && retreat_flag)
+	//SetAnimation(anim_model, (int)Motion::DAMAGE, (int)Motion::MAX_MOTION);
 }
 
 void SwordMan::IsDeath() {
