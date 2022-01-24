@@ -447,21 +447,23 @@ void PlayerBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack)
 
 void PlayerBase::Player_move(const float deltaTime)
 {
-	if (!invincible_flag || !s_del_flag) {
-		//プレイヤー:移動(キーボード) & ゲームパッド十字キー
-		if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
-			model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-			model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
-			col.sword_box.Center = model->GetRotation();
-			direction_state_mode = Direction_State::RIGHT;
-			SetAnimation(model, RUN);
-		}
-		if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left) {
-			model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-			model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
-			col.sword_box.Center = model->GetRotation();
-			direction_state_mode = Direction_State::LEFT;
-			SetAnimation(model, RUN);
+	if (!invincible_flag) {
+		if (!s_del_flag) {
+			//プレイヤー:移動(キーボード) & ゲームパッド十字キー
+			if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
+				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+				model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
+				col.sword_box.Center = model->GetRotation();
+				direction_state_mode = Direction_State::RIGHT;
+				SetAnimation(model, RUN);
+			}
+			if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left) {
+				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+				model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
+				col.sword_box.Center = model->GetRotation();
+				direction_state_mode = Direction_State::LEFT;
+				SetAnimation(model, RUN);
+			}
 		}
 	}
 	
@@ -481,13 +483,15 @@ void PlayerBase::Player_limit()
 
 void PlayerBase::Player_jump(const float deltaTime) {
 	//ジャンプ
-	if (!invincible_flag || !s_del_flag) {
-		if (!jump_flag_) {
-			if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
-				jump_start_flag = true;
-				jump_flag_ = true;
-				jump_time_ = 0;
-				jump_start_v_ = model->Position.y;
+	if (!invincible_flag) {
+		if (!s_del_flag) {
+			if (!jump_flag_) {
+				if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
+					jump_start_flag = true;
+					jump_flag_ = true;
+					jump_time_ = 0;
+					jump_start_v_ = model->Position.y;
+				}
 			}
 		}
 	}
@@ -518,9 +522,11 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 	switch (upper_state_mode)
 	{
 	case Upper_State::NOT_UPPER:
-		if (lower_sate_mode == Lower_State::NOT_LOWER || upper_state_mode == Upper_State::NOT_UPPER || !s_del_flag) {
-			if (DXTK->KeyEvent->pressed.A || DXTK->GamePadEvent[0].y == GamePad::ButtonStateTracker::PRESSED) {
-				upper_state_mode = Upper_State::UPPER_ATTACK;
+		if (lower_sate_mode == Lower_State::NOT_LOWER || upper_state_mode == Upper_State::NOT_UPPER) {
+			if (!s_del_flag) {
+				if (DXTK->KeyEvent->pressed.A || DXTK->GamePadEvent[0].y == GamePad::ButtonStateTracker::PRESSED) {
+					upper_state_mode = Upper_State::UPPER_ATTACK;
+				}
 			}
 		}
 		break;
@@ -545,9 +551,7 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 
 			}
 
-		}
-
-		
+		}		
 
 		if (upper_start >= upper_end) {
 			upper_state_mode = Upper_State::NOT_UPPER;
@@ -597,9 +601,11 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 	switch (lower_sate_mode)
 	{
 	case Lower_State::NOT_LOWER:
-		if (lower_sate_mode == Lower_State::NOT_LOWER || upper_state_mode == Upper_State::NOT_UPPER || !s_del_flag) {
-			if (DXTK->KeyEvent->pressed.S || DXTK->GamePadEvent[0].x == GamePad::ButtonStateTracker::PRESSED) {
-				lower_sate_mode = Lower_State::LOWER_ATTACK;
+		if (lower_sate_mode == Lower_State::NOT_LOWER || upper_state_mode == Upper_State::NOT_UPPER) {
+			if (!s_del_flag) {
+				if (DXTK->KeyEvent->pressed.S || DXTK->GamePadEvent[0].x == GamePad::ButtonStateTracker::PRESSED) {
+					lower_sate_mode = Lower_State::LOWER_ATTACK;
+				}
 			}
 		}
 		break;
@@ -627,7 +633,6 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 
 		break;
 	}
-
 }
 
 //止め
