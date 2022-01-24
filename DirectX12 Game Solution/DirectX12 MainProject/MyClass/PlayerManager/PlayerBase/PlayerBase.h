@@ -44,7 +44,7 @@ public:
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
 
-	
+
 
 	Collisions GetBox() { return col; }
 
@@ -69,6 +69,8 @@ public:
 	bool IsAvoidance() { return avoidance_flag; }//回避フラグ
 
 	int GetAttackTag() { return attack_type; }//攻撃の種類
+
+	bool GetEnemyDeathFlag() { return elimination_flag; }//エネミーの消滅
 
 
 private:
@@ -221,8 +223,8 @@ private:
 
 	Direction_State direction_state_mode;
 
-//『使用しない』****************************//
-	//アピール
+	//『使用しない』****************************//
+		//アピール
 	bool appeil_flag;
 	float appeil_time;
 	bool appeil_cool_flag;
@@ -304,21 +306,20 @@ private:
 
 
 	void Upper_Effect();
-	float u_start;
-	float u_end;
-
-	float l_start;
-	float l_end;
 
 	//納刀
 	void Sword_Delivery(const float deltaTime, bool temp);
-	bool  s_del_flag = false;
-	float s_del_start = 0.0f;
-	float s_del_end = 2.0f;
+	bool  s_del_flag;
+	float s_del_start;
+	float s_del_end;
+
+	//敵の消滅
+	bool elimination_flag;
+	float elimination_end;
 
 	//攻撃 弾かれる
 	void Frip(const float deltaTime);
-	
+
 	enum Frip_State
 	{
 		NOT_FRIP,

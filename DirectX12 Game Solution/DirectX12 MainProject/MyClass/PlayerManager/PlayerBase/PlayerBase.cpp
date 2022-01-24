@@ -64,7 +64,7 @@ PlayerBase::PlayerBase() {
 	time_other = 0.0f;
 
 	//起き上がる
-	rize_end   = 0.0f;
+	rize_end = 0.0f;
 
 
 	damage_mode_state = Damage_Mode::NOMAL_STATE;
@@ -76,19 +76,32 @@ PlayerBase::PlayerBase() {
 	upper_start = 0.0f;
 	upper_end = 0.383f;
 
+
 	//下段(変数宣言)
 	lower_sate_mode = Lower_State::NOT_LOWER;
 	lower_start = 0.0f;
 	lower_end = 0.333f;
 
+	//納刀
+	s_del_flag = false;
+	s_del_start = 0.0f;
+	s_del_end = 0.0f;
 
+
+
+	//弾く
 	frip_state_mode = Frip_State::NOT_FRIP;
 
 	not_attack_start = 0.0f;
 	not_attack_end = 0.0f;
 
 	frip_start = 0.0f;
-	frip_end   = 0.0f;
+	frip_end = 0.0f;
+
+	//敵の消滅
+	elimination_flag = false;
+	elimination_end = 0.0f;
+
 
 }
 
@@ -164,7 +177,14 @@ bool PlayerBase::Initialize()
 	lower_start = 0.0f;
 	lower_end = 0.750f;
 
+	//納刀
+	s_del_flag = false;
+	s_del_start = 0.0f;
+	s_del_end = 2.0f;
 
+	//敵の消滅
+	elimination_flag = false;
+	elimination_end  = 1.0f;
 
 
 	direction_state_mode = Direction_State::RIGHT;
@@ -464,7 +484,7 @@ void PlayerBase::Player_move(const float deltaTime)
 {
 	if (upper_state_mode == Upper_State::NOT_UPPER) {
 		if (lower_sate_mode == Lower_State::NOT_LOWER) {
-			if (!invincible_flag) {
+			if (!invincible_flag || !knock_back_flag) {
 				if (!s_del_flag) {
 					//プレイヤー:移動(キーボード) & ゲームパッド十字キー
 					if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
@@ -588,7 +608,7 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 			upper_start = 0.0f;
 			model->SetTrackPosition(ACT1, 0.0);
 
-			u_start = 0.0f;
+			
 		}
 
 		break;
@@ -680,6 +700,7 @@ void PlayerBase::Sword_Delivery(const float deltaTime, bool temp) {
 
 
 	if (s_del_flag) {
+		s_del_start += deltaTime;
 
 		if (direction_state_mode == Direction_State::RIGHT) {
 			SetAnimation(model, FINISH);
@@ -691,14 +712,19 @@ void PlayerBase::Sword_Delivery(const float deltaTime, bool temp) {
 
 		}
 
-		DX12Effect.PlayOneShot("clincher", Vector3(player_pos.x, player_pos.y, player_pos.z));
-		s_del_start += deltaTime;
+		DX12Effect.PlayOneShot("clincher", Vector3(player_pos.x, player_pos.y + 6.0f, player_pos.z));
+		if (s_del_start >= elimination_end) {
+			elimination_flag = true;
+		}
+
 	}
 
 	if (s_del_start >= s_del_end) {
 		s_del_flag = false;
 		s_del_start = 0.0f;
 		model->SetTrackPosition(FINISH, 0.0);
+
+		elimination_flag = false;
 
 		if (direction_state_mode == Direction_State::LEFT) {
 			model->SetRotation(0.0f, XMConvertToRadians(90.0f), 0.0f);
@@ -787,18 +813,9 @@ bool PlayerBase::IsAttack() {
 }
 
 void PlayerBase::Debug() {
-	//if (invincible_flag) {
 	//	DX9::SpriteBatch->DrawString(font.Get(),
 	//		SimpleMath::Vector2(1100.0f, 120.0f),
 	//		DX9::Colors::BlueViolet,
 	//		L"ON"
 	//	);
-	//}
-	//else {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1100.0f, 120.0f),
-	//		DX9::Colors::BlueViolet,
-	//		L"OFF"
-	//	);
-	//}
 }
