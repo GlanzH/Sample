@@ -231,6 +231,8 @@ void PlayerBase::LoadAssets()
 	DX12Effect.Create(L"Effect\\SwordEffect\\upper_attack\\upper_attack.efk","upper");
 	DX12Effect.Create(L"Effect\\SwordEffect\\lower_attack\\lower_attack.efk","lower");
 
+
+
 	//エフェクト　止め
 	DX12Effect.Create(L"Effect\\PlayerEffect\\stop\\stop.efk", "clincher");
 
@@ -242,7 +244,6 @@ void PlayerBase::LoadAssets()
 
 	//パリィのエフェクト
 	DX12Effect.Create(L"Effect\\Parry_Effect\\parry\\parry.efk", "parry_effect");
-
 }
 
 int PlayerBase::Update(const float deltaTime)
@@ -400,7 +401,7 @@ void PlayerBase::Knock_Back() {
 
 		invincible_flag = true;
 
-		Knock_back();
+		Knock_back_Move();
 		
 		Rize();
 		break;
@@ -408,7 +409,7 @@ void PlayerBase::Knock_Back() {
 }
 
 //ノックバック
-void PlayerBase::Knock_back() {
+void PlayerBase::Knock_back_Move() {
 
 	if (knock_back_start < knock_back_end) {
 		if (direction_state_mode == Direction_State::RIGHT) {
@@ -446,26 +447,27 @@ void PlayerBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack)
 
 void PlayerBase::Player_move(const float deltaTime)
 {
-	if (!invincible_flag) {
-		if (!s_del_flag) {
-			//プレイヤー:移動(キーボード) & ゲームパッド十字キー
-			if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
-				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-				model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
-				col.sword_box.Center = model->GetRotation();
-				direction_state_mode = Direction_State::RIGHT;
-				SetAnimation(model, RUN);
-			}
-			if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left) {
-				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-				model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
-				col.sword_box.Center = model->GetRotation();
-				direction_state_mode = Direction_State::LEFT;
-				SetAnimation(model, RUN);
+	if (upper_state_mode == Upper_State::NOT_UPPER || lower_sate_mode == Lower_State::NOT_LOWER) {
+		if (!invincible_flag) {
+			if (!s_del_flag) {
+				//プレイヤー:移動(キーボード) & ゲームパッド十字キー
+				if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
+					model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+					model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
+					col.sword_box.Center = model->GetRotation();
+					direction_state_mode = Direction_State::RIGHT;
+					SetAnimation(model, RUN);
+				}
+				if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left) {
+					model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+					model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
+					col.sword_box.Center = model->GetRotation();
+					direction_state_mode = Direction_State::LEFT;
+					SetAnimation(model, RUN);
+				}
 			}
 		}
 	}
-	
 }
 
 void PlayerBase::Player_limit()
@@ -521,10 +523,12 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 	switch (upper_state_mode)
 	{
 	case Upper_State::NOT_UPPER:
-		if (lower_sate_mode == Lower_State::NOT_LOWER || upper_state_mode == Upper_State::NOT_UPPER) {
-			if (!s_del_flag) {
-				if (DXTK->KeyEvent->pressed.A || DXTK->GamePadEvent[0].y == GamePad::ButtonStateTracker::PRESSED) {
-					upper_state_mode = Upper_State::UPPER_ATTACK;
+		if (lower_sate_mode == Lower_State::NOT_LOWER) {
+			if (upper_state_mode == Upper_State::NOT_UPPER) {
+				if (!s_del_flag) {
+					if (DXTK->KeyEvent->pressed.A || DXTK->GamePadEvent[0].y == GamePad::ButtonStateTracker::PRESSED) {
+						upper_state_mode = Upper_State::UPPER_ATTACK;
+					}
 				}
 			}
 		}
@@ -598,10 +602,12 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 	switch (lower_sate_mode)
 	{
 	case Lower_State::NOT_LOWER:
-		if (lower_sate_mode == Lower_State::NOT_LOWER || upper_state_mode == Upper_State::NOT_UPPER) {
-			if (!s_del_flag) {
-				if (DXTK->KeyEvent->pressed.S || DXTK->GamePadEvent[0].x == GamePad::ButtonStateTracker::PRESSED) {
-					lower_sate_mode = Lower_State::LOWER_ATTACK;
+		if (lower_sate_mode == Lower_State::NOT_LOWER) {
+			if (upper_state_mode == Upper_State::NOT_UPPER) {
+				if (!s_del_flag) {
+					if (DXTK->KeyEvent->pressed.S || DXTK->GamePadEvent[0].x == GamePad::ButtonStateTracker::PRESSED) {
+						lower_sate_mode = Lower_State::LOWER_ATTACK;
+					}
 				}
 			}
 		}
@@ -634,10 +640,13 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 
 //止め
 void PlayerBase::Sword_Delivery(const float deltaTime) {
+	//仮死状態の敵が1体以上で可能
+	//if (enemy->GetDeathEnemyCount() >= 1) {
+		if (DXTK->KeyEvent->pressed.D || DXTK->GamePadEvent[0].rightShoulder == GamePad::ButtonStateTracker::PRESSED) {
+			s_del_flag = true;
+		}
+	//}
 
-	if (DXTK->KeyEvent->pressed.D||DXTK->GamePadEvent[0].rightShoulder==GamePad::ButtonStateTracker::PRESSED) {
-		s_del_flag = true;
-	}
 
 	if (s_del_flag) {
 
@@ -699,10 +708,12 @@ void PlayerBase::Frip(const float deltaTime) {
 //回避
 void PlayerBase::Avoidance(const float deltaTime) {
 
-	if (!jump_flag_ || !s_del_flag) {
-		if (!avoidance_flag) {
-			if (DXTK->KeyEvent->pressed.Z || DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
-				avoidance_flag = true;
+	if (!jump_flag_) {
+		if (!s_del_flag) {
+			if (!avoidance_flag) {
+				if (DXTK->KeyEvent->pressed.Z || DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
+					avoidance_flag = true;
+				}
 			}
 		}
 	}
@@ -734,13 +745,10 @@ void PlayerBase::Avoidance(const float deltaTime) {
 bool PlayerBase::IsAttack() {
 
 	if (attack_flag ) {
-
-
 		return true;
 	}
 	return false;
 }
-
 
 void PlayerBase::Debug() {
 	//if (invincible_flag) {

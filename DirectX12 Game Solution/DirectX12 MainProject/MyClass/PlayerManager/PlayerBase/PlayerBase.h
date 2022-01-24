@@ -259,7 +259,7 @@ private:
 	int attack_type;
 
 	//ノックバック
-	void Knock_back();
+	void Knock_back_Move();
 
 	bool knock_back_flag;
 	float knock_back_start;
@@ -330,4 +330,6 @@ private:
 
 	float frip_start = 0.0f;
 	float frip_end = 0.783f;
+
+
 };
