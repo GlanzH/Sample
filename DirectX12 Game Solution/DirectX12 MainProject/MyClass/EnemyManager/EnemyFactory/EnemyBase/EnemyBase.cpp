@@ -1,39 +1,30 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
-#include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/ResourceManager/ResourceManager.h"
 #include "EnemyBase.h"
 
-EnemyBase::EnemyBase()
+bool EnemyBase::Initialize(
+	std::string tag, double init_wait,double stop_pos, std::string time_stop_flag,
+	double speed,std::string direct ,std::string posture, int hp
+)
 {
-}
-
-bool EnemyBase::Initialize(std::string tag, int init_wait, bool time_stop_flag, int hp)
-{
-	enemy_tag   = tag;
-	enemy_hp    = hp;
-
+	enemy_tag     = tag;
+	enemy_hp      = hp;
+	enemy_stop    = stop_pos;
+	enemy_direct  = direct;
+	enemy_posture = posture;
+	move_speed    = speed;
 	max_init_wait = init_wait;
+
 
 	enemy_stop_flag = time_stop_flag;
 	retreat_flag    = false;
-	
-	//hit          = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
-	//normal_die   = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die/die.efk");
-	//special_die  = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die2/die2.efk");
-	star		 = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
-	love		 = ResourceManager::Instance().LoadEffect(L"Effect/AudienceEffect/heart/heart.efk");
 
 	return true;
 }
 
 void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
 	position = initial_position;
-
-	D3DMATERIAL9 material;
-	material.Diffuse = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.0f);
-	material.Ambient = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
-	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 
 	//!アニメーションモデルの作成
 	anim_model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
@@ -51,8 +42,20 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 		col.box.Extents.z * box_size
 	);
 
+	D3DMATERIAL9 material;
+	material.Diffuse = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.0f);
+	material.Ambient = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
+	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
+
 	collision->SetMaterial(material);
 	col.box.Center = position;
+
+	hit = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
+	//special_die  = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die2/die2.efk");
+	star = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
+	love = ResourceManager::Instance().LoadEffect(L"Effect/AudienceEffect/heart/heart.efk");
+	del = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/delete/delete.efk");
+	normal_die = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die/die.efk");
 
 	explode.LoadAssets(initial_position.x);
 
@@ -67,7 +70,7 @@ void EnemyBase::LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	material.Ambient = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 
-	//!アニメーションモデルの作成
+	//!モデルの作成
 	model = DX9::Model::CreateFromFile(DXTK->Device9, model_name);
 	model->SetPosition(position);
 
@@ -79,7 +82,7 @@ void EnemyBase::LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 		DXTK->Device9,
 		col.box.Extents.x * box_size,
 		col.box.Extents.y * box_size,
-		col.box.Extents.z * box_size
+		col.box.Extents.z
 	);
 
 	collision->SetMaterial(material);
@@ -98,8 +101,6 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool
 	if (position.z < 15.0f) {
 		explode.Update(position, delta);
 	}
-
-	StatusManager::Instance().CalcAudience(delta);
 
 	return 0;
 }
@@ -123,14 +124,14 @@ void EnemyBase::AdjustAnimCollision() {
 void EnemyBase::HitEffect() {
 	//if (enemy_hp > 0) {
 
-	//if (!DX12Effect.CheckAlive(hit_handle))
-	//	hit_handle = DX12Effect.Play(hit, position);
+	if (!DX12Effect.CheckAlive(hit_handle))
+		hit_handle = DX12Effect.Play(hit, SimpleMath::Vector3(position.x , position.y ,200));
 	//}
 }
 
 void EnemyBase::NormalDeathEffect() {
-	//if (enemy_hp <= 0)
-	//	normal_die_handle = DX12Effect.Play(normal_die, position);
+	if (!DX12Effect.CheckAlive(die_handle))
+ 		die_handle = DX12Effect.Play(normal_die, position);
 }
 
 void EnemyBase::SpecialDeathEffect() {
@@ -138,8 +139,13 @@ void EnemyBase::SpecialDeathEffect() {
 	//	special_die_handle = DX12Effect.Play(special_die, position);
 }
 
+void EnemyBase::AutoDestoryEffect() {
+	if (!DX12Effect.CheckAlive(del_handle))
+		del_handle = DX12Effect.Play(del, position);
+}
+
 void EnemyBase::TimeStopDecision() {
-	if (enemy_stop_flag)
+	if (enemy_stop_flag == "T")
 		do_time_stop_flag = true;
 }
 
@@ -148,6 +154,9 @@ void EnemyBase::Retreat() {
 }
 
 void EnemyBase::IsRetreat() {
+	if(enemy_hp <= 0)
+		return;
+
 	if (retreat_flag && retreat_count < max_retreat) {
 		if (player_pos.x < position.x)
 			position.x += retreat_dist * delta;
@@ -178,6 +187,29 @@ void EnemyBase::IsDamage() {
 			damage_frame = 0.0f;
 			damage_flag = false;
 		}
+	}
+}
+
+void EnemyBase::TemporaryDeath(float max_death) {
+	if (enemy_hp <= 0) {
+		temporary_death_flag = true;
+
+		if (!DX12Effect.CheckAlive(star_handle))
+			star_handle = DX12Effect.Play(star, position + SimpleMath::Vector3(0, 8, 0));
+	}
+	else {
+		temporary_death_flag = false;
+	}
+	if (DXTK->KeyEvent->pressed.X) {
+		//仮死状態解除するやつ
+		DX12Effect.Stop(star_handle);
+		enemy_hp = 1;
+		death_frame = 0.0f;
+		temporary_death_flag = false;
+	}
+
+	if (DXTK->KeyEvent->pressed.C) {
+		DX12Effect.Stop(star_handle);
 	}
 }
 

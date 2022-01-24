@@ -12,16 +12,11 @@ PlayerBase::PlayerBase() {
 
 	//攻撃の時間
 	attack_flag = false;
-	attack_zeit = 0.0f;
+	attack_time = 0.0f;
 	attack_zeit_max = 0.0f;
 
-	cannot_other = CANNOT_OTHER_ATTACK::NOMAL_STATE;
-	canot_move_state_mode = CANNOT_MOVE_STATE::MOVE;
 	direction_state_mode = Direction_State::RIGHT;
-
 	under_attack_state_mode = UNDER_ATTACK_STATE::NOMAL;
-
-	burst_state_mode = BURST_STATE::NOT_BURST;
 
 
 	//無敵時間
@@ -45,34 +40,10 @@ PlayerBase::PlayerBase() {
 
 	//アピール
 	appeil_flag = false;
-
 	appeil_time = 0.0f;
-	appeil_time_max = 0.0f;
-
-	appeil_cool_time = 0.0f;
-	appeil_cool_time_max = 0.0f;
-
 	appeil_cool_flag = false;
-
 	//必殺技
 	deathbrow_flag = false;//必殺技発動フラグ
-
-	deathbrow_attack = false;//必殺技の当たり判定
-
-	specialmove_time = 0.0f;
-	specialmove_time_max = 0.0f;
-
-
-	Transparency = 0;
-	Blackout = 0;
-	Blackout_max = 0;
-	Blackout_flag = false;
-
-	//明転
-	bright_flag = false;
-	Ming_Turn = 0;
-
-
 
 
 
@@ -83,6 +54,7 @@ PlayerBase::PlayerBase() {
 	avoidance_flag = false;
 	avoidance_start = 0.0f;
 	avoidance_max = 0.0f;
+	avoidance_move = 0.0f;
 
 
 	//ノックバック
@@ -91,15 +63,27 @@ PlayerBase::PlayerBase() {
 	knock_back_end = 0.0f;
 	time_other = 0.0f;
 
-	first_burst_flag  = false;
-	first_burst_start = 0.0f;
-	first_burst_end   = 0.0f;
+	//起き上がる
+	rize_end   = 0.0f;
 
 
+	damage_mode_state = Damage_Mode::NOMAL_STATE;
+
+
+
+	//上段(変数宣言)
+	upper_state_mode = Upper_State::NOT_UPPER;
+	upper_start = 0.0f;
+	upper_end = 0.383f;
+
+	//下段(変数宣言)
+	lower_sate_mode = Lower_State::NOT_LOWER;
+	lower_start = 0.0f;
+	lower_end = 0.333f;
 }
 
 void PlayerBase::OnDeviceLost() {
-	DX12Effect.Reset();
+	//DX12Effect.Reset();
 }
 
 bool PlayerBase::Initialize()
@@ -118,7 +102,7 @@ bool PlayerBase::Initialize()
 
 	//攻撃の時間
 	attack_flag = false;
-	attack_zeit = 0.0f;
+	attack_time = 0.0f;
 	attack_zeit_max = 0.03309f;
 
 	//無敵時間
@@ -130,6 +114,8 @@ bool PlayerBase::Initialize()
 	avoidance_flag = false;
 	avoidance_start = 0.0f;
 	avoidance_max = 0.483f;
+	avoidance_move = -50.0f;
+
 
 	//攻撃の種類
 	attack_type = 0;
@@ -138,69 +124,43 @@ bool PlayerBase::Initialize()
 
 	//アピール
 	appeil_flag = false;
-
 	appeil_time = 0.0f;
-	appeil_time_max = 5.0f;
-
-	appeil_cool_time = 0.0f;
-	appeil_cool_time_max = 1.0f;
-
 	appeil_cool_flag = false;
-
 	//必殺技
 	deathbrow_flag = false;//必殺技発動フラグ
 
-	deathbrow_attack = false;//必殺技の当たり判定
-
-	specialmove_time = 0.0f;
-	specialmove_time_max = 4.0f;
-
-
-
-
-	//暗転
-	Transparency = 0;
-	Blackout = 15;
-	Blackout_max = 255;
-	Blackout_flag = false;
-
-	//明転
-	bright_flag = false;
-	Ming_Turn = 55;
 
 	//ノックバック
-	knock_back_flag = false;
+	knock_back_flag  = false;
 	knock_back_start = 0.0f;
-	knock_back_end = 0.2f;
-	time_other = 0.0f;
+	knock_back_end   = 0.7f;
+	time_other       = 0.0f;
 
-	//三連撃
-	burst_state_mode = BURST_STATE::NOT_BURST;
+	//起き上がる
+	rize_end   = 1.733f;
 
-	//First
-	first_burst_flag = false;
-	first_burst_start = 0.0f;
-	first_burst_end = 0.383f;
 
-	//Second
-	second_burst_flag = false;
-	second_burst_start = 0.0f;
-	second_burst_end = 0.333f;
+	damage_mode_state = Damage_Mode::NOMAL_STATE;
 
-	//Third
-	third_burst_flag = false;
-	third_burst_start = 0.0f;
-	third_burst_end = 0.650f;
+
+
+	//上段(変数宣言)
+	upper_state_mode = Upper_State::NOT_UPPER;
+	upper_start      = 0.0f;
+	upper_end        = 0.650f;
+
+	//下段(変数宣言)
+	lower_sate_mode = Lower_State::NOT_LOWER;
+	lower_start     = 0.0f;
+	lower_end       = 0.750f;
 
 
 
 
 	direction_state_mode = Direction_State::RIGHT;
 
-	canot_move_state_mode = CANNOT_MOVE_STATE::MOVE;
 
-	cannot_other = CANNOT_OTHER_ATTACK::NOMAL_STATE;
-
+	frip_state_mode = Frip_State::NOT_FRIP;
 
 
 	//プレイヤーのSE ファイル読み込み
@@ -213,7 +173,7 @@ bool PlayerBase::Initialize()
 
 void PlayerBase::LoadAssets()
 {
-	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v0116_.X");
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v0121_.X");
 	model->SetScale(model_scale);
 	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
@@ -266,12 +226,16 @@ void PlayerBase::LoadAssets()
 	//フォント
 	font = DX9::SpriteFont::CreateDefaultFont(DXTK->Device9);
 
-	deathbrow_sprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"DeathBrowBG\\deathbrow_bg.png");
 
 	//エフェクト　ファイル読み込み
-	DX12Effect.Create(L"Effect\\SwordEffect\\one\\first_attack.efk","first");
-	DX12Effect.Create(L"Effect\\SwordEffect\\two\\second_attack.efk","second");
-	DX12Effect.Create(L"Effect\\SwordEffect\\three\\third_attack.efk","third");
+	DX12Effect.Create(L"Effect\\SwordEffect\\upper_attack\\upper_attack.efk","upper");
+	DX12Effect.Create(L"Effect\\SwordEffect\\lower_attack\\lower_attack.efk","lower");
+
+	//エフェクト　止め
+	DX12Effect.Create(L"Effect\\PlayerEffect\\stop\\stop.efk", "clincher");
+
+	//エフェクト　弾かれる
+	DX12Effect.Create(L"Effect\\PlayerEffect\\be_played\\be_played.efk", "frip");
 
 	//必殺技のエフェクト
 	DX12Effect.Create(L"Effect\\DeathBlow_Effect\\deathblow\\deathblow.efk", "deathblow_effect");
@@ -296,12 +260,17 @@ int PlayerBase::Update(const float deltaTime)
 	//ランバージャック(移動制限)
 	Player_limit();
 
+	//振り下ろし
+	Swing_Down(deltaTime);
 
-	////プレイヤーの攻撃(弱攻撃、ダッシュ攻撃)
-	//Player_Attack_Three(deltaTime);
+	//切り上げ
+	Reverse_Slash(deltaTime);
 
-	//三連撃
-	Burst_Attack(deltaTime);
+	//止め
+	Sword_Delivery(deltaTime);
+
+	//弾かれる
+	Frip(deltaTime);
 
 	//回避
 	Avoidance(deltaTime);
@@ -311,9 +280,6 @@ int PlayerBase::Update(const float deltaTime)
 
 	//ノックバック
 	Knock_Back();
-
-	StatusManager::Instance().Update(deltaTime);
-
 
 
 	//攻撃の向き
@@ -330,10 +296,10 @@ int PlayerBase::Update(const float deltaTime)
 
 	//攻撃判定の時間
 	if (attack_flag)
-		attack_zeit += deltaTime;
-	if (attack_zeit >= attack_zeit_max) {
+		attack_time += deltaTime;
+	if (attack_time >= attack_zeit_max) {
 		attack_flag = false;
-		attack_zeit = 0.0f;
+		attack_time = 0.0f;
 	}
 
 	time_other = deltaTime;
@@ -385,7 +351,7 @@ void PlayerBase::OnCollisionEnter(std::string tag) {
 
 		Knock_Back();
 
-		StatusManager::Instance().AddAudience(reduce_num);
+		StatusManager::Instance().SetAddScore(reduce_num);
 	}
 }
 
@@ -405,7 +371,7 @@ void PlayerBase::OnWeaponCollisionEnter(std::string tag) {
 		if (tag == "MB")
 			reduce_num = mb_weapon_reduce_num;
 
-		StatusManager::Instance().AddAudience(reduce_num);
+		StatusManager::Instance().SetAddScore(reduce_num);
 	}
 }
 
@@ -422,24 +388,45 @@ void PlayerBase::Invincible(const float deltaTime)
 
 void PlayerBase::Knock_Back() {
 
-	if (knock_back_flag) {
+	switch (damage_mode_state) {
+	case Damage_Mode::NOMAL_STATE:
+		if (knock_back_flag) {
+			damage_mode_state = Damage_Mode::KNOCK_BACK;
+		}
+		break;
+	case Damage_Mode::KNOCK_BACK:
 		knock_back_start += time_other;
-		if (knock_back_start < knock_back_end) {
-			SetAnimation(model, DAMAGE);
-			if (direction_state_mode == Direction_State::RIGHT) {
-				model->Move(0, 0, 80.0f * time_other);
-			}
-			else if (direction_state_mode == Direction_State::LEFT) {
-				model->Move(0, 0, 80.0f * time_other);
-			}
+		SetAnimation(model, DAMAGE1);
+
+		invincible_flag = true;
+
+		Knock_back();
+		
+		Rize();
+		break;
+	}
+}
+
+//ノックバック
+void PlayerBase::Knock_back() {
+
+	if (knock_back_start < knock_back_end) {
+		if (direction_state_mode == Direction_State::RIGHT) {
+			model->Move(0, 0, 30.0f * time_other);
+		}
+		else if (direction_state_mode == Direction_State::LEFT) {
+			model->Move(0, 0, 30.0f * time_other);
 		}
 	}
+}
 
-	if (knock_back_start >= knock_back_end) {
-		knock_back_flag = false;
+//起き上がる
+void PlayerBase::Rize() {
+	if (knock_back_start >= rize_end) {
 		knock_back_start = 0.0f;
+		knock_back_flag = false;
+		damage_mode_state = Damage_Mode::NOMAL_STATE;
 	}
-
 }
 
 void PlayerBase::OnParryArea() {
@@ -460,7 +447,7 @@ void PlayerBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack)
 void PlayerBase::Player_move(const float deltaTime)
 {
 	if (!invincible_flag) {
-		if (canot_move_state_mode == CANNOT_MOVE_STATE::MOVE) {
+		if (!s_del_flag) {
 			//プレイヤー:移動(キーボード) & ゲームパッド十字キー
 			if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
 				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
@@ -478,6 +465,7 @@ void PlayerBase::Player_move(const float deltaTime)
 			}
 		}
 	}
+	
 }
 
 void PlayerBase::Player_limit()
@@ -495,12 +483,14 @@ void PlayerBase::Player_limit()
 void PlayerBase::Player_jump(const float deltaTime) {
 	//ジャンプ
 	if (!invincible_flag) {
-		if (!jump_flag_) {
-			if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
-				jump_start_flag = true;
-				jump_flag_ = true;
-				jump_time_ = 0;
-				jump_start_v_ = model->Position.y;
+		if (!s_del_flag) {
+			if (!jump_flag_) {
+				if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
+					jump_start_flag = true;
+					jump_flag_ = true;
+					jump_time_ = 0;
+					jump_start_v_ = model->Position.y;
+				}
 			}
 		}
 	}
@@ -526,119 +516,191 @@ void PlayerBase::Player_jump(const float deltaTime) {
 	}
 }
 
-
-//三連撃
-void PlayerBase::Burst_Attack(const float deltaTime) {
-
-	switch (burst_state_mode)
+//降り下ろし
+void PlayerBase::Swing_Down(const float deltaTime) {
+	switch (upper_state_mode)
 	{
-	case BURST_STATE::NOT_BURST:
-		Not_Burst(deltaTime);
+	case Upper_State::NOT_UPPER:
+		if (lower_sate_mode == Lower_State::NOT_LOWER || upper_state_mode == Upper_State::NOT_UPPER) {
+			if (!s_del_flag) {
+				if (DXTK->KeyEvent->pressed.A || DXTK->GamePadEvent[0].y == GamePad::ButtonStateTracker::PRESSED) {
+					upper_state_mode = Upper_State::UPPER_ATTACK;
+				}
+			}
+		}
 		break;
-	case BURST_STATE::FIRST:
-		First_Burst(deltaTime);
+	case Upper_State::UPPER_ATTACK:
+
+
+		upper_start += deltaTime;
+		SetAnimation(model, ACT1);
+
+		//当たり判定
+		//エフェクト
+		attack_flag = true;
+		if (IsAttack()) {
+			if (direction_state_mode == Direction_State::RIGHT) {
+
+				DX12Effect.PlayOneShot("upper", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
+			}
+			else if (direction_state_mode == Direction_State::LEFT) {
+				DX12Effect.PlayOneShot("upper", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
+				DX12Effect.SetRotation("upper", Vector3(0.0f, 180.0f, 0.0f));			
+			}
+
+		}		
+
+		if (upper_start >= upper_end) {
+			upper_state_mode = Upper_State::NOT_UPPER;
+			upper_start = 0.0f;
+			model->SetTrackPosition(ACT1, 0.0);
+
+			u_start = 0.0f;
+		}
+
 		break;
-	case BURST_STATE::SECOND:
-		Second_Burst(deltaTime);
+	}
+}
+
+void PlayerBase::Upper_Effect() {
+
+	if (direction_state_mode == Direction_State::RIGHT) {
+		if (DX12Effect.CheckAlive("upper")) {
+			DX12Effect.Stop("upper");
+			DX12Effect.PlayOneShot("upper", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
+
+		}
+		else
+		{
+			DX12Effect.PlayOneShot("upper", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
+			
+
+		}
+		DX12Effect.SetRotation("upper", Vector3(0.0f, 0.0f, 0.0f));
+	}
+	else if (direction_state_mode == Direction_State::LEFT) {
+		if (DX12Effect.CheckAlive("upper")) {
+			DX12Effect.Stop("upper");
+			DX12Effect.PlayOneShot("upper", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
+		}
+		else
+		{
+			DX12Effect.PlayOneShot("upper", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
+		}
+		DX12Effect.SetRotation("upper", Vector3(0.0f, 180.0f, 0.0f));
+	}
+
+
+}
+
+//切り上げ
+void PlayerBase::Reverse_Slash(const float deltaTime) {
+	switch (lower_sate_mode)
+	{
+	case Lower_State::NOT_LOWER:
+		if (lower_sate_mode == Lower_State::NOT_LOWER || upper_state_mode == Upper_State::NOT_UPPER) {
+			if (!s_del_flag) {
+				if (DXTK->KeyEvent->pressed.S || DXTK->GamePadEvent[0].x == GamePad::ButtonStateTracker::PRESSED) {
+					lower_sate_mode = Lower_State::LOWER_ATTACK;
+				}
+			}
+		}
 		break;
-	case BURST_STATE::THIRD:
-		Third_Burst(deltaTime);
+	case Lower_State::LOWER_ATTACK:
+		lower_start += deltaTime;
+		SetAnimation(model, ACT2);
+
+		attack_flag = true;
+		if (IsAttack()) {
+			if (direction_state_mode == Direction_State::RIGHT) {
+				DX12Effect.PlayOneShot("lower", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
+				DX12Effect.SetRotation("lower", Vector3(0.0f, 0.0f, 0.0f));
+			}
+			else if (direction_state_mode == Direction_State::LEFT) {
+				DX12Effect.PlayOneShot("lower", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
+				DX12Effect.SetRotation("lower", Vector3(0.0f, 180.0f, 0.0f));
+			}
+		}
+
+		if (lower_start >= lower_end) {
+			lower_sate_mode = Lower_State::NOT_LOWER;
+			lower_start = 0.0f;
+			model->SetTrackPosition(ACT2, 0.0);
+		}
+
 		break;
 	}
 }
 
-//最初(三連撃開始)
-void PlayerBase::Not_Burst(const float deltaTime) {
-	if (DXTK->KeyEvent->pressed.S)
-		burst_state_mode = BURST_STATE::FIRST;
+//止め
+void PlayerBase::Sword_Delivery(const float deltaTime) {
 
-}
-//一撃目
-void PlayerBase::First_Burst(const float deltaTime) {
-	SetAnimation(model, ACT1);
-	first_burst_start += deltaTime;
-
-	attack_flag = true;
-	if (IsAttack()) {
-
+	if (DXTK->KeyEvent->pressed.D||DXTK->GamePadEvent[0].rightShoulder==GamePad::ButtonStateTracker::PRESSED) {
+		s_del_flag = true;
 	}
 
-	if (first_burst_start >= 0.15f && DXTK->KeyEvent->pressed.S) {
-		first_burst_flag = true;
-	}
-	if (first_burst_start >= first_burst_end && first_burst_flag) {
-		burst_state_mode = BURST_STATE::SECOND;
-		model->SetTrackPosition(ACT1, 0.0);
-		first_burst_start = 0.0f;
-		first_burst_flag  = false;
-	}
-	else if (first_burst_start >= first_burst_end) {
-		burst_state_mode = BURST_STATE::NOT_BURST;
-		model->SetTrackPosition(ACT1, 0.0);
-		first_burst_start = 0.0f;
-		first_burst_flag = false;
-	}
+	if (s_del_flag) {
 
-}
+		if (direction_state_mode == Direction_State::RIGHT) {
+			SetAnimation(model, FINISH);
+			
+		}
+		else if (direction_state_mode == Direction_State::LEFT) {
+			SetAnimation(model, FINISH);
+			model->SetRotation(0.0f, XMConvertToRadians(-90.0f), 0.0f);
 
-//二撃目
-void PlayerBase::Second_Burst(const float deltaTime) {
-	SetAnimation(model, ACT2);
-	second_burst_start += deltaTime;
+		}
 
-	attack_flag = true;
-	if (IsAttack()) {
-
+		DX12Effect.PlayOneShot("clincher", Vector3(player_pos.x, player_pos.y, player_pos.z));
+		s_del_start += deltaTime;
 	}
 
-
-	if (second_burst_start >= 0.15f && DXTK->KeyEvent->pressed.S)
-		second_burst_flag = true;
-
-	if (second_burst_start >= second_burst_end && second_burst_flag) {
-		burst_state_mode = BURST_STATE::THIRD;
-		model->SetTrackPosition(ACT2, 0.0);
-
-		second_burst_start = 0.0f;
-		second_burst_flag = false;
-	}
-	else if (second_burst_start >= second_burst_end) {
-		burst_state_mode = BURST_STATE::NOT_BURST;
-		model->SetTrackPosition(ACT2, 0.0);
-		second_burst_start = 0.0f;
-		second_burst_flag = false;
-	}
-	
-}
-
-//Third
-void PlayerBase::Third_Burst(const float deltaTime) {
-	SetAnimation(model, ACT3);
-	third_burst_start += deltaTime;
-
-	attack_flag = true;
-	if (IsAttack()) {
-
-	}
-
-
-	if (third_burst_start >= 0.15f && DXTK->KeyEvent->pressed.S)
-		third_burst_flag = true;
-
-	if (third_burst_start >= third_burst_end) {
-		burst_state_mode = BURST_STATE::NOT_BURST;
-		model->SetTrackPosition(ACT3, 0.0);
-		third_burst_start = 0.0f;
-		third_burst_flag = false;
+	if (s_del_start >= s_del_end) {
+		s_del_flag = false;
+		s_del_start = 0.0f;
+		model->SetTrackPosition(FINISH, 0.0);
 	}
 }
 
+//弾かれる
+void PlayerBase::Frip(const float deltaTime) {
+
+	switch (frip_state_mode)
+	{
+	case Frip_State::NOT_FRIP:
+		if (DXTK->KeyEvent->pressed.F) {
+			frip_state_mode = Frip_State::ATTACK_TEST;
+		}
+		break;
+	case Frip_State::ATTACK_TEST:
+		SetAnimation(model, ACT1);
+		not_attack_start += deltaTime;
+
+		if (not_attack_start >= not_attack_end) {
+			model->SetTrackPosition(ACT1, 0.0);
+			not_attack_start = 0.0f;
+			frip_state_mode = Frip_State::FRIP;
+		}
+		break;
+	case Frip_State::FRIP:
+		SetAnimation(model, REBOUND);
+		DX12Effect.PlayOneShot("frip", Vector3(player_pos.x, player_pos.y, player_pos.z));
+		frip_start += deltaTime;
+
+		if (frip_start >= frip_end) {
+			model->SetTrackPosition(REBOUND, 0.0);
+			frip_start = 0.0f;
+			frip_state_mode = Frip_State::NOT_FRIP;
+		}
+		break;
+	}
+}
 
 //回避
 void PlayerBase::Avoidance(const float deltaTime) {
 
-	if (!jump_flag_){
-		if(!avoidance_flag) {
+	if (!jump_flag_ || !s_del_flag) {
+		if (!avoidance_flag) {
 			if (DXTK->KeyEvent->pressed.Z || DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
 				avoidance_flag = true;
 			}
@@ -648,15 +710,24 @@ void PlayerBase::Avoidance(const float deltaTime) {
 	if (avoidance_flag) {
 		avoidance_start += deltaTime;
 		
-		model->Move(0.0f, 0.0, -100.0f * deltaTime);
+		model->Move(0.0f, 0.0, avoidance_move * deltaTime);
 		SetAnimation(model, ROLL);
 		invincible_flag = true;
+
+		//減速(何かに使うかも)
+		//avoidance_move += 70 * deltaTime;
+		//if (avoidance_move >= 0.0f) {
+		//	avoidance_move = 0;
+		//}
+
 	}
 
 	if (avoidance_start >= avoidance_max) {
 		avoidance_start = 0.0f;
 		avoidance_flag = false;
 		model->SetTrackPosition(ROLL, 0.0);
+
+		avoidance_move = -50.0f;
 	}
 }
 
@@ -672,9 +743,18 @@ bool PlayerBase::IsAttack() {
 
 
 void PlayerBase::Debug() {
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(1000.0f, 120.0f),
-	//	DX9::Colors::BlueViolet,
-	//	L"突き攻撃のパワー %f", 
-	//);	
+	//if (invincible_flag) {
+	//	DX9::SpriteBatch->DrawString(font.Get(),
+	//		SimpleMath::Vector2(1100.0f, 120.0f),
+	//		DX9::Colors::BlueViolet,
+	//		L"ON"
+	//	);
+	//}
+	//else {
+	//	DX9::SpriteBatch->DrawString(font.Get(),
+	//		SimpleMath::Vector2(1100.0f, 120.0f),
+	//		DX9::Colors::BlueViolet,
+	//		L"OFF"
+	//	);
+	//}
 }

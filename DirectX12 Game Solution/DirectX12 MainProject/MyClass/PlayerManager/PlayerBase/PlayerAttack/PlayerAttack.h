@@ -11,23 +11,19 @@ using namespace DirectX;
 class PlayerAttack
 {
 public:
-	 PlayerAttack();
-	 virtual ~PlayerAttack() = 0;
-	
-	 void Initialize();
-	 void LoadAssets();
+	PlayerAttack();
+	virtual ~PlayerAttack() = 0;
 
+	void Initialize();
+	void LoadAssets();
 
-	void Player_Attack(const float deltaTime);
+	//ç~ÇËâ∫ÇÎÇµ
+	void Swing_Down(DX9::SKINNEDMODEL model, const float deltaTime);
+	//êÿÇËè„Ç∞
+	void Reverse_Slash(DX9::SKINNEDMODEL model, const float deltaTime);
 
 private:
-	//éOòAåÇ
-	enum  BURST_STATE
-	{
-		FIRST,
-		SECOND,
-		THIRD
-	};
-	BURST_STATE burst_state_mode;
+
+
 
 };

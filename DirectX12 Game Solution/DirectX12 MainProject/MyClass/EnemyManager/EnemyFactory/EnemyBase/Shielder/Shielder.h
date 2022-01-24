@@ -3,7 +3,6 @@
 
 class Shielder : public EnemyBase {
 public:
-	bool Initialize(std::string tag, int init_wait, bool time_stop_flag, int hp);
 	void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 	int  Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 
@@ -30,7 +29,6 @@ private:
 	float wait_frame = 0.0f;
 	const float max_wait = 10.0f;
 
-	float death_frame = 0.0f;
 	const float max_death = 2.0f;
 
 	enum class Motion {
@@ -50,7 +48,7 @@ private:
 	};
 
 	enum Direction {
-		LIGHT,
+		RIGHT,
 		LEFT
 	};
 

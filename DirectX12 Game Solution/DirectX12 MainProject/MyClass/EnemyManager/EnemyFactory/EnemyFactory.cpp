@@ -4,7 +4,6 @@
 #include "EnemyBase/MidBoss/MidBoss.h"
 #include "EnemyBase/Arrow/Arrow.h"
 
-
 EnemyFactory::EnemyFactory()
 {
 	//敵のステータス設定
@@ -30,10 +29,13 @@ EnemyFactory::EnemyFactory()
 
 }
 
-EnemyBase* EnemyFactory::Create(std::string tag,int init_wait, bool time_stop_flag,DirectX::SimpleMath::Vector3 position)
+EnemyBase* EnemyFactory::Create(
+	string tag,double init_wait,double stop_pos,string time_stop_flag,
+	 SimpleMath::Vector3 position,double speed,string direct,string posture
+)
 {
 	EnemyBase* enemy_factory = CreateProduct(tag,position);
-	enemy_factory->Initialize(tag,init_wait,time_stop_flag, SetHP(tag));
+	enemy_factory->Initialize(tag,init_wait,stop_pos,time_stop_flag, speed,direct, posture, SetHP(tag));
 
 	if(tag != "AR")
 		enemy_factory->LoadAsset(SetModel(tag), position);
@@ -43,7 +45,7 @@ EnemyBase* EnemyFactory::Create(std::string tag,int init_wait, bool time_stop_fl
 	return enemy_factory;
 }
 
-EnemyBase* EnemyFactory::CreateProduct(std::string tag, DirectX::SimpleMath::Vector3 position)
+EnemyBase* EnemyFactory::CreateProduct(string tag, SimpleMath::Vector3 position)
 {
 	EnemyBase* classes[] = 
 	{ 
@@ -62,7 +64,7 @@ EnemyBase* EnemyFactory::CreateProduct(std::string tag, DirectX::SimpleMath::Vec
 	return enemy;
 }
 
-LPCWSTR EnemyFactory::SetModel(std::string tag)
+LPCWSTR EnemyFactory::SetModel(string tag)
 {
 	LPCWSTR models[] = 
 	{ 
@@ -79,7 +81,7 @@ LPCWSTR EnemyFactory::SetModel(std::string tag)
 	return model_name;
 }
 
-int EnemyFactory::SetHP(std::string tag)
+int EnemyFactory::SetHP(string tag)
 {
 	int hps[] = 
 	{ 

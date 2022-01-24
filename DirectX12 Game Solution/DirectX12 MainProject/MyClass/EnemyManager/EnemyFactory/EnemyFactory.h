@@ -13,16 +13,21 @@
 
 #include "EnemyBase/EnemyBase.h"
 
+using namespace std;
+using namespace DirectX;
+
 class EnemyBase;
 
 class EnemyFactory {
 public:
 	EnemyFactory();
 	~EnemyFactory() {};
-	EnemyBase* Create(std::string tag, int init_wait, bool time_stop_flag,DirectX::SimpleMath::Vector3 position);
-	EnemyBase* CreateProduct(std::string tag,DirectX::SimpleMath::Vector3 position);
-	LPCWSTR SetModel(std::string tag);
-	int SetHP(std::string tag);
+	EnemyBase* Create(string tag,double init_wait,double stop_pos,std::string time_stop_flag,
+		              SimpleMath::Vector3 position,double speed,string direct, string posture);
+
+	EnemyBase* CreateProduct(string tag,SimpleMath::Vector3 position);
+	LPCWSTR SetModel(string tag);
+	int SetHP(string tag);
 
 
 private:
@@ -47,7 +52,7 @@ private:
 	};
 
 	enum EnemyHp {
-		ENEMY_HP    = 2,
+		ENEMY_HP    = 1,
 		MID_BOSS_HP = 4
 	};
 
