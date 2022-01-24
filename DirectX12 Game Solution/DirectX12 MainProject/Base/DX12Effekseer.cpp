@@ -239,7 +239,22 @@ void DX12Effekseer::CEffekseer::SetPosition(EFFECTHANDLE handle, Vector3 effectP
 {
 	Effekseer::Vector3D position = Effekseer::Vector3D(effectPosition.x, effectPosition.y, effectPosition.z);
 	m_manager->SetLocation(handle, position);
+}
 
+void DX12Effekseer::CEffekseer::SetPosition2D(std::string effectName, Vector2 effectPosition)
+{
+	auto c_pos = m_renderer->GetCameraPosition();
+
+	Effekseer::Vector3D position = Effekseer::Vector3D(effectPosition.x + c_pos.X, effectPosition.y + c_pos.Y, 0);
+	m_manager->SetLocation(m_handles[effectName], position);
+}
+
+void DX12Effekseer::CEffekseer::SetPosition2D(EFFECTHANDLE handle, Vector2 effectPosition)
+{
+	auto c_pos = m_renderer->GetCameraPosition();
+
+	Effekseer::Vector3D position = Effekseer::Vector3D(effectPosition.x + c_pos.X, effectPosition.y + c_pos.Y, 0);
+	m_manager->SetLocation(handle, position);
 }
 
 /**
