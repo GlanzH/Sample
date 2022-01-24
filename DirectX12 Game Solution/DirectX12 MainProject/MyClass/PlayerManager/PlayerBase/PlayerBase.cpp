@@ -160,7 +160,7 @@ bool PlayerBase::Initialize()
 	direction_state_mode = Direction_State::RIGHT;
 
 
-
+	frip_state_mode = Frip_State::NOT_FRIP;
 
 
 	//プレイヤーのSE ファイル読み込み
@@ -231,6 +231,12 @@ void PlayerBase::LoadAssets()
 	DX12Effect.Create(L"Effect\\SwordEffect\\upper_attack\\upper_attack.efk","upper");
 	DX12Effect.Create(L"Effect\\SwordEffect\\lower_attack\\lower_attack.efk","lower");
 
+	//エフェクト　止め
+	DX12Effect.Create(L"Effect\\PlayerEffect\\stop\\stop.efk", "clincher");
+
+	//エフェクト　弾かれる
+	DX12Effect.Create(L"Effect\\PlayerEffect\\be_played\\be_played.efk", "frip");
+
 	//必殺技のエフェクト
 	DX12Effect.Create(L"Effect\\DeathBlow_Effect\\deathblow\\deathblow.efk", "deathblow_effect");
 
@@ -260,8 +266,11 @@ int PlayerBase::Update(const float deltaTime)
 	//切り上げ
 	Reverse_Slash(deltaTime);
 
-	//納刀
-	Sword_Delivery();
+	//止め
+	Sword_Delivery(deltaTime);
+
+	//弾かれる
+	Frip(deltaTime);
 
 
 	//回避
@@ -410,8 +419,6 @@ void PlayerBase::Knock_back() {
 			model->Move(0, 0, 30.0f * time_other);
 		}
 	}
-
-
 }
 
 //起き上がる
@@ -440,7 +447,7 @@ void PlayerBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack)
 
 void PlayerBase::Player_move(const float deltaTime)
 {
-	if (!invincible_flag) {
+	if (!invincible_flag || !s_del_flag) {
 		//プレイヤー:移動(キーボード) & ゲームパッド十字キー
 		if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
 			model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
@@ -474,7 +481,7 @@ void PlayerBase::Player_limit()
 
 void PlayerBase::Player_jump(const float deltaTime) {
 	//ジャンプ
-	if (!invincible_flag) {
+	if (!invincible_flag || !s_del_flag) {
 		if (!jump_flag_) {
 			if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
 				jump_start_flag = true;
@@ -506,33 +513,41 @@ void PlayerBase::Player_jump(const float deltaTime) {
 	}
 }
 
-
 //降り下ろし
 void PlayerBase::Swing_Down(const float deltaTime) {
 	switch (upper_state_mode)
 	{
 	case Upper_State::NOT_UPPER:
-		if (lower_sate_mode == Lower_State::NOT_LOWER || upper_state_mode == Upper_State::NOT_UPPER) {
+		if (lower_sate_mode == Lower_State::NOT_LOWER || upper_state_mode == Upper_State::NOT_UPPER || !s_del_flag) {
 			if (DXTK->KeyEvent->pressed.A || DXTK->GamePadEvent[0].y == GamePad::ButtonStateTracker::PRESSED) {
 				upper_state_mode = Upper_State::UPPER_ATTACK;
 			}
 		}
 		break;
 	case Upper_State::UPPER_ATTACK:
-		Upper_Effect();
 
-		
 
 		upper_start += deltaTime;
 		SetAnimation(model, ACT1);
 
 		//当たり判定
+		//エフェクト
 		attack_flag = true;
 		if (IsAttack()) {
+			if (direction_state_mode == Direction_State::RIGHT) {
+
+				DX12Effect.PlayOneShot("upper", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
+			}
+			else if (direction_state_mode == Direction_State::LEFT) {
+				DX12Effect.PlayOneShot("upper", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
+				DX12Effect.SetRotation("upper", Vector3(0.0f, 180.0f, 0.0f));
+				
+
+			}
 
 		}
 
-		//エフェクト
+		
 
 		if (upper_start >= upper_end) {
 			upper_state_mode = Upper_State::NOT_UPPER;
@@ -577,14 +592,12 @@ void PlayerBase::Upper_Effect() {
 
 }
 
-
-
 //切り上げ
 void PlayerBase::Reverse_Slash(const float deltaTime) {
 	switch (lower_sate_mode)
 	{
 	case Lower_State::NOT_LOWER:
-		if (lower_sate_mode == Lower_State::NOT_LOWER || upper_state_mode == Upper_State::NOT_UPPER) {
+		if (lower_sate_mode == Lower_State::NOT_LOWER || upper_state_mode == Upper_State::NOT_UPPER || !s_del_flag) {
 			if (DXTK->KeyEvent->pressed.S || DXTK->GamePadEvent[0].x == GamePad::ButtonStateTracker::PRESSED) {
 				lower_sate_mode = Lower_State::LOWER_ATTACK;
 			}
@@ -597,30 +610,13 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 		attack_flag = true;
 		if (IsAttack()) {
 			if (direction_state_mode == Direction_State::RIGHT) {
-				if (DX12Effect.CheckAlive("lower")) {
-					DX12Effect.Stop("lower");
-					DX12Effect.PlayOneShot("lower", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
-
-				}
-				else
-				{
-					DX12Effect.PlayOneShot("lower", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
-
-				}
+				DX12Effect.PlayOneShot("lower", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
 				DX12Effect.SetRotation("lower", Vector3(0.0f, 0.0f, 0.0f));
 			}
 			else if (direction_state_mode == Direction_State::LEFT) {
-				if (DX12Effect.CheckAlive("lower")) {
-					DX12Effect.Stop("lower");
-					DX12Effect.PlayOneShot("lower", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
-				}
-				else
-				{
-					DX12Effect.PlayOneShot("lower", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
-				}
+				DX12Effect.PlayOneShot("lower", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
 				DX12Effect.SetRotation("lower", Vector3(0.0f, 180.0f, 0.0f));
 			}
-
 		}
 
 		if (lower_start >= lower_end) {
@@ -634,17 +630,75 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 
 }
 
-//納刀
-void PlayerBase::Sword_Delivery() {
+//止め
+void PlayerBase::Sword_Delivery(const float deltaTime) {
 
+	if (DXTK->KeyEvent->pressed.D||DXTK->GamePadEvent[0].rightShoulder==GamePad::ButtonStateTracker::PRESSED) {
+		s_del_flag = true;
+	}
+
+	if (s_del_flag) {
+
+		if (direction_state_mode == Direction_State::RIGHT) {
+			SetAnimation(model, FINISH);
+			
+		}
+		else if (direction_state_mode == Direction_State::LEFT) {
+			SetAnimation(model, FINISH);
+			model->SetRotation(0.0f, XMConvertToRadians(-90.0f), 0.0f);
+
+		}
+
+		DX12Effect.PlayOneShot("clincher", Vector3(player_pos.x, player_pos.y, player_pos.z));
+		s_del_start += deltaTime;
+	}
+
+	if (s_del_start >= s_del_end) {
+		s_del_flag = false;
+		s_del_start = 0.0f;
+		model->SetTrackPosition(FINISH, 0.0);
+	}
 }
 
+//弾かれる
+void PlayerBase::Frip(const float deltaTime) {
+
+	switch (frip_state_mode)
+	{
+	case Frip_State::NOT_FRIP:
+		if (DXTK->KeyEvent->pressed.F) {
+			frip_state_mode = Frip_State::ATTACK_TEST;
+		}
+		break;
+	case Frip_State::ATTACK_TEST:
+		SetAnimation(model, ACT1);
+		not_attack_start += deltaTime;
+
+		if (not_attack_start >= not_attack_end) {
+			model->SetTrackPosition(ACT1, 0.0);
+			not_attack_start = 0.0f;
+			frip_state_mode = Frip_State::FRIP;
+		}
+		break;
+	case Frip_State::FRIP:
+		SetAnimation(model, REBOUND);
+		DX12Effect.PlayOneShot("frip", Vector3(player_pos.x, player_pos.y, player_pos.z));
+		frip_start += deltaTime;
+
+		if (frip_start >= frip_end) {
+			model->SetTrackPosition(REBOUND, 0.0);
+			frip_start = 0.0f;
+			frip_state_mode = Frip_State::NOT_FRIP;
+		}
+		break;
+	}
+}
 
 //回避
 void PlayerBase::Avoidance(const float deltaTime) {
 
-	if (!jump_flag_){
-		if(!avoidance_flag) {
+	if (!jump_flag_ || !s_del_flag) {
+		if (!avoidance_flag) {
 			if (DXTK->KeyEvent->pressed.Z || DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
 				avoidance_flag = true;
 			}
@@ -690,19 +744,19 @@ void PlayerBase::Debug() {
 
 
 
-	if (invincible_flag) {
-		DX9::SpriteBatch->DrawString(font.Get(),
-			SimpleMath::Vector2(1100.0f, 120.0f),
-			DX9::Colors::BlueViolet,
-			L"ON"
-		);
-	}
-	else {
-		DX9::SpriteBatch->DrawString(font.Get(),
-			SimpleMath::Vector2(1100.0f, 120.0f),
-			DX9::Colors::BlueViolet,
-			L"OFF"
-		);
-	}
+	//if (invincible_flag) {
+	//	DX9::SpriteBatch->DrawString(font.Get(),
+	//		SimpleMath::Vector2(1100.0f, 120.0f),
+	//		DX9::Colors::BlueViolet,
+	//		L"ON"
+	//	);
+	//}
+	//else {
+	//	DX9::SpriteBatch->DrawString(font.Get(),
+	//		SimpleMath::Vector2(1100.0f, 120.0f),
+	//		DX9::Colors::BlueViolet,
+	//		L"OFF"
+	//	);
+	//}
 
 }

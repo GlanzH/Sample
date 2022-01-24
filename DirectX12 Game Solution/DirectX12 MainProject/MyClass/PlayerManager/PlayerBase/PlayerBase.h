@@ -302,16 +302,32 @@ private:
 
 
 	void Upper_Effect();
-	float u_start = 0.0f;
-	float u_end   = 0.0f;
+	float u_start;
+	float u_end;
 
-	float l_start = 0.0f;
-	float l_end = 0.0f;
+	float l_start;
+	float l_end;
 
 	//”[“
-	void Sword_Delivery();
+	void Sword_Delivery(const float deltaTime);
+	bool  s_del_flag = false;
+	float s_del_start = 0.0f;
+	float s_del_end = 2.0f;
 
 	//UŒ‚ ’e‚©‚ê‚é
-	void Frip();
+	void Frip(const float deltaTime);
+	
+	enum Frip_State
+	{
+		NOT_FRIP,
+		ATTACK_TEST,
+		FRIP
+	};
+	Frip_State frip_state_mode;
 
+	float not_attack_start = 0.0f;
+	float not_attack_end = 0.3f;
+
+	float frip_start = 0.0f;
+	float frip_end = 0.783f;
 };
