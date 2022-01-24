@@ -26,7 +26,7 @@ public:
 
 	bool Initialize();
 	void LoadAssets();
-	int Update(const float deltaTime);
+	int Update(const float deltaTime, bool temp);
 	void Render();
 
 	void OnCollisionEnter(std::string tag);
@@ -84,6 +84,8 @@ private:
 	//ƒmƒbƒNƒoƒbƒN
 	void Knock_Back();
 
+	//UŒ‚
+	void Attack_Relation(const float deltaTime);
 	//~‚è‰º‚ë‚µ
 	void Swing_Down(const float deltaTime);
 	//Ø‚èã‚°
@@ -309,7 +311,7 @@ private:
 	float l_end;
 
 	//”[“
-	void Sword_Delivery(const float deltaTime);
+	void Sword_Delivery(const float deltaTime, bool temp);
 	bool  s_del_flag = false;
 	float s_del_start = 0.0f;
 	float s_del_end = 2.0f;
@@ -330,6 +332,4 @@ private:
 
 	float frip_start = 0.0f;
 	float frip_end = 0.783f;
-
-
 };

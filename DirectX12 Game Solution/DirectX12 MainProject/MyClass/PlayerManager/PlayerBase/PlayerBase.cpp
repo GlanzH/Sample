@@ -246,7 +246,7 @@ void PlayerBase::LoadAssets()
 	DX12Effect.Create(L"Effect\\Parry_Effect\\parry\\parry.efk", "parry_effect");
 }
 
-int PlayerBase::Update(const float deltaTime)
+int PlayerBase::Update(const float deltaTime, bool temp)
 {
 
 	//モデル　アニメーション
@@ -261,14 +261,12 @@ int PlayerBase::Update(const float deltaTime)
 	//ランバージャック(移動制限)
 	Player_limit();
 
-	//振り下ろし
-	Swing_Down(deltaTime);
+	//攻撃関係
+	Attack_Relation(deltaTime);
 
-	//切り上げ
-	Reverse_Slash(deltaTime);
 
 	//止め
-	Sword_Delivery(deltaTime);
+	Sword_Delivery(deltaTime, temp);
 
 	//弾かれる
 	Frip(deltaTime);
@@ -310,7 +308,7 @@ int PlayerBase::Update(const float deltaTime)
 	col.box.Center = collision->GetPosition();
 
 	right_collision->SetPosition(player_pos.x + 1.1f, player_pos.y + 5.0f, player_pos.z);
-	left_collision ->SetPosition(player_pos.x - 1.1f, player_pos.y + 5.0f, player_pos.z);
+	left_collision->SetPosition(player_pos.x - 1.1f, player_pos.y + 5.0f, player_pos.z);
 
 
 	model->AdvanceTime(deltaTime);
@@ -447,23 +445,25 @@ void PlayerBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack)
 
 void PlayerBase::Player_move(const float deltaTime)
 {
-	if (upper_state_mode == Upper_State::NOT_UPPER || lower_sate_mode == Lower_State::NOT_LOWER) {
-		if (!invincible_flag) {
-			if (!s_del_flag) {
-				//プレイヤー:移動(キーボード) & ゲームパッド十字キー
-				if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
-					model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-					model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
-					col.sword_box.Center = model->GetRotation();
-					direction_state_mode = Direction_State::RIGHT;
-					SetAnimation(model, RUN);
-				}
-				if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left) {
-					model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-					model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
-					col.sword_box.Center = model->GetRotation();
-					direction_state_mode = Direction_State::LEFT;
-					SetAnimation(model, RUN);
+	if (upper_state_mode == Upper_State::NOT_UPPER) {
+		if (lower_sate_mode == Lower_State::NOT_LOWER) {
+			if (!invincible_flag) {
+				if (!s_del_flag) {
+					//プレイヤー:移動(キーボード) & ゲームパッド十字キー
+					if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
+						model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+						model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
+						col.sword_box.Center = model->GetRotation();
+						direction_state_mode = Direction_State::RIGHT;
+						SetAnimation(model, RUN);
+					}
+					if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left) {
+						model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+						model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
+						col.sword_box.Center = model->GetRotation();
+						direction_state_mode = Direction_State::LEFT;
+						SetAnimation(model, RUN);
+					}
 				}
 			}
 		}
@@ -517,6 +517,18 @@ void PlayerBase::Player_jump(const float deltaTime) {
 		}
 	}
 }
+
+//攻撃
+void PlayerBase::Attack_Relation(const float deltaTime) {
+	if (!jump_flag_) {
+		//振り下ろし
+		Swing_Down(deltaTime);
+
+		//切り上げ
+		Reverse_Slash(deltaTime);
+	}
+}
+
 
 //降り下ろし
 void PlayerBase::Swing_Down(const float deltaTime) {
@@ -639,13 +651,15 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 }
 
 //止め
-void PlayerBase::Sword_Delivery(const float deltaTime) {
+void PlayerBase::Sword_Delivery(const float deltaTime, bool temp) {
 	//仮死状態の敵が1体以上で可能
-	//if (enemy->GetDeathEnemyCount() >= 1) {
-		if (DXTK->KeyEvent->pressed.D || DXTK->GamePadEvent[0].rightShoulder == GamePad::ButtonStateTracker::PRESSED) {
-			s_del_flag = true;
+	if (!jump_flag_) {
+		if (temp) {
+			if (DXTK->KeyEvent->pressed.D || DXTK->GamePadEvent[0].rightShoulder == GamePad::ButtonStateTracker::PRESSED) {
+				s_del_flag = true;
+			}
 		}
-	//}
+	}
 
 
 	if (s_del_flag) {
@@ -668,6 +682,11 @@ void PlayerBase::Sword_Delivery(const float deltaTime) {
 		s_del_flag = false;
 		s_del_start = 0.0f;
 		model->SetTrackPosition(FINISH, 0.0);
+
+		if (direction_state_mode == Direction_State::LEFT) {
+			model->SetRotation(0.0f, XMConvertToRadians(90.0f), 0.0f);
+
+		}
 	}
 }
 

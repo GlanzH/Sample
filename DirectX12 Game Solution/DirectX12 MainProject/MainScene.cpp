@@ -135,7 +135,7 @@ NextScene MainScene::Update(const float deltaTime)
 	UIManager::Instance().Update(deltaTime);
 
 	if (!enemy->IsTimeStop()) {
-		player->Update(deltaTime);
+		player->Update(deltaTime, enemy->GetTemporaryDeath());
 		enemy->Update(player->GetModel()->GetPosition(),player->GetAttackTag(), player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
 		camera.Update(player, OUT_ZOOM, deltaTime);
 		observer->Update(player, enemy, audience);
