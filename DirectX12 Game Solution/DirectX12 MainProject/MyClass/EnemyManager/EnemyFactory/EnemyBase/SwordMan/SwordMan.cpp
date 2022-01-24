@@ -42,7 +42,7 @@ int SwordMan::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool 
 void SwordMan::Render() {
 	anim_model->Draw();
 	//collision->Draw();
-	//sword_col->Draw();
+	sword_col->Draw();
 }
 
 void SwordMan::Action() {
@@ -147,11 +147,11 @@ void SwordMan::IsDeath() {
 void SwordMan::Attack() {
 	if (direct == LEFT) {
 		if (attack_frame >= 0.8f)
-			sword_pos = SimpleMath::Vector3(position.x + 3.5f, fit_collision_y, position.z);
+			sword_pos = SimpleMath::Vector3(position.x + 5.0f, fit_collision_y, position.z);
 	}
 	else {
 		if (attack_frame >= 0.8f)
-			sword_pos = SimpleMath::Vector3(position.x - 3.5f, fit_collision_y, position.z);
+			sword_pos = SimpleMath::Vector3(position.x - 5.0f, fit_collision_y, position.z);
 	}
 
 	if(attack_frame >= max_attack)
