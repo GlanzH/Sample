@@ -272,7 +272,6 @@ int PlayerBase::Update(const float deltaTime)
 	//’e‚©‚ê‚é
 	Frip(deltaTime);
 
-
 	//‰ñ”ð
 	Avoidance(deltaTime);
 
@@ -546,9 +545,7 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 			}
 			else if (direction_state_mode == Direction_State::LEFT) {
 				DX12Effect.PlayOneShot("upper", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
-				DX12Effect.SetRotation("upper", Vector3(0.0f, 180.0f, 0.0f));
-				
-
+				DX12Effect.SetRotation("upper", Vector3(0.0f, 180.0f, 0.0f));			
 			}
 
 		}		
@@ -746,9 +743,6 @@ bool PlayerBase::IsAttack() {
 
 
 void PlayerBase::Debug() {
-
-
-
 	//if (invincible_flag) {
 	//	DX9::SpriteBatch->DrawString(font.Get(),
 	//		SimpleMath::Vector2(1100.0f, 120.0f),
@@ -763,5 +757,4 @@ void PlayerBase::Debug() {
 	//		L"OFF"
 	//	);
 	//}
-
 }
