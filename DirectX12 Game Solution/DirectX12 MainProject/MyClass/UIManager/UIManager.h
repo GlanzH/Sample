@@ -13,8 +13,10 @@ public:
 
 	void Initialize();
 	void LoadAsset();
-	void Update(const float deltaTime);
+	void Update(const float deltaTime, SimpleMath::Vector3 player_pos);
 	void Render();
+
+	void OnDeviceLost();
 
 	static UIManager& Instance() {
 		static UIManager instance;
@@ -24,6 +26,7 @@ public:
 	void ResetAnimeFrame();	//アニメーション再生をリセット
 	void SetAddScore(int add_size);
 	void SetWaveTime(float wave_time);
+	void PlayUIEffect();
 private:
 	void Animation(const float deltaTime);
 
@@ -36,6 +39,10 @@ private:
 	EFFECT good_effect;
 	EFFECTHANDLE good_handle;
 	EFFECT bad_effect;
+	SimpleMath::Vector3 effect_pos;
+	float time_;
+	float delta;
+	bool flag;
 	int score_width;
 
 	const int SCORE_MAX_HIGHT = 119;

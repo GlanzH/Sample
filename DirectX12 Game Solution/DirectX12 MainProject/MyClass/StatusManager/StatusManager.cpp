@@ -50,6 +50,8 @@ void StatusManager::SetAddScore(float score_size) {
 		good_flag = true;
 	}
 
+	UIManager::Instance().PlayUIEffect();
+
 	return;
 }
 

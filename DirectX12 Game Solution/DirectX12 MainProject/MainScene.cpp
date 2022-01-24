@@ -132,7 +132,7 @@ NextScene MainScene::Update(const float deltaTime)
 
 	ChangeLightRenge(deltaTime);
 	StatusManager::Instance().Update(deltaTime);
-	UIManager::Instance().Update(deltaTime);
+	UIManager::Instance().Update(deltaTime, camera.GetCamera().GetPosition());
 
 	if (!enemy->IsTimeStop()) {
 		player->Update(deltaTime);
@@ -165,6 +165,11 @@ NextScene MainScene::Update(const float deltaTime)
 	}
 
 	SceneManager::Instance().Update(deltaTime);
+	if (DXTK->KeyEvent->pressed.Enter)
+		StatusManager::Instance().SetAddScore(100.0f);
+
+	if (DXTK->KeyEvent->pressed.Back)
+		StatusManager::Instance().SetAddScore(-100.0f);
 
 	if (end_frame < max_end)
 		DX12Effect.Update(deltaTime);
