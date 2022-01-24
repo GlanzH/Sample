@@ -55,6 +55,8 @@ void MidBoss::Action() {
 	switch (action)
 	{
 	case (int)ActionNum::FIRST_WAIT:
+		InitDirect();
+
 		if (init_wait_frame < max_init_wait) {
 			init_wait_frame += delta;
 			Rotate();
@@ -98,38 +100,52 @@ void MidBoss::Action() {
 		}
 		else {
 			attack_flag = false;
-			action = (int)ActionNum::WAIT;
-		}
-		break;
-
-	case (int)ActionNum::WAIT:
-		if (wait_frame < max_wait) {
-			SetAnimation(anim_model, (int)Motion::WAIT, (int)Motion::MAX_MOTION);
-			wait_frame += delta;
-		}
-		else {
 			action = (int)ActionNum::INIT;
 		}
 		break;
 	}
 }
 
+void MidBoss::InitDirect() {
+	if (enemy_direct == "L") {
+		anim_model->SetRotation(0, -rotate, 0);
+		direct = LEFT;
+	}
+	else {
+		anim_model->SetRotation(0, rotate, 0);
+		direct = RIGHT;
+	}
+}
+
 void MidBoss::Move() {
-	if (enemy_direct == "L")
+	if (direct == LEFT)
 		position.x += move_speed * delta;
-	else
+
+	else if (direct == RIGHT)
 		position.x -= move_speed * delta;
 }
 
 void MidBoss::Rotate() {
-	if (enemy_direct == "L")
-		anim_model->SetRotation(0, -rotate, 0);
-	else
+	if (direct == LEFT && position.x >= max_range) {
 		anim_model->SetRotation(0, rotate, 0);
+		direct = RIGHT;
+	}
+
+	if (direct == RIGHT && position.x <= -max_range) {
+		anim_model->SetRotation(0, -rotate, 0);
+		direct = LEFT;
+	}
+}
+
+void MidBoss::IsRetreat() {
+	EnemyBase::IsRetreat();
+
+	if (enemy_hp > 0 && retreat_flag)
+		SetAnimation(anim_model, (int)Motion::DAMAGE, (int)Motion::MAX_MOTION);
 }
 
 void MidBoss::Attack() {
-	if (enemy_direct == "L") {
+	if (direct == LEFT) {
 		if ( attack_frame >= 2.0f)
 			sword_pos = SimpleMath::Vector3(position.x + 4.0f, fit_collision_y, position.z);
 	}

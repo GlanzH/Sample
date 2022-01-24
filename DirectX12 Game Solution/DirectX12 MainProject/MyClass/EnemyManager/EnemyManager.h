@@ -32,6 +32,7 @@ public:
 	void StartTimeStop();
 	void EndTimeStop();
 	bool IsTimeStop() { return enemy_stop_flag; }
+	bool GetTemporaryDeath();
 
 	void OnCollisionEnter(EnemyBase* base);
 	void OnThrustCollisionEnter(EnemyBase* base);
@@ -79,6 +80,7 @@ private:
 	bool special_move_flag = false;
 	bool count_dest_flag   = false;
 	bool sound_hit_flag    = false;
+	bool temporary_flag    = false;
 
 	const int max_combo = 3;
 

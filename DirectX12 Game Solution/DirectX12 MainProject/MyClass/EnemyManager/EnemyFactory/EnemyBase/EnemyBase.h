@@ -56,7 +56,7 @@ private:
 	void TimeStopDecision();
 	void IsDamage();
 
-	EFFECTHANDLE hit_handle, star_handle, normal_die_handle, special_die_handle, love_handle,del_handle;
+	EFFECTHANDLE hit_handle, star_handle, die_handle, special_die_handle, love_handle,del_handle;
 	EFFECT hit, star, normal_die, special_die, love,del;
 
 	ExplodeMan explode;
