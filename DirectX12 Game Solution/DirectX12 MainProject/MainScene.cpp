@@ -104,7 +104,7 @@ void MainScene::Terminate()
 {
 	DXTK->ResetAudioEngine();
 	DXTK->WaitForGpu();
-
+	
 	// TODO: Add your Termination logic here.
 	//DX12Effect.Reset();
 }
