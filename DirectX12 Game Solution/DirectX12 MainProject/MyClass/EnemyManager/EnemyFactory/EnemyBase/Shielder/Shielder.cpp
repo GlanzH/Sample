@@ -21,8 +21,8 @@ void Shielder::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positio
 	col.weapon.Center = sword_pos;
 }
 
-int Shielder::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime) {
-	EnemyBase::Update(player, special_attack_flag, thorow_things_flag, deltaTime);
+int Shielder::Update(SimpleMath::Vector3 player, bool destroy_flag, const float deltaTime) {
+	EnemyBase::Update(player, destroy_flag, deltaTime);
 
 	if (!temporary_death_flag)
 		Action();
@@ -32,7 +32,7 @@ int Shielder::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool 
 
 	IsDeath();
 	AdjustAnimCollision();
-	TemporaryDeath(max_death);
+	TemporaryDeath();
 
 	sword_col->SetPosition(sword_pos);
 	col.weapon.Center = SimpleMath::Vector3(sword_pos.x, 0, sword_pos.z);

@@ -22,22 +22,17 @@ void MidBoss::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position
 	col.weapon.Center = sword_pos;
 }
 
-int MidBoss::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime) {
-	EnemyBase::Update(player, special_attack_flag, thorow_things_flag, deltaTime);
-
-	//!’ÊíŽžˆ—
-	auto normal_state = !special_attack_flag && !thorow_things_flag && !Stun() && !IsDamage() && !LifeDeathDecision();
-
-	if (!temporary_death_flag)
-		Action();
-
-	//if (Stun() && !LifeDeathDecision())
-	//	SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
-
-	IsDamage();
+int MidBoss::Update(SimpleMath::Vector3 player, bool destroy_flag, const float deltaTime) {
+	EnemyBase::Update(player, destroy_flag, deltaTime);
+	EnemyBase::Update(player, destroy_flag, deltaTime);
+	EnemyBase::NormalDeathEffect(max_dead, confetti_effect_flag, death_effect_flag, effect_count);
+	EnemyBase::AdjustAnimCollision();
+	EnemyBase::TemporaryDeath();
+	//Freeze();
 	IsDeath();
-	AdjustAnimCollision();
-	TemporaryDeath(max_death);
+
+	if (!temporary_death_flag && !die_flag)
+		Action();
 
 	sword_col->SetPosition(sword_pos);
 	col.weapon.Center = SimpleMath::Vector3(sword_pos.x, 0, sword_pos.z);
@@ -147,11 +142,11 @@ void MidBoss::IsRetreat() {
 void MidBoss::Attack() {
 	if (direct == LEFT) {
 		if ( attack_frame >= 2.0f)
-			sword_pos = SimpleMath::Vector3(position.x + 4.0f, fit_collision_y, position.z);
+			sword_pos = SimpleMath::Vector3(position.x + 5.0f, fit_collision_y, position.z);
 	}
 	else {
 		if (attack_frame >= 2.0f)
-			sword_pos = SimpleMath::Vector3(position.x + 4.0f, fit_collision_y, position.z);
+			sword_pos = SimpleMath::Vector3(position.x - 5.0f, fit_collision_y, position.z);
 	}
 
 	if (attack_frame >= max_attack)
@@ -177,14 +172,24 @@ bool MidBoss::IsDamage() {
 }
 
 void MidBoss::IsDeath() {
-	if (enemy_hp <= 0 && death_frame < max_death) {
+	if (die_flag) {
 		SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
-		death_frame += delta;
+
+
+		if (dead_frame >= 0.0f) {
+			confetti_effect_flag = true;
+			effect_count = CONFINETTI;
+		}
+
+		if (dead_frame >= 1.7f) {
+			death_effect_flag = true;
+			effect_count = DEATH;
+		}
 	}
 }
 
 bool MidBoss::LifeDeathDecision() {
-	if (temporary_death_flag && DXTK->KeyEvent->pressed.C)
+	if (die_flag && dead_frame > max_dead)
 		return DEAD;
 
 	return LIVE;

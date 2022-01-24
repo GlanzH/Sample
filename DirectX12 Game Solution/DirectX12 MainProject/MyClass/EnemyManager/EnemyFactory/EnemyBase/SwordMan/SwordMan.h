@@ -4,7 +4,7 @@
 class SwordMan : public EnemyBase {
 public:
 	void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
-	int  Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
+	int  Update(SimpleMath::Vector3 player, bool destroy_flag, const float deltaTime);
 
 private:
 	bool LifeDeathDecision() override;
@@ -13,6 +13,7 @@ private:
 	void Action() override;
 	void IsRetreat();
 	void Attack();
+	void Freeze();
 	void IsDeath();
 	void InitDirect();
 	void Rotate();
@@ -31,12 +32,14 @@ private:
 	bool end_move;
 
 	enum class Motion {
-		DEATH,
-		CONFUSE,
+		RUN_UP,
+		ATTACK_UP,
+		BOUNCE,
 		DAMAGE,
-		ATTACK,
-		WALK,
-		WAIT,
+		DEATH,
+		RUN_DOWN,
+		ATTACK_DOWN,
+		FREEZE,
 		MAX_MOTION
 	};
 

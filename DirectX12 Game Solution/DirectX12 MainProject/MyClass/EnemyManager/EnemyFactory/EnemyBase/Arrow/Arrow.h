@@ -3,7 +3,7 @@
 
 class Arrow : public EnemyBase{
 public:
-	int  Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
+	int  Update(SimpleMath::Vector3 player, bool destroy_flag, const float deltaTime);
 
 private:
 	bool LifeDeathDecision() override;

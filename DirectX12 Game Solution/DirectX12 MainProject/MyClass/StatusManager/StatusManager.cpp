@@ -76,6 +76,10 @@ void StatusManager::ScoreDown(const float deltaTime) {
 }
 
 void StatusManager::AddKillCombo() {
+	kill_combo++;
+}
+
+void StatusManager::AddKillComboTime() {
 	kill_combo_time = 5.0f;	//5•b’Ç‰Á
 	kill_combo_flag = true;
 	UIManager::Instance().ResetAnimeFrame();
