@@ -50,11 +50,12 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	collision->SetMaterial(material);
 	col.box.Center = position;
 
-	hit = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
 	//special_die  = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die2/die2.efk");
-	star = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
-	love = ResourceManager::Instance().LoadEffect(L"Effect/AudienceEffect/heart/heart.efk");
-	del = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/delete/delete.efk");
+	hit        = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
+	star       = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
+	love       = ResourceManager::Instance().LoadEffect(L"Effect/AudienceEffect/heart/heart.efk");
+	del        = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/delete/delete.efk");
+	confetti   = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/confetti/confetti.efk");
 	normal_die = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die/die.efk");
 
 	explode.LoadAssets(initial_position.x);
@@ -97,6 +98,7 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool
 	
 	IsDamage();
 	IsRetreat();
+	NormalDeathEffect();
 
 	if (position.z < 15.0f) {
 		explode.Update(position, delta);
@@ -130,8 +132,18 @@ void EnemyBase::HitEffect() {
 }
 
 void EnemyBase::NormalDeathEffect() {
-	if (!DX12Effect.CheckAlive(die_handle))
- 		die_handle = DX12Effect.Play(normal_die, position);
+	if (die_flag) {
+		if(dead_frame < max_dead){
+			if (!DX12Effect.CheckAlive(confetti_handle))
+			confetti_handle = DX12Effect.Play(confetti, position);
+
+			dead_frame += delta;
+		}
+		else {
+			if (!DX12Effect.CheckAlive(die_handle))
+				die_handle = DX12Effect.Play(normal_die, position);
+		}
+	}
 }
 
 void EnemyBase::SpecialDeathEffect() {
@@ -151,6 +163,11 @@ void EnemyBase::TimeStopDecision() {
 
 void EnemyBase::Retreat() {
 	retreat_flag = true;
+}
+
+void EnemyBase::DieFlag() {
+	if (enemy_hp <= 0)
+	die_flag = true;
 }
 
 void EnemyBase::IsRetreat() {
@@ -191,15 +208,19 @@ void EnemyBase::IsDamage() {
 }
 
 void EnemyBase::TemporaryDeath(float max_death) {
-	if (enemy_hp <= 0) {
+	if (!temporary_death_flag && enemy_hp <= 0)
+		StatusManager::Instance().AddKillCombo();
+
+	if (enemy_hp <= 0 && !die_flag) {
 		temporary_death_flag = true;
 
 		if (!DX12Effect.CheckAlive(star_handle))
 			star_handle = DX12Effect.Play(star, position + SimpleMath::Vector3(0, 8, 0));
 	}
 	else {
-		temporary_death_flag = false;
+		//temporary_death_flag = false;
 	}
+
 	if (DXTK->KeyEvent->pressed.X) {
 		//âºéÄèÛë‘âèúÇ∑ÇÈÇ‚Ç¬
 		DX12Effect.Stop(star_handle);

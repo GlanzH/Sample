@@ -71,6 +71,10 @@ void EnemyManager::Iterator() {
 
 	for (auto itr = enemy.begin(); itr != enemy.end();)
 	{
+		if (DXTK->KeyEvent->pressed.C) {
+			(*itr)->DieFlag();
+		}
+
 		if ((*itr)->LifeDeathDecision() == LIVE) {
 			itr++;
 		}
@@ -86,8 +90,6 @@ void EnemyManager::Iterator() {
 					(*itr)->GetTimeStopFlag();
 
 					if ((*itr)->GetTemporaryDeathFlag()) {
-						(*itr)->NormalDeathEffect();
-
 						if (!kill->IsInUse())
 							kill->Play();
 

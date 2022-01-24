@@ -137,9 +137,8 @@ void SwordMan::IsRetreat() {
 }
 
 void SwordMan::IsDeath() {
-	if (enemy_hp <= 0 && death_frame < max_death || DXTK->KeyEvent->pressed.A) {
+	if (DXTK->KeyEvent->pressed.A) {
 		SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
-		death_frame += delta;
 		enemy_hp = 0;
 	}
 }
@@ -159,7 +158,7 @@ void SwordMan::Attack() {
 }
 
 bool SwordMan::LifeDeathDecision() {
-	if (temporary_death_flag && death_frame > max_death)
+	if (die_flag && dead_frame > max_dead)
 		return DEAD;
 
 	if (StatusManager::Instance().GetTime() == 0.0f)
