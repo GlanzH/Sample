@@ -51,6 +51,9 @@ public:
 private:
 	void ChangeBGM(int music_num);
 	void ChangeLightRenge(const float deltaTime);
+	void ReturnWave();
+	void ChangeLightColor();
+	
 
 	DX12::DESCRIPTORHEAP descriptorHeap;
 	DX12::SPRITEBATCH    spriteBatch;
@@ -74,6 +77,7 @@ private:
 	Observer*        observer;
 	Timer time;
 
+	StatusManager status;
 	SpotLight point;
 	TextureLight texLight;
 
@@ -94,6 +98,9 @@ private:
 	bool music_flag = false;
 	bool se_flag = false;
 	bool end_a_play_flag = false;
+
+	
+
 
 	float range = 0.8f;
 
