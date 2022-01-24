@@ -80,6 +80,16 @@ PlayerBase::PlayerBase() {
 	lower_sate_mode = Lower_State::NOT_LOWER;
 	lower_start = 0.0f;
 	lower_end = 0.333f;
+
+
+	frip_state_mode = Frip_State::NOT_FRIP;
+
+	not_attack_start = 0.0f;
+	not_attack_end = 0.0f;
+
+	frip_start = 0.0f;
+	frip_end   = 0.0f;
+
 }
 
 void PlayerBase::OnDeviceLost() {
@@ -131,13 +141,13 @@ bool PlayerBase::Initialize()
 
 
 	//ノックバック
-	knock_back_flag  = false;
+	knock_back_flag = false;
 	knock_back_start = 0.0f;
-	knock_back_end   = 0.7f;
-	time_other       = 0.0f;
+	knock_back_end = 0.7f;
+	time_other = 0.0f;
 
 	//起き上がる
-	rize_end   = 1.733f;
+	rize_end = 1.733f;
 
 
 	damage_mode_state = Damage_Mode::NOMAL_STATE;
@@ -146,21 +156,28 @@ bool PlayerBase::Initialize()
 
 	//上段(変数宣言)
 	upper_state_mode = Upper_State::NOT_UPPER;
-	upper_start      = 0.0f;
-	upper_end        = 0.650f;
+	upper_start = 0.0f;
+	upper_end = 0.650f;
 
 	//下段(変数宣言)
 	lower_sate_mode = Lower_State::NOT_LOWER;
-	lower_start     = 0.0f;
-	lower_end       = 0.750f;
+	lower_start = 0.0f;
+	lower_end = 0.750f;
 
 
 
 
 	direction_state_mode = Direction_State::RIGHT;
 
-
+	//攻撃　弾かれる
 	frip_state_mode = Frip_State::NOT_FRIP;
+
+	not_attack_start = 0.0f;
+	not_attack_end = 0.3f;
+
+	frip_start = 0.0f;
+	frip_end = 0.783f;
+
 
 
 	//プレイヤーのSE ファイル読み込み
@@ -283,12 +300,12 @@ int PlayerBase::Update(const float deltaTime, bool temp)
 
 	//攻撃の向き
 	if (direction_state_mode == Direction_State::RIGHT) {
-		col.sword_box.Center = model->GetPosition() + SimpleMath::Vector3(9.5, 3, 0);
+		col.sword_box.Center = model->GetPosition() + SimpleMath::Vector3(9, 3, 0);
 		sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(6.5, 5, 0));
 
 	}
 	else if (direction_state_mode == Direction_State::LEFT) {
-		col.sword_box.Center = model->GetPosition() + SimpleMath::Vector3(-9.5, 3, 0);
+		col.sword_box.Center = model->GetPosition() + SimpleMath::Vector3(-9, 3, 0);
 		sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(-6.5, 5, 0));
 
 	}
@@ -411,10 +428,10 @@ void PlayerBase::Knock_back_Move() {
 
 	if (knock_back_start < knock_back_end) {
 		if (direction_state_mode == Direction_State::RIGHT) {
-			model->Move(0, 0, 30.0f * time_other);
+			model->Move(0, 0, 50.0f * time_other);
 		}
 		else if (direction_state_mode == Direction_State::LEFT) {
-			model->Move(0, 0, 30.0f * time_other);
+			model->Move(0, 0, 50.0f * time_other);
 		}
 	}
 }

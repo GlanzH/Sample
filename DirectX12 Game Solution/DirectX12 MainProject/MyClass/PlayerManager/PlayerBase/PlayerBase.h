@@ -142,7 +142,7 @@ private:
 	const int player_box_size_x = 5;
 	const int player_box_size_z = 3;
 
-	const int box_size_x = 3;
+	const int box_size_x = 1.5;
 	const int box_size_y = 2;
 	const int box_size_z = 3;
 
