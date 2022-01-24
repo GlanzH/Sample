@@ -12,12 +12,16 @@ EnemyManager::EnemyManager()
 
 	for (int i = 0; i < ENEMY_NUM; ++i) {
 		tag[i]            = "";
-		appear_pos[i]     = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
-		destract_num[i]   = INT_MAX;
+		appear_pos[i]     = SimpleMath::Vector3(DBL_MAX, DBL_MAX, DBL_MAX);
+		appear_time[i]    = DBL_MAX;
 		appear_flag[i]    = false;
 		wave_num[i]       = INT_MAX;
-		init_wait[i]      = FLT_MAX;
-		time_stop_flag[i] = false;
+		init_wait[i]      = DBL_MAX;
+		stop_pos[i]       = DBL_MAX;
+		move_speed[i]     = DBL_MAX;
+		posture[i]        = "";
+		move_direct[i]    = "";
+		time_stop_flag[i] = "";
 	}
 }
 
@@ -37,7 +41,7 @@ bool EnemyManager::Initialize(PlayerBase* player_base)
 	kill = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/Audience/kill_se.wav");
 
 	player_data = player_base;
-
+	appear_frame = 0.0f;
 	LoadEnemyArrangement();
 	return true;
 }
@@ -52,13 +56,9 @@ int EnemyManager::Update(SimpleMath::Vector3 player, int attack_tag, bool specia
 	}
 
 	Iterator();
-	NowDestEnemyCount();
-	StatusManager::Instance().CalcAudience(delta);
-
-
 
 	if (count < ENEMY_NUM) {
-		if (dead_enemy_count >= destract_num[count] && wave_num[count] == 1) {
+		if (AppearTime() >= appear_time[count] && wave_num[count] == StatusManager::Instance().GetWave()) {
 			Generator();
 			count++;
 		}
@@ -79,35 +79,38 @@ void EnemyManager::Iterator() {
 			if ((*itr)->GetTimeStopFlag())
 				StartTimeStop();
 
-			if ((*itr)->LifeDeathDecision() == DEAD) {
+			if ((*itr)->LifeDeathDecision() != LIVE) {
 
 				if ((*itr)->GetTag() != "AR") {
 
-					if(attack_num == 1)
+					(*itr)->GetTimeStopFlag();
+
+					if ((*itr)->GetTemporaryDeathFlag()) {
 						(*itr)->NormalDeathEffect();
 
-					if (attack_num == 2)
-						(*itr)->SpecialDeathEffect();
+						if (!kill->IsInUse())
+							kill->Play();
 
-					if(!kill->IsInUse())
-						kill->Play();
+						dead_enemy_count++;
 
-					now_dead_enemy++;
-					dead_enemy_count++;
-					CalcScore();
+						StatusManager::Instance().AddKillCombo();
+						//CalcScore();
+					}
 				}
-					//else
-					//	DX12Effect.PlayOneShot("boss", (*itr)->GetModel()->GetPosition());
 
-				StatusManager::Instance().HeartCount();
+				if (StatusManager::Instance().GetTime() == 0.0f) {
+					(*itr)->AutoDestoryEffect();
+					remain_enemy_count++;
+				}
+				else {
+					remain_enemy_count = 0;
+				}
+
 				itr = enemy.erase(itr);
-			}
-			else {
-				itr = enemy.erase(itr);
-				continue;
 			}
 		}
 	}
+	
 }
 
 void EnemyManager::Render()
@@ -123,60 +126,34 @@ void EnemyManager::Generator() {
 	if (!appear_flag[count])
 	{
 		//!“G‚Ìí—ŞE‰ŠúÀ•W‚ğ“n‚µ‚Ä“G‚ğ»‘¢
-		enemy.push_back(factory->Create(tag[count],init_wait[count], time_stop_flag[count], appear_pos[count]));
+		enemy.push_back
+		(
+			factory->Create(
+				tag[count],
+				init_wait[count], 
+				stop_pos[count],
+				time_stop_flag[count], 
+				appear_pos[count],
+				move_speed[count],
+				move_direct[count],
+				posture[count]
+			)
+		);
 		appear_flag[count] = true;
 	}
 
 }
 
-void EnemyManager::NowDestEnemyCount() {
-	if (now_dead_enemy > 0)
-		count_dest_flag = true;
-
-	if (count_dest_flag) {
-		if (count_frame < max_count) {
-			count_frame += delta;
-		}
-		else {
-			CalcScore();
-			count_frame = 0.0f;
-			now_dead_enemy = 0.0f;
-			count_dest_flag = false;
-		}
+float EnemyManager::AppearTime() {
+	if (appear_frame < max_appear_frame) {
+		appear_frame++;
 	}
-}
-
-void EnemyManager::CalcScore() {
-	if (count_dest_flag) {
-		switch (now_dead_enemy)
-		{
-		case ONE:
-			add_score = ONE_SCORE;
-			break;
-
-		case TWO:
-			add_score = TWO_SCORE;
-			break;
-
-		case THREE:
-			add_score = THREE_SCORE;
-			break;
-
-		case FOUR:
-			add_score = FOUR_SCORE;
-			break;
-
-		case FIVE:
-			add_score = FIVE_SCORE;
-			break;
-
-		default:
-			add_score = OVER_SIX_SCORE;
-			break;
-		}
-
-		StatusManager::Instance().AddAudience(add_score);
+	else {
+		appear_frame = 0;
+		now_time++;
 	}
+
+	return now_time;
 }
 
 void EnemyManager::StartTimeStop() {
@@ -204,14 +181,26 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	 if (!hit->IsInUse())
 		 hit->Play();
 
-	 base->Damage();
-	 base->HitEffect();
+	 //ã’iUŒ‚
+	 if (base->GetPostune() == "U") {
+		 if (DXTK->KeyEvent->pressed.A) {
+			 base->Damage();
+			 base->HitEffect();
+		 }
 
-	// StatusManager::Instance().AddAudience(10);
-
-	 if (tag != "C") {
-		 if (StatusManager::Instance().GetAtkCombo() == max_combo)
+		 if (DXTK->KeyEvent->pressed.S) {
 			 base->Retreat();
+		 }
+	 }
+	 else {
+		 if (DXTK->KeyEvent->pressed.A) {
+			 base->Retreat();
+		 }
+
+		 if (DXTK->KeyEvent->pressed.S) {
+			 base->Damage();
+			 base->HitEffect();
+		 }
 	 }
 }
 
@@ -248,24 +237,23 @@ void EnemyManager::LoadEnemyArrangement() {
 
 	std::string dummy_line;
 
-	//! 1`3s‚ğ“Ç‚İ”ò‚Î‚µ
+	//!“Ç‚İ”ò‚Î‚µ
 	for (int i = 0; i < DUMMY_LINE; ++i) {
 		getline(pos_time_infile, dummy_line);
 	}
 
 	//!ƒf[ƒ^“Ç‚İ‚İ
 	for (int i = 0; i < ENEMY_NUM; ++i) {
-		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> destract_num[i] >> wave_num[i] >> init_wait[i] >> time_stop_flag[i];
+		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> appear_time[i] >> wave_num[i] 
+			            >> init_wait[i] >> stop_pos[i] >> move_speed[i] >> move_direct[i] >> posture[i] >> time_stop_flag[i];
 	}
-
-	EndEnemy();
 }
 
-void EnemyManager::EndEnemy() {
+int EnemyManager::GetWaveEnemy() {
 	for (int i = 0; i < ENEMY_NUM; ++i) {
-		if (tag[i] == "") {
-			enemy_num = i - 1;
-			break;
-		}
+		if (wave_num[i] == StatusManager::Instance().GetWave())
+			enemy_num++;
 	}
+
+	return enemy_num;
 }

@@ -8,62 +8,77 @@ public:
 
 
 	void Initialize();
-	void AddCombo(const float deltaTime);
-	int Update(const float deltaTime);
+	void Update(const float deltaTime);
 
 
-
-
-	static StatusManager& Instance(){
+	static StatusManager& Instance() {
 		static StatusManager instance;
 		return instance;
 	}
 
-	//プレイヤーのコンボ
-	int GetAtkCombo() { return atk_combo; }	//攻撃コンボ時使用
-	float GetKillComboTime(const float deltaTime);	//とどめ攻撃のコンボ増加可能時間
+	//敵撃破コンボ
+	void AddKillCombo();	//コンボ増加
+	void ResetKillCombo();	//コンボ数リセット
+	float GetKillComboTime() { return kill_combo_time; }	//撃破コンボ継続時間
+	bool GetKillFlag() { return kill_combo_flag; }	//コンボフラグ
 
-	//オーディエンス
-	void AddAudience (float add_size	   );	//値を取得
-	void CalcAudience(const float deltaTime);	//オーディエンス計算
-	void UpAudience	 (const float deltaTime);	//アップ
-	void DownAudience(const float deltaTime);	//ダウン
-	float ReturnAudience() { return audience * AUDIENCE_GAUGE_DIVIDE; }	//ゲージ描画時呼び出し
-	float ReturnScore() { return audience; }	//スコア判定時使用
-	void BonusScore(int kill_combo);
+	//アニメーション
+	void ResetaAnimeFlag() { anime_flag = false; }	//アニメフラグのリセット
+	bool GetAnimeFlag() { return anime_flag; }	//アニメーション再生フラグ
 
-	//ハート(必殺技ゲージ)
-	void HeartCount();	//敵撃破時呼び出し
-	void HeartReset();	//必殺技発動時呼び出し
-	float ReturnHeart() { return heart; }	//必殺技使用時呼び出し
-	float ReturnRenderHeart() { return heart * HEART_GAUGE_DIVIDE; }//ゲージ描画時呼び出し
+	//スコア
+	void SetAddScore(float score_size);	//スコアの値を入力
+	float GetAddScore() { return add_score_size; }
+	float GetScoreGauge() { return score * SCORE_GAUGE_DIVIDE; }	//ゲージ描画時呼び出し
+	float GetScore() { return now_score; }	//現在のスコア
+	float SetRemainEnemy(int remain_enemy) { enemy_num = remain_enemy; return 0; }
+	bool GetGoodFlag() { return good_flag; }	//スコアUI描画時使用
+
+
+	//ウェーブ
+	void SetWave(int wave_num);	//ウェーブ数設定
+	int  GetWave() { return wave; }	//現在のウェーブ
+	bool GetWaveFlag() { return wave_change_flag; }	//ウェーブ切り替えフラグ
+
+	void WaveTimeLimit(const float deltaTime);	//ウェーブの時間
+	void ResetWaveTime();	//ウェーブ時間を0にする
+	float GetTime() { return wave_time; } //時間の取得
 
 private:
-	//プレイヤーの攻撃コンボ
-	int atk_combo;
-	int atk_combo_count;
-	float atk_combo_time;
-	float kill_combo_time;
-	bool atk_combo_flag;
+	void KillComboTime(const float deltaTime);	//コンボ時間計る
 
-	const int ATK_COMBO_MAX = 4;
-	const float ATK_COMBO_TIME_MAX[3]{ 0.617f,0.517f,0.583f };
-	const float KILL_COMBO_TIME_MAX = 3.0f;
-
-	//オーディエンス
-	float audience;
-	float now_audience;    //現在のオーディエンス数
-	bool plus_audience_flag;
+	void ComboScore();	//
+	void CalcScore(const float deltaTime);	//スコア計算
+	void ScoreUp(const float deltaTime);	//アップ
+	void ScoreDown(const float deltaTime);	//ダウン
 
 
-	const float AUDIENCE_START_VALUE  =  100.0f;	//初期値設定
-	const float AUDIENCE_MAX_VALUE	  = 1000.0f;	//スコアの最大値
-	const float AUIDENCE_DN_SPEED	  =  300.0f;	//オーディエンス減スピード
-	const float AUDIENCE_GAUGE_DIVIDE =  0.334f;	//人ゲージ1000分の1の数(描画時使用)
+	//敵撃破コンボ
+	int	  kill_combo;	//コンボ数
+	float kill_combo_time;	//コンボ継続時間
+	bool  kill_combo_flag;	//true:コンボ継続可能 false:継続不可
+
+	//アニメーション
+	bool anime_flag;	//true:アニメーション再生 false:停止
+
+	//スコア
+	float score;
+	float now_score;    //現在のスコア
+	float add_score_size;
+	float enemy_num;
+	bool plus_score_flag;	//true:スコアアップ false:スコアダウン
+	bool good_flag;
+
+	const float SCORE_START_VALUE = 100.0f;	//初期値設定
+	const float SCORE_MAX_VALUE = 1000.0f;	//スコアの最大値
+	const float SCORE_UPDN_SPEED = 300.0f;	//スコア増減スピード
+	const float SCORE_GAUGE_DIVIDE = 0.422f;	//スコアゲージ1000分の1の数(描画時使用)
 
 
-	//ハート
-	float heart;
-	const float HEART_MAX = 20.0f;
-	const float HEART_GAUGE_DIVIDE = 4.45f;
+	//ウェーブ
+	int wave;	//現在のウェーブ
+	float wave_time;	//ウェーブの制限時間
+	bool wave_change_flag;	//true:ウェーブ切り替え可能 false:切り替え不可
+
+	const float WAVE_TIME_LIMIT_ONE = 30.0f;	//1ウェーブ目の制限時間
 };

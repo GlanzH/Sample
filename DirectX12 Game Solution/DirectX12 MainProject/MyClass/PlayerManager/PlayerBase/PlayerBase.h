@@ -44,6 +44,8 @@ public:
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
 
+	
+
 	Collisions GetBox() { return col; }
 
 	//左右の当たり判定(ノックバック用)
@@ -81,10 +83,13 @@ private:
 	void Invincible(const float deltaTime);
 	//ノックバック
 	void Knock_Back();
-	//プレイヤーの攻撃(3回目変更)
-	void Player_Attack_Three(const float deltaTime);
-	//三連撃
-	void Burst_Attack(const float deltaTime);
+
+	//降り下ろし
+	void Swing_Down(const float deltaTime);
+	//切り上げ
+	void Reverse_Slash(const float deltaTime);
+
+
 	//回避
 	void Avoidance(const float deltaTime);
 
@@ -155,9 +160,9 @@ private:
 	//1/2
 	const float half = 0.5f;
 	//重力加速度
-	const float gravity_ = 120.0f;
+	const float gravity_ = 170.0f;
 	//初速
-	const float V0 = 50.0f;
+	const float V0 = 70.0f;
 
 	//ジャンプタイミング
 	bool  jump_start_flag;
@@ -170,7 +175,7 @@ private:
 
 	//攻撃の時間
 	bool  attack_flag;
-	float attack_zeit;
+	float attack_time;
 	float attack_zeit_max;
 
 
@@ -182,26 +187,6 @@ private:
 	};
 
 	UNDER_ATTACK_STATE under_attack_state_mode;
-
-	//攻撃中　移動不可
-	enum CANNOT_MOVE_STATE
-	{
-		MOVE,
-		CANNOT_MOVE
-	};
-
-	CANNOT_MOVE_STATE canot_move_state_mode;
-
-	//攻撃中 他の攻撃不可
-	enum CANNOT_OTHER_ATTACK
-	{
-		NOMAL_STATE,
-		ACCUMULATION,
-		LIGHT
-	};
-
-	CANNOT_OTHER_ATTACK cannot_other;
-
 
 	//無敵時間
 	bool        invincible_flag;
@@ -233,35 +218,14 @@ private:
 
 	Direction_State direction_state_mode;
 
+//『使用しない』****************************//
 	//アピール
 	bool appeil_flag;
-
 	float appeil_time;
-	float appeil_time_max;
-
-	float appeil_cool_time;
-	float appeil_cool_time_max;
-
 	bool appeil_cool_flag;
-
 	//必殺技
 	bool deathbrow_flag;//必殺技発動フラグ
-
-	bool deathbrow_attack;//必殺技の当たり判定
-
-	float specialmove_time;
-	float specialmove_time_max;
-
-	//暗転
-	DX9::SPRITE deathbrow_sprite;
-	int Transparency;
-	int Blackout;
-	int Blackout_max;
-	bool Blackout_flag;
-
-	//明転
-	bool bright_flag;
-	int  Ming_Turn;
+//*****************************************//
 
 	//SE 変数
 	//攻撃-SE
@@ -287,6 +251,7 @@ private:
 	bool  avoidance_flag;
 	float avoidance_start;
 	float avoidance_max;
+	float avoidance_move;
 
 
 	//攻撃の種類 1:弱攻撃　2:突き攻撃
@@ -298,35 +263,39 @@ private:
 	float knock_back_end;
 	float time_other;
 
-	//三連撃
+	//起き上がる
+	float rize_start;
+	float rize_end;
 
-	enum  BURST_STATE
+	enum Damage_Mode
 	{
-		NOT_BURST,
-		FIRST,
-		SECOND,
-		THIRD
+		NOMAL_STATE, //通常状態
+		KNOCK_BACK,  //ノックバック
+		RISE         //起き上がる
 	};
-	BURST_STATE burst_state_mode;
+	Damage_Mode damage_mode_state;
 
-	void Not_Burst(const float deltaTime);
 
-	//First
-	void First_Burst(const float deltaTime);
-	bool first_burst_flag;
-	float first_burst_start;
-	float first_burst_end;
+	//上段(変数宣言)
+	enum Upper_State
+	{
+		NOT_UPPER,
+		UPPER_ATTACK
+	};
+	Upper_State upper_state_mode;
+	float upper_start;
+	float upper_end;
 
-	//Second
-	void Second_Burst(const float deltaTime);
-	bool second_burst_flag;
-	float second_burst_start;
-	float second_burst_end;
+	//下段(変数宣言)
+	enum Lower_State
+	{
+		NOT_LOWER,
+		LOWER_ATTACK
+	};
+	Lower_State lower_sate_mode;
+	float lower_start;
+	float lower_end;
 
-	//THIRD
-	void Third_Burst(const float deltaTime);
-	bool third_burst_flag;
-	float third_burst_start;
-	float third_burst_end;
-
+	//納刀
+	void Sword_Delivery();
 };

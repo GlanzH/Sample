@@ -2,12 +2,6 @@
 #include "Base/dxtk.h"
 #include "Arrow.h"
 
-bool Arrow::Initialize(std::string tag, int init_wait, bool time_stop_flag, int hp) {
-	EnemyBase::Initialize(tag,init_wait, time_stop_flag, hp);
-	stop_frame = 0.0f;
-	return true;
-}
-
 int Arrow::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime) {
 	EnemyBase::Update(player, special_attack_flag, thorow_things_flag, deltaTime);
 

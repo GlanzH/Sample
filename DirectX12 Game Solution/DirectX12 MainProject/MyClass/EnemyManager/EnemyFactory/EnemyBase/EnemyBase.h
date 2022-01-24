@@ -2,6 +2,7 @@
 
 #include"MyClass/EnumManager/EnumManager.h"
 #include "MyClass/PlayerManager/PlayerBase/PlayerBase.h"
+#include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/AudianceManager/ExplodeMan/ExplodeMan.h"
 #include "Base/DX12Effekseer.h"
 
@@ -17,39 +18,46 @@ typedef struct Collision {
 class EnemyBase
 {
 public:
-	EnemyBase();
+	EnemyBase() {};
 	~EnemyBase() {};
 
-	virtual bool Initialize(std::string tag, int init_wait, bool time_stop_flag, int hp);
+	virtual bool Initialize(std::string tag, double init_wait, double stop_pos, std::string time_stop_flag,
+		double speed, std::string direct, std::string posture, int hp);
+
 	virtual void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 	void LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 
-	virtual int  Update(SimpleMath::Vector3 player,bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
+	virtual int  Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
 	virtual void Render() {};
 	void Retreat();
 
+	void TemporaryDeath(float max_death);
 	bool GetTimeStopFlag() { return do_time_stop_flag; }
+	bool GetTemporaryDeathFlag() { return temporary_death_flag; }
+	bool GetAttackFlag() { return attack_flag; }
+
+	std::string GetPostune() { return enemy_posture; }
 
 	void HitEffect();
 	void NormalDeathEffect();
 	void SpecialDeathEffect();
+	void AutoDestoryEffect();
 
 	virtual void Damage();
 	virtual bool LifeDeathDecision() { return LIVE; }
 
 	DX9::SKINNEDMODEL& GetAnimModel() { return anim_model; }
-	DX9::MODEL& GetModel()			  { return model; }
-	Collision GetBox()				  { return col; }
+	DX9::MODEL& GetModel() { return model; }
+	Collision GetBox() { return col; }
 
 	std::string GetTag() { return enemy_tag; }
 
 private:
 	void TimeStopDecision();
 	void IsDamage();
-	void IsRetreat();
-	
-	EFFECTHANDLE hit_handle,star_handle,normal_die_handle,special_die_handle,love_handle;
-	EFFECT hit, star, normal_die,special_die, love;
+
+	EFFECTHANDLE hit_handle, star_handle, normal_die_handle, special_die_handle, love_handle,del_handle;
+	EFFECT hit, star, normal_die, special_die, love,del;
 
 	ExplodeMan explode;
 
@@ -58,7 +66,7 @@ private:
 
 	std::string enemy_tag;
 
-	int   retreat_count   = 0;
+	int   retreat_count = 0;
 	const int max_retreat = 30;
 
 	float auto_destroy_frame = 0.0f;
@@ -72,7 +80,7 @@ private:
 	bool reduce_audience_flag = false;
 
 	//!演出をする敵かのフラグ
-	bool enemy_stop_flag = false;
+	std::string enemy_stop_flag = "";
 
 	//!動きを止めるフラグ
 	bool do_time_stop_flag = false;
@@ -85,11 +93,14 @@ private:
 
 	const float box_size = 2.0f;
 
-	
+
 protected:
 	virtual void Action() {}
-	virtual void Move()   {}
-	void SetAnimation(DX9::SKINNEDMODEL& model,const int enabletack,int max_motion);
+	virtual void Move() {}
+	//virtual void IsDeath();
+	virtual void IsRetreat();
+
+	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack, int max_motion);
 	void AdjustAnimCollision();
 	bool Stun();
 
@@ -111,12 +122,20 @@ protected:
 	const float rotate = 45.0f;
 
 	float init_wait_frame = 0.0f;
+	float death_frame = 0.0f;
 	float max_init_wait;
 
-	int enemy_hp;
+	std::string enemy_direct;
+	std::string enemy_posture;
+
+	int    enemy_hp;
+	double move_speed;
+	double enemy_stop;
 	float delta;
 
 	bool retreat_flag;
+	bool attack_flag = false;
+	bool temporary_death_flag;
 
 	Collision col;
 };

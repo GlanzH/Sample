@@ -13,7 +13,6 @@ MainScene::MainScene(): dx9GpuDescriptor{}
 	enemy    = new EnemyManager;
 	audience = new AudienceManager;
 	observer = new Observer;
-	ui       = new UIManager;
 }
 
 MainScene::~MainScene() {
@@ -21,7 +20,6 @@ MainScene::~MainScene() {
 	delete enemy;
 	delete audience;
 	delete observer;
-	delete ui;
 
 	Terminate();
 }
@@ -35,15 +33,14 @@ void MainScene::Initialize()
 	enemy->Initialize(player);
 	SceneManager::Instance().Initialize();
 	StatusManager::Instance().Initialize();
+	UIManager::Instance().Initialize();
+	time.Initialize();
 
 	point.Init(1);
 	point.SetAmbientColor(Vector4(0, 0, 255, 1.0f),0);
 	point.SetAtt(Vector3(0.65f, 0.001f, 0), 0);
 	point.SetLightColor(SimpleMath::Vector4(255.0f, 189, 76, 1.0f), 0);
 	texLight.Init();
-
-	font   = DX9::SpriteFont::CreateFromFontFile(DXTK->Device9,L"衡山毛筆フォント.ttf", L"衡山毛筆フォント", 250);
-	se     = std::make_unique<SoundEffect>(DXTK->AudioEngine,L"dora.wav");
 
 	enemy->StartTimeStop();
 	end_frame = 0.0f;
@@ -95,7 +92,7 @@ void MainScene::LoadAssets()
 	player->LoadAssets();
 	audience->LoadAssets();
 	dialogue.LoadAssets();
-	ui->LoadAsset();
+	UIManager::Instance().LoadAsset();
 	SceneManager::Instance().LoadAsset();
 }
 
@@ -104,9 +101,9 @@ void MainScene::Terminate()
 {
 	DXTK->ResetAudioEngine();
 	DXTK->WaitForGpu();
-	
+
 	// TODO: Add your Termination logic here.
-	//DX12Effect.Reset();
+
 }
 
 // Direct3D resource cleanup.
@@ -128,11 +125,14 @@ NextScene MainScene::Update(const float deltaTime)
 	UNREFERENCED_PARAMETER(deltaTime);
 
 	// TODO: Add your game logic here.
+
 	//!終了時処理
-	auto end_flag = StatusManager::Instance().ReturnAudience() <= 0.0f;
-	//auto end_flag = enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum() || StatusManager::Instance().ReturnAudience() <= 0.0f;
+	auto end_flag = StatusManager::Instance().GetScoreGauge() <= 0.0f;
+	//auto end_flag = enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum() || StatusManager::Instance().GetScoreGauge() <= 0.0f;
 
 	ChangeLightRenge(deltaTime);
+	StatusManager::Instance().Update(deltaTime);
+	UIManager::Instance().Update(deltaTime);
 
 	if (!enemy->IsTimeStop()) {
 		player->Update(deltaTime);
@@ -140,6 +140,7 @@ NextScene MainScene::Update(const float deltaTime)
 		camera.Update(player, OUT_ZOOM, deltaTime);
 		observer->Update(player, enemy, audience);
 		dialogue.ResetCount();
+		time.Update(enemy,deltaTime);
 
 		//ChangeBGM(MAIN);
 		light_mode = OUT_ZOOM;
@@ -153,17 +154,8 @@ NextScene MainScene::Update(const float deltaTime)
 
 	if (end_flag) {
 		end_frame += deltaTime;
-		end_a_play_flag = true;
-
-		if (!se_flag) {
-			se->Play();
-			se_flag = true;
-		}
-
-		if (enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum())
-			max_end = 10.0f;
-		else
-			max_end = 2.0f;
+	
+		max_end = 2.0f;
 
 		if(end_frame > max_end) {
 			DX12Effect.AllStop();
@@ -242,17 +234,10 @@ void MainScene::Render()
 	DX9::SpriteBatch->Begin();
 
 	//2D描画
-	ui->Render(StatusManager::Instance().ReturnAudience(),StatusManager::Instance().ReturnRenderHeart());
+	UIManager::Instance(). Render();
+	time.Render();
 	player->Debug();
 	SceneManager::Instance().Render();
-
-	if (end_a_play_flag) {
-		DX9::SpriteBatch->DrawString(font.Get(),
-			SimpleMath::Vector2(130.0f, 200.0f),
-			DX9::Colors::Red,
-			L"劇 終"
-		);
-	}
 
 	if (enemy->IsTimeStop())
 		dialogue.Render(enemy->GetTimeStopCount());

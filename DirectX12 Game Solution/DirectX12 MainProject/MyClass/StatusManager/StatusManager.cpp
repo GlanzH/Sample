@@ -1,131 +1,168 @@
 #include"MyClass/StatusManager/StatusManager.h"
-#include"MyClass/PlayerManager/PlayerManager.h"
-#include "MyClass/PlayerManager/PlayerBase/PlayerBase.h"
-#include "MyClass/GameSceneManager/SceneManager.h"
+#include "MyClass/UIManager/UIManager.h"
 
 void StatusManager::Initialize() {
-	//プレイヤーのコンボ
-	atk_combo		= 0;
-	atk_combo_count = 0;
-	atk_combo_time	= 0.0f;
+	//敵撃破コンボ
+	kill_combo = 0;
 	kill_combo_time = 0.0f;
-	atk_combo_flag	= false;
+	kill_combo_flag	= false;
 
-	//オーディエンス
-	audience	 = AUDIENCE_START_VALUE;
-	now_audience = audience;
-	plus_audience_flag = false;
+	//アニメーション
+	anime_flag = false;
 
-	//パリィ
-	heart = 0.0f;
+	//スコア
+	score = SCORE_START_VALUE;
+	now_score = score;
+	add_score_size = 0.0f;
+	enemy_num = 0.0f;
+	plus_score_flag = false;
+	good_flag = false;
+
+	//ウェーブ
+	wave = 0;
+	wave_time = 0.0f;
+	wave_change_flag = false;
 }
 
-int StatusManager::Update(const float deltaTime) {
-	if (atk_combo_time > ATK_COMBO_TIME_MAX[atk_combo_count] || atk_combo >= ATK_COMBO_MAX) {
-		atk_combo_time  = 0.0f;
-		atk_combo_flag  = false;
-		atk_combo_count = 0;
-		atk_combo = 0;
-		
-	}
-
-	if (atk_combo_flag) {
-		atk_combo_time += deltaTime;
-	}
-
-	return 0;
+void StatusManager::Update(const float deltaTime) {
+	CalcScore(deltaTime);
+	KillComboTime(deltaTime);
 }
 
-void StatusManager::AddCombo(const float deltaTime) {
+void StatusManager::SetAddScore(float score_size) {
+	add_score_size = score_size;
+	now_score += add_score_size;	//現在のスコア
 
-	atk_combo++;
-	atk_combo_time = 0.0f;
-	atk_combo_flag = true;
+	now_score = std::clamp(now_score, 0.0f, SCORE_MAX_VALUE);
 
-	return;
-}
-
-void StatusManager::AddAudience(float add_size) {
-	now_audience += add_size;	//現在のオーディエンス
-
-	now_audience = std::clamp(now_audience, 0.0f, AUDIENCE_MAX_VALUE);
-
-	if (audience <= now_audience) {
-		plus_audience_flag = true;
+	if (score < now_score) {
+		plus_score_flag = true;
 	}
 	else
 	{
-		plus_audience_flag = false;
+		plus_score_flag = false;
+	}
+
+	if (add_score_size < 0) {
+		good_flag = false;
+	}
+	else {
+		good_flag = true;
 	}
 
 	return;
 }
 
 
-void StatusManager::CalcAudience(const float deltaTime) {
-	if (plus_audience_flag) {
-		UpAudience(deltaTime);
+void StatusManager::CalcScore(const float deltaTime) {
+	if (plus_score_flag) {
+		ScoreUp(deltaTime);
 	}
 	else
 	{
-		DownAudience(deltaTime);
+		ScoreDown(deltaTime);
 	}
 	return;
 }
 
-void StatusManager::UpAudience(const float deltaTime) {
-	audience = std::min(audience + AUIDENCE_DN_SPEED * deltaTime, now_audience);
+void StatusManager::ScoreUp(const float deltaTime) {
+	score = std::min(score + SCORE_UPDN_SPEED * deltaTime, now_score);
 	return;
 }
 
-void StatusManager::DownAudience(const float deltaTime) {
-	audience = std::max(audience - AUIDENCE_DN_SPEED * deltaTime, now_audience);
+void StatusManager::ScoreDown(const float deltaTime) {
+	score = std::max(score - SCORE_UPDN_SPEED * deltaTime, now_score);
 	return;
 }
 
-float StatusManager::GetKillComboTime(const float deltaTime) {
-	kill_combo_time = std::min(kill_combo_time + deltaTime, KILL_COMBO_TIME_MAX);
-	return kill_combo_time;
+void StatusManager::AddKillCombo() {
+	kill_combo++;
+	kill_combo_time = 5.0f;	//5秒追加
+	kill_combo_flag = true;
+	UIManager::Instance().ResetAnimeFrame();
+	ResetaAnimeFlag();
+	anime_flag = true;
+
+	return;
 }
 
-void StatusManager::BonusScore(int kill_combo) {
+void StatusManager::KillComboTime(const float deltaTime) {
+	kill_combo_time = std::max(kill_combo_time - deltaTime, 0.0f);
+	if (kill_combo_time <= 0.0f) {
+		ResetKillCombo();
+	}
+	return;
+}
+
+void StatusManager::ResetKillCombo() {
+	ComboScore();
+	kill_combo = 0;
+	kill_combo_flag = false;
+	return;
+}
+
+void StatusManager::ComboScore() {
 	switch (kill_combo) {
 	case 1:
-		AddAudience(20.0f);
-		kill_combo_time -= KILL_COMBO_TIME_MAX;
+		SetAddScore(10.0f);
 		break;
 	case 2:
-		AddAudience(40.0f);
-		kill_combo_time -= KILL_COMBO_TIME_MAX;
+		SetAddScore(30.0f);
 		break;
 	case 3:
-		AddAudience(80.0f);
-		kill_combo_time -= KILL_COMBO_TIME_MAX;
+		SetAddScore(60.0f);
 		break;
 	case 4:
-		AddAudience(160.0f);
-		kill_combo_time -= KILL_COMBO_TIME_MAX;
-		break;
-	case 5:
-		AddAudience(320.0f);
-		kill_combo_time -= KILL_COMBO_TIME_MAX;
+		SetAddScore(100.0f);
 		break;
 	default:
+		if (kill_combo >= 5) {
+			float BonusScore = (kill_combo * 50.0f) - 100.0f;
+			SetAddScore(BonusScore);
+		}
 		break;
 	}
+	
 	return;
 }
 
-void StatusManager::HeartCount() {
-	if (heart < HEART_MAX) {
-		heart++;
+void StatusManager::SetWave(int wave_num) {
+	wave = wave_num;
+
+	switch (wave)
+	{
+	case 1:
+		wave_time = WAVE_TIME_LIMIT_ONE;
+		break;
+
+	case 2:
+		wave_time = WAVE_TIME_LIMIT_ONE;
+		break;
+
+	case 3:
+		wave_time = WAVE_TIME_LIMIT_ONE;
+		break;
+	}
+
+	wave_change_flag = false;
+	return;
+}
+
+void StatusManager::WaveTimeLimit(const float deltaTime) {
+	wave_time = std::max(wave_time - deltaTime, 0.0f);
+
+	if (wave_time <= 0.0f) {
+		ResetWaveTime();
 	}
 	return;
 }
 
-void StatusManager::HeartReset() {
-	if (heart >= HEART_MAX) {
-		heart = 0.0f;
+void StatusManager::ResetWaveTime() {
+	if (!wave_change_flag) {
+		float TimeBonus = wave_time * 5.0f;
+		float LostEnemy = enemy_num * -30.0f;
+		SetAddScore(TimeBonus + LostEnemy);
+		wave_time = 0.0f;
+		wave_change_flag = true;
 	}
-	return;
 }
