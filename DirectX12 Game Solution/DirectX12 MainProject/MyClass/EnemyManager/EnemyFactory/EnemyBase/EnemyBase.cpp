@@ -118,7 +118,6 @@ void EnemyBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack, int
 void EnemyBase::AdjustAnimCollision() {
 	col.box.Center = anim_model->GetPosition();
 	anim_model->SetPosition(position);
-	anim_model->AdvanceTime(delta / 1.0f);
 	collision->SetPosition(anim_model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 }
 
