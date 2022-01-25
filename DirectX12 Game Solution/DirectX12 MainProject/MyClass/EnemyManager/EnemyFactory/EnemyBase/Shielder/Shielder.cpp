@@ -26,10 +26,15 @@ int Shielder::Update(SimpleMath::Vector3 player, bool destroy_flag, const float 
 	EnemyBase::Update(player, destroy_flag, deltaTime);
 	EnemyBase::AdjustAnimCollision();
 	EnemyBase::TemporaryDeath();
+	
+	Freeze();
 	IsDeath();
 
 	if (!temporary_death_flag && !die_flag)
 		Action();
+
+	if (is_damage < max_is_damage)
+		anim_model->AdvanceTime(delta / 1.0f);
 
 	sword_col->SetPosition(sword_pos);
 	col.weapon.Center = SimpleMath::Vector3(sword_pos.x, 0, sword_pos.z);
@@ -46,10 +51,11 @@ void Shielder::Action() {
 	switch (action)
 	{
 	case (int)ActionNum::FIRST_WAIT:
+		InitDirect();
 		if (init_wait_frame < max_init_wait) {
 			init_wait_frame += delta;
 			Rotate();
-			SetAnimation(anim_model, (int)Motion::WAIT, (int)Motion::MAX_MOTION);
+			SetAnimation(anim_model, (int)Motion::RUN, (int)Motion::MAX_MOTION);
 		}
 		else {
 			action = (int)ActionNum::INIT;
@@ -60,6 +66,7 @@ void Shielder::Action() {
 			Rotate();
 			wait_frame = 0.0f;
 			move_frame = 0.0f;
+			sword_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 			SetAnimation(anim_model, (int)Motion::RUN, (int)Motion::MAX_MOTION);
 			action = (int)ActionNum::RUN;
 		break;
@@ -69,39 +76,64 @@ void Shielder::Action() {
 			move_frame += delta;
 			Move();
 			Attack();
-			LimitRange();
-		}
-		else {
-			action = (int)ActionNum::WAIT;
-		}
-
-		break;
-
-	case (int)ActionNum::WAIT:
-		if (wait_frame < max_wait) {
-			SetAnimation(anim_model, (int)Motion::WAIT, (int)Motion::MAX_MOTION);
-			wait_frame += delta;
 		}
 		else {
 			action = (int)ActionNum::INIT;
 		}
 
-		sword_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
-
 		break;
 	}
 }
 
+void Shielder::InitDirect() {
+	if (enemy_direct == "L") {
+		anim_model->SetRotation(0, -rotate, 0);
+		direct = LEFT;
+	}
+	else {
+		anim_model->SetRotation(0, rotate, 0);
+		direct = RIGHT;
+	}
+}
+
 void Shielder::Move() {
-	if (direct == RIGHT)
+	if (direct == LEFT)
 		position.x += move_speed * delta;
-	else
+
+	else if (direct == RIGHT)
 		position.x -= move_speed * delta;
+}
+
+void Shielder::Freeze() {
+	if (enemy_hp <= 0 && !die_flag) {
+		is_damage += delta;
+		SetAnimation(anim_model, (int)Motion::DAMAGE, (int)Motion::MAX_MOTION);
+	}
+
+	if (StatusManager::Instance().GetKillComboTime() == 0.0f) {
+		SetAnimation(anim_model, (int)Motion::RUN, (int)Motion::MAX_MOTION);
+		is_damage = 0.0f;
+	}
+}
+
+void Shielder::Damage() {
+	if (position.x < player_pos.x && direct == RIGHT ||
+		position.x > player_pos.x && direct == LEFT) {
+		EnemyBase::Damage();
+	}
+}
+
+void Shielder::HitEffect() {
+	if (position.x < player_pos.x && direct == RIGHT ||
+		position.x > player_pos.x && direct == LEFT) {
+		EnemyBase::HitEffect();
+	}
 }
 
 void Shielder::IsDeath() {
 	if (die_flag) {
-		SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
+		SetAnimation(anim_model, (int)Motion::DEATH, (int)Motion::MAX_MOTION);
+		is_damage = 0.0f;
 
 		if (dead_frame >= 0.0f) {
 			confetti_effect_flag = true;
@@ -116,12 +148,13 @@ void Shielder::IsDeath() {
 }
 
 void Shielder::Rotate() {
-	if (player_pos.x > position.x) {
-		anim_model->SetRotation(0, -rotate, 0);
+	if (direct == LEFT && position.x >= max_range) {
+		anim_model->SetRotation(0, rotate, 0);
 		direct = RIGHT;
 	}
-	else {
-		anim_model->SetRotation(0, rotate, 0);
+
+	if (direct == RIGHT && position.x <= -max_range) {
+		anim_model->SetRotation(0, -rotate, 0);
 		direct = LEFT;
 	}
 }
@@ -132,14 +165,6 @@ void Shielder::Attack() {
 
 	if (direct == LEFT)
 		sword_pos = SimpleMath::Vector3(position.x - 2.5f, fit_collision_y, position.z);
-}
-
-void Shielder::LimitRange() {
-	if (position.x <= -limit_x)
-		position.x  = -limit_x;
-
-	if (position.x >= limit_x)
-		position.x  = limit_x;
 }
 
 bool Shielder::LifeDeathDecision() {
