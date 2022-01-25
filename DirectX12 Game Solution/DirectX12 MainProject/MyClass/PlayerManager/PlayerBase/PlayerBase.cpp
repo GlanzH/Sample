@@ -126,7 +126,7 @@ bool PlayerBase::Initialize()
 	//攻撃の時間
 	attack_flag = false;
 	attack_time = 0.0f;
-	attack_zeit_max = 0.03309f;
+	attack_zeit_max = 0.1f;
 
 	//無敵時間
 	invincible_flag = false;
@@ -357,7 +357,9 @@ void PlayerBase::Render()
 	//プレイヤーの描画
 	model->Draw();
 	//collision->Draw();
-	//sword_collision->Draw();
+	if (attack_flag) {
+		sword_collision->Draw();
+	}
 	//parry_collision->Draw();
 	//right_collision->Draw();
 	//left_collision->Draw();
@@ -583,32 +585,32 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 		}
 		break;
 	case Upper_State::UPPER_ATTACK:
-
-
 		upper_start += deltaTime;
 		SetAnimation(model, ACT1);
 
 		//当たり判定
 		//エフェクト
-		attack_flag = true;
+		if (upper_start >= 0.217f) {
+			attack_flag = true;
+		}
 		if (IsAttack()) {
-			if (direction_state_mode == Direction_State::RIGHT) {
 
-				DX12Effect.PlayOneShot("upper", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
-			}
-			else if (direction_state_mode == Direction_State::LEFT) {
-				DX12Effect.PlayOneShot("upper", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
-				DX12Effect.SetRotation("upper", Vector3(0.0f, 180.0f, 0.0f));			
-			}
+		}
 
-		}		
+		if (direction_state_mode == Direction_State::RIGHT) {
+
+			DX12Effect.Play("upper", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
+		}
+		else if (direction_state_mode == Direction_State::LEFT) {
+			DX12Effect.Play("upper", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
+			DX12Effect.SetRotation("upper", Vector3(0.0f, 180.0f, 0.0f));
+		}
+
 
 		if (upper_start >= upper_end) {
 			upper_state_mode = Upper_State::NOT_UPPER;
 			upper_start = 0.0f;
 			model->SetTrackPosition(ACT1, 0.0);
-
-			
 		}
 
 		break;
@@ -665,16 +667,18 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 		lower_start += deltaTime;
 		SetAnimation(model, ACT2);
 
-		attack_flag = true;
+		if (lower_start >= 0.167f)
+			attack_flag = true;
+
 		if (IsAttack()) {
-			if (direction_state_mode == Direction_State::RIGHT) {
-				DX12Effect.PlayOneShot("lower", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
-				DX12Effect.SetRotation("lower", Vector3(0.0f, 0.0f, 0.0f));
-			}
-			else if (direction_state_mode == Direction_State::LEFT) {
-				DX12Effect.PlayOneShot("lower", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
-				DX12Effect.SetRotation("lower", Vector3(0.0f, 180.0f, 0.0f));
-			}
+		}
+		if (direction_state_mode == Direction_State::RIGHT) {
+			DX12Effect.PlayOneShot("lower", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
+			DX12Effect.SetRotation("lower", Vector3(0.0f, 0.0f, 0.0f));
+		}
+		else if (direction_state_mode == Direction_State::LEFT) {
+			DX12Effect.PlayOneShot("lower", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
+			DX12Effect.SetRotation("lower", Vector3(0.0f, 180.0f, 0.0f));
 		}
 
 		if (lower_start >= lower_end) {
@@ -813,9 +817,25 @@ bool PlayerBase::IsAttack() {
 }
 
 void PlayerBase::Debug() {
+	//DX9::SpriteBatch->DrawString(font.Get(),
+	//	SimpleMath::Vector2(1100.0f, 120.0f),
+	//	DX9::Colors::BlueViolet,
+	//	L"%f", s_del_start
+	//);
+
+	//if (elimination_flag) {
 	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1100.0f, 120.0f),
+	//		SimpleMath::Vector2(1100.0f, 140.0f),
 	//		DX9::Colors::BlueViolet,
 	//		L"ON"
 	//	);
+	//}
+	//else {
+	//	DX9::SpriteBatch->DrawString(font.Get(),
+	//		SimpleMath::Vector2(1100.0f, 140.0f),
+	//		DX9::Colors::BlueViolet,
+	//		L"OFF"
+	//	);
+
+	//}
 }
