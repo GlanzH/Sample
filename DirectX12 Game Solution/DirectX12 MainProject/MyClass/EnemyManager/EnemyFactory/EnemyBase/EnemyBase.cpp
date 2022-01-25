@@ -19,24 +19,12 @@ bool EnemyBase::Initialize(
 
 	enemy_stop_flag = time_stop_flag;
 	retreat_flag    = false;
-	
-	hit          = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
-	normal_die   = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/confetti/confetti.efk");
-	//special_die  = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die2/die2.efk");
-	star		 = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
-	love		 = ResourceManager::Instance().LoadEffect(L"Effect/AudienceEffect/heart/heart.efk");
-	del          = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/delete/delete.efk");
 
 	return true;
 }
 
 void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
 	position = initial_position;
-
-	D3DMATERIAL9 material;
-	material.Diffuse = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.0f);
-	material.Ambient = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
-	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 
 	//!アニメーションモデルの作成
 	anim_model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
@@ -54,8 +42,21 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 		col.box.Extents.z * box_size
 	);
 
+	D3DMATERIAL9 material;
+	material.Diffuse = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.0f);
+	material.Ambient = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
+	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
+
 	collision->SetMaterial(material);
 	col.box.Center = position;
+
+	//special_die  = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die2/die2.efk");
+	hit        = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
+	star       = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
+	love       = ResourceManager::Instance().LoadEffect(L"Effect/AudienceEffect/heart/heart.efk");
+	del        = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/delete/delete.efk");
+	confetti   = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/confetti/confetti.efk");
+	normal_die = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die/die.efk");
 
 	explode.LoadAssets(initial_position.x);
 
@@ -70,7 +71,7 @@ void EnemyBase::LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	material.Ambient = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 
-	//!アニメーションモデルの作成
+	//!モデルの作成
 	model = DX9::Model::CreateFromFile(DXTK->Device9, model_name);
 	model->SetPosition(position);
 
@@ -82,7 +83,7 @@ void EnemyBase::LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 		DXTK->Device9,
 		col.box.Extents.x * box_size,
 		col.box.Extents.y * box_size,
-		col.box.Extents.z * box_size
+		col.box.Extents.z
 	);
 
 	collision->SetMaterial(material);
@@ -90,7 +91,7 @@ void EnemyBase::LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	col.box.Center = position;
 }
 
-int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime)
+int EnemyBase::Update(SimpleMath::Vector3 player, bool destroy_flag, const float deltaTime)
 {
 	delta      = deltaTime;
 	player_pos = player;
@@ -129,8 +130,18 @@ void EnemyBase::HitEffect() {
 	//}
 }
 
-void EnemyBase::NormalDeathEffect() {
-		normal_die_handle = DX12Effect.Play(normal_die, position);
+void EnemyBase::NormalDeathEffect(float max_death, bool confetti_effect, bool death_effect,int effect_count) {
+	if (die_flag) {
+		if(dead_frame < max_death){
+			if (!DX12Effect.CheckAlive(confetti_handle) && confetti_effect && effect_count == CONFINETTI)
+				confetti_handle = DX12Effect.Play(confetti, position);
+
+			if (!DX12Effect.CheckAlive(die_handle) && death_effect && effect_count == DEATH)
+				die_handle = DX12Effect.Play(normal_die, position);
+
+			dead_frame += delta;
+		}
+	}
 }
 
 void EnemyBase::SpecialDeathEffect() {
@@ -150,6 +161,11 @@ void EnemyBase::TimeStopDecision() {
 
 void EnemyBase::Retreat() {
 	retreat_flag = true;
+}
+
+void EnemyBase::DieFlag() {
+	if (enemy_hp <= 0)
+	die_flag = true;
 }
 
 void EnemyBase::IsRetreat() {
@@ -189,26 +205,23 @@ void EnemyBase::IsDamage() {
 	}
 }
 
-void EnemyBase::TemporaryDeath(float max_death) {
-	if (enemy_hp <= 0) {
+void EnemyBase::TemporaryDeath() {
+	if (!temporary_death_flag && enemy_hp <= 0)
+		StatusManager::Instance().AddKillComboTime();
+
+	if (enemy_hp <= 0 && !die_flag) {
 		temporary_death_flag = true;
 
 		if (!DX12Effect.CheckAlive(star_handle))
 			star_handle = DX12Effect.Play(star, position + SimpleMath::Vector3(0, 8, 0));
 	}
-	else {
-		temporary_death_flag = false;
-	}
-	if (DXTK->KeyEvent->pressed.X) {
+
+	if (StatusManager::Instance().GetKillComboTime() == 0.0f) {
 		//仮死状態解除するやつ
 		DX12Effect.Stop(star_handle);
 		enemy_hp = 1;
 		death_frame = 0.0f;
 		temporary_death_flag = false;
-	}
-
-	if (DXTK->KeyEvent->pressed.C) {
-		DX12Effect.Stop(star_handle);
 	}
 }
 

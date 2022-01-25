@@ -11,7 +11,7 @@ void SwordMan::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positio
 	sword_col = DX9::Model::CreateBox(
 		DXTK->Device9,
 		col.weapon.Extents.x * 3,
-		col.weapon.Extents.y * 5,
+		col.weapon.Extents.y * 20,
 		col.weapon.Extents.z * 5
 	);
 
@@ -21,18 +21,16 @@ void SwordMan::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positio
 	col.weapon.Center = sword_pos;
 }
 
-int SwordMan::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime) {
-	EnemyBase::Update(player, special_attack_flag, thorow_things_flag, deltaTime);
-
-	if (!temporary_death_flag)
-		Action();
-
-	//if (Stun() && !LifeDeathDecision())
-	//	SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
-
+int SwordMan::Update(SimpleMath::Vector3 player, bool destroy_flag, const float deltaTime) {
+	EnemyBase::Update(player, destroy_flag, deltaTime);
+	EnemyBase::NormalDeathEffect(max_dead,confetti_effect_flag,death_effect_flag,effect_count);
+	EnemyBase::AdjustAnimCollision();
+	EnemyBase::TemporaryDeath();
+	Freeze();
 	IsDeath();
-	AdjustAnimCollision();
-	TemporaryDeath(max_death);
+
+	if (!temporary_death_flag && !die_flag)
+		Action();
 
 	sword_col->SetPosition(sword_pos);
 	col.weapon.Center = SimpleMath::Vector3(sword_pos.x,0,sword_pos.z);
@@ -50,10 +48,15 @@ void SwordMan::Action() {
 	switch (action)
 	{
 	case (int)ActionNum::FIRST_WAIT:
+		InitDirect();
+
 		if (init_wait_frame < max_init_wait) {
 			init_wait_frame += delta;
-			Rotate();
-			SetAnimation(anim_model, (int)Motion::WAIT, (int)Motion::MAX_MOTION);
+
+			if(enemy_posture == "U")
+				SetAnimation(anim_model, (int)Motion::RUN_UP, (int)Motion::MAX_MOTION);
+			else
+				SetAnimation(anim_model, (int)Motion::RUN_DOWN, (int)Motion::MAX_MOTION);
 		}
 		else {
 			action = (int)ActionNum::INIT;
@@ -61,20 +64,24 @@ void SwordMan::Action() {
 		break;
 
 	case (int)ActionNum::INIT:
-			wait_frame = 0.0f;
-			attack_frame = 0.0f;
-			move_pos_x = player_pos.x;
-			SetAnimation(anim_model, (int)Motion::WALK, (int)Motion::MAX_MOTION);
-			action = (int)ActionNum::MOVE;
+		attack_frame = 0.0f;
+		move_pos_x = player_pos.x;
+
+		if (enemy_posture == "U")
+			SetAnimation(anim_model, (int)Motion::RUN_UP, (int)Motion::MAX_MOTION);
+		else
+			SetAnimation(anim_model, (int)Motion::RUN_DOWN, (int)Motion::MAX_MOTION);
+
+		action = (int)ActionNum::MOVE;
 		break;
 
 	case (int)ActionNum::MOVE:
 
 		//!移動終了条件(プレイヤーがいた座標に到着したら)
 		end_move = position.x > player_pos.x && position.x - 0.5f < move_pos_x ||
-			       position.x < player_pos.x && position.x + 0.5f > move_pos_x;
+			position.x < player_pos.x&& position.x + 0.5f > move_pos_x;
 
-		if(end_move)
+		if (end_move)
 			action = (int)ActionNum::ATTACK;
 		else {
 			Move();
@@ -83,11 +90,14 @@ void SwordMan::Action() {
 		break;
 
 	case (int)ActionNum::ATTACK:
-		Rotate();
 		Attack();
 
 		if (attack_frame < max_attack) {
-			SetAnimation(anim_model, (int)Motion::ATTACK, (int)Motion::MAX_MOTION);
+			if (enemy_posture == "U")
+				SetAnimation(anim_model, (int)Motion::ATTACK_UP, (int)Motion::MAX_MOTION);
+			else
+				SetAnimation(anim_model, (int)Motion::ATTACK_DOWN, (int)Motion::MAX_MOTION);
+
 			attack_frame += delta;
 			attack_flag = true;
 		}
@@ -96,24 +106,37 @@ void SwordMan::Action() {
 			action = (int)ActionNum::INIT;
 		}
 		break;
+	}
+}
 
-	case (int)ActionNum::WAIT:
-		if (wait_frame < max_wait) {
-			SetAnimation(anim_model, (int)Motion::WAIT,(int)Motion::MAX_MOTION);
-			wait_frame += delta;
-		}
-		else {
-			action = (int)ActionNum::INIT;
-		}
+void SwordMan::InitDirect() {
+	if (enemy_direct == "L") {
+		anim_model->SetRotation(0, -rotate, 0);
+		direct = LEFT;
+	}
+	else {
+		anim_model->SetRotation(0, rotate, 0);
+		direct = RIGHT;
+	}
+}
 
-		break;
+void SwordMan::Rotate() {
+	if (direct == LEFT && position.x >= max_range) {
+		anim_model->SetRotation(0, rotate, 0);
+		direct = RIGHT;
+	}
+
+	if (direct == RIGHT && position.x <= -max_range) {
+		anim_model->SetRotation(0, -rotate, 0);
+		direct = LEFT;
 	}
 }
 
 void SwordMan::Move() {
-	if (enemy_direct == "L")
+	if (direct == LEFT)
 		position.x += move_speed * delta;
-	else
+
+	else if (direct == RIGHT)
 		position.x -= move_speed * delta;
 }
 
@@ -121,31 +144,40 @@ void SwordMan::IsRetreat() {
 	EnemyBase::IsRetreat();
 
 	if(enemy_hp > 0 && retreat_flag)
-	SetAnimation(anim_model, (int)Motion::DAMAGE, (int)Motion::MAX_MOTION);
+	SetAnimation(anim_model, (int)Motion::BOUNCE, (int)Motion::MAX_MOTION);
+}
+
+void SwordMan::Freeze() {
+	if (enemy_hp <= 0 && !die_flag) {
+		SetAnimation(anim_model, (int)Motion::FREEZE, (int)Motion::MAX_MOTION);
+		//enemy_hp = 0;
+	}
 }
 
 void SwordMan::IsDeath() {
-	if (enemy_hp <= 0 && death_frame < max_death) {
-		SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
-		death_frame += delta;
-	}
-}
+	if (die_flag) {
+		SetAnimation(anim_model, (int)Motion::DEATH, (int)Motion::MAX_MOTION);
 
-void SwordMan::Rotate() {
-	if (enemy_direct == "L") 
-		anim_model->SetRotation(0, -rotate, 0);
-	else
-		anim_model->SetRotation(0,  rotate, 0);
+		if (dead_frame >= 0.0f) {
+			confetti_effect_flag = true;
+			effect_count = CONFINETTI;
+		}
+
+		if (dead_frame >= 1.7f) {
+			death_effect_flag = true;
+			effect_count = DEATH;
+		}
+	}
 }
 
 void SwordMan::Attack() {
-	if (enemy_direct == "L") {
+	if (direct == LEFT) {
 		if (attack_frame >= 0.8f)
-			sword_pos = SimpleMath::Vector3(position.x + 3.5f, fit_collision_y, position.z);
+			sword_pos = SimpleMath::Vector3(position.x + 5.0f, fit_collision_y, position.z);
 	}
 	else {
 		if (attack_frame >= 0.8f)
-			sword_pos = SimpleMath::Vector3(position.x - 3.5f, fit_collision_y, position.z);
+			sword_pos = SimpleMath::Vector3(position.x - 5.0f, fit_collision_y, position.z);
 	}
 
 	if(attack_frame >= max_attack)
@@ -153,12 +185,10 @@ void SwordMan::Attack() {
 }
 
 bool SwordMan::LifeDeathDecision() {
-	if (temporary_death_flag && death_frame > max_death)
+	if (die_flag && dead_frame > max_dead)
 		return DEAD;
 
-	if (position.x <= -90.0f || position.x > 90.0f || 
-		StatusManager::Instance().GetTime() == 0.0f
-		)
+	if (StatusManager::Instance().GetTime() == 0.0f)
 		return AUTO;
     
 	return LIVE;

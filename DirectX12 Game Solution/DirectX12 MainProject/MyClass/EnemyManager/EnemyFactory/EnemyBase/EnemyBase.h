@@ -27,11 +27,12 @@ public:
 	virtual void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 	void LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 
-	virtual int  Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
+	virtual int  Update(SimpleMath::Vector3 player,bool destroy_flag, const float deltaTime);
 	virtual void Render() {};
 	void Retreat();
+	void DieFlag();
 
-	void TemporaryDeath(float max_death);
+	void TemporaryDeath();
 	bool GetTimeStopFlag() { return do_time_stop_flag; }
 	bool GetTemporaryDeathFlag() { return temporary_death_flag; }
 	bool GetAttackFlag() { return attack_flag; }
@@ -39,7 +40,6 @@ public:
 	std::string GetPostune() { return enemy_posture; }
 
 	void HitEffect();
-	void NormalDeathEffect();
 	void SpecialDeathEffect();
 	void AutoDestoryEffect();
 
@@ -56,8 +56,8 @@ private:
 	void TimeStopDecision();
 	void IsDamage();
 
-	EFFECTHANDLE hit_handle, star_handle, normal_die_handle, special_die_handle, love_handle,del_handle;
-	EFFECT hit, star, normal_die, special_die, love,del;
+	EFFECTHANDLE hit_handle, star_handle, confetti_handle, die_handle, special_die_handle, love_handle,del_handle;
+	EFFECT hit, star, confetti, normal_die, special_die, love,del;
 
 	ExplodeMan explode;
 
@@ -93,7 +93,6 @@ private:
 
 	const float box_size = 2.0f;
 
-
 protected:
 	virtual void Action() {}
 	virtual void Move() {}
@@ -101,6 +100,7 @@ protected:
 	virtual void IsRetreat();
 
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack, int max_motion);
+	void NormalDeathEffect(float max_death,bool confetti_effect,bool death_effect,int effect_count);
 	void AdjustAnimCollision();
 	bool Stun();
 
@@ -125,6 +125,9 @@ protected:
 	float death_frame = 0.0f;
 	float max_init_wait;
 
+	float dead_frame = 0.0f;
+	const float max_dead = 2.f;
+
 	std::string enemy_direct;
 	std::string enemy_posture;
 
@@ -134,8 +137,18 @@ protected:
 	float delta;
 
 	bool retreat_flag;
+	bool die_flag    = false;
 	bool attack_flag = false;
-	bool temporary_death_flag;
+	bool temporary_death_flag = false;
+
+	bool confetti_effect_flag = false;
+	bool death_effect_flag    = false;
+	int effect_count = 0;
 
 	Collision col;
+
+	enum {
+		CONFINETTI = 1,
+		DEATH      = 2
+	};
 };

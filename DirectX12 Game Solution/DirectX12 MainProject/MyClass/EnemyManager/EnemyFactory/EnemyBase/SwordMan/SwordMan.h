@@ -4,7 +4,7 @@
 class SwordMan : public EnemyBase {
 public:
 	void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
-	int  Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
+	int  Update(SimpleMath::Vector3 player, bool destroy_flag, const float deltaTime);
 
 private:
 	bool LifeDeathDecision() override;
@@ -13,7 +13,9 @@ private:
 	void Action() override;
 	void IsRetreat();
 	void Attack();
+	void Freeze();
 	void IsDeath();
+	void InitDirect();
 	void Rotate();
 
 	DX9::MODEL sword_col;
@@ -21,23 +23,23 @@ private:
 
 	float move_pos_x;
 
-	float wait_frame = 0.0f;
-	const float max_wait = 3.0f;
-
 	float attack_frame = 0.0f;
 	const float max_attack = 2.5f;
 
 	const float max_death = 2.f;
+	const float max_range = 100.0f;
 
 	bool end_move;
 
 	enum class Motion {
-		DEATH,
-		CONFUSE,
+		RUN_UP,
+		ATTACK_UP,
+		BOUNCE,
 		DAMAGE,
-		ATTACK,
-		WALK,
-		WAIT,
+		DEATH,
+		RUN_DOWN,
+		ATTACK_DOWN,
+		FREEZE,
 		MAX_MOTION
 	};
 
@@ -45,10 +47,15 @@ private:
 		FIRST_WAIT,
 		MOVE,
 		ATTACK,
-		WAIT,
 		INIT
 	};
 
-	int action = (int)ActionNum::INIT;
+	enum Direction {
+		RIGHT,
+		LEFT
+	};
+	
+	int action = (int)ActionNum::FIRST_WAIT;
+	int direct;
 	
 };

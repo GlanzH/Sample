@@ -16,7 +16,7 @@ public:
 	~EnemyManager();
 
 	bool Initialize(PlayerBase* player_base);
-	int  Update(SimpleMath::Vector3 player,int attack_tag, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
+	int  Update(SimpleMath::Vector3 player,bool destroy_flag, const float deltaTime);
 	void OnDeviceLost();
 	void Render();
 
@@ -32,6 +32,7 @@ public:
 	void StartTimeStop();
 	void EndTimeStop();
 	bool IsTimeStop() { return enemy_stop_flag; }
+	bool GetTemporaryDeath();
 
 	void OnCollisionEnter(EnemyBase* base);
 	void OnThrustCollisionEnter(EnemyBase* base);
@@ -75,10 +76,12 @@ private:
 	int enemy_num = 0;
 	int push_count = 0;
 
-	bool enemy_stop_flag   = false;
-	bool special_move_flag = false;
-	bool count_dest_flag   = false;
-	bool sound_hit_flag    = false;
+	bool enemy_stop_flag    = false;
+	bool special_move_flag  = false;
+	bool count_dest_flag    = false;
+	bool sound_hit_flag     = false;
+	bool temporary_flag     = false;
+	bool enemy_destroy_flag = false;
 
 	const int max_combo = 3;
 

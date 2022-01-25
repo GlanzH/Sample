@@ -18,6 +18,7 @@ public:
 
 	//敵撃破コンボ
 	void AddKillCombo();	//コンボ増加
+	void AddKillComboTime();//コンボ時間増加
 	void ResetKillCombo();	//コンボ数リセット
 	float GetKillComboTime() { return kill_combo_time; }	//撃破コンボ継続時間
 	bool GetKillFlag() { return kill_combo_flag; }	//コンボフラグ

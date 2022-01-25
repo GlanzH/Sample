@@ -26,7 +26,7 @@ public:
 
 	bool Initialize();
 	void LoadAssets();
-	int Update(const float deltaTime);
+	int Update(const float deltaTime, bool temp);
 	void Render();
 
 	void OnCollisionEnter(std::string tag);
@@ -44,7 +44,7 @@ public:
 
 	DX9::SKINNEDMODEL& GetModel() { return model; }
 
-	
+
 
 	Collisions GetBox() { return col; }
 
@@ -70,6 +70,8 @@ public:
 
 	int GetAttackTag() { return attack_type; }//攻撃の種類
 
+	bool GetEnemyDeathFlag() { return elimination_flag; }//エネミーの消滅
+
 
 private:
 
@@ -84,6 +86,8 @@ private:
 	//ノックバック
 	void Knock_Back();
 
+	//攻撃
+	void Attack_Relation(const float deltaTime);
 	//降り下ろし
 	void Swing_Down(const float deltaTime);
 	//切り上げ
@@ -140,7 +144,7 @@ private:
 	const int player_box_size_x = 5;
 	const int player_box_size_z = 3;
 
-	const int box_size_x = 3;
+	const int box_size_x = 1.5;
 	const int box_size_y = 2;
 	const int box_size_z = 3;
 
@@ -201,11 +205,12 @@ private:
 		ACT1,
 		ACT2,
 		ACT3,
-		APPEIL,
+		FINISH,
+		REBOUND,
 		JUMP,
 		PARRY,
-		DAMAGE,
 		ROLL,
+		DAMAGE1,
 		MOTION_MAX
 	};
 
@@ -218,8 +223,8 @@ private:
 
 	Direction_State direction_state_mode;
 
-//『使用しない』****************************//
-	//アピール
+	//『使用しない』****************************//
+		//アピール
 	bool appeil_flag;
 	float appeil_time;
 	bool appeil_cool_flag;
@@ -258,22 +263,25 @@ private:
 	int attack_type;
 
 	//ノックバック
+	void Knock_back_Move();
+
 	bool knock_back_flag;
 	float knock_back_start;
 	float knock_back_end;
 	float time_other;
 
 	//起き上がる
-	float rize_start;
+	void Rize();
+
 	float rize_end;
 
 	enum Damage_Mode
 	{
 		NOMAL_STATE, //通常状態
-		KNOCK_BACK,  //ノックバック
-		RISE         //起き上がる
+		KNOCK_BACK   //ノックバック
 	};
 	Damage_Mode damage_mode_state;
+
 
 
 	//上段(変数宣言)
@@ -296,6 +304,33 @@ private:
 	float lower_start;
 	float lower_end;
 
+
+	void Upper_Effect();
+
 	//納刀
-	void Sword_Delivery();
+	void Sword_Delivery(const float deltaTime, bool temp);
+	bool  s_del_flag;
+	float s_del_start;
+	float s_del_end;
+
+	//敵の消滅
+	bool elimination_flag;
+	float elimination_end;
+
+	//攻撃 弾かれる
+	void Frip(const float deltaTime);
+
+	enum Frip_State
+	{
+		NOT_FRIP,
+		ATTACK_TEST,
+		FRIP
+	};
+	Frip_State frip_state_mode;
+
+	float not_attack_start = 0.0f;
+	float not_attack_end = 0.3f;
+
+	float frip_start = 0.0f;
+	float frip_end = 0.783f;
 };

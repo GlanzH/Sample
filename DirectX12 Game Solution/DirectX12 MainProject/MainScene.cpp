@@ -94,6 +94,8 @@ void MainScene::LoadAssets()
 	dialogue.LoadAssets();
 	UIManager::Instance().LoadAsset();
 	SceneManager::Instance().LoadAsset();
+
+	DX12Effect.SetCamera(camera.GetCamera());
 }
 
 // Releasing resources required for termination.
@@ -132,11 +134,11 @@ NextScene MainScene::Update(const float deltaTime)
 
 	ChangeLightRenge(deltaTime);
 	StatusManager::Instance().Update(deltaTime);
-	UIManager::Instance().Update(deltaTime);
+	UIManager::Instance().Update(deltaTime, camera.GetCamera()->GetPosition());
 
 	if (!enemy->IsTimeStop()) {
-		player->Update(deltaTime);
-		enemy->Update(player->GetModel()->GetPosition(),player->GetAttackTag(), player->IsDeathbrow(), audience->GetThrowThingsFlag(), deltaTime);
+		player->Update(deltaTime, enemy->GetTemporaryDeath());
+		enemy->Update(player->GetModel()->GetPosition(),player->GetEnemyDeathFlag(), deltaTime);
 		camera.Update(player, OUT_ZOOM, deltaTime);
 		observer->Update(player, enemy, audience);
 		dialogue.ResetCount();
@@ -243,12 +245,11 @@ void MainScene::Render()
 	DXTK->Direct3D9->BeginScene();
 
 	//3D•`‰æ
-	DX12Effect.SetCamera((DX12::CAMERA)camera.GetCamera());
 	camera.Render();
-
+	DX12Effect.SetCameraPosition(camera.GetCamera());
 	
 	point.SetPower(1.0f,0);
-	point.PointRender(camera.GetCamera(), ground.GetModel());
+	point.PointRender(*camera.GetCamera(), ground.GetModel());
 	
 	point.ShadeRender(player->GetModel(),SimpleMath::Vector4(0,0,1,0.3f));
 

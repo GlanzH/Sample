@@ -22,22 +22,17 @@ void MidBoss::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position
 	col.weapon.Center = sword_pos;
 }
 
-int MidBoss::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime) {
-	EnemyBase::Update(player, special_attack_flag, thorow_things_flag, deltaTime);
-
-	//!’ÊíŽžˆ—
-	auto normal_state = !special_attack_flag && !thorow_things_flag && !Stun() && !IsDamage() && !LifeDeathDecision();
-
-	if (!temporary_death_flag)
-		Action();
-
-	//if (Stun() && !LifeDeathDecision())
-	//	SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
-
-	IsDamage();
+int MidBoss::Update(SimpleMath::Vector3 player, bool destroy_flag, const float deltaTime) {
+	EnemyBase::Update(player, destroy_flag, deltaTime);
+	EnemyBase::Update(player, destroy_flag, deltaTime);
+	EnemyBase::NormalDeathEffect(max_dead, confetti_effect_flag, death_effect_flag, effect_count);
+	EnemyBase::AdjustAnimCollision();
+	EnemyBase::TemporaryDeath();
+	//Freeze();
 	IsDeath();
-	AdjustAnimCollision();
-	TemporaryDeath(max_death);
+
+	if (!temporary_death_flag && !die_flag)
+		Action();
 
 	sword_col->SetPosition(sword_pos);
 	col.weapon.Center = SimpleMath::Vector3(sword_pos.x, 0, sword_pos.z);
@@ -55,6 +50,8 @@ void MidBoss::Action() {
 	switch (action)
 	{
 	case (int)ActionNum::FIRST_WAIT:
+		InitDirect();
+
 		if (init_wait_frame < max_init_wait) {
 			init_wait_frame += delta;
 			Rotate();
@@ -98,44 +95,58 @@ void MidBoss::Action() {
 		}
 		else {
 			attack_flag = false;
-			action = (int)ActionNum::WAIT;
-		}
-		break;
-
-	case (int)ActionNum::WAIT:
-		if (wait_frame < max_wait) {
-			SetAnimation(anim_model, (int)Motion::WAIT, (int)Motion::MAX_MOTION);
-			wait_frame += delta;
-		}
-		else {
 			action = (int)ActionNum::INIT;
 		}
 		break;
 	}
 }
 
+void MidBoss::InitDirect() {
+	if (enemy_direct == "L") {
+		anim_model->SetRotation(0, -rotate, 0);
+		direct = LEFT;
+	}
+	else {
+		anim_model->SetRotation(0, rotate, 0);
+		direct = RIGHT;
+	}
+}
+
 void MidBoss::Move() {
-	if (enemy_direct == "L")
+	if (direct == LEFT)
 		position.x += move_speed * delta;
-	else
+
+	else if (direct == RIGHT)
 		position.x -= move_speed * delta;
 }
 
 void MidBoss::Rotate() {
-	if (enemy_direct == "L")
-		anim_model->SetRotation(0, -rotate, 0);
-	else
+	if (direct == LEFT && position.x >= max_range) {
 		anim_model->SetRotation(0, rotate, 0);
+		direct = RIGHT;
+	}
+
+	if (direct == RIGHT && position.x <= -max_range) {
+		anim_model->SetRotation(0, -rotate, 0);
+		direct = LEFT;
+	}
+}
+
+void MidBoss::IsRetreat() {
+	EnemyBase::IsRetreat();
+
+	if (enemy_hp > 0 && retreat_flag)
+		SetAnimation(anim_model, (int)Motion::DAMAGE, (int)Motion::MAX_MOTION);
 }
 
 void MidBoss::Attack() {
-	if (enemy_direct == "L") {
+	if (direct == LEFT) {
 		if ( attack_frame >= 2.0f)
-			sword_pos = SimpleMath::Vector3(position.x + 4.0f, fit_collision_y, position.z);
+			sword_pos = SimpleMath::Vector3(position.x + 5.0f, fit_collision_y, position.z);
 	}
 	else {
 		if (attack_frame >= 2.0f)
-			sword_pos = SimpleMath::Vector3(position.x + 4.0f, fit_collision_y, position.z);
+			sword_pos = SimpleMath::Vector3(position.x - 5.0f, fit_collision_y, position.z);
 	}
 
 	if (attack_frame >= max_attack)
@@ -161,14 +172,24 @@ bool MidBoss::IsDamage() {
 }
 
 void MidBoss::IsDeath() {
-	if (enemy_hp <= 0 && death_frame < max_death) {
+	if (die_flag) {
 		SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
-		death_frame += delta;
+
+
+		if (dead_frame >= 0.0f) {
+			confetti_effect_flag = true;
+			effect_count = CONFINETTI;
+		}
+
+		if (dead_frame >= 1.7f) {
+			death_effect_flag = true;
+			effect_count = DEATH;
+		}
 	}
 }
 
 bool MidBoss::LifeDeathDecision() {
-	if (temporary_death_flag && DXTK->KeyEvent->pressed.C)
+	if (die_flag && dead_frame > max_dead)
 		return DEAD;
 
 	return LIVE;

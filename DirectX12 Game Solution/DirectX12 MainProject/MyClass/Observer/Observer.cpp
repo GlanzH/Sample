@@ -30,7 +30,7 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 		}
 
 		//!“Ë‚«UŒ‚‚Ì”»’è‚ª‚È‚¢‚Æ‚«
-		if (!enemies_roop->GetTemporaryDeathFlag()) {
+	//	if (!enemies_roop->GetTemporaryDeathFlag()) {
 			if (player->GetBox().box.Intersects(enemies_roop->GetBox().box) && !player->IsInvincibleFlag()) {
 				player->OnCollisionEnter(enemies_roop->GetTag());
 			}
@@ -44,7 +44,7 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 			if (player->GetBox().box.Intersects(enemies_roop->GetBox().weapon)) {
 				player->OnCollisionEnter(enemies_roop->GetTag());
 			}
-		}
+		//}
 
 		//if (player->GetSpecialAttackFlag()) {
 		//	if (audience->GetBox().lv2_box.Intersects(enemies_roop->GetBox().box)) {
@@ -52,10 +52,10 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 		//	}
 
 		//}
-		else {
-			if (audience->GetBox().lv2_box.Intersects(enemies_roop->GetBox().box)) {
-				enemy->OnCollisionAudience(enemies_roop);
-			}
-		}
+		//else {
+		//	if (audience->GetBox().lv2_box.Intersects(enemies_roop->GetBox().box)) {
+		//		enemy->OnCollisionAudience(enemies_roop);
+		//	}
+		//}
 	}
 }

@@ -46,13 +46,14 @@ bool EnemyManager::Initialize(PlayerBase* player_base)
 	return true;
 }
 
-int EnemyManager::Update(SimpleMath::Vector3 player, int attack_tag, bool special_attack_flag, bool thorow_things_flag, const float deltaTime)
+int EnemyManager::Update(SimpleMath::Vector3 player, bool destroy_flag, const float deltaTime)
 {	
-	delta      = deltaTime;
-	attack_num = attack_tag;
+	delta = deltaTime;
+
+	enemy_destroy_flag = destroy_flag;
 	
 	for (auto& enemies : enemy) {
-		enemies->Update(player, special_attack_flag, thorow_things_flag, delta);
+		enemies->Update(player, destroy_flag, delta);
 	}
 
 	Iterator();
@@ -71,6 +72,10 @@ void EnemyManager::Iterator() {
 
 	for (auto itr = enemy.begin(); itr != enemy.end();)
 	{
+		if (enemy_destroy_flag) {
+			(*itr)->DieFlag();
+		}
+
 		if ((*itr)->LifeDeathDecision() == LIVE) {
 			itr++;
 		}
@@ -86,8 +91,6 @@ void EnemyManager::Iterator() {
 					(*itr)->GetTimeStopFlag();
 
 					if ((*itr)->GetTemporaryDeathFlag()) {
-						(*itr)->NormalDeathEffect();
-
 						if (!kill->IsInUse())
 							kill->Play();
 
@@ -117,6 +120,15 @@ void EnemyManager::Render()
 {
 	for (auto& enemies : enemy) {
 		enemies->Render();
+	}
+}
+
+bool EnemyManager::GetTemporaryDeath() {
+	for (auto& enemies : enemy) {
+		if (enemies->GetTemporaryDeathFlag())
+			return true;
+		else
+			return false;
 	}
 }
 

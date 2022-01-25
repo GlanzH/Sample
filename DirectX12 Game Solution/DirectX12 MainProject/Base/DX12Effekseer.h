@@ -16,7 +16,7 @@
 #include <Effekseer.h>
 #include <EffekseerRendererDX12.h>
 
-typedef DirectX::SimpleMath::Vector3 Vector3;
+using namespace  DirectX::SimpleMath;
 typedef Effekseer::Effect*   EFFECT;
 typedef Effekseer::Handle    EFFECTHANDLE;
 
@@ -41,7 +41,8 @@ namespace DX12Effekseer
 		void Update(const float deltaTime);
 		void Renderer();
 
-		void SetCamera(DX12::CAMERA camera);
+		void SetCamera(DX12::CAMERA* camera); /*{ _camera = &camera; }*/
+		void SetCameraPosition(DX12::CAMERA* camera);
 
 		EFFECT Create(LPCWSTR fileName, std::string effectName);
 		EFFECT Create(LPCWSTR fileName);
@@ -50,8 +51,17 @@ namespace DX12Effekseer
 		void Play(std::string effectName, Vector3 pos);
 		EFFECTHANDLE Play(EFFECT effect, Vector3 pos);
 
+		EFFECTHANDLE Play2D(EFFECT effect, Vector3 pos);
+
 		void PlayOneShot(std::string effectName);
+<<<<<<< HEAD
 		void PlayOneShot(std::string effectName, Vector3 pos);
+=======
+		void PlayOneShot(std::string effectName,Vector3 pos);
+
+		void PlayOneShot2D(std::string effectName, Vector3 pos);
+
+>>>>>>> 9168c50ffa02445b4b2bb4d6a99df6238dfde82e
 		void Stop(std::string effectName);
 		void Stop(EFFECTHANDLE handle);
 		void AllStop();
@@ -61,6 +71,9 @@ namespace DX12Effekseer
 
 		void SetPosition(std::string effectName, Vector3 effectPosition);
 		void SetPosition(EFFECTHANDLE handle, Vector3 effectPosition);
+
+		void SetPosition2D(std::string effectName, Vector3 effectPosition);
+		void SetPosition2D(EFFECTHANDLE handle, Vector3 effectPosition);
 
 		void MoveEffect(std::string effectName, Vector3 position);
 		void MoveEffect(EFFECTHANDLE handle, Vector3 position);
@@ -88,6 +101,7 @@ namespace DX12Effekseer
 		std::map<std::string, EFFECT> m_effects;
 		std::map<std::string, EFFECTHANDLE> m_handles;
 
+		DX12::CAMERA* _camera;
 	private:
 		CEffekseer();
 
