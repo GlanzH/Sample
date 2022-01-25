@@ -134,7 +134,7 @@ NextScene MainScene::Update(const float deltaTime)
 
 	ChangeLightRenge(deltaTime);
 	StatusManager::Instance().Update(deltaTime);
-	UIManager::Instance().Update(deltaTime, camera.GetCamera()->GetPosition());
+	UIManager::Instance().Update(deltaTime);
 
 	if (!enemy->IsTimeStop()) {
 		player->Update(deltaTime, enemy->GetTemporaryDeath());
@@ -266,7 +266,7 @@ void MainScene::Render()
 	spriteBatch->End();
 
 	DX12Effect.Renderer();
-
+	UIManager::Instance().EfkRender();
 	DXTK->ExecuteCommandList();
 	DXTK->Direct3D9->WaitUpdate();
 }

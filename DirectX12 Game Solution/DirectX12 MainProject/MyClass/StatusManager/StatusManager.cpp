@@ -3,9 +3,10 @@
 
 void StatusManager::Initialize() {
 	//“GŒ‚”jƒRƒ“ƒ{
-	kill_combo = 0;
-	kill_combo_time = 0.0f;
-	kill_combo_flag	= false;
+	combo = 0;
+	combo_time = 0.0f;
+	combo_flag	= false;
+	combo_miss_flag = false;
 
 	//ƒAƒjƒ[ƒVƒ‡ƒ“
 	anime_flag = false;
@@ -26,7 +27,7 @@ void StatusManager::Initialize() {
 
 void StatusManager::Update(const float deltaTime) {
 	CalcScore(deltaTime);
-	KillComboTime(deltaTime);
+	ComboTime(deltaTime);
 }
 
 void StatusManager::SetAddScore(float score_size) {
@@ -78,12 +79,12 @@ void StatusManager::ScoreDown(const float deltaTime) {
 }
 
 void StatusManager::AddKillCombo() {
-	kill_combo++;
+	combo++;
 }
 
 void StatusManager::AddKillComboTime() {
-	kill_combo_time = 5.0f;	//5•b’Ç‰Á
-	kill_combo_flag = true;
+	combo_time = 5.0f;	//5•b’Ç‰Á
+	combo_flag = true;
 	UIManager::Instance().ResetAnimeFrame();
 	ResetaAnimeFlag();
 	anime_flag = true;
@@ -91,23 +92,27 @@ void StatusManager::AddKillComboTime() {
 	return;
 }
 
-void StatusManager::KillComboTime(const float deltaTime) {
-	kill_combo_time = std::max(kill_combo_time - deltaTime, 0.0f);
-	if (kill_combo_time <= 0.0f) {
+void StatusManager::ComboTime(const float deltaTime) {
+	combo_time = std::max(combo_time - deltaTime, 0.0f);
+	if (combo_time <= 0.0f) {
+		combo_miss_flag = true;
 		ResetKillCombo();
 	}
 	return;
 }
 
 void StatusManager::ResetKillCombo() {
-	ComboScore();
-	kill_combo = 0;
-	kill_combo_flag = false;
+	if (!combo_miss_flag) {
+		ComboScore();
+	}
+	combo = 0;
+	combo_miss_flag = false;
+	combo_flag = false;
 	return;
 }
 
 void StatusManager::ComboScore() {
-	switch (kill_combo) {
+	switch (combo) {
 	case 1:
 		SetAddScore(10.0f);
 		break;
@@ -121,8 +126,8 @@ void StatusManager::ComboScore() {
 		SetAddScore(100.0f);
 		break;
 	default:
-		if (kill_combo >= 5) {
-			float BonusScore = (kill_combo * 50.0f) - 100.0f;
+		if (combo >= 5) {
+			float BonusScore = (combo * 50.0f) - 100.0f;
 			SetAddScore(BonusScore);
 		}
 		break;

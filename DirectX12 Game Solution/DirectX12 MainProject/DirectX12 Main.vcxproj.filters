@@ -204,6 +204,9 @@
     <ClInclude Include="MyClass\Timer\Timer.h">
       <Filter>MyClass\Timer</Filter>
     </ClInclude>
+    <ClInclude Include="Base\DX12Effekseer2D.h">
+      <Filter>MyClass\Effekseer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -298,6 +301,9 @@
     </ClCompile>
     <ClCompile Include="MyClass\Timer\Timer.cpp">
       <Filter>MyClass\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Base\DX12Effekseer2D.cpp">
+      <Filter>MyClass\Effekseer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
