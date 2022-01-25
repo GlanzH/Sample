@@ -133,7 +133,7 @@ NextScene MainScene::Update(const float deltaTime)
 	//!I—¹ˆ—
 	auto end_flag = StatusManager::Instance().GetScoreGauge() <= 0.0f;
 	//auto end_flag = enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum() || StatusManager::Instance().GetScoreGauge() <= 0.0f;
-	ground.Update(deltaTime);
+	//ground.Update(deltaTime);
 	ChangeLightRenge(deltaTime);
 	StatusManager::Instance().Update(deltaTime);
 	UIManager::Instance().Update(deltaTime, camera.GetCamera()->GetPosition());
