@@ -36,10 +36,12 @@ void MainScene::Initialize()
 	UIManager::Instance().Initialize();
 	time.Initialize();
 
-	point.Init(2);
-	point.SetAmbientColor(Vector4(255, 0, 0, 1.0f), 0);
+	point.Init(1);
+	point.SetAmbientColor(Vector4(0, 0, 255, 1.0f),0);
 	point.SetAtt(Vector3(0.65f, 0.001f, 0), 0);
-	point.SetLightColor(SimpleMath::Vector4(255, 255, 255, 1.0f), 0);
+	point.SetLightColor(SimpleMath::Vector4(255.0f, 189, 76, 1.0f), 0);
+	//point.SetPosition(Vector3(0, -5, 0),0);
+	//point.SetAngle(Vector3(0,0,1), 0);
 	texLight.Init();
 
 	enemy->StartTimeStop();
@@ -131,14 +133,14 @@ NextScene MainScene::Update(const float deltaTime)
 	//!èIóπéûèàóù
 	auto end_flag = StatusManager::Instance().GetScoreGauge() <= 0.0f;
 	//auto end_flag = enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum() || StatusManager::Instance().GetScoreGauge() <= 0.0f;
-
+	ground.Update(deltaTime);
 	ChangeLightRenge(deltaTime);
 	StatusManager::Instance().Update(deltaTime);
 	UIManager::Instance().Update(deltaTime, camera.GetCamera()->GetPosition());
 
 	if (!enemy->IsTimeStop()) {
 		player->Update(deltaTime, enemy->GetTemporaryDeath());
-		enemy->Update(player->GetModel()->GetPosition(),player->GetEnemyDeathFlag(), deltaTime);
+		enemy->Update(player->GetModel()->GetPosition(),player->GetAttackTag(), player->GetEnemyDeathFlag(), deltaTime);
 		camera.Update(player, OUT_ZOOM, deltaTime);
 		observer->Update(player, enemy, audience);
 		dialogue.ResetCount();
@@ -177,45 +179,18 @@ NextScene MainScene::Update(const float deltaTime)
 
 	point.SetPosition(Vector3(pos.x, 30, pos.z),0);
 
-	
 	return NextScene::Continue;
 }
 
 void MainScene::ChangeLightRenge(const float deltaTime) {
-		/*if (DXTK->KeyState->W || light_mode == IN_ZOOM)
-			range +=6.f * deltaTime;
+		if (DXTK->KeyState->W || light_mode == IN_ZOOM)
+			range += 6.f * deltaTime;
 		else
-			range -= 30.f * deltaTime;*/
-
-		range += 6.f * deltaTime;
+			range -= 30.f * deltaTime;
 
 		range = std::clamp(range,0.8f,50.0f);
 
 		point.SetCone(range, 0);
-}
-
-void MainScene::ChangeLightColor()
-{
-	switch (StatusManager::Instance().GetWave())
-	{
-	case 1:
-	  point.SetAmbientColor(Vector4(224, 255, 255,1.0f),0);
-      point.SetAtt(Vector3(0.65f, 0.001f, 0), 0);
-      point.SetLightColor(SimpleMath::Vector4(75, 0, 130, 1.0f), 0);
-	  break;
-	case 2:
-      point.SetAmbientColor(Vector4(0, 0, 255, 1.0f), 0);
-      point.SetAtt(Vector3(0.65f, 0.001f, 0), 0);
-      point.SetLightColor(SimpleMath::Vector4(255, 189, 76, 1.0f), 0);
-	  break;
-	case 3:
-      point.SetAmbientColor(Vector4(153, 50, 204, 1.0f), 0);
-      point.SetAtt(Vector3(0.65f, 0.001f, 0), 0);
-      point.SetLightColor(SimpleMath::Vector4(240, 128, 128, 1.0f), 0);
-	  break;
-	default:
-		break;
-	}
 }
 
 void MainScene::ChangeBGM(int music_num) {
@@ -248,6 +223,7 @@ void MainScene::Render()
 
 	//3Dï`âÊ
 	camera.Render();
+	ground.Render();
 	DX12Effect.SetCameraPosition(camera.GetCamera());
 	
 	point.SetPower(1.0f,0);

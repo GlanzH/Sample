@@ -17,6 +17,7 @@ private:
 	void IsDeath();
 	void InitDirect();
 	void Rotate();
+	void Run();
 
 	DX9::MODEL sword_col;
 	SimpleMath::Vector3 sword_pos;
@@ -28,6 +29,8 @@ private:
 
 	const float max_death = 2.f;
 	const float max_range = 100.0f;
+
+	const float max_is_damage = 0.05f;
 
 	bool end_move;
 

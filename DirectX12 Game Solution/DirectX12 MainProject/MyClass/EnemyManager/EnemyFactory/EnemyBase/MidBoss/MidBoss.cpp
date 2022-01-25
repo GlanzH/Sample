@@ -35,6 +35,7 @@ int MidBoss::Update(SimpleMath::Vector3 player, bool destroy_flag, const float d
 		Action();
 
 	sword_col->SetPosition(sword_pos);
+	anim_model->AdvanceTime(delta / 1.0f);
 	col.weapon.Center = SimpleMath::Vector3(sword_pos.x, 0, sword_pos.z);
 	return 0;
 }
