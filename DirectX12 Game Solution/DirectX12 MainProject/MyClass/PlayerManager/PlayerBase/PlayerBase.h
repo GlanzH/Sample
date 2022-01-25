@@ -68,7 +68,7 @@ public:
 
 	bool IsAvoidance() { return avoidance_flag; }//回避フラグ
 
-	int GetAttackTag() { return attack_type; }//攻撃の種類
+	int GetAttackTag() { return attack_type; }//1 = 上段攻撃 - Y, 2 = 下段攻撃 - X
 
 	bool GetEnemyDeathFlag() { return elimination_flag; }//エネミーの消滅
 
