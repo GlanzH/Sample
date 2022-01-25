@@ -53,15 +53,12 @@ namespace DX12Effekseer
 
 		EFFECTHANDLE Play2D(EFFECT effect, Vector3 pos);
 
-		void PlayOneShot(std::string effectName);
-<<<<<<< HEAD
+	//	void PlayOneShot(std::string effectName);
+
 		void PlayOneShot(std::string effectName, Vector3 pos);
-=======
-		void PlayOneShot(std::string effectName,Vector3 pos);
 
 		void PlayOneShot2D(std::string effectName, Vector3 pos);
 
->>>>>>> 9168c50ffa02445b4b2bb4d6a99df6238dfde82e
 		void Stop(std::string effectName);
 		void Stop(EFFECTHANDLE handle);
 		void AllStop();

@@ -190,13 +190,13 @@ EFFECTHANDLE DX12Effekseer::CEffekseer::Play2D(EFFECT effect, Vector3 effectPosi
 	@brief	エフェクト一度だけ再生
 	@param	effectName エフェクト名
 */
-void DX12Effekseer::CEffekseer::PlayOneShot(std::string effectName)
-{
-	if (m_handles[effectName] == NULL || !m_manager->Exists(m_handles[effectName]))
-	{
-		m_handles[effectName] = m_manager->Play(m_effects[effectName], 0, 0, 0);
-	}
-}
+//void DX12Effekseer::CEffekseer::PlayOneShot(std::string effectName)
+//{
+//	if (m_handles[effectName] == NULL || !m_manager->Exists(m_handles[effectName]))
+//	{
+//		m_handles[effectName] = m_manager->Play(m_effects[effectName], 0, 0, 0);
+//	}
+//}
 
 void DX12Effekseer::CEffekseer::PlayOneShot(std::string effectName, Vector3 pos)
 {

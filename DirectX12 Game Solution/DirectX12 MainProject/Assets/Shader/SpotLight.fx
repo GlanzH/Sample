@@ -97,7 +97,8 @@ float4 PS(VS_OUT input) : COLOR0
     {
         color += OneLight(input, i);
     }
-    color = saturate(color * 1.0f);
+
+    color = saturate(color * float4(1,1,1,1));
 
     return color;
 }

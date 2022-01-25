@@ -17,7 +17,7 @@ public:
 	SpotLight();
 	~SpotLight() {};
 
-	void Init(int num);
+	void Init(int MAXLIGHT);
 	void SetPosition(Vector3 pos,int index);
 	void SetLightColor(Vector4 color,int index);
 	void SetAmbientColor(Vector4 color, int index);
@@ -33,7 +33,6 @@ private:
 
 	DX9::SHADER shader;
 	DX9::SHADER shader2;
-
 	int m_maxLight;
 	Vector3 m_lightsPos[10];
 	Vector3 m_lightDir[10];
