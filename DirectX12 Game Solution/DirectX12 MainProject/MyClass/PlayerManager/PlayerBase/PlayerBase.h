@@ -130,7 +130,7 @@ private:
 	//プレイヤー
 	DX9::SKINNEDMODEL model;
 	SimpleMath::Vector3 player_pos = SimpleMath::Vector3(0.0f, 0.0f, 50.0f);
-	float model_scale = 0.25f;
+	float model_scale = 1.0f;
 	float model_rotetion = -90.0f;
 
 	//プレイヤーの移動制限(幅)
@@ -144,9 +144,9 @@ private:
 	const int player_box_size_x = 5;
 	const int player_box_size_z = 3;
 
-	const int box_size_x = 1.5;
+	const int box_size_x = 3.5;
 	const int box_size_y = 2;
-	const int box_size_z = 3;
+	const int box_size_z = 4;
 
 	const int sidebox_size_x = 2;
 	const int sidebox_size_y = 9;
@@ -166,7 +166,7 @@ private:
 	//重力加速度
 	const float gravity_ = 170.0f;
 	//初速
-	const float V0 = 70.0f;
+	const float V0 = 70.5f;
 
 	//ジャンプタイミング
 	bool  jump_start_flag;
@@ -204,11 +204,9 @@ private:
 		RUN,
 		ACT1,
 		ACT2,
-		ACT3,
 		FINISH,
 		REBOUND,
 		JUMP,
-		PARRY,
 		ROLL,
 		DAMAGE1,
 		MOTION_MAX

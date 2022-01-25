@@ -9,6 +9,7 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 	for (auto enemies_roop : enemy->GetEnemy()) {
 		if (player->IsAttack()) {
 			if (player->GetBox().sword_box.Intersects(enemies_roop->GetBox().box)) {
+				int hoge = 3;
 				if (enemies_roop->GetAttackFlag() && enemies_roop->GetPostune() == "U" &&
 					DXTK->KeyEvent->pressed.A
 				){
