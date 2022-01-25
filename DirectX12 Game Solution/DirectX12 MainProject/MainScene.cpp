@@ -40,6 +40,8 @@ void MainScene::Initialize()
 	point.SetAmbientColor(Vector4(0, 0, 255, 1.0f),0);
 	point.SetAtt(Vector3(0.65f, 0.001f, 0), 0);
 	point.SetLightColor(SimpleMath::Vector4(255.0f, 189, 76, 1.0f), 0);
+	//point.SetPosition(Vector3(0, -5, 0),0);
+	//point.SetAngle(Vector3(0,0,1), 0);
 	texLight.Init();
 
 	enemy->StartTimeStop();
@@ -131,14 +133,14 @@ NextScene MainScene::Update(const float deltaTime)
 	//!I—¹ˆ—
 	auto end_flag = StatusManager::Instance().GetScoreGauge() <= 0.0f;
 	//auto end_flag = enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum() || StatusManager::Instance().GetScoreGauge() <= 0.0f;
-
+	//ground.Update(deltaTime);
 	ChangeLightRenge(deltaTime);
 	StatusManager::Instance().Update(deltaTime);
 	UIManager::Instance().Update(deltaTime);
 
 	if (!enemy->IsTimeStop()) {
 		player->Update(deltaTime, enemy->GetTemporaryDeath());
-		enemy->Update(player->GetModel()->GetPosition(),player->GetEnemyDeathFlag(), deltaTime);
+		enemy->Update(player->GetModel()->GetPosition(),player->GetAttackTag(), player->GetEnemyDeathFlag(), deltaTime);
 		camera.Update(player, OUT_ZOOM, deltaTime);
 		observer->Update(player, enemy, audience);
 		dialogue.ResetCount();
@@ -221,6 +223,7 @@ void MainScene::Render()
 
 	//3D•`‰æ
 	camera.Render();
+	ground.Render();
 	DX12Effect.SetCameraPosition(camera.GetCamera());
 	
 	point.SetPower(1.0f,0);

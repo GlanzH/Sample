@@ -22,7 +22,7 @@ public:
 	~EnemyBase() {};
 
 	virtual bool Initialize(std::string tag, double init_wait, double stop_pos, std::string time_stop_flag,
-		double speed, std::string direct, std::string posture, int hp);
+							double speed, std::string direct, std::string posture, int hp);
 
 	virtual void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 	void LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
@@ -39,7 +39,7 @@ public:
 
 	std::string GetPostune() { return enemy_posture; }
 
-	void HitEffect();
+	virtual void HitEffect();
 	void SpecialDeathEffect();
 	void AutoDestoryEffect();
 
@@ -144,6 +144,8 @@ protected:
 	bool confetti_effect_flag = false;
 	bool death_effect_flag    = false;
 	int effect_count = 0;
+	
+	float is_damage = 0.0f;
 
 	Collision col;
 
