@@ -39,19 +39,13 @@ void MainScene::Initialize()
 	point.Init(1);
 	point.SetAmbientColor(Vector4(0, 0, 255, 1.0f),0);
 	point.SetAtt(Vector3(0.65f, 0.001f, 0), 0);
-<<<<<<< HEAD
-<<<<<<< HEAD
 	point.SetLightColor(SimpleMath::Vector4(255, 255, 255, 1.0f), 0);
-=======
 	point.SetLightColor(SimpleMath::Vector4(255.0f, 189, 76, 1.0f), 0);
 	//point.SetPosition(Vector3(0, -5, 0),0);
 	//point.SetAngle(Vector3(0,0,1), 0);
->>>>>>> 617062441bd5256eaf6981462a94e6c64b904a2f
-=======
 	point.SetLightColor(SimpleMath::Vector4(255.0f, 189, 76, 1.0f), 0);
 	//point.SetPosition(Vector3(0, -5, 0),0);
 	//point.SetAngle(Vector3(0,0,1), 0);
->>>>>>> 584749d8f1463683d62559ec7f1ed29527b650b7
 	texLight.Init();
 
 	enemy->StartTimeStop();
@@ -202,6 +196,31 @@ void MainScene::ChangeLightRenge(const float deltaTime) {
 
 		point.SetCone(range, 0);
 }
+
+void MainScene::ChangeLightColor()
+{
+	switch (StatusManager::Instance().GetWave())
+	{
+	case 1:
+		point.SetAmbientColor(Vector4(224, 255, 255, 1.0f), 0);
+		point.SetAtt(Vector3(0.65f, 0.001f, 0), 0);
+		point.SetLightColor(SimpleMath::Vector4(75, 0, 130, 1.0f), 0);
+		break;
+	case 2:
+		point.SetAmbientColor(Vector4(0, 0, 255, 1.0f), 0);
+		point.SetAtt(Vector3(0.65f, 0.001f, 0), 0);
+		point.SetLightColor(SimpleMath::Vector4(255, 189, 76, 1.0f), 0);
+		break;
+	case 3:
+		point.SetAmbientColor(Vector4(153, 50, 204, 1.0f), 0);
+		point.SetAtt(Vector3(0.65f, 0.001f, 0), 0);
+		point.SetLightColor(SimpleMath::Vector4(240, 128, 128, 1.0f), 0);
+		break;
+	default:
+		break;
+	}
+}
+
 
 void MainScene::ChangeBGM(int music_num) {
 	if (!music_flag) {
