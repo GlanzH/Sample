@@ -185,6 +185,7 @@
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h" />
     <ClInclude Include="Base\DX12Effekseer.h" />
+    <ClInclude Include="Base\DX12Effekseer2D.h" />
     <ClInclude Include="Base\dxtk.h" />
     <ClInclude Include="Base\DXTKHelpers.h" />
     <ClInclude Include="Base\GameBase.h" />
@@ -226,6 +227,7 @@
     <ClCompile Include="Base\DX12Effekseer.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Base\DX12Effekseer2D.cpp" />
     <ClCompile Include="Base\GameBase.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>

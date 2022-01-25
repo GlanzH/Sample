@@ -20,8 +20,9 @@ public:
 	void AddKillCombo();	//コンボ増加
 	void AddKillComboTime();//コンボ時間増加
 	void ResetKillCombo();	//コンボ数リセット
-	float GetKillComboTime() { return kill_combo_time; }	//撃破コンボ継続時間
-	bool GetKillFlag() { return kill_combo_flag; }	//コンボフラグ
+	int GetCombo() { return combo; }
+	float GetKillComboTime() { return combo_time; }	//撃破コンボ継続時間
+	bool GetComboFlag() { return combo_flag; }	//コンボフラグ
 
 	//アニメーション
 	void ResetaAnimeFlag() { anime_flag = false; }	//アニメフラグのリセット
@@ -46,7 +47,7 @@ public:
 	float GetTime() { return wave_time; } //時間の取得
 
 private:
-	void KillComboTime(const float deltaTime);	//コンボ時間計る
+	void ComboTime(const float deltaTime);	//コンボ時間計る
 
 	void ComboScore();	//
 	void CalcScore(const float deltaTime);	//スコア計算
@@ -55,10 +56,10 @@ private:
 
 
 	//敵撃破コンボ
-	int	  kill_combo;	//コンボ数
-	float kill_combo_time;	//コンボ継続時間
-	bool  kill_combo_flag;	//true:コンボ継続可能 false:継続不可
-
+	int	  combo;	//コンボ数
+	float combo_time;	//コンボ継続時間
+	bool  combo_flag;	//true:コンボ継続可能 false:継続不可
+	bool combo_miss_flag;
 	//アニメーション
 	bool anime_flag;	//true:アニメーション再生 false:停止
 
