@@ -1,6 +1,8 @@
 #include"MyClass/StatusManager/StatusManager.h"
 #include "MyClass/UIManager/UIManager.h"
 
+
+
 void StatusManager::Initialize() {
 	//“GŒ‚”jƒRƒ“ƒ{
 	kill_combo = 0;
