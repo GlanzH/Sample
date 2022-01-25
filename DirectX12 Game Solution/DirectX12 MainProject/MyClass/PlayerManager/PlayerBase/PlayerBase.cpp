@@ -486,26 +486,23 @@ void PlayerBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack)
 void PlayerBase::Player_move(const float deltaTime)
 {
 	if (upper_state_mode == Upper_State::NOT_UPPER && lower_state_mode == Lower_State::NOT_LOWER) {
-			if (!invincible_flag || !knock_back_flag) {
-				if (!s_del_flag) {
-					//プレイヤー:移動(キーボード) & ゲームパッド十字キー
-					if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
-						model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-						model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
-						col.sword_box.Center = model->GetRotation();
-						direction_state_mode = Direction_State::RIGHT;
-						SetAnimation(model, RUN);
-					}
-					if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left) {
-						model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-						model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
-						col.sword_box.Center = model->GetRotation();
-						direction_state_mode = Direction_State::LEFT;
-						SetAnimation(model, RUN);
-					}
-				}
+		if (!invincible_flag && !knock_back_flag && !s_del_flag && !avoidance_flag) {
+			//プレイヤー:移動(キーボード) & ゲームパッド十字キー
+			if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
+				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+				model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
+				col.sword_box.Center = model->GetRotation();
+				direction_state_mode = Direction_State::RIGHT;
+				SetAnimation(model, RUN);
 			}
-		
+			if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left) {
+				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+				model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
+				col.sword_box.Center = model->GetRotation();
+				direction_state_mode = Direction_State::LEFT;
+				SetAnimation(model, RUN);
+			}
+		}
 	}
 }
 
@@ -524,17 +521,16 @@ void PlayerBase::Player_limit()
 
 void PlayerBase::Player_jump(const float deltaTime) {
 	//ジャンプ
-	if (!invincible_flag) {
-		if (!s_del_flag) {
-			if (!jump_flag_) {
-				if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
-					jump_start_flag = true;
-					jump_flag_ = true;
-					jump_time_ = 0;
-					jump_start_v_ = model->Position.y;
-				}
+	if (!invincible_flag && !s_del_flag) {
+		if (!jump_flag_) {
+			if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
+				jump_start_flag = true;
+				jump_flag_ = true;
+				jump_time_ = 0;
+				jump_start_v_ = model->Position.y;
 			}
 		}
+
 	}
 
 	if (jump_start_flag) {
@@ -575,12 +571,10 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 	switch (upper_state_mode)
 	{
 	case Upper_State::NOT_UPPER:
-		if (lower_state_mode == Lower_State::NOT_LOWER) {
-			if (upper_state_mode == Upper_State::NOT_UPPER) {
-				if (!s_del_flag) {
-					if (DXTK->KeyEvent->pressed.A || DXTK->GamePadEvent[0].y == GamePad::ButtonStateTracker::PRESSED) {
-						upper_state_mode = Upper_State::UPPER_ATTACK;
-					}
+		if (lower_state_mode == Lower_State::NOT_LOWER && upper_state_mode == Upper_State::NOT_UPPER) {
+			if (!s_del_flag) {
+				if (DXTK->KeyEvent->pressed.A || DXTK->GamePadEvent[0].y == GamePad::ButtonStateTracker::PRESSED) {
+					upper_state_mode = Upper_State::UPPER_ATTACK;
 				}
 			}
 		}
@@ -630,12 +624,10 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 	switch (lower_state_mode)
 	{
 	case Lower_State::NOT_LOWER:
-		if (lower_state_mode == Lower_State::NOT_LOWER) {
-			if (upper_state_mode == Upper_State::NOT_UPPER) {
-				if (!s_del_flag) {
-					if (DXTK->KeyEvent->pressed.S || DXTK->GamePadEvent[0].x == GamePad::ButtonStateTracker::PRESSED) {
-						lower_state_mode = Lower_State::LOWER_ATTACK;
-					}
+		if (lower_state_mode == Lower_State::NOT_LOWER && upper_state_mode == Upper_State::NOT_UPPER) {
+			if (!s_del_flag) {
+				if (DXTK->KeyEvent->pressed.S || DXTK->GamePadEvent[0].x == GamePad::ButtonStateTracker::PRESSED) {
+					lower_state_mode = Lower_State::LOWER_ATTACK;
 				}
 			}
 		}
@@ -648,16 +640,16 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 			attack_flag = true;
 			attack_type = 2;
 		}
-		if (IsAttack()) {
 
-		}
-		if (direction_state_mode == Direction_State::RIGHT) {
-			DX12Effect.PlayOneShot("lower", Vector3(player_pos.x + 4.0f, player_pos.y + 5.0f, player_pos.z));
-			DX12Effect.SetRotation("lower", Vector3(0.0f, 0.0f, 0.0f));
-		}
-		else if (direction_state_mode == Direction_State::LEFT) {
-			DX12Effect.PlayOneShot("lower", Vector3(player_pos.x - 9.0f, player_pos.y + 4.0f, player_pos.z));
-			DX12Effect.SetRotation("lower", Vector3(0.0f, 180.0f, 0.0f));
+		if (!frip_flag) {
+			if (direction_state_mode == Direction_State::RIGHT) {
+				DX12Effect.PlayOneShot("lower", Vector3(player_pos.x + 4.0f, player_pos.y + 5.0f, player_pos.z));
+				DX12Effect.SetRotation("lower", Vector3(0.0f, 0.0f, 0.0f));
+			}
+			else if (direction_state_mode == Direction_State::LEFT) {
+				DX12Effect.PlayOneShot("lower", Vector3(player_pos.x - 9.0f, player_pos.y + 4.0f, player_pos.z));
+				DX12Effect.SetRotation("lower", Vector3(0.0f, 180.0f, 0.0f));
+			}
 		}
 
 		if (lower_start >= lower_end) {
@@ -741,10 +733,10 @@ void PlayerBase::Frip_Knock_Back() {
 	frip_start += time_other;
 
 	if (direction_state_mode == Direction_State::RIGHT) {
-		model->Move(0, 0, 40.0f * time_other);
+		model->Move(0, 0, 20.0f * time_other);
 	}
 	else if (direction_state_mode == Direction_State::LEFT) {
-		model->Move(0, 0, 40.0f * time_other);
+		model->Move(0, 0, 20.0f * time_other);
 	}
 
 
@@ -762,12 +754,10 @@ void PlayerBase::Frip_Knock_Back() {
 //回避
 void PlayerBase::Avoidance(const float deltaTime) {
 
-	if (!jump_flag_) {
-		if (!s_del_flag) {
-			if (!avoidance_flag) {
-				if (DXTK->KeyEvent->pressed.Z || DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
-					avoidance_flag = true;
-				}
+	if (!jump_flag_ && !s_del_flag) {
+		if (!avoidance_flag) {
+			if (DXTK->KeyEvent->pressed.Z || DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
+				avoidance_flag = true;
 			}
 		}
 	}
