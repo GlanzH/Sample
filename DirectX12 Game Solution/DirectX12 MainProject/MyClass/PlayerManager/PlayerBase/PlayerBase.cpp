@@ -117,7 +117,7 @@ bool PlayerBase::Initialize()
 	//UŒ‚‚ÌŽžŠÔ
 	attack_flag = false;
 	attack_time = 0.0f;
-	attack_zeit_max = 0.5f;
+	attack_zeit_max = 0.05f;
 
 	//–³“GŽžŠÔ
 	invincible_flag = false;
@@ -244,7 +244,7 @@ void PlayerBase::LoadAssets()
 	col.sword_box.Extents = SimpleMath::Vector3(col.sword_box.Extents) * 7.0f;
 	sword_collision = DX9::Model::CreateBox(
 		DXTK->Device9,
-		col.sword_box.Extents.x * 2,
+		col.sword_box.Extents.x * 3,
 		col.sword_box.Extents.y * 2,
 		col.sword_box.Extents.z * 2
 		//col.sword_box.Extents.x * box_size_x,
@@ -317,7 +317,6 @@ int PlayerBase::Update(const float deltaTime, bool temp)
 	if (DXTK->KeyEvent->pressed.W) {
 		frip_flag = false;
 	}
-
 
 	//UŒ‚‚ÌŒü‚«
 	if (direction_state_mode == Direction_State::RIGHT) {
@@ -585,32 +584,29 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 
 		//“–‚½‚è”»’è
 		//ƒGƒtƒFƒNƒg
-		if (upper_start >= 0.117f) {
+		if (!frip_flag&& upper_start >= 0.117f) {
 			attack_flag = true;
 			attack_type = 1;
 		}
 		
-		if (!frip_flag) {
+		if (!frip_flag && effect_count < 1) {
 			if (direction_state_mode == Direction_State::RIGHT) {
 
-				DX12Effect.Play("upper", Vector3(player_pos.x + 4.0f, player_pos.y + 5.0f, player_pos.z));
+				DX12Effect.PlayOneShot("upper", Vector3(player_pos.x + 4.0f, player_pos.y + 5.0f, player_pos.z));
 			}
 			else if (direction_state_mode == Direction_State::LEFT) {
 				DX12Effect.Play("upper", Vector3(player_pos.x - 9.0f, player_pos.y + 4.0f, player_pos.z));
 				DX12Effect.SetRotation("upper", Vector3(0.0f, 180.0f, 0.0f));
 			}
-		}
 
-		if (frip_flag && upper_start >= 0.3f) {
-			Frip();
-			attack_type = 0;
-
+			effect_count += 1;
 		}
 
 		if (upper_start >= upper_end) {
 			upper_state_mode = Upper_State::NOT_UPPER;
 			upper_start = 0.0f;
 			model->SetTrackPosition(ACT1, 0.0);
+			effect_count = 0;
 			attack_type = 0;
 		}
 
@@ -636,26 +632,31 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 		lower_start += deltaTime;
 		SetAnimation(model, ACT2);
 
-		if (lower_start >= 0.167f) {
+		if (!frip_flag && lower_start >= 0.001f) {
 			attack_flag = true;
 			attack_type = 2;
 		}
 
-		if (!frip_flag) {
+		if (!frip_flag&& effect_count < 1) {
 			if (direction_state_mode == Direction_State::RIGHT) {
+
 				DX12Effect.PlayOneShot("lower", Vector3(player_pos.x + 4.0f, player_pos.y + 5.0f, player_pos.z));
 				DX12Effect.SetRotation("lower", Vector3(0.0f, 0.0f, 0.0f));
+
 			}
 			else if (direction_state_mode == Direction_State::LEFT) {
 				DX12Effect.PlayOneShot("lower", Vector3(player_pos.x - 9.0f, player_pos.y + 4.0f, player_pos.z));
 				DX12Effect.SetRotation("lower", Vector3(0.0f, 180.0f, 0.0f));
 			}
+			effect_count += 1;
 		}
 
 		if (lower_start >= lower_end) {
 			lower_state_mode = Lower_State::NOT_LOWER;
 			lower_start = 0.0f;
 			model->SetTrackPosition(ACT2, 0.0);
+			
+			effect_count = 0;
 			attack_type = 0;
 		}
 
@@ -715,13 +716,13 @@ void PlayerBase::Frip() {
 	switch (frip_state_mode)
 	{
 	case Frip_State::NOT_FRIP:
-		if (frip_flag && upper_state_mode == Upper_State::UPPER_ATTACK && upper_start >= 0.3f ||
-			frip_flag && lower_state_mode == Lower_State::LOWER_ATTACK && lower_start >= 0.3f)
+		if (frip_flag && upper_state_mode == Upper_State::UPPER_ATTACK && upper_start >= 0.1f ||
+			frip_flag && lower_state_mode == Lower_State::LOWER_ATTACK && lower_start >= 0.1f)
 			frip_state_mode = Frip_State::FRIP;
 		break;
 	case Frip_State::FRIP:
 		SetAnimation(model, REBOUND);
-		DX12Effect.Play("frip", Vector3(player_pos.x, player_pos.y, player_pos.z));
+		DX12Effect.Play("frip", Vector3(player_pos.x, player_pos.y + 4.0f, player_pos.z));
 
 		Frip_Knock_Back();
 
@@ -731,6 +732,7 @@ void PlayerBase::Frip() {
 
 void PlayerBase::Frip_Knock_Back() {
 	frip_start += time_other;
+	invincible_flag = true;
 
 	if (direction_state_mode == Direction_State::RIGHT) {
 		model->Move(0, 0, 20.0f * time_other);
@@ -748,6 +750,16 @@ void PlayerBase::Frip_Knock_Back() {
 		frip_state_mode = Frip_State::NOT_FRIP;
 
 		upper_state_mode = Upper_State::NOT_UPPER;
+		upper_start = 0.0f;
+		model->SetTrackPosition(ACT1, 0.0);
+
+
+		lower_state_mode = Lower_State::NOT_LOWER;
+		lower_start = 0.0f;
+		model->SetTrackPosition(ACT2, 0.0);
+
+		attack_type = 0;
+
 	}
 }
 

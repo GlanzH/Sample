@@ -76,6 +76,8 @@ public:
 
 	bool GetEnemyDeathFlag() { return elimination_flag; }//エネミーの消滅
 
+	void GetFripFlag() { frip_flag = true; }
+
 
 private:
 
@@ -332,4 +334,6 @@ private:
 	void Frip_Knock_Back();
 	float frip_start = 0.0f;
 	float frip_end = 0.783f;
+
+	int effect_count = 0;
 };
