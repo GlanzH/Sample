@@ -78,7 +78,7 @@ PlayerBase::PlayerBase() {
 
 
 	//下段(変数宣言)
-	lower_sate_mode = Lower_State::NOT_LOWER;
+	lower_state_mode = Lower_State::NOT_LOWER;
 	lower_start = 0.0f;
 	lower_end = 0.333f;
 
@@ -88,15 +88,6 @@ PlayerBase::PlayerBase() {
 	s_del_end = 0.0f;
 
 
-
-	//弾く
-	frip_state_mode = Frip_State::NOT_FRIP;
-
-	not_attack_start = 0.0f;
-	not_attack_end = 0.0f;
-
-	frip_start = 0.0f;
-	frip_end = 0.0f;
 
 	//敵の消滅
 	elimination_flag = false;
@@ -173,7 +164,7 @@ bool PlayerBase::Initialize()
 	upper_end = 0.650f;
 
 	//下段(変数宣言)
-	lower_sate_mode = Lower_State::NOT_LOWER;
+	lower_state_mode = Lower_State::NOT_LOWER;
 	lower_start = 0.0f;
 	lower_end = 0.750f;
 
@@ -186,17 +177,17 @@ bool PlayerBase::Initialize()
 	elimination_flag = false;
 	elimination_end  = 1.0f;
 
-
-	direction_state_mode = Direction_State::RIGHT;
-
-	//攻撃　弾かれる
 	frip_state_mode = Frip_State::NOT_FRIP;
 
-	not_attack_start = 0.0f;
-	not_attack_end = 0.3f;
+	frip_flag = false;
 
 	frip_start = 0.0f;
 	frip_end = 0.783f;
+
+
+
+	direction_state_mode = Direction_State::RIGHT;
+
 
 
 
@@ -309,7 +300,7 @@ int PlayerBase::Update(const float deltaTime, bool temp)
 	Sword_Delivery(deltaTime, temp);
 
 	//弾かれる
-	Frip(deltaTime);
+	Frip();
 
 	//回避
 	Avoidance(deltaTime);
@@ -319,6 +310,13 @@ int PlayerBase::Update(const float deltaTime, bool temp)
 
 	//ノックバック
 	Knock_Back();
+
+	if (DXTK->KeyEvent->pressed.Q) {
+		frip_flag = true;
+	}
+	if (DXTK->KeyEvent->pressed.W) {
+		frip_flag = false;
+	}
 
 
 	//攻撃の向き
@@ -361,7 +359,7 @@ void PlayerBase::Render()
 	model->Draw();
 	//collision->Draw();
 	if (attack_flag) {
-		sword_collision->Draw();
+		//sword_collision->Draw();
 	}
 	//parry_collision->Draw();
 	//right_collision->Draw();
@@ -487,8 +485,7 @@ void PlayerBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack)
 
 void PlayerBase::Player_move(const float deltaTime)
 {
-	if (upper_state_mode == Upper_State::NOT_UPPER) {
-		if (lower_sate_mode == Lower_State::NOT_LOWER) {
+	if (upper_state_mode == Upper_State::NOT_UPPER && lower_state_mode == Lower_State::NOT_LOWER) {
 			if (!invincible_flag || !knock_back_flag) {
 				if (!s_del_flag) {
 					//プレイヤー:移動(キーボード) & ゲームパッド十字キー
@@ -508,7 +505,7 @@ void PlayerBase::Player_move(const float deltaTime)
 					}
 				}
 			}
-		}
+		
 	}
 }
 
@@ -578,7 +575,7 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 	switch (upper_state_mode)
 	{
 	case Upper_State::NOT_UPPER:
-		if (lower_sate_mode == Lower_State::NOT_LOWER) {
+		if (lower_state_mode == Lower_State::NOT_LOWER) {
 			if (upper_state_mode == Upper_State::NOT_UPPER) {
 				if (!s_del_flag) {
 					if (DXTK->KeyEvent->pressed.A || DXTK->GamePadEvent[0].y == GamePad::ButtonStateTracker::PRESSED) {
@@ -599,16 +596,22 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 			attack_type = 1;
 		}
 		
+		if (!frip_flag) {
+			if (direction_state_mode == Direction_State::RIGHT) {
 
-		if (direction_state_mode == Direction_State::RIGHT) {
-
-			DX12Effect.Play("upper", Vector3(player_pos.x + 4.0f, player_pos.y + 5.0f, player_pos.z));
+				DX12Effect.Play("upper", Vector3(player_pos.x + 4.0f, player_pos.y + 5.0f, player_pos.z));
+			}
+			else if (direction_state_mode == Direction_State::LEFT) {
+				DX12Effect.Play("upper", Vector3(player_pos.x - 9.0f, player_pos.y + 4.0f, player_pos.z));
+				DX12Effect.SetRotation("upper", Vector3(0.0f, 180.0f, 0.0f));
+			}
 		}
-		else if (direction_state_mode == Direction_State::LEFT) {
-			DX12Effect.Play("upper", Vector3(player_pos.x - 9.0f, player_pos.y + 4.0f, player_pos.z));
-			DX12Effect.SetRotation("upper", Vector3(0.0f, 180.0f, 0.0f));
-		}
 
+		if (frip_flag && upper_start >= 0.3f) {
+			Frip();
+			attack_type = 0;
+
+		}
 
 		if (upper_start >= upper_end) {
 			upper_state_mode = Upper_State::NOT_UPPER;
@@ -621,47 +624,17 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 	}
 }
 
-void PlayerBase::Upper_Effect() {
-
-	if (direction_state_mode == Direction_State::RIGHT) {
-		if (DX12Effect.CheckAlive("upper")) {
-			DX12Effect.Stop("upper");
-			DX12Effect.PlayOneShot("upper", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
-
-		}
-		else
-		{
-			DX12Effect.PlayOneShot("upper", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
-			
-
-		}
-		DX12Effect.SetRotation("upper", Vector3(0.0f, 0.0f, 0.0f));
-	}
-	else if (direction_state_mode == Direction_State::LEFT) {
-		if (DX12Effect.CheckAlive("upper")) {
-			DX12Effect.Stop("upper");
-			DX12Effect.PlayOneShot("upper", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
-		}
-		else
-		{
-			DX12Effect.PlayOneShot("upper", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
-		}
-		DX12Effect.SetRotation("upper", Vector3(0.0f, 180.0f, 0.0f));
-	}
-
-
-}
 
 //切り上げ
 void PlayerBase::Reverse_Slash(const float deltaTime) {
-	switch (lower_sate_mode)
+	switch (lower_state_mode)
 	{
 	case Lower_State::NOT_LOWER:
-		if (lower_sate_mode == Lower_State::NOT_LOWER) {
+		if (lower_state_mode == Lower_State::NOT_LOWER) {
 			if (upper_state_mode == Upper_State::NOT_UPPER) {
 				if (!s_del_flag) {
 					if (DXTK->KeyEvent->pressed.S || DXTK->GamePadEvent[0].x == GamePad::ButtonStateTracker::PRESSED) {
-						lower_sate_mode = Lower_State::LOWER_ATTACK;
+						lower_state_mode = Lower_State::LOWER_ATTACK;
 					}
 				}
 			}
@@ -688,7 +661,7 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 		}
 
 		if (lower_start >= lower_end) {
-			lower_sate_mode = Lower_State::NOT_LOWER;
+			lower_state_mode = Lower_State::NOT_LOWER;
 			lower_start = 0.0f;
 			model->SetTrackPosition(ACT2, 0.0);
 			attack_type = 0;
@@ -745,36 +718,44 @@ void PlayerBase::Sword_Delivery(const float deltaTime, bool temp) {
 }
 
 //弾かれる
-void PlayerBase::Frip(const float deltaTime) {
+void PlayerBase::Frip() {
 
 	switch (frip_state_mode)
 	{
 	case Frip_State::NOT_FRIP:
-		if (DXTK->KeyEvent->pressed.F) {
-			frip_state_mode = Frip_State::ATTACK_TEST;
-		}
-		break;
-	case Frip_State::ATTACK_TEST:
-		SetAnimation(model, ACT1);
-		not_attack_start += deltaTime;
-
-		if (not_attack_start >= not_attack_end) {
-			model->SetTrackPosition(ACT1, 0.0);
-			not_attack_start = 0.0f;
+		if (frip_flag && upper_state_mode == Upper_State::UPPER_ATTACK && upper_start >= 0.3f ||
+			frip_flag && lower_state_mode == Lower_State::LOWER_ATTACK && lower_start >= 0.3f)
 			frip_state_mode = Frip_State::FRIP;
-		}
 		break;
 	case Frip_State::FRIP:
 		SetAnimation(model, REBOUND);
-		DX12Effect.PlayOneShot("frip", Vector3(player_pos.x, player_pos.y, player_pos.z));
-		frip_start += deltaTime;
+		DX12Effect.Play("frip", Vector3(player_pos.x, player_pos.y, player_pos.z));
 
-		if (frip_start >= frip_end) {
-			model->SetTrackPosition(REBOUND, 0.0);
-			frip_start = 0.0f;
-			frip_state_mode = Frip_State::NOT_FRIP;
-		}
+		Frip_Knock_Back();
+
 		break;
+	}
+}
+
+void PlayerBase::Frip_Knock_Back() {
+	frip_start += time_other;
+
+	if (direction_state_mode == Direction_State::RIGHT) {
+		model->Move(0, 0, 40.0f * time_other);
+	}
+	else if (direction_state_mode == Direction_State::LEFT) {
+		model->Move(0, 0, 40.0f * time_other);
+	}
+
+
+
+	if (frip_start >= frip_end) {
+		model->SetTrackPosition(REBOUND, 0.0);
+		frip_flag = false;
+		frip_start = 0.0f;
+		frip_state_mode = Frip_State::NOT_FRIP;
+
+		upper_state_mode = Upper_State::NOT_UPPER;
 	}
 }
 
@@ -820,13 +801,7 @@ bool PlayerBase::IsAttack() {
 }
 
 void PlayerBase::Debug() {
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(1100.0f, 120.0f),
-	//	DX9::Colors::BlueViolet,
-	//	L"%f", s_del_start
-	//);
-
-	if (upper_state_mode == Upper_State::UPPER_ATTACK) {
+	if (frip_flag) {
 		DX9::SpriteBatch->DrawString(font.Get(),
 			SimpleMath::Vector2(1100.0f, 140.0f),
 			DX9::Colors::BlueViolet,
@@ -839,6 +814,22 @@ void PlayerBase::Debug() {
 			DX9::Colors::BlueViolet,
 			L"OFF"
 		);
-
 	}
+
+
+	if (frip_state_mode==Frip_State::FRIP) {
+		DX9::SpriteBatch->DrawString(font.Get(),
+			SimpleMath::Vector2(1100.0f, 160.0f),
+			DX9::Colors::BlueViolet,
+			L"ON"
+		);
+	}
+	else {
+		DX9::SpriteBatch->DrawString(font.Get(),
+			SimpleMath::Vector2(1100.0f, 160.0f),
+			DX9::Colors::BlueViolet,
+			L"OFF"
+		);
+	}
+
 }
