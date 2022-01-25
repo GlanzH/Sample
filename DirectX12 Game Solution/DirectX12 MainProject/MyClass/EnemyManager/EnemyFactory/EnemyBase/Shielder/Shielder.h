@@ -11,15 +11,16 @@ private:
 	void Render() override;
 	void Move()   override;
 	void Action() override;
+	void HitEffect();
+	void Damage();
 	void Attack();
+	void InitDirect();
 	void IsDeath();
+	void Freeze();
 	void Rotate();
-	void LimitRange();
 
 	DX9::MODEL sword_col;
 	SimpleMath::Vector3 sword_pos;
-
-	int direct;
 
 	const float limit_x = 65.0f;
 
@@ -31,12 +32,14 @@ private:
 
 	const float max_death = 2.0f;
 
+	const float max_range = 100.0f;
+
+	const float max_is_damage = 0.32f;
+	
 	enum class Motion {
-		CONFUSE,
-		DEATH,
-		DAMAGE,
 		RUN,
-		WAIT,
+		DAMAGE,
+		DEATH,
 		MAX_MOTION
 	};
 
@@ -53,5 +56,5 @@ private:
 	};
 
 	int action = (int)ActionNum::FIRST_WAIT;
-
+	int direct;
 };

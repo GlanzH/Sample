@@ -46,11 +46,11 @@ bool EnemyManager::Initialize(PlayerBase* player_base)
 	return true;
 }
 
-int EnemyManager::Update(SimpleMath::Vector3 player, bool destroy_flag, const float deltaTime)
+int EnemyManager::Update(SimpleMath::Vector3 player, int attack, bool destroy_flag, const float deltaTime)
 {	
-	delta = deltaTime;
-
 	enemy_destroy_flag = destroy_flag;
+	attack_num = attack;
+	delta      = deltaTime;
 	
 	for (auto& enemies : enemy) {
 		enemies->Update(player, destroy_flag, delta);
@@ -97,7 +97,6 @@ void EnemyManager::Iterator() {
 						dead_enemy_count++;
 
 						StatusManager::Instance().AddKillCombo();
-						//CalcScore();
 					}
 				}
 
@@ -195,21 +194,21 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 
 	 //ã’iUŒ‚
 	 if (base->GetPostune() == "U") {
-		 if (DXTK->KeyEvent->pressed.A) {
+		 if (attack_num == UPPER) {
 			 base->Damage();
 			 base->HitEffect();
 		 }
 
-		 if (DXTK->KeyEvent->pressed.S) {
+		 if (attack_num == LOWER) {
 			 base->Retreat();
 		 }
 	 }
 	 else {
-		 if (DXTK->KeyEvent->pressed.A) {
+		 if (attack_num == UPPER) {
 			 base->Retreat();
 		 }
 
-		 if (DXTK->KeyEvent->pressed.S) {
+		 if (attack_num == LOWER) {
 			 base->Damage();
 			 base->HitEffect();
 		 }

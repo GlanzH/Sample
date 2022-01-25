@@ -16,7 +16,7 @@ public:
 	~EnemyManager();
 
 	bool Initialize(PlayerBase* player_base);
-	int  Update(SimpleMath::Vector3 player,bool destroy_flag, const float deltaTime);
+	int  Update(SimpleMath::Vector3 player,int attack, bool destroy_flag, const float deltaTime);
 	void OnDeviceLost();
 	void Render();
 
@@ -41,7 +41,7 @@ public:
 private:
 	float AppearTime();
 	void  LoadEnemyArrangement();
-	void  EndEnemy();
+	//void  EndEnemy();
 	void  Generator();
 	void  Iterator();
 
@@ -83,25 +83,6 @@ private:
 	bool temporary_flag     = false;
 	bool enemy_destroy_flag = false;
 
-	const int max_combo = 3;
-
-	enum KillNum {
-		ONE   = 1,
-		TWO   = 2,
-		THREE = 3,
-		FOUR  = 4,
-		FIVE  = 5
-	};
-
-	enum AddScore {
-		ONE_SCORE       = 5,
-		TWO_SCORE       = 10,
-		THREE_SCORE     = 25,
-		FOUR_SCORE      = 50,
-		FIVE_SCORE      = 100,
-		OVER_SIX_SCORE  = 150
-	};
-
 	enum LoadFile {
 		DUMMY_LINE = 9,
 		ENEMY_NUM = 250 
@@ -111,6 +92,11 @@ private:
 	enum TimeStop {
 		MOVE,
 		TIME_STOP
+	};
+
+	enum {
+		UPPER,
+		LOWER
 	};
 
 	int count = 0;                          //!敵の累計出現数カウント 
