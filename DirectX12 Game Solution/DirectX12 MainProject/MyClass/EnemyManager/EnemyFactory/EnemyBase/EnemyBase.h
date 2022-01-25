@@ -144,6 +144,8 @@ protected:
 	bool confetti_effect_flag = false;
 	bool death_effect_flag    = false;
 	int effect_count = 0;
+	
+	float is_damage = 0.0f;
 
 	Collision col;
 

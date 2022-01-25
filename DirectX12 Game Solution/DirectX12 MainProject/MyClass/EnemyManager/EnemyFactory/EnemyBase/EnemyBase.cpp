@@ -16,7 +16,6 @@ bool EnemyBase::Initialize(
 	move_speed    = speed;
 	max_init_wait = init_wait;
 
-
 	enemy_stop_flag = time_stop_flag;
 	retreat_flag    = false;
 

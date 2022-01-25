@@ -34,8 +34,8 @@ private:
 
 	const float max_range = 100.0f;
 
-	float is_damage = 0.0f;
-
+	const float max_is_damage = 0.32f;
+	
 	enum class Motion {
 		RUN,
 		DAMAGE,

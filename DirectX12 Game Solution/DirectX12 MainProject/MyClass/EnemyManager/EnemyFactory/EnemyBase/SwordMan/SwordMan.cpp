@@ -32,8 +32,10 @@ int SwordMan::Update(SimpleMath::Vector3 player, bool destroy_flag, const float 
 	if (!temporary_death_flag && !die_flag)
 		Action();
 
+	if (is_damage < max_is_damage)
+		anim_model->AdvanceTime(delta / 1.0f);
+
 	sword_col->SetPosition(sword_pos);
-	anim_model->AdvanceTime(delta / 1.0f);
 	col.weapon.Center = SimpleMath::Vector3(sword_pos.x,0,sword_pos.z);
 	return 0;
 }
@@ -53,11 +55,7 @@ void SwordMan::Action() {
 
 		if (init_wait_frame < max_init_wait) {
 			init_wait_frame += delta;
-
-			if(enemy_posture == "U")
-				SetAnimation(anim_model, (int)Motion::RUN_UP, (int)Motion::MAX_MOTION);
-			else
-				SetAnimation(anim_model, (int)Motion::RUN_DOWN, (int)Motion::MAX_MOTION);
+			Run();
 		}
 		else {
 			action = (int)ActionNum::INIT;
@@ -65,14 +63,9 @@ void SwordMan::Action() {
 		break;
 
 	case (int)ActionNum::INIT:
+		Run();
 		attack_frame = 0.0f;
 		move_pos_x = player_pos.x;
-
-		if (enemy_posture == "U")
-			SetAnimation(anim_model, (int)Motion::RUN_UP, (int)Motion::MAX_MOTION);
-		else
-			SetAnimation(anim_model, (int)Motion::RUN_DOWN, (int)Motion::MAX_MOTION);
-
 		action = (int)ActionNum::MOVE;
 		break;
 
@@ -141,6 +134,13 @@ void SwordMan::Move() {
 		position.x -= move_speed * delta;
 }
 
+void SwordMan::Run() {
+	if (enemy_posture == "U")
+		SetAnimation(anim_model, (int)Motion::RUN_UP, (int)Motion::MAX_MOTION);
+	else
+		SetAnimation(anim_model, (int)Motion::RUN_DOWN, (int)Motion::MAX_MOTION);
+}
+
 void SwordMan::IsRetreat() {
 	EnemyBase::IsRetreat();
 
@@ -151,13 +151,20 @@ void SwordMan::IsRetreat() {
 void SwordMan::Freeze() {
 	if (enemy_hp <= 0 && !die_flag) {
 		SetAnimation(anim_model, (int)Motion::FREEZE, (int)Motion::MAX_MOTION);
-		//enemy_hp = 0;
+		is_damage += delta;
+	}
+
+	if (StatusManager::Instance().GetKillComboTime() == 0.0f) {
+		Run();
+		is_damage = 0.0f;
 	}
 }
 
 void SwordMan::IsDeath() {
 	if (die_flag) {
+		is_damage = 0.0f;
 		SetAnimation(anim_model, (int)Motion::DEATH, (int)Motion::MAX_MOTION);
+
 
 		if (dead_frame >= 0.0f) {
 			confetti_effect_flag = true;

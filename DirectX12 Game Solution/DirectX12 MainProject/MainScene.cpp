@@ -140,7 +140,7 @@ NextScene MainScene::Update(const float deltaTime)
 
 	if (!enemy->IsTimeStop()) {
 		player->Update(deltaTime, enemy->GetTemporaryDeath());
-		enemy->Update(player->GetModel()->GetPosition(),player->GetEnemyDeathFlag(), deltaTime);
+		enemy->Update(player->GetModel()->GetPosition(),player->GetAttackTag(), player->GetEnemyDeathFlag(), deltaTime);
 		camera.Update(player, OUT_ZOOM, deltaTime);
 		observer->Update(player, enemy, audience);
 		dialogue.ResetCount();

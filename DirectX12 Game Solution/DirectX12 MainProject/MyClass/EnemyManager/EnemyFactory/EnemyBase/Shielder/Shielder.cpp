@@ -33,9 +33,8 @@ int Shielder::Update(SimpleMath::Vector3 player, bool destroy_flag, const float 
 	if (!temporary_death_flag && !die_flag)
 		Action();
 
-	if (is_damage < 0.32f)
+	if (is_damage < max_is_damage)
 		anim_model->AdvanceTime(delta / 1.0f);
-
 
 	sword_col->SetPosition(sword_pos);
 	col.weapon.Center = SimpleMath::Vector3(sword_pos.x, 0, sword_pos.z);
@@ -106,9 +105,7 @@ void Shielder::Move() {
 }
 
 void Shielder::Freeze() {
-	const float frame = delta / 1.0f;
 	if (enemy_hp <= 0 && !die_flag) {
-		//float 
 		is_damage += delta;
 		SetAnimation(anim_model, (int)Motion::DAMAGE, (int)Motion::MAX_MOTION);
 	}
