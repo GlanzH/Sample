@@ -91,14 +91,13 @@ void EnemyBase::LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	col.box.Center = position;
 }
 
-int EnemyBase::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime)
+int EnemyBase::Update(SimpleMath::Vector3 player, bool destroy_flag, const float deltaTime)
 {
 	delta      = deltaTime;
 	player_pos = player;
 	
 	IsDamage();
 	IsRetreat();
-	NormalDeathEffect();
 
 	if (position.z < 15.0f) {
 		explode.Update(position, delta);
@@ -131,17 +130,16 @@ void EnemyBase::HitEffect() {
 	//}
 }
 
-void EnemyBase::NormalDeathEffect() {
+void EnemyBase::NormalDeathEffect(float max_death, bool confetti_effect, bool death_effect,int effect_count) {
 	if (die_flag) {
-		if(dead_frame < max_dead){
-			if (!DX12Effect.CheckAlive(confetti_handle))
-			confetti_handle = DX12Effect.Play(confetti, position);
+		if(dead_frame < max_death){
+			if (!DX12Effect.CheckAlive(confetti_handle) && confetti_effect && effect_count == CONFINETTI)
+				confetti_handle = DX12Effect.Play(confetti, position);
+
+			if (!DX12Effect.CheckAlive(die_handle) && death_effect && effect_count == DEATH)
+				die_handle = DX12Effect.Play(normal_die, position);
 
 			dead_frame += delta;
-		}
-		else {
-			if (!DX12Effect.CheckAlive(die_handle))
-				die_handle = DX12Effect.Play(normal_die, position);
 		}
 	}
 }
@@ -207,9 +205,9 @@ void EnemyBase::IsDamage() {
 	}
 }
 
-void EnemyBase::TemporaryDeath(float max_death) {
+void EnemyBase::TemporaryDeath() {
 	if (!temporary_death_flag && enemy_hp <= 0)
-		StatusManager::Instance().AddKillCombo();
+		StatusManager::Instance().AddKillComboTime();
 
 	if (enemy_hp <= 0 && !die_flag) {
 		temporary_death_flag = true;
@@ -217,20 +215,13 @@ void EnemyBase::TemporaryDeath(float max_death) {
 		if (!DX12Effect.CheckAlive(star_handle))
 			star_handle = DX12Effect.Play(star, position + SimpleMath::Vector3(0, 8, 0));
 	}
-	else {
-		//temporary_death_flag = false;
-	}
 
-	if (DXTK->KeyEvent->pressed.X) {
+	if (StatusManager::Instance().GetKillComboTime() == 0.0f) {
 		//‰¼Ž€ó‘Ô‰ðœ‚·‚é‚â‚Â
 		DX12Effect.Stop(star_handle);
 		enemy_hp = 1;
 		death_frame = 0.0f;
 		temporary_death_flag = false;
-	}
-
-	if (DXTK->KeyEvent->pressed.C) {
-		DX12Effect.Stop(star_handle);
 	}
 }
 

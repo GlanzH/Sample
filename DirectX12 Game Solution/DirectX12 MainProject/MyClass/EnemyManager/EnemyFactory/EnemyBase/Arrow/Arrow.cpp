@@ -2,10 +2,10 @@
 #include "Base/dxtk.h"
 #include "Arrow.h"
 
-int Arrow::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime) {
-	EnemyBase::Update(player, special_attack_flag, thorow_things_flag, deltaTime);
+int Arrow::Update(SimpleMath::Vector3 player, bool destroy_flag, const float deltaTime) {
+	EnemyBase::Update(player,destroy_flag,deltaTime);
 
-	if (!special_attack_flag && !thorow_things_flag)
+	if (!temporary_death_flag)
 		Action();
 
 	col.box.Center = model->GetPosition();

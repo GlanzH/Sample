@@ -11,7 +11,7 @@ void SwordMan::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positio
 	sword_col = DX9::Model::CreateBox(
 		DXTK->Device9,
 		col.weapon.Extents.x * 3,
-		col.weapon.Extents.y * 5,
+		col.weapon.Extents.y * 20,
 		col.weapon.Extents.z * 5
 	);
 
@@ -21,18 +21,16 @@ void SwordMan::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positio
 	col.weapon.Center = sword_pos;
 }
 
-int SwordMan::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime) {
-	EnemyBase::Update(player, special_attack_flag, thorow_things_flag, deltaTime);
-
-	if (!temporary_death_flag)
-		Action();
-
-	//if (Stun() && !LifeDeathDecision())
-	//	SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
-
+int SwordMan::Update(SimpleMath::Vector3 player, bool destroy_flag, const float deltaTime) {
+	EnemyBase::Update(player, destroy_flag, deltaTime);
+	EnemyBase::NormalDeathEffect(max_dead,confetti_effect_flag,death_effect_flag,effect_count);
+	EnemyBase::AdjustAnimCollision();
+	EnemyBase::TemporaryDeath();
+	Freeze();
 	IsDeath();
-	AdjustAnimCollision();
-	TemporaryDeath(max_death);
+
+	if (!temporary_death_flag && !die_flag)
+		Action();
 
 	sword_col->SetPosition(sword_pos);
 	col.weapon.Center = SimpleMath::Vector3(sword_pos.x,0,sword_pos.z);
@@ -42,7 +40,7 @@ int SwordMan::Update(SimpleMath::Vector3 player, bool special_attack_flag, bool 
 void SwordMan::Render() {
 	anim_model->Draw();
 	//collision->Draw();
-	sword_col->Draw();
+	//sword_col->Draw();
 }
 
 void SwordMan::Action() {
@@ -54,7 +52,11 @@ void SwordMan::Action() {
 
 		if (init_wait_frame < max_init_wait) {
 			init_wait_frame += delta;
-			SetAnimation(anim_model, (int)Motion::WAIT, (int)Motion::MAX_MOTION);
+
+			if(enemy_posture == "U")
+				SetAnimation(anim_model, (int)Motion::RUN_UP, (int)Motion::MAX_MOTION);
+			else
+				SetAnimation(anim_model, (int)Motion::RUN_DOWN, (int)Motion::MAX_MOTION);
 		}
 		else {
 			action = (int)ActionNum::INIT;
@@ -64,7 +66,12 @@ void SwordMan::Action() {
 	case (int)ActionNum::INIT:
 		attack_frame = 0.0f;
 		move_pos_x = player_pos.x;
-		SetAnimation(anim_model, (int)Motion::WALK, (int)Motion::MAX_MOTION);
+
+		if (enemy_posture == "U")
+			SetAnimation(anim_model, (int)Motion::RUN_UP, (int)Motion::MAX_MOTION);
+		else
+			SetAnimation(anim_model, (int)Motion::RUN_DOWN, (int)Motion::MAX_MOTION);
+
 		action = (int)ActionNum::MOVE;
 		break;
 
@@ -86,7 +93,11 @@ void SwordMan::Action() {
 		Attack();
 
 		if (attack_frame < max_attack) {
-			SetAnimation(anim_model, (int)Motion::ATTACK, (int)Motion::MAX_MOTION);
+			if (enemy_posture == "U")
+				SetAnimation(anim_model, (int)Motion::ATTACK_UP, (int)Motion::MAX_MOTION);
+			else
+				SetAnimation(anim_model, (int)Motion::ATTACK_DOWN, (int)Motion::MAX_MOTION);
+
 			attack_frame += delta;
 			attack_flag = true;
 		}
@@ -109,14 +120,6 @@ void SwordMan::InitDirect() {
 	}
 }
 
-void SwordMan::Move() {
-	if (direct == LEFT)
-		position.x += move_speed * delta;
-
-	else if(direct == RIGHT)
-		position.x -= move_speed * delta;
-}
-
 void SwordMan::Rotate() {
 	if (direct == LEFT && position.x >= max_range) {
 		anim_model->SetRotation(0, rotate, 0);
@@ -129,17 +132,41 @@ void SwordMan::Rotate() {
 	}
 }
 
+void SwordMan::Move() {
+	if (direct == LEFT)
+		position.x += move_speed * delta;
+
+	else if (direct == RIGHT)
+		position.x -= move_speed * delta;
+}
+
 void SwordMan::IsRetreat() {
 	EnemyBase::IsRetreat();
 
-	//if(enemy_hp > 0 && retreat_flag)
-	//SetAnimation(anim_model, (int)Motion::DAMAGE, (int)Motion::MAX_MOTION);
+	if(enemy_hp > 0 && retreat_flag)
+	SetAnimation(anim_model, (int)Motion::BOUNCE, (int)Motion::MAX_MOTION);
+}
+
+void SwordMan::Freeze() {
+	if (enemy_hp <= 0 && !die_flag) {
+		SetAnimation(anim_model, (int)Motion::FREEZE, (int)Motion::MAX_MOTION);
+		//enemy_hp = 0;
+	}
 }
 
 void SwordMan::IsDeath() {
-	if (DXTK->KeyEvent->pressed.A) {
-		SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
-		enemy_hp = 0;
+	if (die_flag) {
+		SetAnimation(anim_model, (int)Motion::DEATH, (int)Motion::MAX_MOTION);
+
+		if (dead_frame >= 0.0f) {
+			confetti_effect_flag = true;
+			effect_count = CONFINETTI;
+		}
+
+		if (dead_frame >= 1.7f) {
+			death_effect_flag = true;
+			effect_count = DEATH;
+		}
 	}
 }
 

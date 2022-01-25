@@ -4,7 +4,7 @@
 class MidBoss : public EnemyBase {
 public:
 	void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
-	int  Update(SimpleMath::Vector3 player, bool special_attack_flag, bool thorow_things_flag, const float deltaTime);
+	int  Update(SimpleMath::Vector3 player, bool destroy_flag, const float deltaTime);
 
 private:
 	bool LifeDeathDecision() override;
