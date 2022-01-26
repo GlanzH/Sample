@@ -44,7 +44,7 @@ void UIManager::LoadAsset() {
 	enemy_dead = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Enemy_dead_h.png");
 }
 
-void UIManager::Update(const float deltaTime, int enemy_death) {
+void UIManager::Update(const float deltaTime, int enemy_num, int enemy_death) {
 	Animation(deltaTime);
 	DX12Effect2D.Update(deltaTime);
 	combo_num = StatusManager::Instance().GetHitCombo();
@@ -52,6 +52,7 @@ void UIManager::Update(const float deltaTime, int enemy_death) {
 	combo_anime = COMBO_BASE_HIGHT * (int)combo_anime_frame;
 	combo_gauge_width = COMBO_GAUGE_DIVIDE * StatusManager::Instance().GetHitComboTime();
 
+	enemy_width = enemy_num * ENEMY_MIN_WIDTH;
 	enemy_dead_width = enemy_width - (ENEMY_MIN_WIDTH * enemy_death);
 
 	if (combo_num <= 9.0f) {
@@ -148,7 +149,7 @@ void UIManager::Render() {
 
 	DX9::SpriteBatch->DrawSimple(
 		enemy.Get(),
-		SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
+		SimpleMath::Vector3(0.0f, 0.0f, -1.0f),
 		RectWH(0, 0, enemy_width, ENEMY_HIGHT)
 	);
 

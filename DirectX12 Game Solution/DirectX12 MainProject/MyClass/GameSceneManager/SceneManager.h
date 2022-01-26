@@ -18,7 +18,7 @@ public:
 	void Update(const float deltaTime);
 	void Render();
 
-	bool ReturnSceneFlag() { return scene_change_flag; }//シーン切り替え
+	bool ReturnSceneFlag() { return scene_change_flag; }	//シーン切り替え
 
 	static SceneManager& Instance() {
 		static SceneManager instance;
@@ -29,11 +29,11 @@ private:
 	//カーテン
 	DX9::SPRITE curtain;
 	SimpleMath::Vector3 curtain_pos;
+	bool curtain_move_flag;
 	const float CURTAIN_START_POS = -720.0f;
 
 	//時間
-	const float CURTAIN_DOWN_SPEED = 150.0f;
+	const float CURTAIN_DOWN_SPEED = 200.0f;
 
-	//フラグ
-	bool scene_change_flag;	//シーン切り替え
+	bool scene_change_flag;	//シーン切り替え可能フラグ
 };

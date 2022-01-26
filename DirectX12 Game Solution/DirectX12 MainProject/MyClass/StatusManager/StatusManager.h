@@ -39,18 +39,17 @@ public:
 
 	//ウェーブ
 	void SetWave(int wave_num);	//ウェーブ数設定
-	int  GetWave() { return wave; }	//現在のウェーブ
-	bool GetWaveFlag() { return wave_change_flag; }	//ウェーブ切り替えフラグ
-
 	void WaveTimeLimit(const float deltaTime);	//ウェーブの時間
 	void ResetWaveTime();	//ウェーブ時間を0にする
+	int  GetWave() { return wave; }	//現在のウェーブ
 	float GetTime() { return wave_time; } //時間の取得
 	float GetOnceExec() { return once_exec_time; }
+	bool GetWaveFlag() { return wave_change_flag; }	//ウェーブ切り替えフラグ
 
 private:
 	void ComboTime(const float deltaTime);	//コンボ時間計る
 
-	void ComboScore();	//
+	void ComboScore();	//コンボ数に応じてスコア加算
 	void CalcScore(const float deltaTime);	//スコア計算
 	void ScoreUp(const float deltaTime);	//アップ
 	void ScoreDown(const float deltaTime);	//ダウン
