@@ -88,9 +88,6 @@
     <Filter Include="MyClass\DialogueManager">
       <UniqueIdentifier>{22c7b9e1-5606-4f7c-8da4-0c19880adca7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime">
-      <UniqueIdentifier>{af1e2049-6be2-4bc7-a20f-58166f8bc828}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -210,9 +207,6 @@
     <ClInclude Include="Base\DX12Effekseer2D.h">
       <Filter>MyClass\Effekseer</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime\Slime.h">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -310,9 +304,6 @@
     </ClCompile>
     <ClCompile Include="Base\DX12Effekseer2D.cpp">
       <Filter>MyClass\Effekseer</Filter>
-    </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime\Slime.cpp">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Slime</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
