@@ -38,6 +38,10 @@ public:
 	void Debug();
 	void OnDeviceLost();
 
+	//UŒ‚ ’e‚©‚ê‚é
+	void Frip();
+
+
 	//ƒAƒjƒ[ƒVƒ‡ƒ“
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack);
 
@@ -71,6 +75,8 @@ public:
 	int GetAttackTag() { return attack_type; }//1 = ã’iUŒ‚ - Y, 2 = ‰º’iUŒ‚ - X
 
 	bool GetEnemyDeathFlag() { return elimination_flag; }//ƒGƒlƒ~[‚ÌÁ–Å
+
+	void GetFripFlag() { frip_flag = true; }
 
 
 private:
@@ -298,12 +304,11 @@ private:
 		NOT_LOWER,
 		LOWER_ATTACK
 	};
-	Lower_State lower_sate_mode;
+	Lower_State lower_state_mode;
 	float lower_start;
 	float lower_end;
 
 
-	void Upper_Effect();
 
 	//”[“
 	void Sword_Delivery(const float deltaTime, bool temp);
@@ -315,20 +320,20 @@ private:
 	bool elimination_flag;
 	float elimination_end;
 
-	//UŒ‚ ’e‚©‚ê‚é
-	void Frip(const float deltaTime);
-
+	//’e‚­
 	enum Frip_State
 	{
 		NOT_FRIP,
-		ATTACK_TEST,
 		FRIP
 	};
+
 	Frip_State frip_state_mode;
 
-	float not_attack_start = 0.0f;
-	float not_attack_end = 0.3f;
+	bool frip_flag;
 
+	void Frip_Knock_Back();
 	float frip_start = 0.0f;
 	float frip_end = 0.783f;
+
+	int effect_count = 0;
 };

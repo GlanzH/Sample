@@ -9,19 +9,21 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 	for (auto enemies_roop : enemy->GetEnemy()) {
 		if (player->IsAttack()) {
 			if (player->GetBox().sword_box.Intersects(enemies_roop->GetBox().box)) {
-				int hoge = 3;
 				if (enemies_roop->GetAttackFlag() && enemies_roop->GetPostune() == "U" &&
-					DXTK->KeyEvent->pressed.A
-				){
-					//はじかれるフラグをtrueにする関数を呼び出す
-					//trueなら弾かれた時の処理を行う関数は別に作る
-
-				}
-				else if (enemies_roop->GetAttackFlag() && enemies_roop->GetPostune() == "D" &&
-					DXTK->KeyEvent->pressed.S
+					player->GetAttackTag() == 1
 					) {
 					//はじかれるフラグをtrueにする関数を呼び出す
 					//trueなら弾かれた時の処理を行う関数は別に作る
+
+					player->GetFripFlag();
+
+				}
+				else if (enemies_roop->GetAttackFlag() && enemies_roop->GetPostune() == "D" &&
+					player->GetAttackTag() == 2
+					) {
+					//はじかれるフラグをtrueにする関数を呼び出す
+					//trueなら弾かれた時の処理を行う関数は別に作る
+					player->GetFripFlag();
 
 				}
 				else {
