@@ -43,7 +43,7 @@ int SwordMan::Update(SimpleMath::Vector3 player, bool destroy_flag, const float 
 
 void SwordMan::Render() {
 	anim_model->Draw();
-	collision->Draw();
+	//collision->Draw();
 	//sword_col->Draw();
 }
 

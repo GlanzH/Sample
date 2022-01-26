@@ -260,10 +260,15 @@ void EnemyManager::LoadEnemyArrangement() {
 }
 
 int EnemyManager::GetWaveEnemy() {
-	for (int i = 0; i < ENEMY_NUM; ++i) {
-		if (wave_num[i] == StatusManager::Instance().GetWave())
-			enemy_num++;
+	if (StatusManager::Instance().GetTime() > StatusManager::Instance().GetOnceExec()) {
+		for (int i = 0; i < ENEMY_NUM; ++i) {
+			if (wave_num[i] == StatusManager::Instance().GetWave())
+				enemy_num++;
+		}
 	}
+
+	if (StatusManager::Instance().GetTime() == 0.0f)
+		enemy_num = 0;
 
 	return enemy_num;
 }
