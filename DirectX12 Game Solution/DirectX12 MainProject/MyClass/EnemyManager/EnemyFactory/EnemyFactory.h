@@ -48,6 +48,7 @@ private:
 		SHIELDER,
 		MID_BOSS,
 		ARROW,
+		SLIME,
 		MODEL_MAX
 	};
 

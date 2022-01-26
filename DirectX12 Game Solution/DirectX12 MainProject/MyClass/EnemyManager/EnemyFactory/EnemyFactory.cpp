@@ -3,6 +3,7 @@
 #include "EnemyBase/Shielder/Shielder.h"
 #include "EnemyBase/MidBoss/MidBoss.h"
 #include "EnemyBase/Arrow/Arrow.h"
+#include "EnemyBase/Slime/Slime.h"
 
 EnemyFactory::EnemyFactory()
 {
@@ -18,6 +19,8 @@ EnemyFactory::EnemyFactory()
     enemy_tag.push_back("SH");
 	//中ボス
     enemy_tag.push_back("MB");
+	//スライム
+	enemy_tag.push_back("SL");
 	//矢
 	enemy_tag.push_back("AR");
 
@@ -26,6 +29,7 @@ EnemyFactory::EnemyFactory()
 	 enemy_model[SHIELDER]  = L"Model\\Enemy\\Shielder\\armor_blue_0125.X";
 	 enemy_model[MID_BOSS]  = L"Model\\Enemy\\MidBoss\\midolboss_goblin.X";
 	 enemy_model[ARROW]     = L"Model\\Enemy\\Arrow\\arrow_big.X";
+	 enemy_model[SLIME] = L"Model\\Enemy\\Slime\\slime_blue_motion_.X";
 
 }
 
@@ -52,7 +56,8 @@ EnemyBase* EnemyFactory::CreateProduct(string tag, SimpleMath::Vector3 position)
 		new SwordMan,
 		new Shielder,
 		new MidBoss,
-		new Arrow
+		new Arrow,
+		new Slime
 	};
 
 
@@ -71,7 +76,8 @@ LPCWSTR EnemyFactory::SetModel(string tag)
 		enemy_model[SWORD_MAN],
 		enemy_model[SHIELDER],
 		enemy_model[MID_BOSS],
-		enemy_model[ARROW]
+		enemy_model[ARROW],
+		enemy_model[SLIME]
 	};
 
 	for (int i = 0; i < enemy_tag.size(); ++i)
@@ -88,7 +94,8 @@ int EnemyFactory::SetHP(string tag)
 		enemy_hp,
 		enemy_hp,
 		mid_boss_hp,
-		arrow_hp
+		arrow_hp,
+		enemy_hp
 	};
 
 	for (int i = 0; i < enemy_tag.size(); ++i)
