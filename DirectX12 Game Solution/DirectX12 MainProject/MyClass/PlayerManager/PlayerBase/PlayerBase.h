@@ -211,6 +211,16 @@ private:
 	float		invincible_time;
 	float       invincible_time_max;
 
+	enum Invincible_Type
+	{
+		NOT_INVICIBLE,
+		AVOIDANCE_INV,
+		KNOCK_BACK_INV,
+		FRIP_INV
+	};
+
+	Invincible_Type invincible_type;
+
 	//ÉÇÅ[ÉVÉáÉìÇÃñºëO
 	enum
 	{

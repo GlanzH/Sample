@@ -124,6 +124,8 @@ bool PlayerBase::Initialize()
 	invincible_time = 0.0f;
 	invincible_time_max = 0.5f;
 
+	invincible_type = Invincible_Type::NOT_INVICIBLE;
+
 	//回避
 	avoidance_flag = false;
 	avoidance_start = 0.0f;
@@ -360,7 +362,7 @@ void PlayerBase::Render()
 	model->Draw();
 	//collision->Draw();
 	if (attack_flag) {
-		//sword_collision->Draw();
+		sword_collision->Draw();
 	}
 	//parry_collision->Draw();
 	right_collision->Draw();
@@ -485,6 +487,30 @@ void PlayerBase::Invincible(const float deltaTime)
 		invincible_flag = false;
 		invincible_time = 0.0f;
 	}
+
+	switch (invincible_type)
+	{
+	case Invincible_Type::NOT_INVICIBLE:
+		//回避の無敵
+		if (invincible_flag && avoidance_flag) {
+			invincible_type = Invincible_Type::AVOIDANCE_INV;
+		}
+		break;
+	case Invincible_Type::AVOIDANCE_INV:
+		//回避の無敵時間
+		invincible_time += deltaTime;
+
+		if (invincible_time >= 0.5f) {
+			invincible_flag = false;
+			invincible_type = Invincible_Type::NOT_INVICIBLE;
+		}
+
+		break;
+	case Invincible_Type::KNOCK_BACK_INV:
+		break;
+	case Invincible_Type::FRIP_INV:
+		break;
+	}
 }
 
 
@@ -527,7 +553,7 @@ void PlayerBase::Knock_back_Move() {
 			break;
 		case Direction_Knock_Back::LEFT_BACK:
 			if (direction_state_mode == Direction_State::RIGHT) {
-				model->SetRotation(0.0f, XMConvertToRadians(-90.0f), 0.0f);
+				model->SetRotation(0.0f, XMConvertToRadians(90.0f), 0.0f);
 				model->Move(0, 0, 40.0f * time_other);
 			}
 			else if (direction_state_mode == Direction_State::LEFT) {				
@@ -665,11 +691,9 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 
 		//当たり判定
 		//エフェクト
-		if (!frip_flag&& upper_start >= 0.117f) {
-			attack_flag = true;
-			attack_type = 1;
-		}
-		
+		attack_flag = true;
+		attack_type = 1;
+
 		if (!frip_flag && effect_count < 1) {
 			if (direction_state_mode == Direction_State::RIGHT) {
 
@@ -713,12 +737,10 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 		lower_start += deltaTime;
 		SetAnimation(model, ACT2);
 
-		if (!frip_flag && lower_start >= 0.001f) {
-			attack_flag = true;
-			attack_type = 2;
-		}
+		attack_flag = true;
+		attack_type = 2;
 
-		if (!frip_flag&& effect_count < 1) {
+		if (!frip_flag && effect_count < 1) {
 			if (direction_state_mode == Direction_State::RIGHT) {
 
 				DX12Effect.PlayOneShot("lower", Vector3(player_pos.x + 4.0f, player_pos.y + 5.0f, player_pos.z));
@@ -736,7 +758,7 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 			lower_state_mode = Lower_State::NOT_LOWER;
 			lower_start = 0.0f;
 			model->SetTrackPosition(ACT2, 0.0);
-			
+
 			effect_count = 0;
 			attack_type = 0;
 		}
@@ -890,11 +912,19 @@ void PlayerBase::Debug() {
 	//	L"%f,%f,%f", col.sword_box.Center.x, col.sword_box.Center.y, col.sword_box.Center.z
 	//);
 
-	//else {
-	//	DX9::SpriteBatch->DrawString(font.Get(),
-	//		SimpleMath::Vector2(1100.0f, 140.0f),
-	//		DX9::Colors::BlueViolet,
-	//		L"OFF"
-	//	);
-	//}
+	if (invincible_type == Invincible_Type::NOT_INVICIBLE) {
+		DX9::SpriteBatch->DrawString(font.Get(),
+			SimpleMath::Vector2(1100.0f, 140.0f),
+			DX9::Colors::BlueViolet,
+			L"OFF"
+		);
+	}
+	else if (invincible_type == Invincible_Type::AVOIDANCE_INV)
+	{
+		DX9::SpriteBatch->DrawString(font.Get(),
+			SimpleMath::Vector2(1100.0f, 140.0f),
+			DX9::Colors::BlueViolet,
+			L"AVOIDANCE"
+		);
+	}
 }
