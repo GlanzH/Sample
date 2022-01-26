@@ -36,7 +36,7 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	collision = DX9::Model::CreateBox(
 		DXTK->Device9,
 		col.box.Extents.x * box_size,
-		col.box.Extents.y * 5,
+		col.box.Extents.y * 10,
 		col.box.Extents.z * box_size
 	);
 
@@ -116,7 +116,6 @@ void EnemyBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack, int
 void EnemyBase::AdjustAnimCollision() {
 	col.box.Center = anim_model->GetPosition();
 	anim_model->SetPosition(position);
-	collision->SetPosition(anim_model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 }
 
 void EnemyBase::HitEffect() {

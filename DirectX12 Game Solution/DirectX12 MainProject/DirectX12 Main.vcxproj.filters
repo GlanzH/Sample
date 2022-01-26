@@ -67,9 +67,6 @@
     <Filter Include="MyClass\Ground">
       <UniqueIdentifier>{3484e38c-733b-4580-a58d-5fa05c40e4b3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\Camera\DialogueManager">
-      <UniqueIdentifier>{22c7b9e1-5606-4f7c-8da4-0c19880adca7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Arrow">
       <UniqueIdentifier>{815aef80-3e56-41c6-8e86-eff3d3abd67b}</UniqueIdentifier>
     </Filter>
@@ -87,6 +84,9 @@
     </Filter>
     <Filter Include="MyClass\Timer">
       <UniqueIdentifier>{013e3be7-28cd-4a88-bb81-7eb5acc1e8f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\DialogueManager">
+      <UniqueIdentifier>{22c7b9e1-5606-4f7c-8da4-0c19880adca7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -175,7 +175,7 @@
       <Filter>MyClass\Shader</Filter>
     </ClInclude>
     <ClInclude Include="MyClass\DialogueManager\DialogueManager.h">
-      <Filter>MyClass\Camera\DialogueManager</Filter>
+      <Filter>MyClass\DialogueManager</Filter>
     </ClInclude>
     <ClInclude Include="MyClass\Shader\TextureLight.h">
       <Filter>MyClass\Shader</Filter>
@@ -273,7 +273,7 @@
       <Filter>MyClass\Shader</Filter>
     </ClCompile>
     <ClCompile Include="MyClass\DialogueManager\DialogueManager.cpp">
-      <Filter>MyClass\Camera\DialogueManager</Filter>
+      <Filter>MyClass\DialogueManager</Filter>
     </ClCompile>
     <ClCompile Include="MyClass\Shader\TextureLight.cpp">
       <Filter>MyClass\Shader</Filter>

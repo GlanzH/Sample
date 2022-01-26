@@ -38,12 +38,13 @@ int Shielder::Update(SimpleMath::Vector3 player, bool destroy_flag, const float 
 
 	sword_col->SetPosition(sword_pos);
 	col.weapon.Center = SimpleMath::Vector3(sword_pos.x, 0, sword_pos.z);
+	collision->SetPosition(anim_model->GetPosition() + SimpleMath::Vector3(0, 4, 0));
 	return 0;
 }
 
 void Shielder::Render() {
 	anim_model->Draw();
-	//collision->Draw();
+	collision->Draw();
 	//sword_col->Draw();
 }
 
