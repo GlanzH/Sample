@@ -30,12 +30,12 @@ EnemyFactory::EnemyFactory()
 }
 
 EnemyBase* EnemyFactory::Create(
-	string tag,double init_wait,double stop_pos,string time_stop_flag,
+	string tag,double init_wait,double stop_pos,
 	 SimpleMath::Vector3 position,double speed,string direct,string posture
 )
 {
 	EnemyBase* enemy_factory = CreateProduct(tag,position);
-	enemy_factory->Initialize(tag,init_wait,stop_pos,time_stop_flag, speed,direct, posture, SetHP(tag));
+	enemy_factory->Initialize(tag,init_wait,stop_pos,speed,direct, posture, SetHP(tag));
 
 	if(tag != "AR")
 		enemy_factory->LoadAsset(SetModel(tag), position);

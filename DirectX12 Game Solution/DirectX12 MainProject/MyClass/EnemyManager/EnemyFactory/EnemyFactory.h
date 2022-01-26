@@ -22,7 +22,7 @@ class EnemyFactory {
 public:
 	EnemyFactory();
 	~EnemyFactory() {};
-	EnemyBase* Create(string tag,double init_wait,double stop_pos,std::string time_stop_flag,
+	EnemyBase* Create(string tag,double init_wait,double stop_pos,
 		              SimpleMath::Vector3 position,double speed,string direct, string posture);
 
 	EnemyBase* CreateProduct(string tag,SimpleMath::Vector3 position);

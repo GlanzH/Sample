@@ -21,7 +21,6 @@ EnemyManager::EnemyManager()
 		move_speed[i]     = DBL_MAX;
 		posture[i]        = "";
 		move_direct[i]    = "";
-		time_stop_flag[i] = "";
 	}
 }
 
@@ -80,16 +79,9 @@ void EnemyManager::Iterator() {
 			itr++;
 		}
 		else {
-
-			if ((*itr)->GetTimeStopFlag())
-				StartTimeStop();
-
 			if ((*itr)->LifeDeathDecision() != LIVE) {
 
 				if ((*itr)->GetTag() != "AR") {
-
-					(*itr)->GetTimeStopFlag();
-
 					if ((*itr)->GetTemporaryDeathFlag()) {
 						if (!kill->IsInUse())
 							kill->Play();
@@ -126,9 +118,9 @@ bool EnemyManager::GetTemporaryDeath() {
 	for (auto& enemies : enemy) {
 		if (enemies->GetTemporaryDeathFlag())
 			return true;
-		else
-			return false;
 	}
+
+	return false;
 }
 
 void EnemyManager::Generator() {
@@ -143,7 +135,6 @@ void EnemyManager::Generator() {
 				tag[count],
 				init_wait[count], 
 				stop_pos[count],
-				time_stop_flag[count], 
 				appear_pos[count],
 				move_speed[count],
 				move_direct[count],
@@ -168,17 +159,21 @@ float EnemyManager::AppearTime() {
 }
 
 void EnemyManager::StartTimeStop() {
-	time_stop_count++;
-	enemy_stop_flag = true;
+	if (!enemy_stop_flag) {
+		time_stop_count++;
+		enemy_stop_flag = true;
+	}
 }
 
 void EnemyManager::EndTimeStop() {
 	if (DXTK->KeyEvent->pressed.B || DXTK->GamePadEvent[0].b == GamePad::ButtonStateTracker::PRESSED)
 		push_count++;
 
-	if (push_count >= 2) {
-		push_count = 0;
+	if (push_count > 2 && enemy_stop_flag) {
 		enemy_stop_flag = false;
+	}
+	if (!enemy_stop_flag) {
+		push_count = 0;
 	}
 	//else if (time_stop_count == 4 && push_count >= 1) {
 	//	push_count = 0;
@@ -256,7 +251,7 @@ void EnemyManager::LoadEnemyArrangement() {
 	//!ƒf[ƒ^“Ç‚İ‚İ
 	for (int i = 0; i < ENEMY_NUM; ++i) {
 		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> appear_time[i] >> wave_num[i] 
-			            >> init_wait[i] >> stop_pos[i] >> move_speed[i] >> move_direct[i] >> posture[i] >> time_stop_flag[i];
+			            >> init_wait[i] >> stop_pos[i] >> move_speed[i] >> move_direct[i] >> posture[i];
 	}
 }
 

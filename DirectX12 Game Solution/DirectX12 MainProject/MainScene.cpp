@@ -44,7 +44,7 @@ void MainScene::Initialize()
 	//point.SetAngle(Vector3(0,0,1), 0);
 	texLight.Init();
 
-	enemy->StartTimeStop();
+	//enemy->StartTimeStop();
 	end_frame = 0.0f;
 }
 
@@ -138,6 +138,11 @@ NextScene MainScene::Update(const float deltaTime)
 	StatusManager::Instance().Update(deltaTime);
 	UIManager::Instance().Update(deltaTime);
 
+	if (StatusManager::Instance().GetWave() > 0 && StatusManager::Instance().GetTime() > 29.99f)
+		enemy->StartTimeStop();
+
+	enemy->EndTimeStop();
+
 	if (!enemy->IsTimeStop()) {
 		player->Update(deltaTime, enemy->GetTemporaryDeath());
 		enemy->Update(player->GetModel()->GetPosition(),player->GetAttackTag(), player->GetEnemyDeathFlag(), deltaTime);
@@ -154,7 +159,7 @@ NextScene MainScene::Update(const float deltaTime)
 		camera.Update(player, IN_ZOOM, deltaTime);
 		light_mode = IN_ZOOM;
 	}
-	
+
 
 	if (end_flag) {
 		end_frame += deltaTime;

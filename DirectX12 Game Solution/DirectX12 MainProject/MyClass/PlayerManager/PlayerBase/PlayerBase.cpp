@@ -884,11 +884,11 @@ bool PlayerBase::IsAttack() {
 }
 
 void PlayerBase::Debug() {
-	DX9::SpriteBatch->DrawString(font.Get(),
-		SimpleMath::Vector2(800.0f, 140.0f),
-		DX9::Colors::BlueViolet,
-		L"%f,%f,%f", col.sword_box.Center.x, col.sword_box.Center.y, col.sword_box.Center.z
-	);
+	//DX9::SpriteBatch->DrawString(font.Get(),
+	//	SimpleMath::Vector2(800.0f, 140.0f),
+	//	DX9::Colors::BlueViolet,
+	//	L"%f,%f,%f", col.sword_box.Center.x, col.sword_box.Center.y, col.sword_box.Center.z
+	//);
 
 	//else {
 	//	DX9::SpriteBatch->DrawString(font.Get(),
