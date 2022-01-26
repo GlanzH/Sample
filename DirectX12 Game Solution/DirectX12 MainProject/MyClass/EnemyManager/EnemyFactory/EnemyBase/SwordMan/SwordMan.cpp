@@ -154,7 +154,7 @@ void SwordMan::Freeze() {
 		is_damage += delta;
 	}
 
-	if (StatusManager::Instance().GetKillComboTime() == 0.0f) {
+	if (StatusManager::Instance().GetHitComboTime() == 0.0f) {
 		Run();
 		is_damage = 0.0f;
 	}

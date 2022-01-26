@@ -96,7 +96,7 @@ void EnemyManager::Iterator() {
 
 						dead_enemy_count++;
 
-						StatusManager::Instance().AddKillCombo();
+						StatusManager::Instance().AddHitCombo();
 					}
 				}
 

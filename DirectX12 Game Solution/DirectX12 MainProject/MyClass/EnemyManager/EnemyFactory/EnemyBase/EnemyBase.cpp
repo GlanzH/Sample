@@ -205,7 +205,7 @@ void EnemyBase::IsDamage() {
 
 void EnemyBase::TemporaryDeath() {
 	if (!temporary_death_flag && enemy_hp <= 0)
-		StatusManager::Instance().AddKillComboTime();
+		StatusManager::Instance().AddHitComboTime();
 
 	if (enemy_hp <= 0 && !die_flag) {
 		temporary_death_flag = true;
@@ -214,7 +214,7 @@ void EnemyBase::TemporaryDeath() {
 			star_handle = DX12Effect.Play(star, position + SimpleMath::Vector3(0, 8, 0));
 	}
 
-	if (StatusManager::Instance().GetKillComboTime() == 0.0f) {
+	if (StatusManager::Instance().GetHitComboTime() == 0.0f) {
 		//‰¼Ž€ó‘Ô‰ðœ‚·‚é‚â‚Â
 		DX12Effect.Stop(star_handle);
 		enemy_hp = 1;
