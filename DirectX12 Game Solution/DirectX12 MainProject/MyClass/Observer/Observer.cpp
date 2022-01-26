@@ -28,6 +28,7 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 				}
 				else {
 					enemy->OnCollisionEnter(enemies_roop);
+					hit_stop_flag = true;
 				}
 			}
 		}
@@ -76,9 +77,18 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 
 			if (player->GetRightBox().right_box.Intersects(enemies_roop->GetBox().weapon)) {
 				player->OnLeftCollisionEnter(enemies_roop->GetTag());
-			}
-
-			
+				
+			}			
 		}
+	}
+}
+
+void Observer::Hit_Stop(const float deltaTime) {
+	if (hit_stop_flag) {
+		hit_stop_start += deltaTime;
+	}
+	if (hit_stop_start >= hit_stop_end) {
+		hit_stop_flag = false;
+		hit_stop_start = 0.0f;
 	}
 }

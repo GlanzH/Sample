@@ -129,8 +129,8 @@ NextScene MainScene::Update(const float deltaTime)
 
 	//ヒットストップ(ベース)
 	float delta_time = deltaTime;
-	if (DXTK->KeyState->LeftControl)
-		delta_time *= 0.01f;
+	if (DXTK->KeyState->LeftControl )//|| observer->GetHitStop())
+		delta_time *= 0.001f;
 
 	//!終了時処理
 	auto end_flag = StatusManager::Instance().GetScoreGauge() <= 0.0f;
@@ -147,11 +147,14 @@ NextScene MainScene::Update(const float deltaTime)
 
 	if (!enemy->IsTimeStop()) {
 		player->Update(delta_time, enemy->GetTemporaryDeath());
-		enemy->Update(player->GetModel()->GetPosition(),player->GetAttackTag(), player->GetEnemyDeathFlag(), delta_time);
+		enemy->Update(player->GetModel()->GetPosition(), player->GetAttackTag(), player->GetEnemyDeathFlag(), delta_time);
 		camera.Update(player, OUT_ZOOM, delta_time);
 		observer->Update(player, enemy, audience);
 		dialogue.ResetCount();
 		time.Update(enemy, delta_time);
+
+		observer->Hit_Stop(deltaTime);
+
 
 		//ChangeBGM(MAIN);
 		light_mode = OUT_ZOOM;
@@ -174,6 +177,7 @@ NextScene MainScene::Update(const float deltaTime)
 				return NextScene::ResultScene;
 		}
 	}
+
 
 	SceneManager::Instance().Update(delta_time);
 
