@@ -47,7 +47,8 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 			//if (player->GetBox().box.Intersects(enemies_roop->GetBox().weapon)) {
 			//	player->OnCollisionEnter(enemies_roop->GetTag());
 			//}
-
+			
+			//右方向の敵に当たったら左にノックバック
 			if (player->GetRightBox().right_box.Intersects(enemies_roop->GetBox().box) && !player->IsInvincibleFlag()) {
 				player->OnRightCollisionEnter(enemies_roop->GetTag());
 			}
@@ -57,11 +58,25 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 				player->OnRightCollisionEnter(enemies_roop->GetTag());
 			}
 
-
 			if (player->GetRightBox().right_box.Intersects(enemies_roop->GetBox().weapon)) {
 				player->OnRightCollisionEnter(enemies_roop->GetTag());
 			}
 
+
+			//右方向の敵に当たったら左にノックバック
+			if (player->GetLeftBox().left_box.Intersects(enemies_roop->GetBox().box) && !player->IsInvincibleFlag()) {
+				player->OnLeftCollisionEnter(enemies_roop->GetTag());
+			}
+
+			if (player->GetLeftBox().right_box.Intersects(enemies_roop->GetBox().box) &&
+				player->IsInvincibleFlag() && enemies_roop->GetTag() == "AR") {
+				player->OnLeftCollisionEnter(enemies_roop->GetTag());
+			}
+
+
+			if (player->GetLeftBox().right_box.Intersects(enemies_roop->GetBox().weapon)) {
+				player->OnLeftCollisionEnter(enemies_roop->GetTag());
+			}
 
 			
 		}

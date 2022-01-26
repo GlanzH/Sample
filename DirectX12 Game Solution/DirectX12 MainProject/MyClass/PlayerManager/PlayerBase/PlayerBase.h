@@ -294,7 +294,14 @@ private:
 	};
 	Damage_Mode damage_mode_state;
 
+	//ノックバックする方向
+	enum Direction_Knock_Back
+	{
+		RIGHT_BACK,
+		LEFT_BACK
+	};
 
+	Direction_Knock_Back direction_knock_back;
 
 	//上段(変数宣言)
 	enum Upper_State

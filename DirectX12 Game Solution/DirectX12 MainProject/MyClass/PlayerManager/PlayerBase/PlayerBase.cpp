@@ -156,6 +156,10 @@ bool PlayerBase::Initialize()
 
 	damage_mode_state = Damage_Mode::NOMAL_STATE;
 
+	//ノックバックする方向
+	direction_knock_back == Direction_Knock_Back::RIGHT_BACK;
+
+
 
 
 	//上段(変数宣言)
@@ -426,6 +430,7 @@ void PlayerBase::OnLeftCollisionEnter(std::string tag) {//左
 
 		//ノックバック
 		knock_back_flag = true;
+		direction_knock_back = Direction_Knock_Back::LEFT_BACK;
 
 
 		if (tag == "SW")
@@ -452,10 +457,9 @@ void PlayerBase::OnRightCollisionEnter(std::string tag) {//右
 		//無敵
 		invincible_flag = true;
 
-
-
 		//ノックバック
 		knock_back_flag = true;
+		direction_knock_back = Direction_Knock_Back::RIGHT_BACK;
 
 
 		if (tag == "SW")
@@ -510,13 +514,29 @@ void PlayerBase::Knock_Back() {
 void PlayerBase::Knock_back_Move() {
 
 	if (knock_back_start < knock_back_end) {
-		if (direction_state_mode == Direction_State::RIGHT) {
-			model->Move(0, 0, 40.0f * time_other);
-		}
-		else if (direction_state_mode == Direction_State::LEFT) {
-			model->Move(0, 0, 40.0f * time_other);
+		switch (direction_knock_back)
+		{
+		case Direction_Knock_Back::RIGHT_BACK:
+			if (direction_state_mode == Direction_State::RIGHT) {
+				model->Move(0, 0, 40.0f * time_other);
+			}
+			else if (direction_state_mode == Direction_State::LEFT) {
+				model->SetRotation(0.0f, XMConvertToRadians(-90.0f), 0.0f);
+				model->Move(0, 0, 40.0f * time_other);
+			}
+			break;
+		case Direction_Knock_Back::LEFT_BACK:
+			if (direction_state_mode == Direction_State::RIGHT) {
+				model->SetRotation(0.0f, XMConvertToRadians(-90.0f), 0.0f);
+				model->Move(0, 0, 40.0f * time_other);
+			}
+			else if (direction_state_mode == Direction_State::LEFT) {				
+				model->Move(0, 0, 40.0f * time_other);
+			}
+			break;
 		}
 	}
+
 }
 
 //起き上がる
