@@ -188,25 +188,31 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 		 hit->Play();
 
 	 //ã’iUŒ‚
-	 if (base->GetPostune() == "U") {
-		 if (attack_num == UPPER) {
-			 base->Damage();
-			 base->HitEffect();
-		 }
+	 if (base->FrontFlag() && base->GetTag() != "SH") {
+		 if (base->GetPostune() == "U") {
+			 if (attack_num == LOWER) {
+				 base->Damage();
+				 base->HitEffect();
+			 }
 
-		 if (attack_num == LOWER) {
-			 base->Retreat();
+			 if (attack_num == UPPER) {
+				 base->Retreat();
+			 }
+		 }
+		 else {
+			 if (attack_num == UPPER) {
+				 base->Retreat();
+			 }
+
+			 if (attack_num == LOWER) {
+				 base->Damage();
+				 base->HitEffect();
+			 }
 		 }
 	 }
 	 else {
-		 if (attack_num == UPPER) {
-			 base->Retreat();
-		 }
-
-		 if (attack_num == LOWER) {
-			 base->Damage();
-			 base->HitEffect();
-		 }
+		 base->Damage();
+		 base->HitEffect();
 	 }
 }
 

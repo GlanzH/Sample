@@ -42,6 +42,8 @@ public:
 	void SpecialDeathEffect();
 	void AutoDestoryEffect();
 
+	virtual bool FrontFlag();
+
 	virtual void Damage();
 	virtual bool LifeDeathDecision() { return LIVE; }
 
@@ -143,6 +145,8 @@ protected:
 	float is_damage = 0.0f;
 
 	Collision col;
+
+	int direct;
 
 	enum {
 		CONFINETTI = 1,

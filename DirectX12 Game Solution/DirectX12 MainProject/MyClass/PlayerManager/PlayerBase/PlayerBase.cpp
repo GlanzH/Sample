@@ -584,10 +584,10 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 
 		//当たり判定
 		//エフェクト
-		if (!frip_flag&& upper_start >= 0.117f) {
+		//if (!frip_flag&& upper_start >= 0.117f) {
 			attack_flag = true;
 			attack_type = 1;
-		}
+		//}
 		
 		if (!frip_flag && effect_count < 1) {
 			if (direction_state_mode == Direction_State::RIGHT) {
@@ -632,10 +632,10 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 		lower_start += deltaTime;
 		SetAnimation(model, ACT2);
 
-		if (!frip_flag && lower_start >= 0.001f) {
+		//if (!frip_flag && lower_start >= 0.001f) {
 			attack_flag = true;
 			attack_type = 2;
-		}
+		//}
 
 		if (!frip_flag&& effect_count < 1) {
 			if (direction_state_mode == Direction_State::RIGHT) {
