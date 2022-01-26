@@ -111,7 +111,7 @@ void Shielder::Freeze() {
 		SetAnimation(anim_model, (int)Motion::DAMAGE, (int)Motion::MAX_MOTION);
 	}
 
-	if (StatusManager::Instance().GetKillComboTime() == 0.0f) {
+	if (StatusManager::Instance().GetHitComboTime() == 0.0f) {
 		SetAnimation(anim_model, (int)Motion::RUN, (int)Motion::MAX_MOTION);
 		is_damage = 0.0f;
 	}

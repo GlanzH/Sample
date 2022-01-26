@@ -136,7 +136,7 @@ NextScene MainScene::Update(const float deltaTime)
 	//ground.Update(deltaTime);
 	ChangeLightRenge(deltaTime);
 	StatusManager::Instance().Update(deltaTime);
-	UIManager::Instance().Update(deltaTime);
+	UIManager::Instance().Update(deltaTime, enemy->GetDeathEnemyCount());
 
 	if (StatusManager::Instance().GetWave() > 0 && StatusManager::Instance().GetTime() > 29.99f)
 		enemy->StartTimeStop();
