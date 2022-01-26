@@ -125,18 +125,20 @@ void MainScene::OnRestartSound()
 // Updates the scene.
 NextScene MainScene::Update(const float deltaTime)
 {
-	// If you use 'deltaTime', remove it.
-	UNREFERENCED_PARAMETER(deltaTime);
-
 	// TODO: Add your game logic here.
+
+	//ヒットストップ(ベース)
+	float delta_time = deltaTime;
+	if (DXTK->KeyState->LeftControl)
+		delta_time *= 0.01f;
 
 	//!終了時処理
 	auto end_flag = StatusManager::Instance().GetScoreGauge() <= 0.0f;
 	//auto end_flag = enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum() || StatusManager::Instance().GetScoreGauge() <= 0.0f;
 	//ground.Update(deltaTime);
-	ChangeLightRenge(deltaTime);
-	StatusManager::Instance().Update(deltaTime);
-	UIManager::Instance().Update(deltaTime);
+	ChangeLightRenge(delta_time);
+	StatusManager::Instance().Update(delta_time);
+	UIManager::Instance().Update(delta_time);
 
 	if (StatusManager::Instance().GetWave() > 0 && StatusManager::Instance().GetTime() > 29.99f)
 		enemy->StartTimeStop();
@@ -144,25 +146,25 @@ NextScene MainScene::Update(const float deltaTime)
 	enemy->EndTimeStop();
 
 	if (!enemy->IsTimeStop()) {
-		player->Update(deltaTime, enemy->GetTemporaryDeath());
-		enemy->Update(player->GetModel()->GetPosition(),player->GetAttackTag(), player->GetEnemyDeathFlag(), deltaTime);
-		camera.Update(player, OUT_ZOOM, deltaTime);
+		player->Update(delta_time, enemy->GetTemporaryDeath());
+		enemy->Update(player->GetModel()->GetPosition(),player->GetAttackTag(), player->GetEnemyDeathFlag(), delta_time);
+		camera.Update(player, OUT_ZOOM, delta_time);
 		observer->Update(player, enemy, audience);
 		dialogue.ResetCount();
-		time.Update(enemy,deltaTime);
+		time.Update(enemy, delta_time);
 
 		//ChangeBGM(MAIN);
 		light_mode = OUT_ZOOM;
 	}
 	else {
 		dialogue.AddCount(enemy->IsTimeStop());
-		camera.Update(player, IN_ZOOM, deltaTime);
+		camera.Update(player, IN_ZOOM, delta_time);
 		light_mode = IN_ZOOM;
 	}
 
 
 	if (end_flag) {
-		end_frame += deltaTime;
+		end_frame += delta_time;
 	
 		max_end = 2.0f;
 
@@ -173,10 +175,10 @@ NextScene MainScene::Update(const float deltaTime)
 		}
 	}
 
-	SceneManager::Instance().Update(deltaTime);
+	SceneManager::Instance().Update(delta_time);
 
 	if (end_frame < max_end)
-		DX12Effect.Update(deltaTime);
+		DX12Effect.Update(delta_time);
 
 	enemy->EndTimeStop();
 

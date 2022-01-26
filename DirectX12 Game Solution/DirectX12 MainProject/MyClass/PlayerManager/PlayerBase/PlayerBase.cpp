@@ -361,12 +361,12 @@ void PlayerBase::Render()
 	//プレイヤーの描画
 	model->Draw();
 	//collision->Draw();
-	if (attack_flag) {
-		sword_collision->Draw();
-	}
-	//parry_collision->Draw();
-	right_collision->Draw();
-	left_collision->Draw();
+	//if (attack_flag) {
+	//	sword_collision->Draw();
+	//}
+	////parry_collision->Draw();
+	//right_collision->Draw();
+	//left_collision->Draw();
 }
 
 void PlayerBase::OnCollisionEnter(std::string tag) {
@@ -401,8 +401,6 @@ void PlayerBase::OnWeaponCollisionEnter(std::string tag) {
 
 	//敵に当たったときの処理
 	if (!invincible_flag) {
-		//無敵
-		invincible_flag = true;
 
 		//ノックバック
 		knock_back_flag = true;
@@ -427,8 +425,6 @@ void PlayerBase::OnWeaponCollisionEnter(std::string tag) {
 void PlayerBase::OnLeftCollisionEnter(std::string tag) {//左
 	//敵に当たった時の処理(左)
 	if (!invincible_flag) {
-		//無敵
-		invincible_flag = true;
 
 		//ノックバック
 		knock_back_flag = true;
@@ -456,8 +452,6 @@ void PlayerBase::OnRightCollisionEnter(std::string tag) {//右
 	//敵に当たった時の処理(右)
 	if (!invincible_flag) {
 
-		//無敵
-		invincible_flag = true;
 
 		//ノックバック
 		knock_back_flag = true;
@@ -480,35 +474,59 @@ void PlayerBase::OnRightCollisionEnter(std::string tag) {//右
 
 void PlayerBase::Invincible(const float deltaTime)
 {
-	if (invincible_flag)
-		invincible_time += deltaTime;
-
-	if (invincible_time >= invincible_time_max) {
-		invincible_flag = false;
-		invincible_time = 0.0f;
-	}
 
 	switch (invincible_type)
 	{
 	case Invincible_Type::NOT_INVICIBLE:
 		//回避の無敵
-		if (invincible_flag && avoidance_flag) {
+		if (avoidance_flag) {
 			invincible_type = Invincible_Type::AVOIDANCE_INV;
+		}
+
+		//ノックバックの無敵
+		if (knock_back_flag) {
+			invincible_type = Invincible_Type::KNOCK_BACK_INV;
+		}
+
+		//弾かれた際の無敵
+		if (frip_flag) {
+			invincible_type = Invincible_Type::FRIP_INV;
 		}
 		break;
 	case Invincible_Type::AVOIDANCE_INV:
 		//回避の無敵時間
+		invincible_flag = true;
 		invincible_time += deltaTime;
 
-		if (invincible_time >= 0.5f) {
+		if (invincible_time >= 0.7f) {
+			invincible_time = 0.0f;
 			invincible_flag = false;
 			invincible_type = Invincible_Type::NOT_INVICIBLE;
 		}
 
 		break;
 	case Invincible_Type::KNOCK_BACK_INV:
+		//ノックバックの無敵時間
+		invincible_flag = true;
+		invincible_time += deltaTime;
+
+		if (invincible_time >= 2.5f) {
+			invincible_time = 0.0f;
+			invincible_flag = false;
+			invincible_type = Invincible_Type::NOT_INVICIBLE;
+		}
 		break;
 	case Invincible_Type::FRIP_INV:
+		//攻撃を弾かれた際の無敵時間
+		invincible_flag = true;
+		invincible_time += deltaTime;
+
+		if (invincible_time >= 1.0f) {
+			invincible_time = 0.0f;
+			invincible_flag = false;
+			invincible_type = Invincible_Type::NOT_INVICIBLE;
+		}
+
 		break;
 	}
 }
@@ -527,7 +545,6 @@ void PlayerBase::Knock_Back() {
 		knock_back_start += time_other;
 		SetAnimation(model, DAMAGE1);
 
-		invincible_flag = true;
 
 		Knock_back_Move();
 		
@@ -592,7 +609,7 @@ void PlayerBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack)
 void PlayerBase::Player_move(const float deltaTime)
 {
 	if (upper_state_mode == Upper_State::NOT_UPPER && lower_state_mode == Lower_State::NOT_LOWER) {
-		if (!invincible_flag && !knock_back_flag && !s_del_flag && !avoidance_flag) {
+		if ( !knock_back_flag && !s_del_flag && !avoidance_flag) {
 			//プレイヤー:移動(キーボード) & ゲームパッド十字キー
 			if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
 				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
@@ -627,7 +644,7 @@ void PlayerBase::Player_limit()
 
 void PlayerBase::Player_jump(const float deltaTime) {
 	//ジャンプ
-	if (!invincible_flag && !s_del_flag) {
+	if ( !s_del_flag) {
 		if (!jump_flag_) {
 			if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
 				jump_start_flag = true;
@@ -835,7 +852,6 @@ void PlayerBase::Frip() {
 
 void PlayerBase::Frip_Knock_Back() {
 	frip_start += time_other;
-	invincible_flag = true;
 
 	if (direction_state_mode == Direction_State::RIGHT) {
 		model->Move(0, 0, 20.0f * time_other);
@@ -882,7 +898,6 @@ void PlayerBase::Avoidance(const float deltaTime) {
 		
 		model->Move(0.0f, 0.0, avoidance_move * deltaTime);
 		SetAnimation(model, ROLL);
-		invincible_flag = true;
 
 		//減速(何かに使うかも)
 		//avoidance_move += 70 * deltaTime;
@@ -906,25 +921,12 @@ bool PlayerBase::IsAttack() {
 }
 
 void PlayerBase::Debug() {
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(800.0f, 140.0f),
-	//	DX9::Colors::BlueViolet,
-	//	L"%f,%f,%f", col.sword_box.Center.x, col.sword_box.Center.y, col.sword_box.Center.z
-	//);
+	//if (invincible_flag) {
+	//	DX9::SpriteBatch->DrawString(font.Get(),
+	//		SimpleMath::Vector2(1100.0f, 120.0f),
+	//		DX9::Colors::BlueViolet,
+	//		L"ON"
+	//	);
+	//}
 
-	if (invincible_type == Invincible_Type::NOT_INVICIBLE) {
-		DX9::SpriteBatch->DrawString(font.Get(),
-			SimpleMath::Vector2(1100.0f, 140.0f),
-			DX9::Colors::BlueViolet,
-			L"OFF"
-		);
-	}
-	else if (invincible_type == Invincible_Type::AVOIDANCE_INV)
-	{
-		DX9::SpriteBatch->DrawString(font.Get(),
-			SimpleMath::Vector2(1100.0f, 140.0f),
-			DX9::Colors::BlueViolet,
-			L"AVOIDANCE"
-		);
-	}
 }

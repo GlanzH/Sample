@@ -189,21 +189,21 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 
 	 //ã’iUŒ‚
 	 if (base->GetPostune() == "U") {
-		 if (attack_num == UPPER) {
+		 if (attack_num == LOWER) {
 			 base->Damage();
 			 base->HitEffect();
 		 }
 
-		 if (attack_num == LOWER) {
+		 if (attack_num == UPPER) {
 			 base->Retreat();
 		 }
 	 }
 	 else {
-		 if (attack_num == UPPER) {
+		 if (attack_num == LOWER) {
 			 base->Retreat();
 		 }
 
-		 if (attack_num == LOWER) {
+		 if (attack_num == UPPER) {
 			 base->Damage();
 			 base->HitEffect();
 		 }

@@ -68,13 +68,13 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 				player->OnLeftCollisionEnter(enemies_roop->GetTag());
 			}
 
-			if (player->GetLeftBox().right_box.Intersects(enemies_roop->GetBox().box) &&
+			if (player->GetRightBox().right_box.Intersects(enemies_roop->GetBox().box) &&
 				player->IsInvincibleFlag() && enemies_roop->GetTag() == "AR") {
 				player->OnLeftCollisionEnter(enemies_roop->GetTag());
 			}
 
 
-			if (player->GetLeftBox().right_box.Intersects(enemies_roop->GetBox().weapon)) {
+			if (player->GetRightBox().right_box.Intersects(enemies_roop->GetBox().weapon)) {
 				player->OnLeftCollisionEnter(enemies_roop->GetTag());
 			}
 
