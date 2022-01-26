@@ -120,7 +120,7 @@ void EnemyBase::AdjustAnimCollision() {
 
 void EnemyBase::HitEffect() {
 	//if (enemy_hp > 0) {
-	if (enemy_hp > 0) {
+	if (enemy_hp >= 0) {
 		if (!DX12Effect.CheckAlive(hit_handle))
 			hit_handle = DX12Effect.Play(hit, SimpleMath::Vector3(position.x, position.y, 200));
 	}
