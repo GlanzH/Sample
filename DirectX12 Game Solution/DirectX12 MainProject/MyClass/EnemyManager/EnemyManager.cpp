@@ -87,8 +87,6 @@ void EnemyManager::Iterator() {
 							kill->Play();
 
 						dead_enemy_count++;
-
-						StatusManager::Instance().AddKillCombo();
 					}
 				}
 

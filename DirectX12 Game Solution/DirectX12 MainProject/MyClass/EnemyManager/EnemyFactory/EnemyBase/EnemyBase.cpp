@@ -199,8 +199,10 @@ void EnemyBase::IsDamage() {
 }
 
 void EnemyBase::TemporaryDeath() {
-	if (!temporary_death_flag && enemy_hp <= 0)
+	if (!temporary_death_flag && enemy_hp <= 0) {
+		StatusManager::Instance().AddKillCombo();
 		StatusManager::Instance().AddKillComboTime();
+	}
 
 	if (enemy_hp <= 0 && !die_flag) {
 		temporary_death_flag = true;
