@@ -87,8 +87,6 @@ void EnemyManager::Iterator() {
 							kill->Play();
 
 						dead_enemy_count++;
-
-						StatusManager::Instance().AddKillCombo();
 					}
 				}
 
@@ -182,31 +180,38 @@ void EnemyManager::EndTimeStop() {
 }
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
+	 std::string tag = base->GetTag();
+
 	 if (!hit->IsInUse())
 		 hit->Play();
 
-	 base->Damage();
-	 ////ã’iUŒ‚
-	 //if (base->GetPostune() == "U") {
-		// if (attack_num == UPPER) {
-		//	 base->Damage();
-		//	 base->HitEffect();
-		// }
+	 //ã’iUŒ‚
+	 if (base->FrontFlag() && base->GetTag() != "SH") {
+		 if (base->GetPostune() == "U") {
+			 if (attack_num == LOWER) {
+				 base->Damage();
+				 base->HitEffect();
+			 }
 
-		// if (attack_num == LOWER) {
-		//	 base->Retreat();
-		// }
-	 //}
-	 //else {
-		// if (attack_num == UPPER) {
-		//	 base->Retreat();
-		// }
+			 if (attack_num == UPPER) {
+				 base->Retreat();
+			 }
+		 }
+		 if (base->GetPostune() == "D") {
+			 if (attack_num == LOWER) {
+				 base->Retreat();
+			 }
 
-		// if (attack_num == LOWER) {
-		//	 base->Damage();
-		//	 base->HitEffect();
-		// }
-	 //}
+			 if (attack_num == UPPER) {
+				 base->Damage();
+				 base->HitEffect();
+			 }
+		 }
+	 }
+	 else {
+		 base->Damage();
+		 base->HitEffect();
+	 }
 }
 
 void EnemyManager::OnThrustCollisionEnter(EnemyBase* base) {
@@ -255,7 +260,6 @@ void EnemyManager::LoadEnemyArrangement() {
 }
 
 int EnemyManager::GetWaveEnemy() {
-
 	for (int i = 0; i < ENEMY_NUM; ++i) {
 		if (wave_num[i] == StatusManager::Instance().GetWave())
 			enemy_num++;

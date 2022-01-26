@@ -120,9 +120,10 @@ void EnemyBase::AdjustAnimCollision() {
 
 void EnemyBase::HitEffect() {
 	//if (enemy_hp > 0) {
-
-	if (!DX12Effect.CheckAlive(hit_handle))
-		hit_handle = DX12Effect.Play(hit, SimpleMath::Vector3(position.x , position.y ,200));
+	if (enemy_hp > 0) {
+		if (!DX12Effect.CheckAlive(hit_handle))
+			hit_handle = DX12Effect.Play(hit, SimpleMath::Vector3(position.x, position.y, 200));
+	}
 	//}
 }
 
@@ -197,8 +198,10 @@ void EnemyBase::IsDamage() {
 }
 
 void EnemyBase::TemporaryDeath() {
-	if (!temporary_death_flag && enemy_hp <= 0)
+	if (!temporary_death_flag && enemy_hp <= 0) {
+		StatusManager::Instance().AddKillCombo();
 		StatusManager::Instance().AddKillComboTime();
+	}
 
 	if (enemy_hp <= 0 && !die_flag) {
 		temporary_death_flag = true;
@@ -214,6 +217,14 @@ void EnemyBase::TemporaryDeath() {
 		death_frame = 0.0f;
 		temporary_death_flag = false;
 	}
+}
+
+bool EnemyBase::FrontFlag() {
+	if (position.x > player_pos.x && direct == RIGHT ||
+		position.x < player_pos.x && direct == LEFT)
+		return true;
+
+	return false;
 }
 
 bool EnemyBase::Stun() {

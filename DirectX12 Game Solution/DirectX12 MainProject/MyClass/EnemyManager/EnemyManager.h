@@ -95,8 +95,8 @@ private:
 	};
 
 	enum {
-		UPPER,
-		LOWER
+		UPPER = 1,
+		LOWER = 2
 	};
 
 	int count = 0;                          //!敵の累計出現数カウント 

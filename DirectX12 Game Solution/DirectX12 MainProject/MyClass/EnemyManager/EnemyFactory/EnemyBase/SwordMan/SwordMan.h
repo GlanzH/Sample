@@ -53,12 +53,6 @@ private:
 		INIT
 	};
 
-	enum Direction {
-		RIGHT,
-		LEFT
-	};
-	
 	int action = (int)ActionNum::FIRST_WAIT;
-	int direct;
 	
 };

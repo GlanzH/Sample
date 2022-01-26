@@ -18,6 +18,8 @@ bool Timer::Initialize() {
 	time = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/TIME.png");
 	time_number = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/numbers_timer.png");
 
+	font = DX9::SpriteFont::CreateDefaultFont(DXTK->Device9);
+
 	return true;
 }
 
@@ -49,6 +51,11 @@ void Timer::Render() {
 			time.Get(),
 			SimpleMath::Vector3(TIME_POS_X, TIME_POS_Y, 0.0f)
 		);
+
+		//DX9::SpriteBatch->DrawString(
+		//	font.Get(),,
+		//	SimpleMath::Vector3(1000, 50, 0.0f)
+		//);
 
 	if (StatusManager::Instance().GetWave() > 0) {
 		DX9::SpriteBatch->DrawSimple(
