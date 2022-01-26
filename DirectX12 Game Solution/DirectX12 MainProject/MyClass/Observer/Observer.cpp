@@ -34,19 +34,36 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 
 		//!‰¼€ó‘Ô‚Ì”»’è‚ª‚È‚¢‚Æ‚«
 		if (!enemies_roop->GetTemporaryDeathFlag()) {
-			if (player->GetBox().box.Intersects(enemies_roop->GetBox().box) && !player->IsInvincibleFlag()) {
-				player->OnCollisionEnter(enemies_roop->GetTag());
+			//if (player->GetBox().box.Intersects(enemies_roop->GetBox().box) && !player->IsInvincibleFlag()) {
+			//	player->OnCollisionEnter(enemies_roop->GetTag());
+			//}
+
+			//if (player->GetBox().box.Intersects(enemies_roop->GetBox().box) &&
+			//	player->IsInvincibleFlag() && enemies_roop->GetTag() == "AR") {
+			//	player->OnCollisionEnter(enemies_roop->GetTag());
+			//}
+
+
+			//if (player->GetBox().box.Intersects(enemies_roop->GetBox().weapon)) {
+			//	player->OnCollisionEnter(enemies_roop->GetTag());
+			//}
+
+			if (player->GetRightBox().right_box.Intersects(enemies_roop->GetBox().box) && !player->IsInvincibleFlag()) {
+				player->OnRightCollisionEnter(enemies_roop->GetTag());
 			}
 
-			if (player->GetBox().box.Intersects(enemies_roop->GetBox().box) &&
+			if (player->GetRightBox().right_box.Intersects(enemies_roop->GetBox().box) &&
 				player->IsInvincibleFlag() && enemies_roop->GetTag() == "AR") {
-				player->OnCollisionEnter(enemies_roop->GetTag());
+				player->OnRightCollisionEnter(enemies_roop->GetTag());
 			}
 
 
-			if (player->GetBox().box.Intersects(enemies_roop->GetBox().weapon)) {
-				player->OnCollisionEnter(enemies_roop->GetTag());
+			if (player->GetRightBox().right_box.Intersects(enemies_roop->GetBox().weapon)) {
+				player->OnRightCollisionEnter(enemies_roop->GetTag());
 			}
+
+
+			
 		}
 	}
 }
