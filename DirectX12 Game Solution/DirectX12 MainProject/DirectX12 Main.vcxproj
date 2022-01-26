@@ -208,7 +208,6 @@
     <ClInclude Include="MyClass\GameSceneManager\SceneManager.h" />
     <ClInclude Include="MyClass\Ground\Ground.h" />
     <ClInclude Include="MyClass\Observer\Observer.h" />
-    <ClInclude Include="MyClass\PlayerManager\LandingAttackClass\LandingAttackClass.h" />
     <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.h" />
     <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerBase.h" />
     <ClInclude Include="MyClass\PlayerManager\PlayerManager.h" />
@@ -240,7 +239,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="EndingScene.cpp" />
+    <ClCompile Include="EndingScene.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="MainScene.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -287,7 +288,6 @@
     <ClCompile Include="MyClass\Observer\Observer.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MyClass\PlayerManager\LandingAttackClass\LandingAttackClass.cpp" />
     <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -335,7 +335,7 @@
     <Manifest Include="Resource\settings.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DirectXTK12\DirectXTK_Desktop_2019_Win10.vcxproj">
+    <ProjectReference Include="..\DirectXTK12\DirectXTK12.vcxproj">
       <Project>{3e0e8608-cd9b-4c76-af33-29ca38f2c9f0}</Project>
     </ProjectReference>
     <ProjectReference Include="..\DirectXTK9\DirectXTK9.vcxproj">

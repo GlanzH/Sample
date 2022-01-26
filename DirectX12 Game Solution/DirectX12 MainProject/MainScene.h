@@ -51,9 +51,10 @@ public:
 private:
 	void ChangeBGM(int music_num);
 	void ChangeLightRenge(const float deltaTime);
-	void ReturnWave();
+	void TestChangeColor();
 	void ChangeLightColor();
 	
+	void Writing();
 
 	DX12::DESCRIPTORHEAP descriptorHeap;
 	DX12::SPRITEBATCH    spriteBatch;
@@ -91,7 +92,6 @@ private:
 		MAIN,
 		BOSS
 	};
-
 	int nusic_mode = INTRO;
 	int light_mode = IN_ZOOM;
 
@@ -99,11 +99,12 @@ private:
 	bool se_flag = false;
 	bool end_a_play_flag = false;
 
-	
 
-
+	float  lightColor_x, lightColor_y, lightColor_z;
+	float  backlight_x, backlight_y, backlight_z;
+	float backcolor_x, backcolor_y, backcolor_z;
+	float backlightcolor_x, backlightcolor_y, backlightcolor_z;
 	float range = 0.8f;
-
 	float end_frame = 0.0f;
 	float max_end = FLT_MAX;
 };

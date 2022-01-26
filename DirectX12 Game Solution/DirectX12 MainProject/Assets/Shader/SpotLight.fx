@@ -1,14 +1,16 @@
 float4x4 g_WVP;
 float4x4 g_World;
 
-float3 g_LightPos[1];
-float3 g_LightDir[1];
-float3 g_LightAtt[1];
-float  g_Cone[1];
-float4 g_AColor[1];
-float4 g_Color[1];
-float  g_LightRange[1];
-float  g_Pow[1];
+static const int MAXLIGHT = 2;
+
+float3 g_LightPos[MAXLIGHT];
+float3 g_LightDir[MAXLIGHT];
+float3 g_LightAtt[MAXLIGHT];
+float  g_Cone[MAXLIGHT];
+float4 g_AColor[MAXLIGHT];
+float4 g_Color[MAXLIGHT];
+float  g_LightRange[MAXLIGHT];
+float  g_Pow[MAXLIGHT];
 int    g_Count;
 
 sampler tex : register(s0);
@@ -98,7 +100,7 @@ float4 PS(VS_OUT input) : COLOR0
         color += OneLight(input, i);
     }
 
-    color = saturate(color * float4(1,1,1,1));
+    color = saturate(color * 1.0f);
 
     return color;
 }

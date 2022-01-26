@@ -204,6 +204,7 @@
     <ClInclude Include="MyClass\Timer\Timer.h">
       <Filter>MyClass\Timer</Filter>
     </ClInclude>
+    <ClInclude Include="EndingScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -299,6 +300,7 @@
     <ClCompile Include="MyClass\Timer\Timer.cpp">
       <Filter>MyClass\Timer</Filter>
     </ClCompile>
+    <ClCompile Include="EndingScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resource\directx.ico">
