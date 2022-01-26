@@ -21,7 +21,7 @@ public:
 	EnemyBase() {};
 	~EnemyBase() {};
 
-	virtual bool Initialize(std::string tag, double init_wait, double stop_pos, std::string time_stop_flag,
+	virtual bool Initialize(std::string tag, double init_wait, double stop_pos,
 							double speed, std::string direct, std::string posture, int hp);
 
 	virtual void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
@@ -33,7 +33,6 @@ public:
 	void DieFlag();
 
 	void TemporaryDeath();
-	bool GetTimeStopFlag() { return do_time_stop_flag; }
 	bool GetTemporaryDeathFlag() { return temporary_death_flag; }
 	bool GetAttackFlag() { return attack_flag; }
 
@@ -53,7 +52,6 @@ public:
 	std::string GetTag() { return enemy_tag; }
 
 private:
-	void TimeStopDecision();
 	void IsDamage();
 
 	EFFECTHANDLE hit_handle, star_handle, confetti_handle, die_handle, special_die_handle, love_handle,del_handle;
@@ -81,9 +79,6 @@ private:
 
 	//!演出をする敵かのフラグ
 	std::string enemy_stop_flag = "";
-
-	//!動きを止めるフラグ
-	bool do_time_stop_flag = false;
 
 	bool damage_flag = false;
 

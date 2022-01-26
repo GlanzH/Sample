@@ -4,7 +4,7 @@
 #include "EnemyBase.h"
 
 bool EnemyBase::Initialize(
-	std::string tag, double init_wait,double stop_pos, std::string time_stop_flag,
+	std::string tag, double init_wait,double stop_pos,
 	double speed,std::string direct ,std::string posture, int hp
 )
 {
@@ -16,7 +16,6 @@ bool EnemyBase::Initialize(
 	move_speed    = speed;
 	max_init_wait = init_wait;
 
-	enemy_stop_flag = time_stop_flag;
 	retreat_flag    = false;
 
 	return true;
@@ -150,11 +149,6 @@ void EnemyBase::SpecialDeathEffect() {
 void EnemyBase::AutoDestoryEffect() {
 	if (!DX12Effect.CheckAlive(del_handle))
 		del_handle = DX12Effect.Play(del, position);
-}
-
-void EnemyBase::TimeStopDecision() {
-	if (enemy_stop_flag == "T")
-		do_time_stop_flag = true;
 }
 
 void EnemyBase::Retreat() {

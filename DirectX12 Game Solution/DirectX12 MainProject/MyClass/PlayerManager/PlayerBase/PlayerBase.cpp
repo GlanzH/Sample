@@ -803,35 +803,35 @@ bool PlayerBase::IsAttack() {
 }
 
 void PlayerBase::Debug() {
-	if (frip_flag) {
-		DX9::SpriteBatch->DrawString(font.Get(),
-			SimpleMath::Vector2(1100.0f, 140.0f),
-			DX9::Colors::BlueViolet,
-			L"ON"
-		);
-	}
-	else {
-		DX9::SpriteBatch->DrawString(font.Get(),
-			SimpleMath::Vector2(1100.0f, 140.0f),
-			DX9::Colors::BlueViolet,
-			L"OFF"
-		);
-	}
+	//if (frip_flag) {
+	//	DX9::SpriteBatch->DrawString(font.Get(),
+	//		SimpleMath::Vector2(1100.0f, 140.0f),
+	//		DX9::Colors::BlueViolet,
+	//		L"ON"
+	//	);
+	//}
+	//else {
+	//	DX9::SpriteBatch->DrawString(font.Get(),
+	//		SimpleMath::Vector2(1100.0f, 140.0f),
+	//		DX9::Colors::BlueViolet,
+	//		L"OFF"
+	//	);
+	//}
 
 
-	if (frip_state_mode==Frip_State::FRIP) {
-		DX9::SpriteBatch->DrawString(font.Get(),
-			SimpleMath::Vector2(1100.0f, 160.0f),
-			DX9::Colors::BlueViolet,
-			L"ON"
-		);
-	}
-	else {
-		DX9::SpriteBatch->DrawString(font.Get(),
-			SimpleMath::Vector2(1100.0f, 160.0f),
-			DX9::Colors::BlueViolet,
-			L"OFF"
-		);
-	}
+	//if (frip_state_mode==Frip_State::FRIP) {
+	//	DX9::SpriteBatch->DrawString(font.Get(),
+	//		SimpleMath::Vector2(1100.0f, 160.0f),
+	//		DX9::Colors::BlueViolet,
+	//		L"ON"
+	//	);
+	//}
+	//else {
+	//	DX9::SpriteBatch->DrawString(font.Get(),
+	//		SimpleMath::Vector2(1100.0f, 160.0f),
+	//		DX9::Colors::BlueViolet,
+	//		L"OFF"
+	//	);
+	//}
 
 }

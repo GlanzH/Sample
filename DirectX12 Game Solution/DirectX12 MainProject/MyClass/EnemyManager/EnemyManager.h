@@ -84,7 +84,7 @@ private:
 	bool enemy_destroy_flag = false;
 
 	enum LoadFile {
-		DUMMY_LINE = 9,
+		DUMMY_LINE = 8,
 		ENEMY_NUM = 250 
 	};
 
@@ -110,5 +110,4 @@ private:
 	double      move_speed[ENEMY_NUM];     //!移動速度
 	std::string posture[ENEMY_NUM];        //!構え
 	std::string move_direct[ENEMY_NUM];    //!移動方向
-	std::string time_stop_flag[ENEMY_NUM]; //!敵の演出フラグ
 };
