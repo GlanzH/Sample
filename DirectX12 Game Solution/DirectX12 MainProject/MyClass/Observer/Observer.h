@@ -8,16 +8,21 @@
 
 class Observer {
 public:
-	int  Update(PlayerBase* player, EnemyManager* enemy,AudienceManager* audience);
+	int  Update(PlayerBase* player, EnemyManager* enemy, AudienceManager* audience);
 	void CollisionDetection(PlayerBase* player, EnemyManager* enemy, AudienceManager* audience);
 
 	void Hit_Stop(const float deltaTime);
 
 	bool GetHitStop() { return hit_stop_flag; }
 
+	int GetHitCount() { return hit_stop_count; }
+
 private:
 	bool hit_stop_flag = false;
 	float hit_stop_start = 0.0f;
 	float hit_stop_end = 0.1f;
+
+	//ヒットストップの終わり
+	int hit_stop_count = 0;
 
 };

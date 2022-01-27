@@ -129,7 +129,7 @@ NextScene MainScene::Update(const float deltaTime)
 
 	//ヒットストップ(ベース)
 	float delta_time = deltaTime;
-	if (DXTK->KeyState->LeftControl || observer->GetHitStop())
+	if (observer->GetHitStop())
 		delta_time *= 0.001f;
 
 	//!終了時処理
@@ -153,22 +153,24 @@ NextScene MainScene::Update(const float deltaTime)
 		dialogue.ResetCount();
 		process.Update(enemy,deltaTime);
 
+		observer->Hit_Stop(deltaTime);
+
 		//ChangeBGM(MAIN);
 		light_mode = OUT_ZOOM;
 	}
 	else {
 		dialogue.AddCount(enemy->IsTimeStop());
-		camera.Update(player, IN_ZOOM, delta_time);
+		camera.Update(player, IN_ZOOM, deltaTime);
 		light_mode = IN_ZOOM;
 	}
 
 
 	if (end_flag) {
-		end_frame += delta_time;
+		end_frame += deltaTime;
 	
-		max_end = 2.0f;
+		//max_end = 2.0f;
 
-		if(end_frame > max_end) {
+		if(end_frame > 2.0f) {
 			DX12Effect.AllStop();
 			if (SceneManager::Instance().ReturnSceneFlag())
 				return NextScene::ResultScene;
@@ -176,10 +178,10 @@ NextScene MainScene::Update(const float deltaTime)
 	}
 
 
-	SceneManager::Instance().Update(delta_time);
+	SceneManager::Instance().Update(deltaTime);
 
 	if (end_frame < max_end)
-		DX12Effect.Update(delta_time);
+		DX12Effect.Update(deltaTime);
 
 	enemy->EndTimeStop();
 
