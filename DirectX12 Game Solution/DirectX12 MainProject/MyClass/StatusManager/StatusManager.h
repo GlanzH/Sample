@@ -41,7 +41,8 @@ public:
 	void SetWave(int wave_num);	//ウェーブ数設定
 	void WaveTimeLimit(const float deltaTime);	//ウェーブの時間
 	void ResetWaveTime();	//ウェーブ時間を0にする
-	int  GetWave() { return wave; }	//現在のウェーブ
+	int GetWave() { return wave; }	//現在のウェーブ
+	int GetMaxWave() { return MAX_WAVE; }	//ウェーブの最大数
 	float GetTime() { return wave_time; } //時間の取得
 	float GetOnceExec() { return once_exec_time; }
 	bool GetWaveFlag() { return wave_change_flag; }	//ウェーブ切り替えフラグ
@@ -85,5 +86,7 @@ private:
 	float once_exec_time;
 	bool wave_change_flag;	//true:ウェーブ切り替え可能 false:切り替え不可
 
+	const int MAX_WAVE = 9;	//ウェーブの最大数
 	const float WAVE_TIME_LIMIT_ONE = 30.0f;	//1ウェーブ目の制限時間
+	const float WAVE_TIME_LIMIT_TWO = 40.0f;
 };

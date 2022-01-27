@@ -156,6 +156,13 @@ void StatusManager::SetWave(int wave_num) {
 		wave_time = WAVE_TIME_LIMIT_ONE;
 		once_exec_time = wave_time - 0.01;
 		break;
+
+	default:
+		if (wave >= 4) {
+			wave_time = WAVE_TIME_LIMIT_TWO;
+			once_exec_time = wave_time - 0.01;
+		}
+		break;
 	}
 
 	wave_change_flag = false;
