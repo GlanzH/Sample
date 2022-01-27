@@ -28,8 +28,9 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 				}
 				else {
 					enemy->OnCollisionEnter(enemies_roop);
-					if (hit_stop_count == 0) {
+					if (hit_stop_count == 0 && player->GetHitFlag()) {
 						hit_stop_flag = true;
+						hit_attack_flag = true;
 						hit_stop_count++;
 					}
 				}
@@ -92,7 +93,15 @@ void Observer::Hit_Stop(const float deltaTime) {
 		if (hit_stop_start >= hit_stop_end) {
 			hit_stop_flag = false;
 			hit_stop_start = 0.0f;
+		}
+	}
+
+	if (hit_attack_flag) {
+		hit_attack_start += deltaTime;
+		if (hit_attack_start >= hit_attack_end) {
 			hit_stop_count = 0;
+			hit_attack_flag = false;
+			hit_attack_start = 0.0f;
 		}
 	}
 }

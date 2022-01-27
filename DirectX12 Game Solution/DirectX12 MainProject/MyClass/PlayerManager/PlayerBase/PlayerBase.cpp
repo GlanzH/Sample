@@ -24,6 +24,9 @@ PlayerBase::PlayerBase() {
 	invincible_time = 0.0f;
 	invincible_time_max = 0.2f;
 
+	invincible_type = Invincible_Type::NOT_INVICIBLE;
+
+
 	//ジャンプしてるかのフラグ
 	jump_flag_ = false;
 	jump_time_ = 0.0f;
@@ -63,6 +66,8 @@ PlayerBase::PlayerBase() {
 	knock_back_end = 0.0f;
 	time_other = 0.0f;
 
+	direction_knock_back = Direction_Knock_Back::RIGHT_BACK;
+
 	//起き上がる
 	rize_end = 0.0f;
 
@@ -82,10 +87,19 @@ PlayerBase::PlayerBase() {
 	lower_start = 0.0f;
 	lower_end = 0.333f;
 
+	//ヒットストップを発動させるフラグ
+	hit_stop_flag = false;
+
+
 	//納刀
 	s_del_flag = false;
 	s_del_start = 0.0f;
 	s_del_end = 0.0f;
+
+
+	frip_state_mode = Frip_State::NOT_FRIP;
+
+	frip_flag = false;
 
 
 
@@ -711,6 +725,10 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 		attack_flag = true;
 		attack_type = 1;
 
+		if (upper_start >= 0.1f) {
+			hit_stop_flag = true;
+		}
+
 		if (!frip_flag && effect_count < 1) {
 			if (direction_state_mode == Direction_State::RIGHT) {
 
@@ -730,6 +748,8 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 			model->SetTrackPosition(ACT1, 0.0);
 			effect_count = 0;
 			attack_type = 0;
+			hit_stop_flag = false;
+
 		}
 
 		break;
@@ -757,6 +777,11 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 		attack_flag = true;
 		attack_type = 2;
 
+		if (lower_start >= 0.083f) {
+			hit_stop_flag = true;
+		}
+
+
 		if (!frip_flag && effect_count < 1) {
 			if (direction_state_mode == Direction_State::RIGHT) {
 
@@ -778,6 +803,7 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 			
 			effect_count = 0;
 			attack_type = 0;
+			hit_stop_flag = false;
 		}
 
 		break;

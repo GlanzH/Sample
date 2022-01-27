@@ -25,4 +25,8 @@ private:
 	//ヒットストップの終わり
 	int hit_stop_count = 0;
 
+	bool hit_attack_flag;
+	float hit_attack_start = 0.0f;
+	float hit_attack_end = 0.633f;
+
 };
