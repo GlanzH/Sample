@@ -13,8 +13,9 @@ public:
 
 	void Initialize();
 	void LoadAsset();
-	void Update(const float deltaTime, int enemy_dath);
+	void Update(const float deltaTime, int enemy_num, int enemy_dath);
 	void Render();
+	void EfkRender();
 
 	static UIManager& Instance() {
 		static UIManager instance;
@@ -23,10 +24,8 @@ public:
 
 	void ResetAnimeFrame();	//アニメーション再生をリセット
 	void SetAddScore(int add_size);
-	void SetWaveTime(float wave_time);
 	void PlayUIEffect();
 
-	void EfkRender();
 private:
 	void Animation(const float deltaTime);
 
@@ -47,8 +46,8 @@ private:
 	const int SCORE_MIN_WIDTH = 81;
 	const float SCORE_POS_X = 30.0f;
 	const float SCORE_POS_Y = 20.0f;
-	const float SCORE_EMPTY_POS_Z = -99.0f;
-	const float SCORE_MAX_POS_Z = -100.0f;
+	const float SCORE_EMPTY_POS_Z = 0.0f;
+	const float SCORE_MAX_POS_Z = -1.0f;
 
 
 	//撃破コンボ
