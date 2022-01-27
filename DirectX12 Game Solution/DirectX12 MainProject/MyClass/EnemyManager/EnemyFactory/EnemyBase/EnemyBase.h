@@ -129,9 +129,10 @@ protected:
 	std::string enemy_posture;
 
 	int    enemy_hp;
+	int    init_hp;
 	double move_speed;
 	double enemy_stop;
-	float delta;
+	float  delta;
 
 	bool retreat_flag;
 	bool die_flag    = false;

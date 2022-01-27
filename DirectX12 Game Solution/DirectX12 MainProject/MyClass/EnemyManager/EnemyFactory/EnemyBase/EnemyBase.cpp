@@ -10,6 +10,7 @@ bool EnemyBase::Initialize(
 {
 	enemy_tag     = tag;
 	enemy_hp      = hp;
+	init_hp       = hp;
 	enemy_stop    = stop_pos;
 	enemy_direct  = direct;
 	enemy_posture = posture;
@@ -180,7 +181,7 @@ void EnemyBase::IsRetreat() {
 
 void EnemyBase::Damage() {
 	if (!damage_flag) {
-		enemy_hp -= 1;
+		enemy_hp--;
 		damage_flag = true;
 	}
 }
@@ -213,7 +214,7 @@ void EnemyBase::TemporaryDeath() {
 	if (StatusManager::Instance().GetHitComboTime() == 0.0f) {
 		//‰¼€ó‘Ô‰ğœ‚·‚é‚â‚Â
 		DX12Effect.Stop(star_handle);
-		enemy_hp = 1;
+		enemy_hp = init_hp;
 		death_frame = 0.0f;
 		temporary_death_flag = false;
 	}
