@@ -20,6 +20,9 @@ private:
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack, int max_motion);
 	DX9::MODEL model;
 	DX9::MODEL a;
+	DX9::SKINNEDMODEL town;
+	DX9::SKINNEDMODEL forest;
+	DX9::SKINNEDMODEL ruins;
 
 	enum class Forest {
 		START,

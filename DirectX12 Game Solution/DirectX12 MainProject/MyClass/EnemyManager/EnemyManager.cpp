@@ -87,8 +87,6 @@ void EnemyManager::Iterator() {
 							kill->Play();
 
 						dead_enemy_count++;
-
-						StatusManager::Instance().AddKillCombo();
 					}
 				}
 
@@ -188,25 +186,31 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 		 hit->Play();
 
 	 //ã’iUŒ‚
-	 if (base->GetPostune() == "U") {
-		 if (attack_num == LOWER) {
-			 base->Damage();
-			 base->HitEffect();
-		 }
+	 if (base->FrontFlag() && base->GetTag() != "SH") {
+		 if (base->GetPostune() == "U") {
+			 if (attack_num == LOWER) {
+				 base->Damage();
+				 base->HitEffect();
+			 }
 
-		 if (attack_num == UPPER) {
-			 base->Retreat();
+			 if (attack_num == UPPER) {
+				 base->Retreat();
+			 }
+		 }
+		 if (base->GetPostune() == "D") {
+			 if (attack_num == LOWER) {
+				 base->Retreat();
+			 }
+
+			 if (attack_num == UPPER) {
+				 base->Damage();
+				 base->HitEffect();
+			 }
 		 }
 	 }
 	 else {
-		 if (attack_num == LOWER) {
-			 base->Retreat();
-		 }
-
-		 if (attack_num == UPPER) {
-			 base->Damage();
-			 base->HitEffect();
-		 }
+		 base->Damage();
+		 base->HitEffect();
 	 }
 }
 
@@ -256,10 +260,15 @@ void EnemyManager::LoadEnemyArrangement() {
 }
 
 int EnemyManager::GetWaveEnemy() {
-	for (int i = 0; i < ENEMY_NUM; ++i) {
-		if (wave_num[i] == StatusManager::Instance().GetWave())
-			enemy_num++;
+	if (StatusManager::Instance().GetTime() > StatusManager::Instance().GetOnceExec()) {
+		for (int i = 0; i < ENEMY_NUM; ++i) {
+			if (wave_num[i] == StatusManager::Instance().GetWave())
+				enemy_num++;
+		}
 	}
+
+	if (StatusManager::Instance().GetTime() == 0.0f)
+		enemy_num = 0;
 
 	return enemy_num;
 }

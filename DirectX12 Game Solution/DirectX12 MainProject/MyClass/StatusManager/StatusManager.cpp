@@ -22,6 +22,7 @@ void StatusManager::Initialize() {
 	//ウェーブ
 	wave = 0;
 	wave_time = 0.0f;
+	once_exec_time = 0.0f;
 	wave_change_flag = false;
 }
 
@@ -78,12 +79,12 @@ void StatusManager::ScoreDown(const float deltaTime) {
 	return;
 }
 
-void StatusManager::AddKillCombo() {
+void StatusManager::AddHitCombo() {
 	combo++;
 }
 
-void StatusManager::AddKillComboTime() {
-	combo_time = 5.0f;	//5秒追加
+void StatusManager::AddHitComboTime() {
+	combo_time = COMBO_TIME_NUM;
 	combo_flag = true;
 	UIManager::Instance().ResetAnimeFrame();
 	ResetaAnimeFlag();
@@ -96,12 +97,12 @@ void StatusManager::ComboTime(const float deltaTime) {
 	combo_time = std::max(combo_time - deltaTime, 0.0f);
 	if (combo_time <= 0.0f) {
 		combo_miss_flag = true;
-		ResetKillCombo();
+		ResetHitCombo();
 	}
 	return;
 }
 
-void StatusManager::ResetKillCombo() {
+void StatusManager::ResetHitCombo() {
 	if (!combo_miss_flag) {
 		ComboScore();
 	}
@@ -142,15 +143,25 @@ void StatusManager::SetWave(int wave_num) {
 	switch (wave)
 	{
 	case 1:
-		wave_time = WAVE_TIME_LIMIT_ONE;
+		wave_time = TUTORIAL_TIME;
+		once_exec_time = wave_time - 0.01;
 		break;
 
 	case 2:
-		wave_time = WAVE_TIME_LIMIT_ONE;
+		wave_time = TUTORIAL_TIME;
+		once_exec_time = wave_time - 0.01;
 		break;
 
 	case 3:
-		wave_time = WAVE_TIME_LIMIT_ONE;
+		wave_time = TUTORIAL_TIME;
+		once_exec_time = wave_time - 0.01;
+		break;
+
+	default:
+		if (wave >= 4) {
+			wave_time = WAVE_TIME_LIMIT_TWO;
+			once_exec_time = wave_time - 0.01;
+		}
 		break;
 	}
 

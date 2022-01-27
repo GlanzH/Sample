@@ -17,7 +17,7 @@
 #include "MyClass/UIManager/UIManager.h"
 #include "MyClass/Shader//SpotLight.h"
 #include "MyClass/Shader/TextureLight.h"
-#include "MyClass/Timer/Timer.h"
+#include "MyClass/WaveProcess/WaveProcess.h"
 
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
@@ -70,7 +70,7 @@ private:
 	AudienceManager* audience;
 	DialogueManager  dialogue;
 	Observer*        observer;
-	Timer time;
+	WaveProcess      process;
 
 	SpotLight point;
 	TextureLight texLight;

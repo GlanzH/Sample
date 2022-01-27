@@ -1,8 +1,8 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
-#include "MidBoss.h"
+#include "RandSwordMan.h"
 
-void MidBoss::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
+void RandSwordMan::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
 	EnemyBase::LoadAsset(model_name, initial_position);
 
 	col.weapon = col.box;
@@ -11,42 +11,43 @@ void MidBoss::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position
 	sword_col = DX9::Model::CreateBox(
 		DXTK->Device9,
 		col.weapon.Extents.x * 3,
-		col.weapon.Extents.y * 5,
+		col.weapon.Extents.y * 20,
 		col.weapon.Extents.z * 5
 	);
 
 	sword_col->SetMaterial(material);
-
 	sword_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 
 	col.weapon.Center = sword_pos;
 }
 
-int MidBoss::Update(SimpleMath::Vector3 player, bool destroy_flag, const float deltaTime) {
-	EnemyBase::Update(player, destroy_flag, deltaTime);
+int RandSwordMan::Update(SimpleMath::Vector3 player, bool destroy_flag, const float deltaTime) {
 	EnemyBase::Update(player, destroy_flag, deltaTime);
 	EnemyBase::NormalDeathEffect(max_dead, confetti_effect_flag, death_effect_flag, effect_count);
 	EnemyBase::AdjustAnimCollision();
 	EnemyBase::TemporaryDeath();
-	//Freeze();
+	Freeze();
 	IsDeath();
 
 	if (!temporary_death_flag && !die_flag)
 		Action();
 
+	if (is_damage < max_is_damage)
+		anim_model->AdvanceTime(delta / 1.0f);
+
 	sword_col->SetPosition(sword_pos);
-	anim_model->AdvanceTime(delta / 1.0f);
 	col.weapon.Center = SimpleMath::Vector3(sword_pos.x, 0, sword_pos.z);
+	collision->SetPosition(anim_model->GetPosition() + SimpleMath::Vector3(0, 6, 0));
 	return 0;
 }
 
-void MidBoss::Render() {
+void RandSwordMan::Render() {
 	anim_model->Draw();
 	//collision->Draw();
 	//sword_col->Draw();
 }
 
-void MidBoss::Action() {
+void RandSwordMan::Action() {
 
 	switch (action)
 	{
@@ -55,8 +56,7 @@ void MidBoss::Action() {
 
 		if (init_wait_frame < max_init_wait) {
 			init_wait_frame += delta;
-			Rotate();
-			SetAnimation(anim_model, (int)Motion::WAIT, (int)Motion::MAX_MOTION);
+			Run();
 		}
 		else {
 			action = (int)ActionNum::INIT;
@@ -64,10 +64,9 @@ void MidBoss::Action() {
 		break;
 
 	case (int)ActionNum::INIT:
-		wait_frame = 0.0f;
+		Run();
 		attack_frame = 0.0f;
 		move_pos_x = player_pos.x;
-		SetAnimation(anim_model, (int)Motion::WALK, (int)Motion::MAX_MOTION);
 		action = (int)ActionNum::MOVE;
 		break;
 
@@ -86,11 +85,14 @@ void MidBoss::Action() {
 		break;
 
 	case (int)ActionNum::ATTACK:
-		Rotate();
 		Attack();
 
 		if (attack_frame < max_attack) {
-			SetAnimation(anim_model, (int)Motion::ATTACK, (int)Motion::MAX_MOTION);
+			if (enemy_posture == "U")
+				SetAnimation(anim_model, (int)Motion::ATTACK_UP, (int)Motion::MAX_MOTION);
+			else
+				SetAnimation(anim_model, (int)Motion::ATTACK_DOWN, (int)Motion::MAX_MOTION);
+
 			attack_frame += delta;
 			attack_flag = true;
 		}
@@ -102,7 +104,7 @@ void MidBoss::Action() {
 	}
 }
 
-void MidBoss::InitDirect() {
+void RandSwordMan::InitDirect() {
 	if (enemy_direct == "L") {
 		anim_model->SetRotation(0, -rotate, 0);
 		direct = LEFT;
@@ -113,15 +115,7 @@ void MidBoss::InitDirect() {
 	}
 }
 
-void MidBoss::Move() {
-	if (direct == LEFT)
-		position.x += move_speed * delta;
-
-	else if (direct == RIGHT)
-		position.x -= move_speed * delta;
-}
-
-void MidBoss::Rotate() {
+void RandSwordMan::Rotate() {
 	if (direct == LEFT && position.x >= max_range) {
 		anim_model->SetRotation(0, rotate, 0);
 		direct = RIGHT;
@@ -133,48 +127,44 @@ void MidBoss::Rotate() {
 	}
 }
 
-void MidBoss::IsRetreat() {
+void RandSwordMan::Move() {
+	if (direct == LEFT)
+		position.x += move_speed * delta;
+
+	else if (direct == RIGHT)
+		position.x -= move_speed * delta;
+}
+
+void RandSwordMan::Run() {
+	if (enemy_posture == "U")
+		SetAnimation(anim_model, (int)Motion::RUN_UP, (int)Motion::MAX_MOTION);
+	else
+		SetAnimation(anim_model, (int)Motion::RUN_DOWN, (int)Motion::MAX_MOTION);
+}
+
+void RandSwordMan::IsRetreat() {
 	EnemyBase::IsRetreat();
 
 	if (enemy_hp > 0 && retreat_flag)
-		SetAnimation(anim_model, (int)Motion::DAMAGE, (int)Motion::MAX_MOTION);
+		SetAnimation(anim_model, (int)Motion::BOUNCE, (int)Motion::MAX_MOTION);
 }
 
-void MidBoss::Attack() {
-	if (direct == LEFT) {
-		if ( attack_frame >= 2.0f)
-			sword_pos = SimpleMath::Vector3(position.x + 5.0f, fit_collision_y, position.z);
-	}
-	else {
-		if (attack_frame >= 2.0f)
-			sword_pos = SimpleMath::Vector3(position.x - 5.0f, fit_collision_y, position.z);
+void RandSwordMan::Freeze() {
+	if (enemy_hp <= 0 && !die_flag) {
+		SetAnimation(anim_model, (int)Motion::FREEZE, (int)Motion::MAX_MOTION);
+		is_damage += delta;
 	}
 
-	if (attack_frame >= max_attack)
-		sword_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
-}
-
-void MidBoss::Damage() {
-	EnemyBase::Damage();
-	damage_flag = true;
-}
-
-bool MidBoss::IsDamage() {
-	if (damage_flag && enemy_hp > 1 && damage_frame < max_damage) {
-		SetAnimation(anim_model, (int)Motion::DAMAGE, (int)Motion::MAX_MOTION);
-		damage_frame += delta;
-		return true;
-	}
-	else {
-		damage_frame = 0.0f;
-		damage_flag = false;
-		return false;
+	if (StatusManager::Instance().GetHitComboTime() == 0.0f) {
+		Run();
+		is_damage = 0.0f;
 	}
 }
 
-void MidBoss::IsDeath() {
+void RandSwordMan::IsDeath() {
 	if (die_flag) {
-		SetAnimation(anim_model, (int)Motion::CONFUSE, (int)Motion::MAX_MOTION);
+		is_damage = 0.0f;
+		SetAnimation(anim_model, (int)Motion::DEATH, (int)Motion::MAX_MOTION);
 
 
 		if (dead_frame >= 0.0f) {
@@ -189,9 +179,26 @@ void MidBoss::IsDeath() {
 	}
 }
 
-bool MidBoss::LifeDeathDecision() {
+void RandSwordMan::Attack() {
+	if (direct == LEFT) {
+		if (attack_frame >= 0.8f)
+			sword_pos = SimpleMath::Vector3(position.x + 5.0f, fit_collision_y, position.z);
+	}
+	else {
+		if (attack_frame >= 0.8f)
+			sword_pos = SimpleMath::Vector3(position.x - 5.0f, fit_collision_y, position.z);
+	}
+
+	if (attack_frame >= max_attack)
+		sword_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
+}
+
+bool RandSwordMan::LifeDeathDecision() {
 	if (die_flag && dead_frame > max_dead)
 		return DEAD;
+
+	if (StatusManager::Instance().GetTime() == 0.0f)
+		return AUTO;
 
 	return LIVE;
 }

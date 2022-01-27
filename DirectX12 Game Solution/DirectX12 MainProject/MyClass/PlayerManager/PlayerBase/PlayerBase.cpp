@@ -775,7 +775,7 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 			lower_state_mode = Lower_State::NOT_LOWER;
 			lower_start = 0.0f;
 			model->SetTrackPosition(ACT2, 0.0);
-
+			
 			effect_count = 0;
 			attack_type = 0;
 		}
@@ -799,10 +799,9 @@ void PlayerBase::Sword_Delivery(const float deltaTime, bool temp) {
 	if (s_del_flag) {
 		s_del_start += deltaTime;
 
-
 		if (direction_state_mode == Direction_State::RIGHT) {
 			SetAnimation(model, FINISH);
-
+			
 		}
 		else if (direction_state_mode == Direction_State::LEFT) {
 			SetAnimation(model, FINISH);
@@ -816,7 +815,7 @@ void PlayerBase::Sword_Delivery(const float deltaTime, bool temp) {
 		}
 
 
-		StatusManager::Instance().ResetKillCombo();
+		StatusManager::Instance().ResetHitCombo();
 
 	}
 
@@ -856,6 +855,7 @@ void PlayerBase::Frip() {
 
 void PlayerBase::Frip_Knock_Back() {
 	frip_start += time_other;
+	invincible_flag = true;
 
 	if (direction_state_mode == Direction_State::RIGHT) {
 		model->Move(0, 0, 20.0f * time_other);

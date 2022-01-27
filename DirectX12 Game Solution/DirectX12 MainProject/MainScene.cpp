@@ -34,7 +34,7 @@ void MainScene::Initialize()
 	SceneManager::Instance().Initialize();
 	StatusManager::Instance().Initialize();
 	UIManager::Instance().Initialize();
-	time.Initialize();
+	process.Initialize();
 
 	point.Init(1);
 	point.SetAmbientColor(Vector4(0, 0, 255, 1.0f),0);
@@ -136,11 +136,11 @@ NextScene MainScene::Update(const float deltaTime)
 	auto end_flag = StatusManager::Instance().GetScoreGauge() <= 0.0f;
 	//auto end_flag = enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum() || StatusManager::Instance().GetScoreGauge() <= 0.0f;
 	//ground.Update(deltaTime);
-	ChangeLightRenge(delta_time);
-	StatusManager::Instance().Update(delta_time);
-	UIManager::Instance().Update(delta_time);
+	ChangeLightRenge(deltaTime);
+	StatusManager::Instance().Update(deltaTime);
+	UIManager::Instance().Update(deltaTime, process.GetWaveEnemyNum(), enemy->GetDeathEnemyCount());
 
-	if (StatusManager::Instance().GetWave() > 0 && StatusManager::Instance().GetTime() > 29.99f)
+	if (StatusManager::Instance().GetWave() > 0 && StatusManager::Instance().GetTime() > StatusManager::Instance().GetOnceExec())
 		enemy->StartTimeStop();
 
 	enemy->EndTimeStop();
@@ -151,10 +151,7 @@ NextScene MainScene::Update(const float deltaTime)
 		camera.Update(player, OUT_ZOOM, delta_time);
 		observer->Update(player, enemy, audience);
 		dialogue.ResetCount();
-		time.Update(enemy, delta_time);
-
-		observer->Hit_Stop(deltaTime);
-
+		process.Update(enemy,deltaTime);
 
 		//ChangeBGM(MAIN);
 		light_mode = OUT_ZOOM;
@@ -250,7 +247,7 @@ void MainScene::Render()
 
 	//2D•`‰æ
 	UIManager::Instance(). Render();
-	time.Render();
+	process.Render();
 	player->Debug();
 	SceneManager::Instance().Render();
 

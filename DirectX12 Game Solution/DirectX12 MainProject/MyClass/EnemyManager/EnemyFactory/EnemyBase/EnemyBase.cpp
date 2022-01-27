@@ -36,7 +36,7 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	collision = DX9::Model::CreateBox(
 		DXTK->Device9,
 		col.box.Extents.x * box_size,
-		col.box.Extents.y * 5,
+		col.box.Extents.y * 10,
 		col.box.Extents.z * box_size
 	);
 
@@ -116,14 +116,14 @@ void EnemyBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack, int
 void EnemyBase::AdjustAnimCollision() {
 	col.box.Center = anim_model->GetPosition();
 	anim_model->SetPosition(position);
-	collision->SetPosition(anim_model->GetPosition() + SimpleMath::Vector3(0, fit_collision_y, 0));
 }
 
 void EnemyBase::HitEffect() {
 	//if (enemy_hp > 0) {
-
-	if (!DX12Effect.CheckAlive(hit_handle))
-		hit_handle = DX12Effect.Play(hit, SimpleMath::Vector3(position.x , position.y ,200));
+	if (enemy_hp >= 0) {
+		if (!DX12Effect.CheckAlive(hit_handle))
+			hit_handle = DX12Effect.Play(hit, SimpleMath::Vector3(position.x, position.y, 200));
+	}
 	//}
 }
 
@@ -198,8 +198,10 @@ void EnemyBase::IsDamage() {
 }
 
 void EnemyBase::TemporaryDeath() {
-	if (!temporary_death_flag && enemy_hp <= 0)
-		StatusManager::Instance().AddKillComboTime();
+	if (!temporary_death_flag && enemy_hp <= 0) {
+		StatusManager::Instance().AddHitCombo();
+		StatusManager::Instance().AddHitComboTime();
+	}
 
 	if (enemy_hp <= 0 && !die_flag) {
 		temporary_death_flag = true;
@@ -208,13 +210,21 @@ void EnemyBase::TemporaryDeath() {
 			star_handle = DX12Effect.Play(star, position + SimpleMath::Vector3(0, 8, 0));
 	}
 
-	if (StatusManager::Instance().GetKillComboTime() == 0.0f) {
+	if (StatusManager::Instance().GetHitComboTime() == 0.0f) {
 		//‰¼Ž€ó‘Ô‰ðœ‚·‚é‚â‚Â
 		DX12Effect.Stop(star_handle);
 		enemy_hp = 1;
 		death_frame = 0.0f;
 		temporary_death_flag = false;
 	}
+}
+
+bool EnemyBase::FrontFlag() {
+	if (position.x > player_pos.x && direct == RIGHT ||
+		position.x < player_pos.x && direct == LEFT)
+		return true;
+
+	return false;
 }
 
 bool EnemyBase::Stun() {

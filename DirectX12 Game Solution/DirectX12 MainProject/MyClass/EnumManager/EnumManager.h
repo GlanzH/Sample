@@ -9,3 +9,8 @@ enum EnemyState {
 	DEAD,
 	AUTO,
 };
+
+enum Direct {
+	RIGHT,
+	LEFT
+};

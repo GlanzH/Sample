@@ -37,6 +37,7 @@ int SwordMan::Update(SimpleMath::Vector3 player, bool destroy_flag, const float 
 
 	sword_col->SetPosition(sword_pos);
 	col.weapon.Center = SimpleMath::Vector3(sword_pos.x,0,sword_pos.z);
+	collision->SetPosition(anim_model->GetPosition() + SimpleMath::Vector3(0, 6, 0));
 	return 0;
 }
 
@@ -154,7 +155,7 @@ void SwordMan::Freeze() {
 		is_damage += delta;
 	}
 
-	if (StatusManager::Instance().GetKillComboTime() == 0.0f) {
+	if (StatusManager::Instance().GetHitComboTime() == 0.0f) {
 		Run();
 		is_damage = 0.0f;
 	}

@@ -34,7 +34,7 @@ private:
 	EnemyBase* enemy;
 	int hp;
 	int enemy_hp;
-	int mid_boss_hp;
+	int rand_hp;
 	int arrow_hp;
 
 	std::vector<std::string> enemy_tag;
@@ -46,14 +46,14 @@ private:
 	enum EnemyType { 
 		SWORD_MAN,
 		SHIELDER,
-		MID_BOSS,
+		RAND_SWORD,
 		ARROW,
 		MODEL_MAX
 	};
 
 	enum EnemyHp {
-		ENEMY_HP    = 1,
-		MID_BOSS_HP = 4
+		ENEMY_HP = 1,
+		RAND_HP  = 2
 	};
 
 	LPCWSTR enemy_model[MODEL_MAX];

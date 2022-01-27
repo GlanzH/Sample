@@ -13,8 +13,9 @@ public:
 
 	void Initialize();
 	void LoadAsset();
-	void Update(const float deltaTime);
+	void Update(const float deltaTime, int enemy_num, int enemy_dath);
 	void Render();
+	void EfkRender();
 
 	static UIManager& Instance() {
 		static UIManager instance;
@@ -23,10 +24,8 @@ public:
 
 	void ResetAnimeFrame();	//アニメーション再生をリセット
 	void SetAddScore(int add_size);
-	void SetWaveTime(float wave_time);
 	void PlayUIEffect();
 
-	void EfkRender();
 private:
 	void Animation(const float deltaTime);
 
@@ -43,12 +42,12 @@ private:
 	int score_width;
 	bool effect_play_flag;
 
-	const int SCORE_MAX_HIGHT = 119;
-	const int SCORE_MIN_WIDTH = 101;
-	const float SCORE_POS_X = 79.0f;
-	const float SCORE_POS_Y = 58.0f;
-	const float SCORE_EMPTY_POS_Z = -99.0f;
-	const float SCORE_MAX_POS_Z = -100.0f;
+	const int SCORE_MAX_HIGHT = 96;
+	const int SCORE_MIN_WIDTH = 81;
+	const float SCORE_POS_X = 30.0f;
+	const float SCORE_POS_Y = 20.0f;
+	const float SCORE_EMPTY_POS_Z = 0.0f;
+	const float SCORE_MAX_POS_Z = -1.0f;
 
 
 	//撃破コンボ
@@ -77,7 +76,7 @@ private:
 
 	const float COMBO_GAUGE_POS_X = COMBO_BASE_POS_X + 80.0f;
 	const float COMBO_GAUGE_POS_Y = COMBO_BASE_POS_Y + 130.0f;
-	const float COMBO_GAUGE_DIVIDE = 34.2f;	//コンボゲージ5分の1の数(描画時使用)
+	const float COMBO_GAUGE_DIVIDE = 24.4f;	//コンボゲージ7分の1の数(描画時使用)
 
 	//コンボ(文字)
 	const float COMBO_POS_X = COMBO_BASE_POS_X + 140.0f;
@@ -89,23 +88,20 @@ private:
 	const float COMBO_TWO_DIGIT_X = COMBO_POS_X - 90.0f;
 	const float COMBO_TWO_DIGIT_Y = COMBO_POS_Y - 30.0f;
 
-	//時間
-	DX9::SPRITE time;
-	DX9::SPRITE time_number;
 
-	float time_one_digit;
-	int time_two_digit;
+	//敵残り数
+	DX9::SPRITE enemy;
+	DX9::SPRITE enemy_dead;
 
-	const int TIME_NUM_WIDTH = 56;
-	const int TIME_NUM_HIGHT = 70;
+	int enemy_max_num;
+	int enemy_dead_width;
+	float enemy_pos_x;
+	float enemy_pos_y;
+	bool enemy_dead_flag[100];
 
-	const float TIME_POS_X = 1160.0f;
-	const float TIME_POS_Y = 20.0f;
+	const float ENEMY_MIN_POS_X = 500.0f;
+	const int ENEMY_HIGHT = 42;
 
-	const float ONE_DIGIT_POS_X = TIME_POS_X + 40;
-	const float TWO_DIGIT_POS_X = TIME_POS_X - 10;
-
-	const float TIME_NUM_POS_Y = TIME_POS_Y + 40.0f;
-
+	//2Dカメラ
 	DX12::CAMERA camera;
 };
