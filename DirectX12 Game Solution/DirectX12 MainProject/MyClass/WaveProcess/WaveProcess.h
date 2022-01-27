@@ -5,10 +5,10 @@
 
 using namespace DirectX;
 
-class Timer {
+class WaveProcess {
 public:
-	Timer();
-	~Timer();
+	WaveProcess();
+	~WaveProcess();
 	bool Initialize();
 	int Update(EnemyManager* enemy, const float deltaTime);
 	void Render();
@@ -35,7 +35,7 @@ private:
 
 
 	float stop_frame = 0.0f;
-	const float max_stop = 2.0f;
+	float max_stop   = 2.0f;
 
 	int stage_num = 0;
 };

@@ -73,20 +73,20 @@
     <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Shielder">
       <UniqueIdentifier>{ed5b8bc8-aa65-4e4a-a140-649782ff6b88}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\MidBoss">
-      <UniqueIdentifier>{f45b6c5f-593b-4cec-8a63-af3a14fa32eb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan">
       <UniqueIdentifier>{1d4c2b81-0c97-4681-8f9b-41a7dc265b11}</UniqueIdentifier>
     </Filter>
     <Filter Include="MyClass\ResourceManager">
       <UniqueIdentifier>{099ca506-e1fe-4229-b940-a348c66a8b1f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\Timer">
-      <UniqueIdentifier>{013e3be7-28cd-4a88-bb81-7eb5acc1e8f8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MyClass\DialogueManager">
       <UniqueIdentifier>{22c7b9e1-5606-4f7c-8da4-0c19880adca7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\RandSwordMan">
+      <UniqueIdentifier>{6bef91db-2c0a-4d4e-a848-6f52666c2fb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\WaveProcess">
+      <UniqueIdentifier>{4fad3497-b8ab-4714-979b-c9f4c3f55e05}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -192,20 +192,20 @@
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Shielder\Shielder.h">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Shielder</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\MidBoss\MidBoss.h">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\MidBoss</Filter>
-    </ClInclude>
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan\SwordMan.h">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan</Filter>
     </ClInclude>
     <ClInclude Include="MyClass\ResourceManager\ResourceManager.h">
       <Filter>MyClass\ResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\Timer\Timer.h">
-      <Filter>MyClass\Timer</Filter>
-    </ClInclude>
     <ClInclude Include="Base\DX12Effekseer2D.h">
       <Filter>MyClass\Effekseer</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\RandSwordMan\RandSwordMan.h">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\RandSwordMan</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\WaveProcess\WaveProcess.h">
+      <Filter>MyClass\WaveProcess</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -290,20 +290,20 @@
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Shielder\Shielder.cpp">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\Shielder</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\MidBoss\MidBoss.cpp">
-      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\MidBoss</Filter>
-    </ClCompile>
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan\SwordMan.cpp">
       <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan</Filter>
     </ClCompile>
     <ClCompile Include="MyClass\ResourceManager\ResourceManager.cpp">
       <Filter>MyClass\ResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\Timer\Timer.cpp">
-      <Filter>MyClass\Timer</Filter>
-    </ClCompile>
     <ClCompile Include="Base\DX12Effekseer2D.cpp">
       <Filter>MyClass\Effekseer</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\RandSwordMan\RandSwordMan.cpp">
+      <Filter>MyClass\EnemyManager\EnemyFactory\EnemyBase\RandSwordMan</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\WaveProcess\WaveProcess.cpp">
+      <Filter>MyClass\WaveProcess</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
