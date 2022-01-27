@@ -1,8 +1,8 @@
 #include "PlayerBase.h"
 
 
-#include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/PlayerManager/PlayerBase/PlayerAttack/PlayerAttack.h"
+#include "MyClass/StatusManager/StatusManager.h"
 
 PlayerBase::PlayerBase() {
 
@@ -799,9 +799,10 @@ void PlayerBase::Sword_Delivery(const float deltaTime, bool temp) {
 	if (s_del_flag) {
 		s_del_start += deltaTime;
 
+
 		if (direction_state_mode == Direction_State::RIGHT) {
 			SetAnimation(model, FINISH);
-			
+
 		}
 		else if (direction_state_mode == Direction_State::LEFT) {
 			SetAnimation(model, FINISH);
@@ -813,6 +814,9 @@ void PlayerBase::Sword_Delivery(const float deltaTime, bool temp) {
 		if (s_del_start >= elimination_end) {
 			elimination_flag = true;
 		}
+
+
+		StatusManager::Instance().ResetKillCombo();
 
 	}
 

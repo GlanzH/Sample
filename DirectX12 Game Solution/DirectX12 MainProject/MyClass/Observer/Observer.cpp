@@ -28,7 +28,7 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, Audie
 				}
 				else {
 					enemy->OnCollisionEnter(enemies_roop);
-					hit_stop_flag = true;
+					//hit_stop_flag = true;
 				}
 			}
 		}

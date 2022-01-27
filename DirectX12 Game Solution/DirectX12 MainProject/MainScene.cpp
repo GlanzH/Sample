@@ -129,7 +129,7 @@ NextScene MainScene::Update(const float deltaTime)
 
 	//ヒットストップ(ベース)
 	float delta_time = deltaTime;
-	if (DXTK->KeyState->LeftControl )//|| observer->GetHitStop())
+	if (DXTK->KeyState->LeftControl || observer->GetHitStop())
 		delta_time *= 0.001f;
 
 	//!終了時処理
