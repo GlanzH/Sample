@@ -94,10 +94,10 @@ private:
 	DX9::SPRITE enemy_dead;
 
 	int enemy_max_num;
+	int enemy_dead_num;
 	int enemy_dead_width;
 	float enemy_pos_x;
 	float enemy_pos_y;
-	bool enemy_dead_flag[100];
 
 	const float ENEMY_MIN_POS_X = 500.0f;
 	const int ENEMY_HIGHT = 42;
