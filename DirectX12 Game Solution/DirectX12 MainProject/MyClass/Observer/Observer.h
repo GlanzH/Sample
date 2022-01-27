@@ -20,7 +20,7 @@ public:
 private:
 	bool hit_stop_flag = false;
 	float hit_stop_start = 0.0f;
-	float hit_stop_end = 0.1f;
+	float hit_stop_end = 0.15f;
 
 	//ヒットストップの終わり
 	int hit_stop_count = 0;
