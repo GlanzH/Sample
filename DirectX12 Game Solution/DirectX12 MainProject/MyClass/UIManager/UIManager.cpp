@@ -14,9 +14,12 @@ void UIManager::Initialize() {
 	effect_play_flag = false;
 	effect_handle = 0;
 
-	enemy_width = 0;
+	enemy_max_num = 0;
 	enemy_dead_width = 0;
+	enemy_pos_x = 0.0f;
+	enemy_pos_y = 0.0f;
 
+	enemy_dead_flag[enemy_max_num] = {};
 
 	DX12Effect2D.Initialize();
 
@@ -52,8 +55,8 @@ void UIManager::Update(const float deltaTime, int enemy_num, int enemy_death) {
 	combo_anime = COMBO_BASE_HIGHT * (int)combo_anime_frame;
 	combo_gauge_width = COMBO_GAUGE_DIVIDE * StatusManager::Instance().GetHitComboTime();
 
-	enemy_width = enemy_num * ENEMY_MIN_WIDTH;
-	enemy_dead_width = enemy_width - (ENEMY_MIN_WIDTH * enemy_death);
+	enemy_max_num = enemy_num;
+	enemy_dead_flag[enemy_max_num - enemy_death] = true;
 
 	if (combo_num <= 9.0f) {
 		combo_digit_up_flag = false;
@@ -147,17 +150,29 @@ void UIManager::Render() {
 		}
 	}
 
-	DX9::SpriteBatch->DrawSimple(
-		enemy.Get(),
-		SimpleMath::Vector3(0.0f, 0.0f, -1.0f),
-		RectWH(0, 0, enemy_width, ENEMY_HIGHT)
-	);
+	for (int i = 0; i < enemy_max_num; ++i) {
+		if (i < 10) {
+			enemy_pos_x = 42 * i;
+		}
+		else {
+			enemy_pos_x = 42 * (i % 10);
+			enemy_pos_y = 42 * (i / 10);
+		}
 
-	DX9::SpriteBatch->DrawSimple(
-		enemy_dead.Get(),
-		SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
-		RectWH(0, 0, enemy_dead_width, ENEMY_HIGHT)
-	);
+		if (!enemy_dead_flag[i]) {
+			DX9::SpriteBatch->DrawSimple(
+				enemy.Get(),
+				SimpleMath::Vector3(ENEMY_MIN_POS_X + enemy_pos_x, ENEMY_MIN_POS_X + enemy_pos_y, 0.0f)
+			);
+		}
+		else {
+			DX9::SpriteBatch->DrawSimple(
+				enemy_dead.Get(),
+				SimpleMath::Vector3(ENEMY_MIN_POS_X + enemy_pos_x, ENEMY_MIN_POS_X + enemy_pos_y, 0.0f)
+			);
+		}
+
+	}
 }
 
 void UIManager::Animation(const float deltaTime) {
