@@ -36,7 +36,7 @@ int WaveProcess::Update(EnemyManager* enemy, const float deltaTime) {
 	//	max_stop = 0.01f;
 	//}
 
-	 if (StatusManager::Instance().GetWave() < StatusManager::Instance().GetMaxWave() && now_time == 0) {
+	 if (StatusManager::Instance().GetWave() <= StatusManager::Instance().GetMaxWave() && now_time == 0) {
 		if (stop_frame < max_stop) {
 			stop_frame += deltaTime;
 		}

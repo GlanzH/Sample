@@ -39,7 +39,8 @@ public:
 	void OnCollisionAudience(EnemyBase* base);
 	void OnCollisionSpecialMove(EnemyBase* base);
 private:
-	void SumWaveEnemy();
+	void  AllDeathBonus();
+	void  SumWaveEnemy();
 	float AppearTime();
 	void  LoadEnemyArrangement();
 	void  Generator();
