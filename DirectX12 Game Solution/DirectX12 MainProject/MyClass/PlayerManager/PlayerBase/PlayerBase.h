@@ -31,6 +31,11 @@ public:
 
 	void OnCollisionEnter(std::string tag);
 	void OnWeaponCollisionEnter(std::string tag);
+
+	//敵に当たった時の関数
+	void OnLeftCollisionEnter(std::string tag); //左
+	void OnRightCollisionEnter(std::string tag);//右
+
 	void OnParryArea();
 
 	bool IsAttack();
@@ -53,8 +58,8 @@ public:
 	Collisions GetBox() { return col; }
 
 	//左右の当たり判定(ノックバック用)
-	DX9::MODEL& GetRightModel() { return right_collision; }
-	DX9::MODEL& GetLeftModel() { return left_collision; }
+	Collisions GetRightBox() { return right_col; }
+	Collisions GetLeftBox() { return left_col; }
 
 
 	int GetDamage() { return damage; }
@@ -122,7 +127,10 @@ private:
 	Collisions col;
 
 	DX9::MODEL right_collision;
+	Collisions right_col;
 	DX9::MODEL left_collision;
+	Collisions left_col;
+	
 
 	int damage = 0;
 	int reduce_num = 0;
@@ -202,6 +210,16 @@ private:
 	bool        invincible_flag;
 	float		invincible_time;
 	float       invincible_time_max;
+
+	enum Invincible_Type
+	{
+		NOT_INVICIBLE,
+		AVOIDANCE_INV,
+		KNOCK_BACK_INV,
+		FRIP_INV
+	};
+
+	Invincible_Type invincible_type;
 
 	//モーションの名前
 	enum
@@ -286,7 +304,14 @@ private:
 	};
 	Damage_Mode damage_mode_state;
 
+	//ノックバックする方向
+	enum Direction_Knock_Back
+	{
+		RIGHT_BACK,
+		LEFT_BACK
+	};
 
+	Direction_Knock_Back direction_knock_back;
 
 	//上段(変数宣言)
 	enum Upper_State
