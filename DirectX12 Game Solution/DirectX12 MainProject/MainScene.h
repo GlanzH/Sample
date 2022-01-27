@@ -99,11 +99,23 @@ private:
 	bool se_flag = false;
 	bool end_a_play_flag = false;
 
+	bool Change_flag;
 
+
+	//キャラライト
 	float  lightColor_x, lightColor_y, lightColor_z;
+	//背景ライト座標
 	float  backlight_x, backlight_y, backlight_z;
+	//全体ライト
 	float backcolor_x, backcolor_y, backcolor_z;
+	//キャラライトの環境色
 	float backlightcolor_x, backlightcolor_y, backlightcolor_z;
+	//全体ライトの環境色
+	float backenvironmentalcolor_x, backenvironmentalcolor_y, backenvironmentalcolor_z;
+
+	float playercone, backcone;
+
+
 	float range = 0.8f;
 	float end_frame = 0.0f;
 	float max_end = FLT_MAX;
