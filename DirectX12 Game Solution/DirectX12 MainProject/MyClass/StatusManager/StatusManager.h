@@ -8,7 +8,7 @@ public:
 
 
 	void Initialize();
-	void Update(const float deltaTime);
+	void Update(const float deltaTime, int remain_enemy);
 
 
 	static StatusManager& Instance() {
@@ -33,7 +33,6 @@ public:
 	float GetAddScore() { return add_score_size; }
 	float GetScoreGauge() { return score * SCORE_GAUGE_DIVIDE; }	//ゲージ描画時呼び出し
 	float GetScore() { return now_score; }	//現在のスコア
-	float SetRemainEnemy(int remain_enemy) { enemy_num = remain_enemy; return 0; }
 	bool GetGoodFlag() { return good_flag; }	//スコアUI描画時使用
 
 

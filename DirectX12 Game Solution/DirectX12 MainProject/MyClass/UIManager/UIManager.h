@@ -100,7 +100,7 @@ private:
 	float enemy_pos_x;
 	float enemy_pos_y;
 
-	const float ENEMY_MIN_POS_X = 900.0f;
+	const float ENEMY_MIN_POS_X = 830.0f;
 	const int ENEMY_HIGHT = 42;
 
 	//2DÉJÉÅÉâ
