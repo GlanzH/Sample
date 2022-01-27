@@ -91,6 +91,7 @@ private:
 
 	//“Gc‚è”
 	DX9::SPRITE enemy;
+	DX9::SPRITE enemy_alive;
 	DX9::SPRITE enemy_dead;
 
 	int enemy_max_num;
@@ -99,7 +100,7 @@ private:
 	float enemy_pos_x;
 	float enemy_pos_y;
 
-	const float ENEMY_MIN_POS_X = 500.0f;
+	const float ENEMY_MIN_POS_X = 900.0f;
 	const int ENEMY_HIGHT = 42;
 
 	//2DƒJƒƒ‰

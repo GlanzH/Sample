@@ -42,7 +42,8 @@ void UIManager::LoadAsset() {
 	good_effect = DX12Effect2D.Create(L"Effect\\UIEffect\\nice\\nice.efk", "nice");
 	bad_effect  = DX12Effect2D.Create(L"Effect\\UIEffect\\bad\\bad.efk", "bad");
 
-	enemy = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Enemy_h.png");
+	enemy = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Enemy.png");
+	enemy_alive = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Enemy_h.png");
 	enemy_dead = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Enemy_dead_h.png");
 }
 
@@ -149,14 +150,20 @@ void UIManager::Render() {
 		}
 	}
 
+	//エネミー(文字)
+	DX9::SpriteBatch->DrawSimple(
+		enemy.Get(),
+		SimpleMath::Vector3(1000.0f, 30.0f, 0.0f)
+	);
+
 	// 生きてる敵
 	int enemy_icon_count = 0;
 	for (int i = enemy_icon_count; i < enemy_max_num - enemy_dead_num; ++i) {
 		enemy_pos_x = 42 * (i % 10);
 		enemy_pos_y = 42 * (i / 10);
 		DX9::SpriteBatch->DrawSimple(
-			enemy.Get(),
-			SimpleMath::Vector3(ENEMY_MIN_POS_X + enemy_pos_x, ENEMY_MIN_POS_X + enemy_pos_y, 0.0f)
+			enemy_alive.Get(),
+			SimpleMath::Vector3(ENEMY_MIN_POS_X + enemy_pos_x, 50.0f + enemy_pos_y, 0.0f)
 		);
 		++enemy_icon_count;
 	}
@@ -166,14 +173,14 @@ void UIManager::Render() {
 		enemy_pos_y = 42 * (i / 10);
 		DX9::SpriteBatch->DrawSimple(
 			enemy_dead.Get(),
-			SimpleMath::Vector3(ENEMY_MIN_POS_X + enemy_pos_x, ENEMY_MIN_POS_X + enemy_pos_y, 0.0f)
+			SimpleMath::Vector3(ENEMY_MIN_POS_X + enemy_pos_x, 50.0f + enemy_pos_y, 0.0f)
 		);
 		++enemy_icon_count;
 	}
 
 		//if (!enemy_dead_flag[i]) {
 		//	DX9::SpriteBatch->DrawSimple(
-		//		enemy.Get(),
+		//		enemy_alive.Get(),
 		//		SimpleMath::Vector3(ENEMY_MIN_POS_X + enemy_pos_x, ENEMY_MIN_POS_X + enemy_pos_y, 0.0f)
 		//	);
 		//}
