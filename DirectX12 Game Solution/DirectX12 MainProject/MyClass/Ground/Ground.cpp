@@ -2,11 +2,11 @@
 
 void Ground::LoadAsset() {
 	model = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\BackGround\\stage.X");
-	//a = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Theater\\Forest\\bg_forest.X");
+	a = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\Forest\\bg_forest.X");
 	model->SetPosition(0.0f, -23.0, 0.0f);
-	//a->SetPosition(0, -25, 0);
-	//a->SetScale(0.4f);
-	//a->SetPosition(0, -pos_y, 20.0f);
+	a->SetPosition(0, -25, 0);
+	a->SetScale(0.4f);
+	a->SetPosition(0, -pos_y, 20.0f);
 	pos = SimpleMath::Vector3::Zero;
 }
 
@@ -41,12 +41,12 @@ void Ground::Render() {
 	//a->Draw();
 }
 
-DX9::SKINNEDMODEL& Ground::GetModel() {
-	
-	return town;
-	//return forest;
-	//return ruins;
-}
+//DX9::SKINNEDMODEL& Ground::GetModel() {
+//	
+//	return town;
+//	//return forest;
+//	//return ruins;
+//}
 
 void Ground::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack, int max_motion)
 {
