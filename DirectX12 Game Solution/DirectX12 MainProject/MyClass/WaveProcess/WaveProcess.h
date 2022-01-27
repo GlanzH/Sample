@@ -12,16 +12,11 @@ public:
 	bool Initialize();
 	int Update(EnemyManager* enemy, const float deltaTime);
 	void Render();
-	
-	int GetWaveEnemyNum() { return wave_enemy; }
-
 private:
 	DX9::SPRITEFONT font;
 
 	DX9::SPRITE time;
 	DX9::SPRITE time_number;
-
-	int wave_enemy = 0;
 
 	int time_one_digit;	//1Œ…–Ú•\¦•Ï”
 	int time_two_digit;	//2Œ…–Ú•\¦•Ï”

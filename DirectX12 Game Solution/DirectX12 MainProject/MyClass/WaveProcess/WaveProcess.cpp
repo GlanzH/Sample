@@ -44,7 +44,6 @@ int WaveProcess::Update(EnemyManager* enemy, const float deltaTime) {
 			StatusManager::Instance().SetWave(stage_num++);
 			enemy->ResetRemainEnemy();
 			enemy->ResetDeathEnemy();
-			wave_enemy = enemy->GetWaveEnemy();
 			stop_frame = 0.0f;
 		}
 	}

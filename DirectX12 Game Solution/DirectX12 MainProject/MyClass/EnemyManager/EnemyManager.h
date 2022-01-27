@@ -39,6 +39,7 @@ public:
 	void OnCollisionAudience(EnemyBase* base);
 	void OnCollisionSpecialMove(EnemyBase* base);
 private:
+	void SetWaveEnemy();
 	float AppearTime();
 	void  LoadEnemyArrangement();
 	//void  EndEnemy();
@@ -88,7 +89,6 @@ private:
 		ENEMY_NUM = 250 
 	};
 
-
 	enum TimeStop {
 		MOVE,
 		TIME_STOP
@@ -97,6 +97,19 @@ private:
 	enum {
 		UPPER = 1,
 		LOWER = 2
+	};
+
+	enum SumEnemy {
+		ONE = 1,
+		TWO,
+		THREE,
+		FOUR,
+		FIVE,
+		SIX,
+		SEVEN,
+		EIGHT,
+		NINE,
+		MAX_WAVE
 	};
 
 	int count = 0;                          //!敵の累計出現数カウント 
@@ -110,4 +123,7 @@ private:
 	double      move_speed[ENEMY_NUM];     //!移動速度
 	std::string posture[ENEMY_NUM];        //!構え
 	std::string move_direct[ENEMY_NUM];    //!移動方向
+
+	bool first_process_flag[MAX_WAVE];
+	int  sum_wave_enemy[MAX_WAVE];
 };
