@@ -18,8 +18,8 @@ bool WaveProcess::Initialize() {
 	time_two_digit = 0;
 	one_digit_flag = false;
 
-	time = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/TIME.png");
-	time_number = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/numbers_timer.png");
+	time = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Time/TIME.png");
+	time_number = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Time/numbers_timer.png");
 
 
 	return true;
@@ -41,6 +41,7 @@ int WaveProcess::Update(EnemyManager* enemy, const float deltaTime) {
 			stop_frame += deltaTime;
 		}
 		else {
+			StatusManager::Instance().ResetWaveTime();
 			StatusManager::Instance().SetWave(stage_num++);
 			enemy->ResetRemainEnemy();
 			enemy->ResetDeathEnemy();
@@ -62,18 +63,18 @@ int WaveProcess::Update(EnemyManager* enemy, const float deltaTime) {
 
 void WaveProcess::Render() {
 
-	DX9::SpriteBatch->DrawSimple(
-		time.Get(),
-		SimpleMath::Vector3(TIME_POS_X, TIME_POS_Y, 0.0f)
-	);
 
 	if (StatusManager::Instance().GetWave() > 0) {
 		if (!one_digit_flag) {
 			DX9::SpriteBatch->DrawSimple(
+				time.Get(),
+				SimpleMath::Vector3(TIME_POS_X, TIME_POS_Y, 0.0f)
+			);
+
+			DX9::SpriteBatch->DrawSimple(
 				time_number.Get(),
 				SimpleMath::Vector3(one_digit_pos_x, TIME_NUM_POS_Y, 0.0f),
-				RectWH(time_one_digit, 0, TIME_NUM_WIDTH, TIME_NUM_HIGHT),
-				DX9::Colors::RGBA(255, 255, 255, 255)
+				RectWH(time_one_digit, 0, TIME_NUM_WIDTH, TIME_NUM_HIGHT)
 			);
 
 			DX9::SpriteBatch->DrawSimple(
@@ -84,10 +85,17 @@ void WaveProcess::Render() {
 		}
 		else {
 			DX9::SpriteBatch->DrawSimple(
+				time.Get(),
+				SimpleMath::Vector3(TIME_POS_X, TIME_POS_Y, 0.0f),
+				Rect(0, 0, TIME_WIDTH, TIME_HIGHT),
+				DX9::Colors::RGBA(COLOR_MAX, 0, 0, COLOR_MAX)
+			);
+
+			DX9::SpriteBatch->DrawSimple(
 				time_number.Get(),
 				SimpleMath::Vector3(one_digit_pos_x, TIME_NUM_POS_Y, 0.0f),
 				RectWH(time_one_digit, 0, TIME_NUM_WIDTH, TIME_NUM_HIGHT),
-				DX9::Colors::RGBA(255, 0, 0, 255)
+				DX9::Colors::RGBA(COLOR_MAX, 0, 0, COLOR_MAX)
 			);
 		}
 	}

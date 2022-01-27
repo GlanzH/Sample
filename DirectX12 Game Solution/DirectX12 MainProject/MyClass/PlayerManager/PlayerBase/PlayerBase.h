@@ -83,6 +83,8 @@ public:
 
 	void GetFripFlag() { frip_flag = true; }
 
+	bool GetHitFlag() { return hit_stop_flag; }
+
 
 private:
 
@@ -333,7 +335,8 @@ private:
 	float lower_start;
 	float lower_end;
 
-
+	//ヒットストップを発動させるフラグ
+	bool hit_stop_flag;
 
 	//納刀
 	void Sword_Delivery(const float deltaTime, bool temp);
