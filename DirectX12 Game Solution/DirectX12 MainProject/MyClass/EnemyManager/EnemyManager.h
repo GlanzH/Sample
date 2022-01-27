@@ -39,10 +39,9 @@ public:
 	void OnCollisionAudience(EnemyBase* base);
 	void OnCollisionSpecialMove(EnemyBase* base);
 private:
-	void SetWaveEnemy();
+	void SumWaveEnemy();
 	float AppearTime();
 	void  LoadEnemyArrangement();
-	//void  EndEnemy();
 	void  Generator();
 	void  Iterator();
 
