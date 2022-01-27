@@ -14,6 +14,7 @@ void DialogueManager::AddCount(bool time_stop_flag) {
 		dialogue_state++;
 }
 
+//!ステージの始まりごとに描画させる画像
 void DialogueManager::Render(int dialogue_count) {
 	switch (dialogue_count)
 	{
@@ -32,12 +33,11 @@ void DialogueManager::Render(int dialogue_count) {
 			DX9::SpriteBatch->DrawSimple(dialogue_4.Get(), SimpleMath::Vector3::Zero);
 		break;
 
-	case THIRD:
-		if (dialogue_state == 0)
-			DX9::SpriteBatch->DrawSimple(dialogue_5.Get(), SimpleMath::Vector3::Zero);
-		break;
-
 	default:
+		if (dialogue_state == 0)
+			DX9::SpriteBatch->DrawSimple(dialogue_1.Get(), SimpleMath::Vector3::Zero);
+		else
+			DX9::SpriteBatch->DrawSimple(dialogue_2.Get(), SimpleMath::Vector3::Zero);
 		break;
 	}
 }

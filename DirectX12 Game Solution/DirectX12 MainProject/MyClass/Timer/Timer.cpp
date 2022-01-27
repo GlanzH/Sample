@@ -32,7 +32,14 @@ int Timer::Update(EnemyManager* enemy, const float deltaTime) {
 	time_one_digit = (now_time % 10) * TIME_NUM_WIDTH;
 	time_two_digit = (now_time / 10) * TIME_NUM_WIDTH;
 
-	if (StatusManager::Instance().GetWave() < 3 && now_time == 0) {
+	if (StatusManager::Instance().GetWave() == 0) {
+		StatusManager::Instance().SetWave(stage_num++);
+		enemy->ResetRemainEnemy();
+		enemy->ResetDeathEnemy();
+		stop_frame = 0.0f;
+	}
+
+	else if (StatusManager::Instance().GetWave() < StatusManager::Instance().GetMaxWave() && now_time == 0) {
 
 		if (stop_frame < max_stop) {
 			stop_frame += deltaTime;
