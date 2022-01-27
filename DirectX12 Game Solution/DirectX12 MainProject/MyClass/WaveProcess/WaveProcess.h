@@ -25,8 +25,11 @@ private:
 	float one_digit_pos_x; //1桁目の場所
 	bool one_digit_flag;	//タイムが1桁になったかフラグ
 
+	const int TIME_WIDTH = 111;
+	const int TIME_HIGHT = 34;
 	const int TIME_NUM_WIDTH = 56;
 	const int TIME_NUM_HIGHT = 70;
+	const int COLOR_MAX = 255;
 
 	const float TIME_POS_X = 560.0f;
 	const float TIME_POS_Y = 20.0f;

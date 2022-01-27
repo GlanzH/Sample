@@ -29,22 +29,22 @@ void UIManager::Initialize() {
 }
 
 void UIManager::LoadAsset() {
-	score_good_empty = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/scoreui_nice_bottom.png");
-	score_good_max   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/scoreui_nice_top.png"   );
-	score_bad_empty	 = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/scoreui_bad_bottom.png");
-	score_bad_max	 = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/scoreui_bad_top.png"	  );
+	score_good_empty = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_nice_bottom.png");
+	score_good_max   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_nice_top.png"   );
+	score_bad_empty	 = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_bad_bottom.png");
+	score_bad_max	 = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_bad_top.png"	  );
 
-	combo_base = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Combo_Anim.png");
-	combo_gauge = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/combo_gauge.png");
-	combo = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/COMBO.png");
-	combo_number = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/numbers_combo_h.png");
+	combo_base = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Combo/Combo_Anim.png");
+	combo_gauge = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Combo/combo_gauge.png");
+	combo = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Combo/COMBO.png");
+	combo_number = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Combo/numbers_combo_h.png");
 
 	good_effect = DX12Effect2D.Create(L"Effect\\UIEffect\\nice\\nice.efk", "nice");
 	bad_effect  = DX12Effect2D.Create(L"Effect\\UIEffect\\bad\\bad.efk", "bad");
 
-	enemy = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Enemy.png");
-	enemy_alive = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Enemy_h.png");
-	enemy_dead = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Enemy_dead_h.png");
+	enemy = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Enemy/Enemy.png");
+	enemy_alive = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Enemy/Enemy_h.png");
+	enemy_dead = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Enemy/Enemy_dead_h.png");
 }
 
 void UIManager::Update(const float deltaTime, int enemy_num, int enemy_death) {
@@ -82,7 +82,7 @@ void UIManager::Update(const float deltaTime, int enemy_num, int enemy_death) {
 		}
 		effect_play_flag = false;
 	}
-	DX12Effect2D.SetPosition(effect_handle, Vector3(-30.0f, 27.0f, 40.0f));
+	DX12Effect2D.SetPosition(effect_handle, Vector3(-35.0f, 30.0f, 40.0f));
 
 }
 
@@ -177,21 +177,6 @@ void UIManager::Render() {
 		);
 		++enemy_icon_count;
 	}
-
-		//if (!enemy_dead_flag[i]) {
-		//	DX9::SpriteBatch->DrawSimple(
-		//		enemy_alive.Get(),
-		//		SimpleMath::Vector3(ENEMY_MIN_POS_X + enemy_pos_x, ENEMY_MIN_POS_X + enemy_pos_y, 0.0f)
-		//	);
-		//}
-		//else {
-		//	DX9::SpriteBatch->DrawSimple(
-		//		enemy_dead.Get(),
-		//		SimpleMath::Vector3(ENEMY_MIN_POS_X + enemy_pos_x, ENEMY_MIN_POS_X + enemy_pos_y, 0.0f)
-		//	);
-		//}
-
-	//}
 }
 
 void UIManager::Animation(const float deltaTime) {
