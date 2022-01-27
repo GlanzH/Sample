@@ -19,7 +19,6 @@ void UIManager::Initialize() {
 	enemy_pos_x = 0.0f;
 	enemy_pos_y = 0.0f;
 
-	enemy_dead_flag[enemy_max_num] = {};
 
 	DX12Effect2D.Initialize();
 
@@ -43,7 +42,8 @@ void UIManager::LoadAsset() {
 	good_effect = DX12Effect2D.Create(L"Effect\\UIEffect\\nice\\nice.efk", "nice");
 	bad_effect  = DX12Effect2D.Create(L"Effect\\UIEffect\\bad\\bad.efk", "bad");
 
-	enemy = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Enemy_h.png");
+	enemy = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Enemy.png");
+	enemy_alive = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Enemy_h.png");
 	enemy_dead = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Enemy_dead_h.png");
 }
 
@@ -56,7 +56,7 @@ void UIManager::Update(const float deltaTime, int enemy_num, int enemy_death) {
 	combo_gauge_width = COMBO_GAUGE_DIVIDE * StatusManager::Instance().GetHitComboTime();
 
 	enemy_max_num = enemy_num;
-	enemy_dead_flag[enemy_max_num - enemy_death] = true;
+	enemy_dead_num = enemy_death;
 
 	if (combo_num <= 9.0f) {
 		combo_digit_up_flag = false;
@@ -150,29 +150,48 @@ void UIManager::Render() {
 		}
 	}
 
-	for (int i = 0; i < enemy_max_num; ++i) {
-		if (i < 10) {
-			enemy_pos_x = 42 * i;
-		}
-		else {
-			enemy_pos_x = 42 * (i % 10);
-			enemy_pos_y = 42 * (i / 10);
-		}
+	//ÉGÉlÉ~Å[(ï∂éö)
+	DX9::SpriteBatch->DrawSimple(
+		enemy.Get(),
+		SimpleMath::Vector3(1000.0f, 30.0f, 0.0f)
+	);
 
-		if (!enemy_dead_flag[i]) {
-			DX9::SpriteBatch->DrawSimple(
-				enemy.Get(),
-				SimpleMath::Vector3(ENEMY_MIN_POS_X + enemy_pos_x, ENEMY_MIN_POS_X + enemy_pos_y, 0.0f)
-			);
-		}
-		else {
-			DX9::SpriteBatch->DrawSimple(
-				enemy_dead.Get(),
-				SimpleMath::Vector3(ENEMY_MIN_POS_X + enemy_pos_x, ENEMY_MIN_POS_X + enemy_pos_y, 0.0f)
-			);
-		}
-
+	// ê∂Ç´ÇƒÇÈìG
+	int enemy_icon_count = 0;
+	for (int i = enemy_icon_count; i < enemy_max_num - enemy_dead_num; ++i) {
+		enemy_pos_x = 42 * (i % 10);
+		enemy_pos_y = 42 * (i / 10);
+		DX9::SpriteBatch->DrawSimple(
+			enemy_alive.Get(),
+			SimpleMath::Vector3(ENEMY_MIN_POS_X + enemy_pos_x, 50.0f + enemy_pos_y, 0.0f)
+		);
+		++enemy_icon_count;
 	}
+	// ì|ÇµÇΩìG
+	for (int i = enemy_icon_count; i < enemy_max_num; ++i) {
+		enemy_pos_x = 42 * (i % 10);
+		enemy_pos_y = 42 * (i / 10);
+		DX9::SpriteBatch->DrawSimple(
+			enemy_dead.Get(),
+			SimpleMath::Vector3(ENEMY_MIN_POS_X + enemy_pos_x, 50.0f + enemy_pos_y, 0.0f)
+		);
+		++enemy_icon_count;
+	}
+
+		//if (!enemy_dead_flag[i]) {
+		//	DX9::SpriteBatch->DrawSimple(
+		//		enemy_alive.Get(),
+		//		SimpleMath::Vector3(ENEMY_MIN_POS_X + enemy_pos_x, ENEMY_MIN_POS_X + enemy_pos_y, 0.0f)
+		//	);
+		//}
+		//else {
+		//	DX9::SpriteBatch->DrawSimple(
+		//		enemy_dead.Get(),
+		//		SimpleMath::Vector3(ENEMY_MIN_POS_X + enemy_pos_x, ENEMY_MIN_POS_X + enemy_pos_y, 0.0f)
+		//	);
+		//}
+
+	//}
 }
 
 void UIManager::Animation(const float deltaTime) {
