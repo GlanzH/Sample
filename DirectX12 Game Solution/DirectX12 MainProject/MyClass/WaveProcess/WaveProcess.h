@@ -5,18 +5,23 @@
 
 using namespace DirectX;
 
-class Timer {
+class WaveProcess {
 public:
-	Timer();
-	~Timer();
+	WaveProcess();
+	~WaveProcess();
 	bool Initialize();
 	int Update(EnemyManager* enemy, const float deltaTime);
 	void Render();
+	
+	int GetWaveEnemyNum() { return wave_enemy; }
+
 private:
 	DX9::SPRITEFONT font;
 
 	DX9::SPRITE time;
 	DX9::SPRITE time_number;
+
+	int wave_enemy = 0;
 
 	int time_one_digit;	//1Œ…–Ú•\¦•Ï”
 	int time_two_digit;	//2Œ…–Ú•\¦•Ï”
@@ -35,7 +40,7 @@ private:
 
 
 	float stop_frame = 0.0f;
-	const float max_stop = 2.0f;
+	float max_stop   = 2.0f;
 
 	int stage_num = 0;
 };

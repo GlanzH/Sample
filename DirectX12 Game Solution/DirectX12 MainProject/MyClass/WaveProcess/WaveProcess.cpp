@@ -1,15 +1,15 @@
-#include "Timer.h"
+#include "WaveProcess.h"
 #include "MyClass/StatusManager/StatusManager.h"
 
-Timer::Timer() {
+WaveProcess::WaveProcess() {
 
 }
 
-Timer::~Timer() {
+WaveProcess::~WaveProcess() {
 
 }
 
-bool Timer::Initialize() {
+bool WaveProcess::Initialize() {
 	stage_num = 0;
 
 	now_time = 0;
@@ -25,22 +25,18 @@ bool Timer::Initialize() {
 	return true;
 }
 
-int Timer::Update(EnemyManager* enemy, const float deltaTime) {
+int WaveProcess::Update(EnemyManager* enemy, const float deltaTime) {
 	StatusManager::Instance().WaveTimeLimit(deltaTime);
 
 	now_time = StatusManager::Instance().GetTime();
 	time_one_digit = (now_time % 10) * TIME_NUM_WIDTH;
 	time_two_digit = (now_time / 10) * TIME_NUM_WIDTH;
 
-	if (StatusManager::Instance().GetWave() == 0) {
-		StatusManager::Instance().SetWave(stage_num++);
-		enemy->ResetRemainEnemy();
-		enemy->ResetDeathEnemy();
-		stop_frame = 0.0f;
-	}
+	//if (StatusManager::Instance().GetWave() == 0) {
+	//	max_stop = 0.01f;
+	//}
 
-	else if (StatusManager::Instance().GetWave() < StatusManager::Instance().GetMaxWave() && now_time == 0) {
-
+	 if (StatusManager::Instance().GetWave() < StatusManager::Instance().GetMaxWave() && now_time == 0) {
 		if (stop_frame < max_stop) {
 			stop_frame += deltaTime;
 		}
@@ -48,6 +44,7 @@ int Timer::Update(EnemyManager* enemy, const float deltaTime) {
 			StatusManager::Instance().SetWave(stage_num++);
 			enemy->ResetRemainEnemy();
 			enemy->ResetDeathEnemy();
+			wave_enemy = enemy->GetWaveEnemy();
 			stop_frame = 0.0f;
 		}
 	}
@@ -64,7 +61,7 @@ int Timer::Update(EnemyManager* enemy, const float deltaTime) {
 	return 0;
 }
 
-void Timer::Render() {
+void WaveProcess::Render() {
 
 	DX9::SpriteBatch->DrawSimple(
 		time.Get(),
