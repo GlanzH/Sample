@@ -266,7 +266,9 @@
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\RandSwordMan\RandSwordMan.cpp" />
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\RandSwordMan\RandSwordMan.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Shielder\Shielder.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -315,7 +317,9 @@
     <ClCompile Include="MyClass\UIManager\UIManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MyClass\WaveProcess\WaveProcess.cpp" />
+    <ClCompile Include="MyClass\WaveProcess\WaveProcess.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="ResultScene.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>

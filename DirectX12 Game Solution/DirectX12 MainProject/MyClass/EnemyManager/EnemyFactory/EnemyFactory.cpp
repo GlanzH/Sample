@@ -8,7 +8,7 @@ EnemyFactory::EnemyFactory()
 {
 	//敵のステータス設定
 	enemy_hp = ENEMY_HP;
-	rand_hp  = 3;
+	rand_hp  = 2;
 	arrow_hp = INT_MAX;
 
 	//敵の種類のタグ
