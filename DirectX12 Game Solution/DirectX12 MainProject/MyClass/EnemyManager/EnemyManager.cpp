@@ -54,8 +54,6 @@ int EnemyManager::Update(SimpleMath::Vector3 player, int attack, bool destroy_fl
 	enemy_destroy_flag = destroy_flag;
 	attack_num = attack;
 	delta      = deltaTime;
-	
-	int a = GetWaveEnemy();
 
 	for (auto& enemies : enemy) {
 		enemies->Update(player, destroy_flag, delta);
@@ -264,17 +262,16 @@ void EnemyManager::LoadEnemyArrangement() {
 			            >> init_wait[i] >> stop_pos[i] >> move_speed[i] >> move_direct[i] >> posture[i];
 	}
 
-	SetWaveEnemy();
+	SumWaveEnemy();
 }
 
-void EnemyManager::SetWaveEnemy() {
+void EnemyManager::SumWaveEnemy() {
 	for (int i = 0; i < ENEMY_NUM; ++i) {
 		for (int j = 1; j < MAX_WAVE; ++j) {
 			if (wave_num[i] == j)
 				sum_wave_enemy[j]++;
 		}
 	}
-
 }
 
 int EnemyManager::GetWaveEnemy() {
