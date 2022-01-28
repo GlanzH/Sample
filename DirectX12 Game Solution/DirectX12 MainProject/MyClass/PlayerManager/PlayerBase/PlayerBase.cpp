@@ -378,7 +378,6 @@ void PlayerBase::Render()
 	//if (attack_flag) {
 	//	sword_collision->Draw();
 	//}
-	////parry_collision->Draw();
 	//right_collision->Draw();
 	//left_collision->Draw();
 }
@@ -641,8 +640,6 @@ void PlayerBase::Player_move(const float deltaTime)
 			}
 		}
 	}
-
-	
 }
 
 
