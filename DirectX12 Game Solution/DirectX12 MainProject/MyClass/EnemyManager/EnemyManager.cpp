@@ -36,9 +36,6 @@ EnemyManager::~EnemyManager() {
 
 bool EnemyManager::Initialize(PlayerBase* player_base)
 {
-	//DX12Effect.Create(L"Effect/EnemyEffect/deathblow_hit/deathblow_hit.efk", "special");
-	//DX12Effect.Create(L"Effect/EnemyEffect/boss_death/boss_death.efk", "boss");
-
 	hit = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/Enemy/hit_se.wav");
 	die = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/Enemy/enemy_die_se.wav");
 	kill = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/Audience/kill_se.wav");
@@ -233,34 +230,6 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 		base->Damage();
 		base->HitEffect();
 	}
-}
-
-void EnemyManager::OnThrustCollisionEnter(EnemyBase* base) {
-	hit->Play();
-
-	base->Damage();
-}
-
-void EnemyManager::OnCollisionSpecialMove(EnemyBase* base) {
-	if (!hit->IsInUse())
-		hit->Play();
-	//base->Damage(20);
-
-	auto pos = player_data->GetModel()->GetPosition();
-	DX12Effect.Play("special", SimpleMath::Vector3(pos.x, 0, pos.z));
-
-	special_move_flag = true;
-}
-
-void EnemyManager::OnCollisionAudience(EnemyBase* base) {
-	if (!hit->IsInUse())
-		hit->Play();
-	//base->Damage(20);
-
-	auto pos = player_data->GetModel()->GetPosition();
-	DX12Effect.Play("special", SimpleMath::Vector3(pos.x, 0, pos.z));
-
-	special_move_flag = true;
 }
 
 void EnemyManager::LoadEnemyArrangement() {

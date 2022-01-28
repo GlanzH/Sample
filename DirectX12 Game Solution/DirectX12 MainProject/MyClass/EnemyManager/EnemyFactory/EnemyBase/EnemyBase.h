@@ -3,7 +3,6 @@
 #include"MyClass/EnumManager/EnumManager.h"
 #include "MyClass/PlayerManager/PlayerBase/PlayerBase.h"
 #include "MyClass/StatusManager/StatusManager.h"
-#include "MyClass/AudianceManager/ExplodeMan/ExplodeMan.h"
 #include "Base/DX12Effekseer.h"
 
 using namespace DirectX;
@@ -39,7 +38,6 @@ public:
 	std::string GetPostune() { return enemy_posture; }
 
 	virtual void HitEffect();
-	void SpecialDeathEffect();
 	void AutoDestoryEffect();
 
 	virtual bool FrontFlag();
@@ -56,10 +54,8 @@ public:
 private:
 	void IsDamage();
 
-	EFFECTHANDLE hit_handle, star_handle, confetti_handle, die_handle, special_die_handle, love_handle, del_handle;
-	EFFECT hit, star, confetti, normal_die, special_die, love, del;
-
-	ExplodeMan explode;
+	EFFECTHANDLE hit_handle, star_handle, confetti_handle, die_handle, del_handle;
+	EFFECT hit, star, confetti, normal_die, del;
 
 	SimpleMath::Vector3 death_effect_pos;
 	SimpleMath::Vector3 hit_effect_pos;

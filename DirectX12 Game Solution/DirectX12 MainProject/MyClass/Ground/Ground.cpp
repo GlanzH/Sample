@@ -10,6 +10,12 @@ void Ground::LoadAsset() {
 	pos = SimpleMath::Vector3::Zero;
 }
 
+/**
+ * @fn 条件によってモーションを切り替える
+ * @return なし
+ * @detail 変数にdeltaTimeを代入して、条件によってモーションを切り替える
+ *         (例)30フレーム　= 変数の値が0.3
+ */
 int Ground::Update(const float deltaTime) {
 	if (DXTK->KeyState->J)
 		pos.x -= 0.1f;
@@ -40,6 +46,12 @@ void Ground::Render() {
 	//model->Draw();
 	//a->Draw();
 }
+
+/**
+ * @fn モデルを渡す関数
+ * @return 背景モデル
+ * @detail シーンによって対応したモデルを返すようにする
+ */
 
 //DX9::SKINNEDMODEL& Ground::GetModel() {
 //	

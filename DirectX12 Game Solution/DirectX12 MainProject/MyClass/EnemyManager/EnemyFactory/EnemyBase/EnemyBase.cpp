@@ -48,17 +48,11 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 
 	collision->SetMaterial(material);
 	col.box.Center = position;
-
-	//special_die  = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die2/die2.efk");
-	hit = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
-	star = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
-	love = ResourceManager::Instance().LoadEffect(L"Effect/AudienceEffect/heart/heart.efk");
-	del = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/delete/delete.efk");
-	confetti = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/confetti/confetti.efk");
+	hit        = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
+	star       = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
+	del        = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/delete/delete.efk");
+	confetti   = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/confetti/confetti.efk");
 	normal_die = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die/die.efk");
-
-	explode.LoadAssets(initial_position.x);
-
 }
 
 void EnemyBase::LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
@@ -99,10 +93,6 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool destroy_flag, const float
 	IsDamage();
 	IsRetreat();
 
-	if (position.z < 15.0f) {
-		explode.Update(position, delta);
-	}
-
 	return 0;
 }
 
@@ -141,11 +131,6 @@ void EnemyBase::NormalDeathEffect(float max_death, bool confetti_effect, bool de
 			dead_frame += delta;
 		}
 	}
-}
-
-void EnemyBase::SpecialDeathEffect() {
-	//if (enemy_hp <= 0)
-	//	special_die_handle = DX12Effect.Play(special_die, position);
 }
 
 void EnemyBase::AutoDestoryEffect() {

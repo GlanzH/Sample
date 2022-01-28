@@ -35,9 +35,6 @@ public:
 	bool GetTemporaryDeath();
 
 	void OnCollisionEnter(EnemyBase* base);
-	void OnThrustCollisionEnter(EnemyBase* base);
-	void OnCollisionAudience(EnemyBase* base);
-	void OnCollisionSpecialMove(EnemyBase* base);
 private:
 	void  AllDeathBonus();
 	void  SumWaveEnemy();
