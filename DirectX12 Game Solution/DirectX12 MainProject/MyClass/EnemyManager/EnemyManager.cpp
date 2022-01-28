@@ -71,7 +71,6 @@ int EnemyManager::Update(SimpleMath::Vector3 player, int attack, bool destroy_fl
 }
 
 void EnemyManager::Iterator() {
-
 	for (auto itr = enemy.begin(); itr != enemy.end();)
 	{
 		if (enemy_destroy_flag) {

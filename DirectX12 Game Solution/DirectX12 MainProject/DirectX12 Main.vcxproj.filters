@@ -85,6 +85,12 @@
     <Filter Include="MyClass\WaveProcess">
       <UniqueIdentifier>{4fad3497-b8ab-4714-979b-c9f4c3f55e05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MyClass\CoinManager">
+      <UniqueIdentifier>{96738658-c820-472d-9dea-2b2024ba8d88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyClass\CoinManager\Coin">
+      <UniqueIdentifier>{b03bfe92-ca15-4614-8651-98d7da990836}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h">
@@ -201,6 +207,12 @@
     <ClInclude Include="MyClass\WaveProcess\WaveProcess.h">
       <Filter>MyClass\WaveProcess</Filter>
     </ClInclude>
+    <ClInclude Include="MyClass\CoinManager\CoinManager.h">
+      <Filter>MyClass\CoinManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MyClass\CoinManager\Coin\Coin.h">
+      <Filter>MyClass\CoinManager\Coin</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -295,6 +307,12 @@
     </ClCompile>
     <ClCompile Include="MyClass\WaveProcess\WaveProcess.cpp">
       <Filter>MyClass\WaveProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\CoinManager\CoinManager.cpp">
+      <Filter>MyClass\CoinManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MyClass\CoinManager\Coin\Coin.cpp">
+      <Filter>MyClass\CoinManager\Coin</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

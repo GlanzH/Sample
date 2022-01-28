@@ -94,6 +94,7 @@ void MainScene::LoadAssets()
 	player->LoadAssets();
 	audience->LoadAssets();
 	dialogue.LoadAssets();
+	coin.LoadAssets();
 	UIManager::Instance().LoadAsset();
 	SceneManager::Instance().LoadAsset();
 
@@ -152,7 +153,7 @@ NextScene MainScene::Update(const float deltaTime)
 		observer->Update(player, enemy, audience);
 		dialogue.ResetCount();
 		process.Update(enemy,deltaTime);
-
+		coin.Update();
 		observer->Hit_Stop(deltaTime);
 
 		//ChangeBGM(MAIN);

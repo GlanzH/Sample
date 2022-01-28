@@ -10,6 +10,7 @@
 #include "MyClass/PlayerManager/PlayerManager.h"
 #include "MyClass/AudianceManager/AudianceManager.h"
 #include "MyClass/EnemyManager/EnemyManager.h"
+#include "MyClass/CoinManager/CoinManager.h"
 #include "MyClass/Observer/Observer.h"
 #include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/GameSceneManager/SceneManager.h"
@@ -69,6 +70,7 @@ private:
 	EnemyManager*    enemy;
 	AudienceManager* audience;
 	DialogueManager  dialogue;
+	CoinManager      coin;
 	Observer*        observer;
 	WaveProcess      process;
 
