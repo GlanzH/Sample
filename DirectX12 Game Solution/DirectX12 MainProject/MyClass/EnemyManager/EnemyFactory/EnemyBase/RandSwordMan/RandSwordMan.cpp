@@ -1,6 +1,7 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 #include "RandSwordMan.h"
+#include "MyClass/EnumManager/EnumManager.h"
 
 void RandSwordMan::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
 	EnemyBase::LoadAsset(model_name, initial_position);
@@ -29,7 +30,7 @@ int RandSwordMan::Update(SimpleMath::Vector3 player, bool destroy_flag, const fl
 	Freeze();
 	IsDeath();
 
-	if (!temporary_death_flag && !die_flag)
+	if (!retreat_flag && !temporary_death_flag && !die_flag)
 		Action();
 
 	if (is_damage < max_is_damage)
@@ -159,6 +160,23 @@ void RandSwordMan::Freeze() {
 		Run();
 		is_damage = 0.0f;
 	}
+}
+
+void RandSwordMan::Damage() {
+
+	if (enemy_hp > 0 && !damage_flag) {
+		std::random_device pato_y_seed;
+		random = std::mt19937(pato_y_seed());
+		distribute = std::uniform_int_distribution<int>(UPPER, LOWER);
+		postune_num = distribute(random);
+
+		if(postune_num == UPPER)
+			enemy_posture = "U";
+		else
+			enemy_posture = "D";
+	}
+	
+	EnemyBase::Damage();
 }
 
 void RandSwordMan::IsDeath() {

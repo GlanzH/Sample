@@ -26,9 +26,10 @@ void StatusManager::Initialize() {
 	wave_change_flag = false;
 }
 
-void StatusManager::Update(const float deltaTime) {
+void StatusManager::Update(const float deltaTime, int remain_enemy) {
 	CalcScore(deltaTime);
 	ComboTime(deltaTime);
+	enemy_num = remain_enemy;
 }
 
 void StatusManager::SetAddScore(float score_size) {
@@ -52,8 +53,10 @@ void StatusManager::SetAddScore(float score_size) {
 		good_flag = true;
 	}
 
-	UIManager::Instance().PlayUIEffect();
+	if (add_score_size != 0.0f) {
 
+		UIManager::Instance().PlayUIEffect();
+	}
 	return;
 }
 
@@ -171,10 +174,6 @@ void StatusManager::SetWave(int wave_num) {
 
 void StatusManager::WaveTimeLimit(const float deltaTime) {
 	wave_time = std::max(wave_time - deltaTime, 0.0f);
-
-	if (wave_time <= 0.0f) {
-		ResetWaveTime();
-	}
 	return;
 }
 

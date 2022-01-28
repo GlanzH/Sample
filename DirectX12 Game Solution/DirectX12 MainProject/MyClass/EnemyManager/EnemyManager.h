@@ -16,18 +16,18 @@ public:
 	~EnemyManager();
 
 	bool Initialize(PlayerBase* player_base);
-	int  Update(SimpleMath::Vector3 player,int attack, bool destroy_flag, const float deltaTime);
+	int  Update(SimpleMath::Vector3 player, int attack, bool destroy_flag, const float deltaTime);
 	void OnDeviceLost();
 	void Render();
 
 	std::vector<EnemyBase*> GetEnemy() { return enemy; }
 
 	int  GetWaveEnemy();
-	int  GetRemainEnemy()     { return remain_enemy_count; }
+	int  GetRemainEnemy() { return remain_enemy_count; }
 	int  GetDeathEnemyCount() { return dead_enemy_count; }
-	int  ResetRemainEnemy()   { return remain_enemy_count = 0; }
-	int  ResetDeathEnemy()    { return dead_enemy_count = 0; }
-	int  GetTimeStopCount()	  { return time_stop_count; }
+	int  ResetRemainEnemy() { return remain_enemy_count = 0; }
+	int  ResetDeathEnemy() { return dead_enemy_count = 0; }
+	int  GetTimeStopCount() { return time_stop_count; }
 
 	void StartTimeStop();
 	void EndTimeStop();
@@ -35,14 +35,11 @@ public:
 	bool GetTemporaryDeath();
 
 	void OnCollisionEnter(EnemyBase* base);
-	void OnThrustCollisionEnter(EnemyBase* base);
-	void OnCollisionAudience(EnemyBase* base);
-	void OnCollisionSpecialMove(EnemyBase* base);
 private:
-	void SetWaveEnemy();
+	void  AllDeathBonus();
+	void  SumWaveEnemy();
 	float AppearTime();
 	void  LoadEnemyArrangement();
-	//void  EndEnemy();
 	void  Generator();
 	void  Iterator();
 
@@ -51,13 +48,13 @@ private:
 	PlayerBase* player_data;
 
 	DX9::SKINNEDMODEL model;
-	
-	std::unique_ptr<SoundEffect> hit,die,kill;
-	
+
+	std::unique_ptr<SoundEffect> hit, die, kill;
+
 	int dead_enemy_count = 0;
 	int remain_enemy_count = 0;
 
-	int time_stop_count  = 0;
+	int time_stop_count = 0;
 
 	float delta;
 
@@ -70,23 +67,23 @@ private:
 	const float max_count = 0.1f;
 
 	const float max_frame = 60.0f;
-	const float fix_pos   = 10.0f;
+	const float fix_pos = 10.0f;
 
 	int add_score = 0;
 	int attack_num = 0;
 	int enemy_num = 0;
 	int push_count = 0;
 
-	bool enemy_stop_flag    = false;
-	bool special_move_flag  = false;
-	bool count_dest_flag    = false;
-	bool sound_hit_flag     = false;
-	bool temporary_flag     = false;
+	bool enemy_stop_flag = false;
+	bool special_move_flag = false;
+	bool count_dest_flag = false;
+	bool sound_hit_flag = false;
+	bool temporary_flag = false;
 	bool enemy_destroy_flag = false;
 
 	enum LoadFile {
 		DUMMY_LINE = 8,
-		ENEMY_NUM = 250 
+		ENEMY_NUM = 250
 	};
 
 	enum TimeStop {
@@ -94,22 +91,8 @@ private:
 		TIME_STOP
 	};
 
-	enum {
-		UPPER = 1,
-		LOWER = 2
-	};
-
 	enum SumEnemy {
-		ONE = 1,
-		TWO,
-		THREE,
-		FOUR,
-		FIVE,
-		SIX,
-		SEVEN,
-		EIGHT,
-		NINE,
-		MAX_WAVE
+		MAX_WAVE = 10
 	};
 
 	int count = 0;                          //!敵の累計出現数カウント 

@@ -8,7 +8,7 @@ public:
 
 
 	void Initialize();
-	void Update(const float deltaTime);
+	void Update(const float deltaTime, int remain_enemy);
 
 
 	static StatusManager& Instance() {
@@ -33,7 +33,6 @@ public:
 	float GetAddScore() { return add_score_size; }
 	float GetScoreGauge() { return score * SCORE_GAUGE_DIVIDE; }	//ゲージ描画時呼び出し
 	float GetScore() { return now_score; }	//現在のスコア
-	float SetRemainEnemy(int remain_enemy) { enemy_num = remain_enemy; return 0; }
 	bool GetGoodFlag() { return good_flag; }	//スコアUI描画時使用
 
 
@@ -74,10 +73,10 @@ private:
 	bool plus_score_flag;	//true:スコアアップ false:スコアダウン
 	bool good_flag;
 
-	const float SCORE_START_VALUE = 100.0f;	//初期値設定
-	const float SCORE_MAX_VALUE = 1000.0f;	//スコアの最大値
+	const float SCORE_START_VALUE = 300.0f;	//初期値設定
+	const float SCORE_MAX_VALUE = 3000.0f;	//スコアの最大値
 	const float SCORE_UPDN_SPEED = 300.0f;	//スコア増減スピード
-	const float SCORE_GAUGE_DIVIDE = 0.339f;	//スコアゲージ1000分の1の数(描画時使用)
+	const float SCORE_GAUGE_DIVIDE = 0.113f;	//スコアゲージ1000分の1の数(描画時使用)
 
 
 	//ウェーブ

@@ -8,7 +8,7 @@ EnemyFactory::EnemyFactory()
 {
 	//敵のステータス設定
 	enemy_hp = ENEMY_HP;
-	rand_hp  = 3;
+	rand_hp  = 2;
 	arrow_hp = INT_MAX;
 
 	//敵の種類のタグ
@@ -22,9 +22,8 @@ EnemyFactory::EnemyFactory()
 	enemy_tag.push_back("AR");
 
 	///@敵のモデル@///
-     enemy_model[SWORD_MAN]  = L"Model\\Enemy\\SwordMan\\armor_red_0124.X";
+     enemy_model[SWORD_MAN]  = L"Model\\Enemy\\SwordMan\\armor_red_0128.X";
 	 enemy_model[SHIELDER]   = L"Model\\Enemy\\Shielder\\armor_blue_0125.X";
-	 enemy_model[RAND_SWORD] = L"Model\\Enemy\\SwordMan\\armor_red_0124.X";
 	 enemy_model[ARROW]      = L"Model\\Enemy\\Arrow\\arrow_big.X";
 
 }
@@ -70,7 +69,7 @@ LPCWSTR EnemyFactory::SetModel(string tag)
 	{ 
 		enemy_model[SWORD_MAN],
 		enemy_model[SHIELDER],
-		enemy_model[RAND_SWORD],
+		enemy_model[SWORD_MAN],
 		enemy_model[ARROW]
 	};
 

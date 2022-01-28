@@ -94,6 +94,7 @@ void MainScene::LoadAssets()
 	player->LoadAssets();
 	audience->LoadAssets();
 	dialogue.LoadAssets();
+	coin.LoadAssets();
 	UIManager::Instance().LoadAsset();
 	SceneManager::Instance().LoadAsset();
 
@@ -137,7 +138,7 @@ NextScene MainScene::Update(const float deltaTime)
 	//auto end_flag = enemy->GetDeathEnemyCount() >= enemy->GetEnemyNum() || StatusManager::Instance().GetScoreGauge() <= 0.0f;
 	//ground.Update(deltaTime);
 	ChangeLightRenge(deltaTime);
-	StatusManager::Instance().Update(deltaTime);
+	StatusManager::Instance().Update(deltaTime, enemy->GetRemainEnemy());
 	UIManager::Instance().Update(deltaTime, enemy->GetWaveEnemy(), enemy->GetDeathEnemyCount());
 
 	if (StatusManager::Instance().GetWave() > 0 && StatusManager::Instance().GetTime() > StatusManager::Instance().GetOnceExec())
@@ -152,7 +153,7 @@ NextScene MainScene::Update(const float deltaTime)
 		observer->Update(player, enemy, audience);
 		dialogue.ResetCount();
 		process.Update(enemy,deltaTime);
-
+		coin.Update();
 		observer->Hit_Stop(deltaTime);
 
 		//ChangeBGM(MAIN);
