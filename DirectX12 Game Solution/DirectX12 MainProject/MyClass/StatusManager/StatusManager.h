@@ -73,10 +73,10 @@ private:
 	bool plus_score_flag;	//true:スコアアップ false:スコアダウン
 	bool good_flag;
 
-	const float SCORE_START_VALUE = 100.0f;	//初期値設定
-	const float SCORE_MAX_VALUE = 1000.0f;	//スコアの最大値
+	const float SCORE_START_VALUE = 300.0f;	//初期値設定
+	const float SCORE_MAX_VALUE = 3000.0f;	//スコアの最大値
 	const float SCORE_UPDN_SPEED = 300.0f;	//スコア増減スピード
-	const float SCORE_GAUGE_DIVIDE = 0.339f;	//スコアゲージ1000分の1の数(描画時使用)
+	const float SCORE_GAUGE_DIVIDE = 0.113f;	//スコアゲージ1000分の1の数(描画時使用)
 
 
 	//ウェーブ
