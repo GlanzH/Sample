@@ -10,6 +10,7 @@
 #include "MyClass/PlayerManager/PlayerManager.h"
 #include "MyClass/AudianceManager/AudianceManager.h"
 #include "MyClass/EnemyManager/EnemyManager.h"
+#include "MyClass/CoinManager/CoinManager.h"
 #include "MyClass/Observer/Observer.h"
 #include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/GameSceneManager/SceneManager.h"
@@ -17,7 +18,7 @@
 #include "MyClass/UIManager/UIManager.h"
 #include "MyClass/Shader//SpotLight.h"
 #include "MyClass/Shader/TextureLight.h"
-#include "MyClass/Timer/Timer.h"
+#include "MyClass/WaveProcess/WaveProcess.h"
 
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
@@ -75,8 +76,9 @@ private:
 	EnemyManager*    enemy;
 	AudienceManager* audience;
 	DialogueManager  dialogue;
+	CoinManager      coin;
 	Observer*        observer;
-	Timer time;
+	WaveProcess      process;
 
 	StatusManager status;
 	SpotLight point;

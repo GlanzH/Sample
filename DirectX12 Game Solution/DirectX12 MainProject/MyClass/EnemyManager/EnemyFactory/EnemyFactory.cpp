@@ -1,41 +1,40 @@
 #include "EnemyFactory.h"
 #include "EnemyBase/SwordMan/SwordMan.h"
 #include "EnemyBase/Shielder/Shielder.h"
-#include "EnemyBase/MidBoss/MidBoss.h"
+#include "EnemyBase/RandSwordMan/RandSwordMan.h"
 #include "EnemyBase/Arrow/Arrow.h"
 
 EnemyFactory::EnemyFactory()
 {
 	//“G‚ÌƒXƒe[ƒ^ƒXÝ’è
-	enemy_hp    = ENEMY_HP;
-	mid_boss_hp = MID_BOSS_HP;
-	arrow_hp    = INT_MAX;
+	enemy_hp = ENEMY_HP;
+	rand_hp  = 2;
+	arrow_hp = INT_MAX;
 
 	//“G‚ÌŽí—Þ‚Ìƒ^ƒO
 	//•ºŽm(Œ•)
 	enemy_tag.push_back("SW");
     //•ºŽm(‚)
     enemy_tag.push_back("SH");
-	//’†ƒ{ƒX
-    enemy_tag.push_back("MB");
+	//\‚¦‚ª•Ï‚í‚é•ºŽm(Œ•)
+	enemy_tag.push_back("RS");
 	//–î
 	enemy_tag.push_back("AR");
 
 	///@“G‚Ìƒ‚ƒfƒ‹@///
-     enemy_model[SWORD_MAN] = L"Model\\Enemy\\SwordMan\\armor_red_0124.X";
-	 enemy_model[SHIELDER]  = L"Model\\Enemy\\Shielder\\armor_blue_0125.X";
-	 enemy_model[MID_BOSS]  = L"Model\\Enemy\\MidBoss\\midolboss_goblin.X";
-	 enemy_model[ARROW]     = L"Model\\Enemy\\Arrow\\arrow_big.X";
+     enemy_model[SWORD_MAN]  = L"Model\\Enemy\\SwordMan\\armor_red_0128.X";
+	 enemy_model[SHIELDER]   = L"Model\\Enemy\\Shielder\\armor_blue_0125.X";
+	 enemy_model[ARROW]      = L"Model\\Enemy\\Arrow\\arrow_big.X";
 
 }
 
 EnemyBase* EnemyFactory::Create(
-	string tag,double init_wait,double stop_pos,string time_stop_flag,
+	string tag,double init_wait,double stop_pos,
 	 SimpleMath::Vector3 position,double speed,string direct,string posture
 )
 {
 	EnemyBase* enemy_factory = CreateProduct(tag,position);
-	enemy_factory->Initialize(tag,init_wait,stop_pos,time_stop_flag, speed,direct, posture, SetHP(tag));
+	enemy_factory->Initialize(tag,init_wait,stop_pos,speed,direct, posture, SetHP(tag));
 
 	if(tag != "AR")
 		enemy_factory->LoadAsset(SetModel(tag), position);
@@ -51,7 +50,7 @@ EnemyBase* EnemyFactory::CreateProduct(string tag, SimpleMath::Vector3 position)
 	{ 
 		new SwordMan,
 		new Shielder,
-		new MidBoss,
+		new RandSwordMan,
 		new Arrow
 	};
 
@@ -70,7 +69,7 @@ LPCWSTR EnemyFactory::SetModel(string tag)
 	{ 
 		enemy_model[SWORD_MAN],
 		enemy_model[SHIELDER],
-		enemy_model[MID_BOSS],
+		enemy_model[SWORD_MAN],
 		enemy_model[ARROW]
 	};
 
@@ -87,7 +86,7 @@ int EnemyFactory::SetHP(string tag)
 	{ 
 		enemy_hp,
 		enemy_hp,
-		mid_boss_hp,
+		rand_hp,
 		arrow_hp
 	};
 

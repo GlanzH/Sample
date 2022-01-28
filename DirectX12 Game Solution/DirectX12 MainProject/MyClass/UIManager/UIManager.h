@@ -2,7 +2,7 @@
 #include "Base/pch.h"
 #include <DirectXTK9.h>
 #include <Base/dxtk.h>
-#include "Base/DX12Effekseer.h"
+#include "Base/DX12Effekseer2D.h"
 
 using namespace DirectX;
 
@@ -13,8 +13,9 @@ public:
 
 	void Initialize();
 	void LoadAsset();
-	void Update(const float deltaTime, SimpleMath::Vector3 player_pos);
+	void Update(const float deltaTime, int enemy_num, int enemy_dath);
 	void Render();
+	void EfkRender();
 
 	static UIManager& Instance() {
 		static UIManager instance;
@@ -23,8 +24,8 @@ public:
 
 	void ResetAnimeFrame();	//アニメーション再生をリセット
 	void SetAddScore(int add_size);
-	void SetWaveTime(float wave_time);
 	void PlayUIEffect();
+
 private:
 	void Animation(const float deltaTime);
 
@@ -35,59 +36,73 @@ private:
 	DX9::SPRITE score_bad_empty;
 	DX9::SPRITE score_bad_max;
 	EFFECT good_effect;
-	EFFECTHANDLE good_handle;
 	EFFECT bad_effect;
-	EFFECT effect;
-	EFFECTHANDLE handle;
+	EFFECTHANDLE effect_handle;
 
-	SimpleMath::Vector3 effect_pos;
-	float time_;
-	float delta;
-	bool flag;
 	int score_width;
+	bool effect_play_flag;
 
-	const int SCORE_MAX_HIGHT = 119;
-	const int SCORE_MIN_WIDTH = 101;
-	const float SCORE_POS_X = 79.0f;
-	const float SCORE_POS_Y = 58.0f;
-	const float SCORE_EMPTY_POS_Z = -99.0f;
-	const float SCORE_MAX_POS_Z = -100.0f;
+	const int SCORE_MAX_HIGHT = 96;
+	const int SCORE_MIN_WIDTH = 81;
+	const float SCORE_POS_X = 30.0f;
+	const float SCORE_POS_Y = 20.0f;
+	const float SCORE_EMPTY_POS_Z = 0.0f;
+	const float SCORE_MAX_POS_Z = -1.0f;
 
 
 	//撃破コンボ
 	DX9::SPRITE combo_base;	//吹き出しの部分
 	DX9::SPRITE combo_gauge;	//コンボのゲージ
+	DX9::SPRITE combo;	//コンボ文字
+	DX9::SPRITE combo_number;	//コンボ数
 
 	int combo_anime;
 	int combo_gauge_width;
+	int combo_one_digit;
+	int combo_two_digit;
+	int combo_num;
 	float combo_anime_frame;	//アニメーション使用変数
+
+	bool combo_digit_up_flag;
 
 	const int COMBO_BASE_WIDTH = 331;
 	const int COMBO_BASE_HIGHT = 232;
 	const int COMBO_GAUGE_HIGHT = 5;
+	const int COMBO_NUM_HIGHT = 60;
+	const int COMBO_NUM_WIDTH = 48;
 
 	const float COMBO_BASE_POS_X = 950.0f;
 	const float COMBO_BASE_POS_Y = 500.0f;
 
 	const float COMBO_GAUGE_POS_X = COMBO_BASE_POS_X + 80.0f;
 	const float COMBO_GAUGE_POS_Y = COMBO_BASE_POS_Y + 130.0f;
-	const float COMBO_GAUGE_DIVIDE = 34.2f;	//コンボゲージ5分の1の数(描画時使用)
+	const float COMBO_GAUGE_DIVIDE = 24.4f;	//コンボゲージ7分の1の数(描画時使用)
 
-	//時間
-	DX9::SPRITE time;
-	DX9::SPRITE time_number;
+	//コンボ(文字)
+	const float COMBO_POS_X = COMBO_BASE_POS_X + 140.0f;
+	const float COMBO_POS_Y = COMBO_BASE_POS_Y + 100.0f;
 
-	float time_one_digit;
-	int time_two_digit;
+	const float COMBO_ONE_DIGIT_X = COMBO_POS_X - 50.0f;
+	const float COMBO_ONE_DIGIT_Y = COMBO_POS_Y - 30.0f;
 
-	const int TIME_NUM_WIDTH = 56;
-	const int TIME_NUM_HIGHT = 70;
+	const float COMBO_TWO_DIGIT_X = COMBO_POS_X - 90.0f;
+	const float COMBO_TWO_DIGIT_Y = COMBO_POS_Y - 30.0f;
 
-	const float TIME_POS_X = 1160.0f;
-	const float TIME_POS_Y = 20.0f;
 
-	const float ONE_DIGIT_POS_X = TIME_POS_X + 40;
-	const float TWO_DIGIT_POS_X = TIME_POS_X - 10;
+	//敵残り数
+	DX9::SPRITE enemy;
+	DX9::SPRITE enemy_alive;
+	DX9::SPRITE enemy_dead;
 
-	const float TIME_NUM_POS_Y = TIME_POS_Y + 40.0f;
+	int enemy_max_num;
+	int enemy_dead_num;
+	int enemy_dead_width;
+	float enemy_pos_x;
+	float enemy_pos_y;
+
+	const float ENEMY_MIN_POS_X = 830.0f;
+	const int ENEMY_HIGHT = 42;
+
+	//2Dカメラ
+	DX12::CAMERA camera;
 };

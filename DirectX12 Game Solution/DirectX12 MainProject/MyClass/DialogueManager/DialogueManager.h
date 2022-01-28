@@ -22,7 +22,13 @@ private:
 
 	enum DialogueNum {
 		FIRST  = 1,
-		SECOND = 2,
-		THIRD  = 3
+		SECOND,
+		THIRD,
+		FOUR,
+		FIVE,
+		SIX,
+		SEVEN,
+		EIGHT,
+		NINE
 	};
 };

@@ -4,6 +4,7 @@
 void SceneManager::Initialize() {
 	curtain_pos = SimpleMath::Vector3(0.0f, CURTAIN_START_POS, 0.0f);
 	scene_change_flag = false;
+	curtain_move_flag = false;
 }
 
 void SceneManager::LoadAsset() {
@@ -13,12 +14,12 @@ void SceneManager::LoadAsset() {
 void SceneManager::Update(const float deltaTime) {
 
 	if (StatusManager::Instance().GetScoreGauge() <= 0.0f) {
-		curtain_pos.y = std::min(curtain_pos.y + CURTAIN_DOWN_SPEED * deltaTime, 0.0f);
-	}
-	else {
-		curtain_pos.y = std::max(curtain_pos.y - CURTAIN_DOWN_SPEED * deltaTime, CURTAIN_START_POS);
+		curtain_move_flag = true;
 	}
 
+	if (curtain_move_flag) {
+		curtain_pos.y = std::min(curtain_pos.y + CURTAIN_DOWN_SPEED * deltaTime, 0.0f);
+	}
 
 	if (curtain_pos.y >= 0.0f) {
 		scene_change_flag = true;

@@ -31,12 +31,21 @@ public:
 
 	void OnCollisionEnter(std::string tag);
 	void OnWeaponCollisionEnter(std::string tag);
+
+	//敵に当たった時の関数
+	void OnLeftCollisionEnter(std::string tag); //左
+	void OnRightCollisionEnter(std::string tag);//右
+
 	void OnParryArea();
 
 	bool IsAttack();
 
 	void Debug();
 	void OnDeviceLost();
+
+	//攻撃 弾かれる
+	void Frip();
+
 
 	//アニメーション
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack);
@@ -49,8 +58,8 @@ public:
 	Collisions GetBox() { return col; }
 
 	//左右の当たり判定(ノックバック用)
-	DX9::MODEL& GetRightModel() { return right_collision; }
-	DX9::MODEL& GetLeftModel() { return left_collision; }
+	Collisions GetRightBox() { return right_col; }
+	Collisions GetLeftBox() { return left_col; }
 
 
 	int GetDamage() { return damage; }
@@ -71,6 +80,10 @@ public:
 	int GetAttackTag() { return attack_type; }//1 = 上段攻撃 - Y, 2 = 下段攻撃 - X
 
 	bool GetEnemyDeathFlag() { return elimination_flag; }//エネミーの消滅
+
+	void GetFripFlag() { frip_flag = true; }
+
+	bool GetHitFlag() { return hit_stop_flag; }
 
 
 private:
@@ -116,7 +129,10 @@ private:
 	Collisions col;
 
 	DX9::MODEL right_collision;
+	Collisions right_col;
 	DX9::MODEL left_collision;
+	Collisions left_col;
+	
 
 	int damage = 0;
 	int reduce_num = 0;
@@ -130,7 +146,7 @@ private:
 	//プレイヤー
 	DX9::SKINNEDMODEL model;
 	SimpleMath::Vector3 player_pos = SimpleMath::Vector3(0.0f, 0.0f, 50.0f);
-	float model_scale = 1.0f;
+	float model_scale = 0.25f;
 	float model_rotetion = -90.0f;
 
 	//プレイヤーの移動制限(幅)
@@ -196,6 +212,16 @@ private:
 	bool        invincible_flag;
 	float		invincible_time;
 	float       invincible_time_max;
+
+	enum Invincible_Type
+	{
+		NOT_INVICIBLE,
+		AVOIDANCE_INV,
+		KNOCK_BACK_INV,
+		FRIP_INV
+	};
+
+	Invincible_Type invincible_type;
 
 	//モーションの名前
 	enum
@@ -280,7 +306,14 @@ private:
 	};
 	Damage_Mode damage_mode_state;
 
+	//ノックバックする方向
+	enum Direction_Knock_Back
+	{
+		RIGHT_BACK,
+		LEFT_BACK
+	};
 
+	Direction_Knock_Back direction_knock_back;
 
 	//上段(変数宣言)
 	enum Upper_State
@@ -298,12 +331,12 @@ private:
 		NOT_LOWER,
 		LOWER_ATTACK
 	};
-	Lower_State lower_sate_mode;
+	Lower_State lower_state_mode;
 	float lower_start;
 	float lower_end;
 
-
-	void Upper_Effect();
+	//ヒットストップを発動させるフラグ
+	bool hit_stop_flag;
 
 	//納刀
 	void Sword_Delivery(const float deltaTime, bool temp);
@@ -315,20 +348,20 @@ private:
 	bool elimination_flag;
 	float elimination_end;
 
-	//攻撃 弾かれる
-	void Frip(const float deltaTime);
-
+	//弾く
 	enum Frip_State
 	{
 		NOT_FRIP,
-		ATTACK_TEST,
 		FRIP
 	};
+
 	Frip_State frip_state_mode;
 
-	float not_attack_start = 0.0f;
-	float not_attack_end = 0.3f;
+	bool frip_flag;
 
+	void Frip_Knock_Back();
 	float frip_start = 0.0f;
 	float frip_end = 0.783f;
+
+	int effect_count = 0;
 };

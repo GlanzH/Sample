@@ -1,18 +1,21 @@
 #include "Ground.h"
 
 void Ground::LoadAsset() {
-
-	model = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\Forest\\bg_remains.X");	
-	model->SetPosition(0.0f, pos_y, 10.0f);
-	model = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\BackGround\\bg_remains.X");
-	a = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\Forest\\bg_remains.X");
+	model = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\BackGround\\stage.X");
+	a = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\Forest\\bg_forest.X");
 	model->SetPosition(0.0f, -23.0, 0.0f);
-	//a->SetPosition(0, -25, 0);
-	//a->SetScale(0.4f);
+	a->SetPosition(0, -25, 0);
+	a->SetScale(0.4f);
 	a->SetPosition(0, -pos_y, 20.0f);
 	pos = SimpleMath::Vector3::Zero;
 }
 
+/**
+ * @fn 条件によってモーションを切り替える
+ * @return なし
+ * @detail 変数にdeltaTimeを代入して、条件によってモーションを切り替える
+ *         (例)30フレーム　= 変数の値が0.3
+ */
 int Ground::Update(const float deltaTime) {
 	if (DXTK->KeyState->J)
 		pos.x -= 0.1f;
@@ -44,6 +47,19 @@ void Ground::Render() {
 	//a->Draw();
 }
 
+/**
+ * @fn モデルを渡す関数
+ * @return 背景モデル
+ * @detail シーンによって対応したモデルを返すようにする
+ */
+
+//DX9::SKINNEDMODEL& Ground::GetModel() {
+//	
+//	return town;
+//	//return forest;
+//	//return ruins;
+//}
+
 void Ground::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack, int max_motion)
 {
 	for (int i = 0; i < max_motion; i++)
@@ -52,3 +68,4 @@ void Ground::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack, int ma
 		model->SetTrackEnable(enabletack, TRUE);
 	}
 }
+

@@ -1,7 +1,8 @@
 #pragma once
 #include "../EnemyBase.h"
+#include <random>
 
-class MidBoss : public EnemyBase {
+class RandSwordMan : public EnemyBase {
 public:
 	void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 	int  Update(SimpleMath::Vector3 player, bool destroy_flag, const float deltaTime);
@@ -11,41 +12,43 @@ private:
 	void Render() override;
 	void Move()   override;
 	void Action() override;
-	void Attack();
-	void Damage();
-	bool IsDamage();
 	void IsRetreat();
+	void Attack();
+	void Freeze();
+	void Damage();
 	void IsDeath();
 	void InitDirect();
 	void Rotate();
+	void Run();
 
 	DX9::MODEL sword_col;
 	SimpleMath::Vector3 sword_pos;
 
-	float damage_flag = false;
 	float move_pos_x;
 
-	float damage_frame = 0.0f;
-	const float max_damage = 1.0f;
-
-	float wait_frame = 0.0f;
-	const float max_wait = 10.0f;
-
 	float attack_frame = 0.0f;
-	const float max_attack = 4.0f;
+	const float max_attack = 2.5f;
 
-	const float max_death = 2.5f;
+	const float max_death = 2.f;
 	const float max_range = 100.0f;
 
+	const float max_is_damage = 0.05f;
+
 	bool end_move;
+	int postune_num = 0;
+
+	std::mt19937 random;
+	std::uniform_int_distribution<int> distribute;
 
 	enum class Motion {
-		CONFUSE,
-		WALK,
-		DEATH,
+		RUN_UP,
+		ATTACK_UP,
+		BOUNCE,
 		DAMAGE,
-		ATTACK,
-		WAIT,
+		DEATH,
+		RUN_DOWN,
+		ATTACK_DOWN,
+		FREEZE,
 		MAX_MOTION
 	};
 
@@ -56,11 +59,6 @@ private:
 		INIT
 	};
 
-	enum Direction {
-		RIGHT,
-		LEFT
-	};
-
 	int action = (int)ActionNum::FIRST_WAIT;
-	int direct;
+
 };

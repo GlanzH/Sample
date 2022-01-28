@@ -6,51 +6,83 @@ void UIManager::Initialize() {
 	score_width = 0.0;
 	combo_anime = 0.0f;
 	combo_gauge_width = 0.0f;
+	combo_num = 0;
+	combo_one_digit = 0;
+	combo_two_digit = 0;
+	combo_digit_up_flag = false;
+
+	effect_play_flag = false;
+	effect_handle = 0;
+
+	enemy_max_num = 0;
+	enemy_dead_width = 0;
+	enemy_pos_x = 0.0f;
+	enemy_pos_y = 0.0f;
+
+
+	DX12Effect2D.Initialize();
+
+	camera.SetView(SimpleMath::Vector3(0.0f, 13.0f, -20.0f),SimpleMath::Vector3::Zero);
+	camera.SetPerspectiveFieldOfView(XMConvertToRadians(40.0f), 16.0f / 9.0f, 1.0f, 10000.0f);
 	
-	effect_pos = SimpleMath::Vector3(0.0f, 0.0f, 0.0f);
-	time_ = 0.0f;
-	flag = false;
-	handle = 0;
-	//good_effect = ResourceManager::Instance().LoadEffect(L"Effect/UIEffect/bad/bad.efk");
+	DX12Effect2D.SetCamera(&camera);
 }
 
 void UIManager::LoadAsset() {
-	score_good_empty = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/scoreui_nice_bottom.png");
-	score_good_max   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/scoreui_nice_top.png"   );
-	score_bad_empty	 = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/scoreui_bad_bottom.png");
-	score_bad_max	 = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/scoreui_bad_top.png"	  );
+	score_good_empty = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_nice_bottom.png");
+	score_good_max   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_nice_top.png"   );
+	score_bad_empty	 = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_bad_bottom.png");
+	score_bad_max	 = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_bad_top.png"	  );
 
-	combo_base = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Combo_Anim.png");
-	combo_gauge = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/combo_gauge.png");
+	combo_base = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Combo/Combo_Anim.png");
+	combo_gauge = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Combo/combo_gauge.png");
+	combo = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Combo/COMBO.png");
+	combo_number = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Combo/numbers_combo_h.png");
 
-	DX12Effect.Create(L"Effect\\UIEffect\\nice\\nice.efk", "nice");
-	DX12Effect.Create(L"Effect\\UIEffect\\bad\\bad.efk", "bad");
+	good_effect = DX12Effect2D.Create(L"Effect\\UIEffect\\nice\\nice.efk", "nice");
+	bad_effect  = DX12Effect2D.Create(L"Effect\\UIEffect\\bad\\bad.efk", "bad");
 
-	effect = DX12Effect.Create(L"Effect\\UIEffect\\nice\\nice.efk", "nice");
+	enemy = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Enemy/Enemy.png");
+	enemy_alive = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Enemy/Enemy_h.png");
+	enemy_dead = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Enemy/Enemy_dead_h.png");
 }
 
-void UIManager::Update(const float deltaTime, SimpleMath::Vector3 player_pos) {
-	delta = deltaTime;
+void UIManager::Update(const float deltaTime, int enemy_num, int enemy_death) {
 	Animation(deltaTime);
+	DX12Effect2D.Update(deltaTime);
+	combo_num = StatusManager::Instance().GetHitCombo();
 	score_width = SCORE_MIN_WIDTH + (int)StatusManager::Instance().GetScoreGauge();
 	combo_anime = COMBO_BASE_HIGHT * (int)combo_anime_frame;
-	combo_gauge_width = COMBO_GAUGE_DIVIDE * StatusManager::Instance().GetKillComboTime();
+	combo_gauge_width = COMBO_GAUGE_DIVIDE * StatusManager::Instance().GetHitComboTime();
 
-	
-	effect_pos = player_pos;
-	if (flag) {
+	enemy_max_num = enemy_num;
+	enemy_dead_num = enemy_death;
+
+	if (combo_num <= 9.0f) {
+		combo_digit_up_flag = false;
+	}
+	else {
+		combo_digit_up_flag = true;
+	}
+
+	if (!combo_digit_up_flag) {
+		combo_one_digit = COMBO_NUM_WIDTH * combo_num;
+	}
+	else {
+		combo_one_digit = COMBO_NUM_WIDTH * (combo_num % 10);
+		combo_two_digit = COMBO_NUM_WIDTH * (combo_num / 10);
+	}
+
+	if (effect_play_flag) {
 		if (StatusManager::Instance().GetGoodFlag()) {
-			handle = DX12Effect.Play2D(effect, Vector3(100.0f, 50.0f, 60.0f));
-			flag = false;
+			effect_handle = DX12Effect2D.Play(good_effect, Vector3(0.0f, 0.0f, 0.0f));
 		}
 		else {
-			EFFECT effect = DX12Effect.Create(L"Effect\\UIEffect\\bad\\bad.efk", "bad");
-			EFFECTHANDLE handle = DX12Effect.Play(effect, Vector3(effect_pos.x - 36.0f, effect_pos.y + 17.0f, effect_pos.z + 70.0f));
-			DX12Effect.SetPosition(handle, Vector3(effect_pos.x - 36.0f, effect_pos.y + 17.0f, effect_pos.z + 70.0f));
-			flag = false;
+			effect_handle = DX12Effect2D.Play(bad_effect, Vector3(0.0f, 0.0f, 0.0f));
 		}
+		effect_play_flag = false;
 	}
-	DX12Effect.SetPosition2D(handle, Vector3(100.0f, 50.0f, 60.0f));
+	DX12Effect2D.SetPosition(effect_handle, Vector3(-35.0f, 30.0f, 40.0f));
 
 }
 
@@ -79,7 +111,7 @@ void UIManager::Render() {
 		);
 	}
 
-	if (StatusManager::Instance().GetKillFlag()) {
+	if (StatusManager::Instance().GetComboFlag()) {
 		//コンボ吹き出し
 		DX9::SpriteBatch->DrawSimple(
 			combo_base.Get(),
@@ -93,26 +125,58 @@ void UIManager::Render() {
 			SimpleMath::Vector3(COMBO_GAUGE_POS_X, COMBO_GAUGE_POS_Y, 0.0f),
 			RectWH(0, 0, combo_gauge_width, COMBO_GAUGE_HIGHT)
 		);
+
+		//コンボ文字
+		DX9::SpriteBatch->DrawSimple(
+			combo.Get(),
+			SimpleMath::Vector3(COMBO_POS_X, COMBO_POS_Y, 0.0f)
+		);
+
+
+		//コンボ数(1桁)
+		DX9::SpriteBatch->DrawSimple(
+			combo_number.Get(),
+			SimpleMath::Vector3(COMBO_ONE_DIGIT_X, COMBO_ONE_DIGIT_Y, 0.0f),
+			RectWH(combo_one_digit, 0, COMBO_NUM_WIDTH, COMBO_NUM_HIGHT)
+		);
+
+		if (combo_digit_up_flag) {
+			//コンボ数(2桁)
+			DX9::SpriteBatch->DrawSimple(
+				combo_number.Get(),
+				SimpleMath::Vector3(COMBO_TWO_DIGIT_X, COMBO_TWO_DIGIT_Y, 0.0f),
+				RectWH(combo_two_digit, 0, COMBO_NUM_WIDTH, COMBO_NUM_HIGHT)
+			);
+		}
 	}
 
-	//時間
-	//DX9::SpriteBatch->DrawSimple(
-	//	time.Get(),
-	//	SimpleMath::Vector3(TIME_POS_X, TIME_POS_Y, 0.0f)
-	//);
+	//エネミー(文字)
+	DX9::SpriteBatch->DrawSimple(
+		enemy.Get(),
+		SimpleMath::Vector3(1000.0f, 30.0f, 0.0f)
+	);
 
-	//DX9::SpriteBatch->DrawSimple(
-	//	time_number.Get(),
-	//	SimpleMath::Vector3(ONE_DIGIT_POS_X, TIME_NUM_POS_Y, 0.0f),
-	//	RectWH(((int)time_one_digit % 10) * TIME_NUM_WIDTH, 0, TIME_NUM_WIDTH, TIME_NUM_HIGHT)
-	//);
-
-	//DX9::SpriteBatch->DrawSimple(
-	//	time_number.Get(),
-	//	SimpleMath::Vector3(TWO_DIGIT_POS_X, TIME_NUM_POS_Y, 0.0f),
-	//	RectWH(((int)time_one_digit / 10) * TIME_NUM_WIDTH, 0, TIME_NUM_WIDTH, TIME_NUM_HIGHT)
-	//);
-
+	// 生きてる敵
+	int enemy_icon_count = 0;
+	for (int i = enemy_icon_count; i < enemy_max_num - enemy_dead_num; ++i) {
+		enemy_pos_x = 42 * (i % 10);
+		enemy_pos_y = 42 * (i / 10);
+		DX9::SpriteBatch->DrawSimple(
+			enemy_alive.Get(),
+			SimpleMath::Vector3(ENEMY_MIN_POS_X + enemy_pos_x, 50.0f + enemy_pos_y, 0.0f)
+		);
+		++enemy_icon_count;
+	}
+	// 倒した敵
+	for (int i = enemy_icon_count; i < enemy_max_num; ++i) {
+		enemy_pos_x = 42 * (i % 10);
+		enemy_pos_y = 42 * (i / 10);
+		DX9::SpriteBatch->DrawSimple(
+			enemy_dead.Get(),
+			SimpleMath::Vector3(ENEMY_MIN_POS_X + enemy_pos_x, 50.0f + enemy_pos_y, 0.0f)
+		);
+		++enemy_icon_count;
+	}
 }
 
 void UIManager::Animation(const float deltaTime) {
@@ -136,5 +200,12 @@ void UIManager::ResetAnimeFrame() {
 }
 
 void UIManager::PlayUIEffect() {
-	flag = true;
+	effect_play_flag = true;
 }
+
+void UIManager::EfkRender()
+{
+	DX12Effect2D.SetCameraPosition(&camera);
+	DX12Effect2D.Renderer();
+}
+

@@ -185,6 +185,7 @@
   <ItemGroup>
     <ClInclude Include="Base\d3dx12.h" />
     <ClInclude Include="Base\DX12Effekseer.h" />
+    <ClInclude Include="Base\DX12Effekseer2D.h" />
     <ClInclude Include="Base\dxtk.h" />
     <ClInclude Include="Base\DXTKHelpers.h" />
     <ClInclude Include="Base\GameBase.h" />
@@ -194,12 +195,13 @@
     <ClInclude Include="EndingScene.h" />
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="MyClass\AudianceManager\AudianceManager.h" />
-    <ClInclude Include="MyClass\AudianceManager\ExplodeMan\ExplodeMan.h" />
     <ClInclude Include="MyClass\Camera\C_Camera.h" />
+    <ClInclude Include="MyClass\CoinManager\CoinManager.h" />
+    <ClInclude Include="MyClass\CoinManager\Coin\Coin.h" />
     <ClInclude Include="MyClass\DialogueManager\DialogueManager.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Arrow\Arrow.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.h" />
-    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\MidBoss\MidBoss.h" />
+    <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\RandSwordMan\RandSwordMan.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Shielder\Shielder.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\SwordMan\SwordMan.h" />
     <ClInclude Include="MyClass\EnemyManager\EnemyFactory\EnemyFactory.h" />
@@ -216,8 +218,8 @@
     <ClInclude Include="MyClass\Shader\SpotLight.h" />
     <ClInclude Include="MyClass\Shader\TextureLight.h" />
     <ClInclude Include="MyClass\StatusManager\StatusManager.h" />
-    <ClInclude Include="MyClass\Timer\Timer.h" />
     <ClInclude Include="MyClass\UIManager\UIManager.h" />
+    <ClInclude Include="MyClass\WaveProcess\WaveProcess.h" />
     <ClInclude Include="ResultScene.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneFactory.h" />
@@ -227,11 +229,16 @@
     <ClCompile Include="Base\DX12Effekseer.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Base\DX12Effekseer2D.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Base\GameBase.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Base\Main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Base\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -249,10 +256,13 @@
     <ClCompile Include="MyClass\AudianceManager\AudianceManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MyClass\AudianceManager\ExplodeMan\ExplodeMan.cpp">
+    <ClCompile Include="MyClass\Camera\C_Camera.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MyClass\Camera\C_Camera.cpp">
+    <ClCompile Include="MyClass\CoinManager\CoinManager.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="MyClass\CoinManager\Coin\Coin.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="MyClass\DialogueManager\DialogueManager.cpp">
@@ -264,7 +274,7 @@
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\EnemyBase.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\MidBoss\MidBoss.cpp">
+    <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\RandSwordMan\RandSwordMan.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="MyClass\EnemyManager\EnemyFactory\EnemyBase\Shielder\Shielder.cpp">
@@ -312,10 +322,10 @@
     <ClCompile Include="MyClass\StatusManager\StatusManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MyClass\Timer\Timer.cpp">
+    <ClCompile Include="MyClass\UIManager\UIManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MyClass\UIManager\UIManager.cpp">
+    <ClCompile Include="MyClass\WaveProcess\WaveProcess.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="ResultScene.cpp">

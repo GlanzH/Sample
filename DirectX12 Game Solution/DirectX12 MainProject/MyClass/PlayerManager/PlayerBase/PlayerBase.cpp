@@ -1,8 +1,8 @@
 #include "PlayerBase.h"
 
 
-#include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/PlayerManager/PlayerBase/PlayerAttack/PlayerAttack.h"
+#include "MyClass/StatusManager/StatusManager.h"
 
 PlayerBase::PlayerBase() {
 
@@ -23,6 +23,9 @@ PlayerBase::PlayerBase() {
 	invincible_flag = false;
 	invincible_time = 0.0f;
 	invincible_time_max = 0.2f;
+
+	invincible_type = Invincible_Type::NOT_INVICIBLE;
+
 
 	//ジャンプしてるかのフラグ
 	jump_flag_ = false;
@@ -63,6 +66,8 @@ PlayerBase::PlayerBase() {
 	knock_back_end = 0.0f;
 	time_other = 0.0f;
 
+	direction_knock_back = Direction_Knock_Back::RIGHT_BACK;
+
 	//起き上がる
 	rize_end = 0.0f;
 
@@ -78,9 +83,13 @@ PlayerBase::PlayerBase() {
 
 
 	//下段(変数宣言)
-	lower_sate_mode = Lower_State::NOT_LOWER;
+	lower_state_mode = Lower_State::NOT_LOWER;
 	lower_start = 0.0f;
 	lower_end = 0.333f;
+
+	//ヒットストップを発動させるフラグ
+	hit_stop_flag = false;
+
 
 	//納刀
 	s_del_flag = false;
@@ -88,15 +97,11 @@ PlayerBase::PlayerBase() {
 	s_del_end = 0.0f;
 
 
-
-	//弾く
 	frip_state_mode = Frip_State::NOT_FRIP;
 
-	not_attack_start = 0.0f;
-	not_attack_end = 0.0f;
+	frip_flag = false;
 
-	frip_start = 0.0f;
-	frip_end = 0.0f;
+
 
 	//敵の消滅
 	elimination_flag = false;
@@ -126,12 +131,14 @@ bool PlayerBase::Initialize()
 	//攻撃の時間
 	attack_flag = false;
 	attack_time = 0.0f;
-	attack_zeit_max = 0.5f;
+	attack_zeit_max = 0.05f;
 
 	//無敵時間
 	invincible_flag = false;
 	invincible_time = 0.0f;
 	invincible_time_max = 0.5f;
+
+	invincible_type = Invincible_Type::NOT_INVICIBLE;
 
 	//回避
 	avoidance_flag = false;
@@ -165,17 +172,21 @@ bool PlayerBase::Initialize()
 
 	damage_mode_state = Damage_Mode::NOMAL_STATE;
 
+	//ノックバックする方向
+	direction_knock_back == Direction_Knock_Back::RIGHT_BACK;
+
+
 
 
 	//上段(変数宣言)
 	upper_state_mode = Upper_State::NOT_UPPER;
 	upper_start = 0.0f;
-	upper_end = 0.650f;
+	upper_end = 0.633f;
 
 	//下段(変数宣言)
-	lower_sate_mode = Lower_State::NOT_LOWER;
+	lower_state_mode = Lower_State::NOT_LOWER;
 	lower_start = 0.0f;
-	lower_end = 0.750f;
+	lower_end = 0.633f;
 
 	//納刀
 	s_del_flag = false;
@@ -186,17 +197,17 @@ bool PlayerBase::Initialize()
 	elimination_flag = false;
 	elimination_end  = 1.0f;
 
-
-	direction_state_mode = Direction_State::RIGHT;
-
-	//攻撃　弾かれる
 	frip_state_mode = Frip_State::NOT_FRIP;
 
-	not_attack_start = 0.0f;
-	not_attack_end = 0.3f;
+	frip_flag = false;
 
 	frip_start = 0.0f;
 	frip_end = 0.783f;
+
+
+
+	direction_state_mode = Direction_State::RIGHT;
+
 
 
 
@@ -210,7 +221,7 @@ bool PlayerBase::Initialize()
 
 void PlayerBase::LoadAssets()
 {
-	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v0125_.X");
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v0128b_.X");
 	model->SetScale(model_scale);
 	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
@@ -231,20 +242,22 @@ void PlayerBase::LoadAssets()
 	collision->SetMaterial(material); 
 
 	//右の当たり判定
+	right_col.right_box = model->GetBoundingBox();
 	right_collision = DX9::Model::CreateBox(
 		DXTK->Device9,
-		col.right_box.Extents.x * sidebox_size_x,
-		col.right_box.Extents.y * sidebox_size_y,
-		col.right_box.Extents.z * sidebox_size_z
+		right_col.right_box.Extents.x * 2,
+		right_col.right_box.Extents.y * 9,
+		right_col.right_box.Extents.z * 2
 	);
 	right_collision->SetMaterial(material);
 
 	//左の当たり判定
+	left_col.left_box = model->GetBoundingBox();
 	left_collision = DX9::Model::CreateBox(
 		DXTK->Device9,
-		left_box.Extents.x * sidebox_size_x,
-		left_box.Extents.y * sidebox_size_y,
-		left_box.Extents.z * sidebox_size_z
+		left_col.left_box.Extents.x * 2,
+		left_col.left_box.Extents.y * 9,
+		left_col.left_box.Extents.z * 2
 	);
 	left_collision->SetMaterial(material);
 
@@ -253,7 +266,7 @@ void PlayerBase::LoadAssets()
 	col.sword_box.Extents = SimpleMath::Vector3(col.sword_box.Extents) * 7.0f;
 	sword_collision = DX9::Model::CreateBox(
 		DXTK->Device9,
-		col.sword_box.Extents.x * 2,
+		col.sword_box.Extents.x * 3,
 		col.sword_box.Extents.y * 2,
 		col.sword_box.Extents.z * 2
 		//col.sword_box.Extents.x * box_size_x,
@@ -309,7 +322,7 @@ int PlayerBase::Update(const float deltaTime, bool temp)
 	Sword_Delivery(deltaTime, temp);
 
 	//弾かれる
-	Frip(deltaTime);
+	Frip();
 
 	//回避
 	Avoidance(deltaTime);
@@ -323,14 +336,13 @@ int PlayerBase::Update(const float deltaTime, bool temp)
 
 	//攻撃の向き
 	if (direction_state_mode == Direction_State::RIGHT) {
-		col.sword_box.Center = model->GetPosition() + SimpleMath::Vector3(9.5, 3, 0);
 		sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(6.5, 5, 0));
-
+		col.sword_box.Center = sword_collision->GetPosition() + SimpleMath::Vector3(0, -5.1, 0);
 	}
 	else if (direction_state_mode == Direction_State::LEFT) {
-		col.sword_box.Center = model->GetPosition() + SimpleMath::Vector3(-9.5, 3, 0);
+		
 		sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(-6.5, 5, 0));
-
+		col.sword_box.Center = sword_collision->GetPosition() + SimpleMath::Vector3(0, -5.1, 0);
 	}
 
 	//攻撃判定の時間
@@ -348,7 +360,10 @@ int PlayerBase::Update(const float deltaTime, bool temp)
 	col.box.Center = collision->GetPosition();
 
 	right_collision->SetPosition(player_pos.x + 1.1f, player_pos.y + 5.0f, player_pos.z);
+	right_col.right_box.Center = right_collision->GetPosition() + SimpleMath::Vector3(0, -5.1, 0);
+
 	left_collision->SetPosition(player_pos.x - 1.1f, player_pos.y + 5.0f, player_pos.z);
+	left_col.left_box.Center  = left_collision->GetPosition() + SimpleMath::Vector3(0, -5.1, 0);
 
 
 	model->AdvanceTime(deltaTime);
@@ -360,10 +375,10 @@ void PlayerBase::Render()
 	//プレイヤーの描画
 	model->Draw();
 	//collision->Draw();
-	if (attack_flag) {
-		//sword_collision->Draw();
-	}
-	//parry_collision->Draw();
+	//if (attack_flag) {
+	//	sword_collision->Draw();
+	//}
+	////parry_collision->Draw();
 	//right_collision->Draw();
 	//left_collision->Draw();
 }
@@ -400,8 +415,62 @@ void PlayerBase::OnWeaponCollisionEnter(std::string tag) {
 
 	//敵に当たったときの処理
 	if (!invincible_flag) {
-		//無敵
-		invincible_flag = true;
+
+		//ノックバック
+		knock_back_flag = true;
+
+
+		if (tag == "SW")
+			reduce_num = weapon_reduce_num;
+
+		if (tag == "SH")
+			reduce_num = weapon_reduce_num;
+
+		if (tag == "MB")
+			reduce_num = mb_weapon_reduce_num;
+
+		Knock_Back();
+
+
+		StatusManager::Instance().SetAddScore(reduce_num);
+	}
+}
+
+void PlayerBase::OnLeftCollisionEnter(std::string tag) {//左
+	//敵に当たった時の処理(左)
+	if (!invincible_flag) {
+
+		//ノックバック
+		knock_back_flag = true;
+		direction_knock_back = Direction_Knock_Back::LEFT_BACK;
+
+
+		if (tag == "SW")
+			reduce_num = weapon_reduce_num;
+
+		if (tag == "SH")
+			reduce_num = weapon_reduce_num;
+
+		if (tag == "MB")
+			reduce_num = mb_weapon_reduce_num;
+
+		Knock_Back();
+
+
+		StatusManager::Instance().SetAddScore(reduce_num);
+
+	}
+}
+
+void PlayerBase::OnRightCollisionEnter(std::string tag) {//右
+	//敵に当たった時の処理(右)
+	if (!invincible_flag) {
+
+
+		//ノックバック
+		knock_back_flag = true;
+		direction_knock_back = Direction_Knock_Back::RIGHT_BACK;
+
 
 		if (tag == "SW")
 			reduce_num = weapon_reduce_num;
@@ -413,20 +482,71 @@ void PlayerBase::OnWeaponCollisionEnter(std::string tag) {
 			reduce_num = mb_weapon_reduce_num;
 
 		StatusManager::Instance().SetAddScore(reduce_num);
+
 	}
 }
 
 void PlayerBase::Invincible(const float deltaTime)
 {
-	if (invincible_flag)
+
+	switch (invincible_type)
+	{
+	case Invincible_Type::NOT_INVICIBLE:
+		//回避の無敵
+		if (avoidance_flag) {
+			invincible_type = Invincible_Type::AVOIDANCE_INV;
+		}
+
+		//ノックバックの無敵
+		if (knock_back_flag) {
+			invincible_type = Invincible_Type::KNOCK_BACK_INV;
+		}
+
+		//弾かれた際の無敵
+		if (frip_flag) {
+			invincible_type = Invincible_Type::FRIP_INV;
+		}
+		break;
+	case Invincible_Type::AVOIDANCE_INV:
+		//回避の無敵時間
+		invincible_flag = true;
 		invincible_time += deltaTime;
 
-	if (invincible_time >= invincible_time_max) {
-		invincible_flag = false;
-		invincible_time = 0.0f;
+		if (invincible_time >= 0.7f) {
+			invincible_time = 0.0f;
+			invincible_flag = false;
+			invincible_type = Invincible_Type::NOT_INVICIBLE;
+		}
+
+		break;
+	case Invincible_Type::KNOCK_BACK_INV:
+		//ノックバックの無敵時間
+		invincible_flag = true;
+		invincible_time += deltaTime;
+
+		if (invincible_time >= 2.5f) {
+			invincible_time = 0.0f;
+			invincible_flag = false;
+			invincible_type = Invincible_Type::NOT_INVICIBLE;
+		}
+		break;
+	case Invincible_Type::FRIP_INV:
+		//攻撃を弾かれた際の無敵時間
+		invincible_flag = true;
+		invincible_time += deltaTime;
+
+		if (invincible_time >= 1.0f) {
+			invincible_time = 0.0f;
+			invincible_flag = false;
+			invincible_type = Invincible_Type::NOT_INVICIBLE;
+		}
+
+		break;
 	}
 }
 
+
+//ノックバック
 void PlayerBase::Knock_Back() {
 
 	switch (damage_mode_state) {
@@ -439,7 +559,6 @@ void PlayerBase::Knock_Back() {
 		knock_back_start += time_other;
 		SetAnimation(model, DAMAGE1);
 
-		invincible_flag = true;
 
 		Knock_back_Move();
 		
@@ -448,17 +567,33 @@ void PlayerBase::Knock_Back() {
 	}
 }
 
-//ノックバック
+
 void PlayerBase::Knock_back_Move() {
 
 	if (knock_back_start < knock_back_end) {
-		if (direction_state_mode == Direction_State::RIGHT) {
-			model->Move(0, 0, 40.0f * time_other);
-		}
-		else if (direction_state_mode == Direction_State::LEFT) {
-			model->Move(0, 0, 40.0f * time_other);
+		switch (direction_knock_back)
+		{
+		case Direction_Knock_Back::RIGHT_BACK:
+			if (direction_state_mode == Direction_State::RIGHT) {
+				model->Move(0, 0, 40.0f * time_other);
+			}
+			else if (direction_state_mode == Direction_State::LEFT) {
+				model->SetRotation(0.0f, XMConvertToRadians(-90.0f), 0.0f);
+				model->Move(0, 0, 40.0f * time_other);
+			}
+			break;
+		case Direction_Knock_Back::LEFT_BACK:
+			if (direction_state_mode == Direction_State::RIGHT) {
+				model->SetRotation(0.0f, XMConvertToRadians(90.0f), 0.0f);
+				model->Move(0, 0, 40.0f * time_other);
+			}
+			else if (direction_state_mode == Direction_State::LEFT) {				
+				model->Move(0, 0, 40.0f * time_other);
+			}
+			break;
 		}
 	}
+
 }
 
 //起き上がる
@@ -487,29 +622,27 @@ void PlayerBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack)
 
 void PlayerBase::Player_move(const float deltaTime)
 {
-	if (upper_state_mode == Upper_State::NOT_UPPER) {
-		if (lower_sate_mode == Lower_State::NOT_LOWER) {
-			if (!invincible_flag || !knock_back_flag) {
-				if (!s_del_flag) {
-					//プレイヤー:移動(キーボード) & ゲームパッド十字キー
-					if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
-						model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-						model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
-						col.sword_box.Center = model->GetRotation();
-						direction_state_mode = Direction_State::RIGHT;
-						SetAnimation(model, RUN);
-					}
-					if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left) {
-						model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
-						model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
-						col.sword_box.Center = model->GetRotation();
-						direction_state_mode = Direction_State::LEFT;
-						SetAnimation(model, RUN);
-					}
-				}
+	if (upper_state_mode == Upper_State::NOT_UPPER && lower_state_mode == Lower_State::NOT_LOWER) {
+		if ( !knock_back_flag && !s_del_flag && !avoidance_flag) {
+			//プレイヤー:移動(キーボード) & ゲームパッド十字キー
+			if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
+				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+				model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
+				col.sword_box.Center = model->GetRotation();
+				direction_state_mode = Direction_State::RIGHT;
+				SetAnimation(model, RUN);
+			}
+			if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left) {
+				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
+				model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
+				col.sword_box.Center = model->GetRotation();
+				direction_state_mode = Direction_State::LEFT;
+				SetAnimation(model, RUN);
 			}
 		}
 	}
+
+	
 }
 
 
@@ -527,35 +660,27 @@ void PlayerBase::Player_limit()
 
 void PlayerBase::Player_jump(const float deltaTime) {
 	//ジャンプ
-	if (!invincible_flag) {
-		if (!s_del_flag) {
-			if (!jump_flag_) {
-				if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
-					jump_start_flag = true;
-					jump_flag_ = true;
-					jump_time_ = 0;
-					jump_start_v_ = model->Position.y;
-				}
+	if (!s_del_flag && !avoidance_flag && lower_state_mode == Lower_State::NOT_LOWER && upper_state_mode == Upper_State::NOT_UPPER) {
+		if (!jump_flag_) {
+			if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {				
+				jump_flag_ = true;
+				jump_time_ = 0;
+				jump_start_v_ = model->Position.y;
 			}
 		}
+
 	}
 
-	if (jump_start_flag) {
-		SetAnimation(model, JUMP);
-		jump_start_time += deltaTime;
-	}
-
-	if (jump_flag_ && jump_start_time >= jump_start_time_max) {
+	if (jump_flag_) {
 
 		jump_time_ += deltaTime;
 		auto pos = model->GetPosition();
+		SetAnimation(model, JUMP);
 		pos.y = jump_start_v_ + V0 * jump_time_ - 0.5f * gravity_ * jump_time_ * jump_time_;
 		model->SetPosition(pos);
 
 		if (model->GetPosition().y <= 0.65f) {
 			jump_flag_ = false;
-			jump_start_flag = false;
-			jump_start_time = 0.0f;
 			model->SetTrackPosition(JUMP, 0.0);
 		}
 	}
@@ -578,12 +703,10 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 	switch (upper_state_mode)
 	{
 	case Upper_State::NOT_UPPER:
-		if (lower_sate_mode == Lower_State::NOT_LOWER) {
-			if (upper_state_mode == Upper_State::NOT_UPPER) {
-				if (!s_del_flag) {
-					if (DXTK->KeyEvent->pressed.A || DXTK->GamePadEvent[0].y == GamePad::ButtonStateTracker::PRESSED) {
-						upper_state_mode = Upper_State::UPPER_ATTACK;
-					}
+		if (lower_state_mode == Lower_State::NOT_LOWER && upper_state_mode == Upper_State::NOT_UPPER && !avoidance_flag) {
+			if (!s_del_flag) {
+				if (DXTK->KeyEvent->pressed.A || DXTK->GamePadEvent[0].y == GamePad::ButtonStateTracker::PRESSED) {
+					upper_state_mode = Upper_State::UPPER_ATTACK;
 				}
 			}
 		}
@@ -594,75 +717,50 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 
 		//当たり判定
 		//エフェクト
-		if (upper_start >= 0.117f) {
-			attack_flag = true;
-			attack_type = 1;
-		}
-		
+		attack_flag = true;
+		attack_type = 1;
 
-		if (direction_state_mode == Direction_State::RIGHT) {
-
-			DX12Effect.Play("upper", Vector3(player_pos.x + 4.0f, player_pos.y + 5.0f, player_pos.z));
-		}
-		else if (direction_state_mode == Direction_State::LEFT) {
-			DX12Effect.Play("upper", Vector3(player_pos.x - 9.0f, player_pos.y + 4.0f, player_pos.z));
-			DX12Effect.SetRotation("upper", Vector3(0.0f, 180.0f, 0.0f));
+		if (upper_start >= 0.1f) {
+			hit_stop_flag = true;
 		}
 
+		if (!frip_flag && effect_count < 1) {
+			if (direction_state_mode == Direction_State::RIGHT) {
+
+				DX12Effect.PlayOneShot("upper", Vector3(player_pos.x + 4.0f, player_pos.y + 5.0f, player_pos.z));
+			}
+			else if (direction_state_mode == Direction_State::LEFT) {
+				DX12Effect.Play("upper", Vector3(player_pos.x - 9.0f, player_pos.y + 4.0f, player_pos.z));
+				DX12Effect.SetRotation("upper", Vector3(0.0f, 180.0f, 0.0f));
+			}
+
+			effect_count += 1;
+		}
 
 		if (upper_start >= upper_end) {
 			upper_state_mode = Upper_State::NOT_UPPER;
 			upper_start = 0.0f;
 			model->SetTrackPosition(ACT1, 0.0);
+			effect_count = 0;
 			attack_type = 0;
+			hit_stop_flag = false;
+
 		}
 
 		break;
 	}
 }
 
-void PlayerBase::Upper_Effect() {
-
-	if (direction_state_mode == Direction_State::RIGHT) {
-		if (DX12Effect.CheckAlive("upper")) {
-			DX12Effect.Stop("upper");
-			DX12Effect.PlayOneShot("upper", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
-
-		}
-		else
-		{
-			DX12Effect.PlayOneShot("upper", Vector3(player_pos.x + 2.0f, player_pos.y + 5.0f, player_pos.z));
-			
-
-		}
-		DX12Effect.SetRotation("upper", Vector3(0.0f, 0.0f, 0.0f));
-	}
-	else if (direction_state_mode == Direction_State::LEFT) {
-		if (DX12Effect.CheckAlive("upper")) {
-			DX12Effect.Stop("upper");
-			DX12Effect.PlayOneShot("upper", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
-		}
-		else
-		{
-			DX12Effect.PlayOneShot("upper", Vector3(player_pos.x - 7.0f, player_pos.y + 4.0f, player_pos.z));
-		}
-		DX12Effect.SetRotation("upper", Vector3(0.0f, 180.0f, 0.0f));
-	}
-
-
-}
 
 //切り上げ
 void PlayerBase::Reverse_Slash(const float deltaTime) {
-	switch (lower_sate_mode)
+	switch (lower_state_mode)
 	{
 	case Lower_State::NOT_LOWER:
-		if (lower_sate_mode == Lower_State::NOT_LOWER) {
-			if (upper_state_mode == Upper_State::NOT_UPPER) {
-				if (!s_del_flag) {
-					if (DXTK->KeyEvent->pressed.S || DXTK->GamePadEvent[0].x == GamePad::ButtonStateTracker::PRESSED) {
-						lower_sate_mode = Lower_State::LOWER_ATTACK;
-					}
+		if (lower_state_mode == Lower_State::NOT_LOWER && upper_state_mode == Upper_State::NOT_UPPER && !avoidance_flag) {
+			if (!s_del_flag) {
+				if (DXTK->KeyEvent->pressed.S || DXTK->GamePadEvent[0].x == GamePad::ButtonStateTracker::PRESSED) {
+					lower_state_mode = Lower_State::LOWER_ATTACK;
 				}
 			}
 		}
@@ -671,27 +769,36 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 		lower_start += deltaTime;
 		SetAnimation(model, ACT2);
 
-		if (lower_start >= 0.167f) {
-			attack_flag = true;
-			attack_type = 2;
-		}
-		if (IsAttack()) {
+		attack_flag = true;
+		attack_type = 2;
 
+		if (lower_start >= 0.083f) {
+			hit_stop_flag = true;
 		}
-		if (direction_state_mode == Direction_State::RIGHT) {
-			DX12Effect.PlayOneShot("lower", Vector3(player_pos.x + 4.0f, player_pos.y + 5.0f, player_pos.z));
-			DX12Effect.SetRotation("lower", Vector3(0.0f, 0.0f, 0.0f));
-		}
-		else if (direction_state_mode == Direction_State::LEFT) {
-			DX12Effect.PlayOneShot("lower", Vector3(player_pos.x - 9.0f, player_pos.y + 4.0f, player_pos.z));
-			DX12Effect.SetRotation("lower", Vector3(0.0f, 180.0f, 0.0f));
+
+
+		if (!frip_flag && effect_count < 1) {
+			if (direction_state_mode == Direction_State::RIGHT) {
+
+				DX12Effect.PlayOneShot("lower", Vector3(player_pos.x + 4.0f, player_pos.y + 5.0f, player_pos.z));
+				DX12Effect.SetRotation("lower", Vector3(0.0f, 0.0f, 0.0f));
+
+			}
+			else if (direction_state_mode == Direction_State::LEFT) {
+				DX12Effect.PlayOneShot("lower", Vector3(player_pos.x - 9.0f, player_pos.y + 4.0f, player_pos.z));
+				DX12Effect.SetRotation("lower", Vector3(0.0f, 180.0f, 0.0f));
+			}
+			effect_count += 1;
 		}
 
 		if (lower_start >= lower_end) {
-			lower_sate_mode = Lower_State::NOT_LOWER;
+			lower_state_mode = Lower_State::NOT_LOWER;
 			lower_start = 0.0f;
 			model->SetTrackPosition(ACT2, 0.0);
+			
+			effect_count = 0;
 			attack_type = 0;
+			hit_stop_flag = false;
 		}
 
 		break;
@@ -728,6 +835,9 @@ void PlayerBase::Sword_Delivery(const float deltaTime, bool temp) {
 			elimination_flag = true;
 		}
 
+
+		StatusManager::Instance().ResetHitCombo();
+
 	}
 
 	if (s_del_start >= s_del_end) {
@@ -745,48 +855,65 @@ void PlayerBase::Sword_Delivery(const float deltaTime, bool temp) {
 }
 
 //弾かれる
-void PlayerBase::Frip(const float deltaTime) {
+void PlayerBase::Frip() {
 
 	switch (frip_state_mode)
 	{
 	case Frip_State::NOT_FRIP:
-		if (DXTK->KeyEvent->pressed.F) {
-			frip_state_mode = Frip_State::ATTACK_TEST;
-		}
-		break;
-	case Frip_State::ATTACK_TEST:
-		SetAnimation(model, ACT1);
-		not_attack_start += deltaTime;
-
-		if (not_attack_start >= not_attack_end) {
-			model->SetTrackPosition(ACT1, 0.0);
-			not_attack_start = 0.0f;
+		if (frip_flag && upper_state_mode == Upper_State::UPPER_ATTACK && upper_start >= 0.1f ||
+			frip_flag && lower_state_mode == Lower_State::LOWER_ATTACK && lower_start >= 0.1f)
 			frip_state_mode = Frip_State::FRIP;
-		}
 		break;
 	case Frip_State::FRIP:
 		SetAnimation(model, REBOUND);
-		DX12Effect.PlayOneShot("frip", Vector3(player_pos.x, player_pos.y, player_pos.z));
-		frip_start += deltaTime;
+		DX12Effect.Play("frip", Vector3(player_pos.x, player_pos.y + 4.0f, player_pos.z));
 
-		if (frip_start >= frip_end) {
-			model->SetTrackPosition(REBOUND, 0.0);
-			frip_start = 0.0f;
-			frip_state_mode = Frip_State::NOT_FRIP;
-		}
+		Frip_Knock_Back();
+
 		break;
+	}
+}
+
+void PlayerBase::Frip_Knock_Back() {
+	frip_start += time_other;
+	invincible_flag = true;
+
+	if (direction_state_mode == Direction_State::RIGHT) {
+		model->Move(0, 0, 20.0f * time_other);
+	}
+	else if (direction_state_mode == Direction_State::LEFT) {
+		model->Move(0, 0, 20.0f * time_other);
+	}
+
+
+
+	if (frip_start >= frip_end) {
+		model->SetTrackPosition(REBOUND, 0.0);
+		frip_flag = false;
+		frip_start = 0.0f;
+		frip_state_mode = Frip_State::NOT_FRIP;
+
+		upper_state_mode = Upper_State::NOT_UPPER;
+		upper_start = 0.0f;
+		model->SetTrackPosition(ACT1, 0.0);
+
+
+		lower_state_mode = Lower_State::NOT_LOWER;
+		lower_start = 0.0f;
+		model->SetTrackPosition(ACT2, 0.0);
+
+		attack_type = 0;
+
 	}
 }
 
 //回避
 void PlayerBase::Avoidance(const float deltaTime) {
 
-	if (!jump_flag_) {
-		if (!s_del_flag) {
-			if (!avoidance_flag) {
-				if (DXTK->KeyEvent->pressed.Z || DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
-					avoidance_flag = true;
-				}
+	if (!jump_flag_ && !s_del_flag && upper_state_mode == Upper_State::NOT_UPPER && lower_state_mode == Lower_State::NOT_LOWER && !knock_back_flag) {
+		if (!avoidance_flag) {
+			if (DXTK->KeyEvent->pressed.Z || DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
+				avoidance_flag = true;
 			}
 		}
 	}
@@ -796,7 +923,6 @@ void PlayerBase::Avoidance(const float deltaTime) {
 		
 		model->Move(0.0f, 0.0, avoidance_move * deltaTime);
 		SetAnimation(model, ROLL);
-		invincible_flag = true;
 
 		//減速(何かに使うかも)
 		//avoidance_move += 70 * deltaTime;
@@ -820,25 +946,12 @@ bool PlayerBase::IsAttack() {
 }
 
 void PlayerBase::Debug() {
-	//DX9::SpriteBatch->DrawString(font.Get(),
-	//	SimpleMath::Vector2(1100.0f, 120.0f),
-	//	DX9::Colors::BlueViolet,
-	//	L"%f", s_del_start
-	//);
+	//if (invincible_flag) {
+	//	DX9::SpriteBatch->DrawString(font.Get(),
+	//		SimpleMath::Vector2(1100.0f, 120.0f),
+	//		DX9::Colors::BlueViolet,
+	//		L"ON"
+	//	);
+	//}
 
-	if (upper_state_mode == Upper_State::UPPER_ATTACK) {
-		DX9::SpriteBatch->DrawString(font.Get(),
-			SimpleMath::Vector2(1100.0f, 140.0f),
-			DX9::Colors::BlueViolet,
-			L"ON"
-		);
-	}
-	else {
-		DX9::SpriteBatch->DrawString(font.Get(),
-			SimpleMath::Vector2(1100.0f, 140.0f),
-			DX9::Colors::BlueViolet,
-			L"OFF"
-		);
-
-	}
 }
