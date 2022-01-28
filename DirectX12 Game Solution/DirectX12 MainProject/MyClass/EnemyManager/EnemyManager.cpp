@@ -43,6 +43,30 @@ bool EnemyManager::Initialize(PlayerBase* player_base)
 	player_data = player_base;
 	appear_frame = 0.0f;
 	LoadEnemyArrangement();
+
+	count = 0;
+
+	dead_enemy_count   = 0;
+	remain_enemy_count = 0;
+	time_stop_count    = 0;
+
+	appear_frame = 0;
+
+	now_time    = 0.0f;
+	count_frame = 0.0f;
+
+	add_score  = 0;
+	attack_num = 0;
+	enemy_num  = 0;
+	push_count = 0;
+
+	enemy_stop_flag    = false;
+	special_move_flag  = false;
+	count_dest_flag    = false;
+	sound_hit_flag     = false;
+	temporary_flag     = false;
+	enemy_destroy_flag = false;
+
 	return true;
 }
 

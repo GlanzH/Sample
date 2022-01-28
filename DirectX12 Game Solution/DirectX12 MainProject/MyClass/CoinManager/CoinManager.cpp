@@ -4,28 +4,42 @@
 #include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/EnumManager/EnumManager.h"
 
-int CoinManager::Update() {
+/**
+ * @detail コインを出現させる条件させるになったら、
+ * 　　　　コインを出現させる枚数を決める関数をもとに求めた個数分
+ * 　　　　Generator関数でコインを作る。
+ */
+
+int CoinManager::Update(const float deltaTime) {
 	Iterator();
 
-	if (!test_flag) {
-		Generator();
-		test_flag = true;
+	Generator();
+
+	if (coin.size() > 0) {
+		for (auto coins : coin) {
+			coins->Update(deltaTime);
+		}
 	}
 
-	for (auto coins : coin) {
-		coins->Update();
-	}
 	return 0;
 }
 
-void CoinManager::Render() {
-	for (auto coins : coin) {
-		coins->Render();
-	}
-}
-
+/**
+ * @fn 条件によってモーションを切り替える
+ * @return なし
+ * @detail 敵を倒した数(コンボ数)によってコインを出現させる枚数を決める関数を作り、
+ * 　　　　for文でその数コインを作成させる
+ */
 void CoinManager::Generator() {
-	coin.push_back(Create(SimpleMath::Vector3(30,0,70)));
+	std::random_device pos_x_seed;
+	random = std::mt19937(pos_x_seed());
+
+	//for(int i = 0; i < 個数; ++i){
+	distribute = std::uniform_int_distribution<int>(-60, 60);
+	 int pos_x = distribute(random);
+
+	//coin.push_back(Create(SimpleMath::Vector3(pos_x, 0,80)));
+	//}
 }
 
 Coin* CoinManager::Create(SimpleMath::Vector3 position) {
@@ -42,7 +56,13 @@ void CoinManager::Iterator() {
 			itr++;
 		}
 		else {
-			itr = coin.erase(itr);
+			if ((*itr)->LifeDeathDecision() == DEAD) {
+				StatusManager::Instance().SetAddScore(30);
+				itr = coin.erase(itr);
+			}
+			else {
+				itr = coin.erase(itr);
+			}
 		}
 	}
 }

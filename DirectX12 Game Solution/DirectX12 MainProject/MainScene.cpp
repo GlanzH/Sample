@@ -152,7 +152,7 @@ NextScene MainScene::Update(const float deltaTime)
 		observer->Update(player, enemy, coin);
 		dialogue.ResetCount();
 		process.Update(enemy,deltaTime);
-		coin.Update();
+		coin.Update(deltaTime);
 		observer->Hit_Stop(deltaTime);
 
 		//ChangeBGM(MAIN);
@@ -244,7 +244,6 @@ void MainScene::Render()
 	player->Render();
 	enemy->Render();
 	audience->Render();
-	coin.Render();
 
 	DX9::SpriteBatch->Begin();
 

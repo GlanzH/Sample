@@ -165,8 +165,8 @@ void RandSwordMan::Freeze() {
 void RandSwordMan::Damage() {
 
 	if (enemy_hp > 0 && !damage_flag) {
-		std::random_device pato_y_seed;
-		random = std::mt19937(pato_y_seed());
+		std::random_device postune_seed;
+		random = std::mt19937(postune_seed());
 		distribute = std::uniform_int_distribution<int>(UPPER, LOWER);
 		postune_num = distribute(random);
 

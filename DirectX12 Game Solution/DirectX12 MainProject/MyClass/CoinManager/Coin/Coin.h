@@ -7,9 +7,10 @@ using namespace DirectX;
 
 class Coin {
 public:
+	Coin() {};
+	~Coin() {};
 	void LoadAssets(SimpleMath::Vector3 position);
-	int Update();
-	void Render();
+	int Update(const float deltaTime);
 
 	int  LifeDeathDecision();
 	void GetCoin() { get_coin_flag = true; }
@@ -20,11 +21,18 @@ private:
 	DX9::MODEL  collision;
 	BoundingBox box;
 
-	EFFECTHANDLE many_coin_handle, coin_handle;
-	EFFECT       many_coin, coin;
+	EFFECTHANDLE  plus_handle,coin_handle;
+	EFFECT        plus, coin;
 
 	SimpleMath::Vector3 pos;
 	SimpleMath::Vector3 col_pos;
 
-	bool get_coin_flag = false;
+	bool stop_flag;
+	bool get_coin_flag;
+
+	float dest_frame;
+	const float max_dest = 10.0f;
+
+	float wait_frame;
+	const float max_wait = 0.5f;
 };
