@@ -4,20 +4,20 @@
 #include "EnemyBase.h"
 
 bool EnemyBase::Initialize(
-	std::string tag, double init_wait,double stop_pos,
-	double speed,std::string direct ,std::string posture, int hp
+	std::string tag, double init_wait, double stop_pos,
+	double speed, std::string direct, std::string posture, int hp
 )
 {
-	enemy_tag     = tag;
-	enemy_hp      = hp;
-	init_hp       = hp;
-	enemy_stop    = stop_pos;
-	enemy_direct  = direct;
+	enemy_tag = tag;
+	enemy_hp = hp;
+	init_hp = hp;
+	enemy_stop = stop_pos;
+	enemy_direct = direct;
 	enemy_posture = posture;
-	move_speed    = speed;
+	move_speed = speed;
 	max_init_wait = init_wait;
 
-	retreat_flag    = false;
+	retreat_flag = false;
 
 	return true;
 }
@@ -50,11 +50,11 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 	col.box.Center = position;
 
 	//special_die  = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die2/die2.efk");
-	hit        = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
-	star       = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
-	love       = ResourceManager::Instance().LoadEffect(L"Effect/AudienceEffect/heart/heart.efk");
-	del        = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/delete/delete.efk");
-	confetti   = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/confetti/confetti.efk");
+	hit = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
+	star = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
+	love = ResourceManager::Instance().LoadEffect(L"Effect/AudienceEffect/heart/heart.efk");
+	del = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/delete/delete.efk");
+	confetti = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/confetti/confetti.efk");
 	normal_die = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die/die.efk");
 
 	explode.LoadAssets(initial_position.x);
@@ -92,9 +92,9 @@ void EnemyBase::LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 
 int EnemyBase::Update(SimpleMath::Vector3 player, bool destroy_flag, const float deltaTime)
 {
-	delta      = deltaTime;
+	delta = deltaTime;
 	player_pos = player;
-	
+
 	IsDamage();
 	IsRetreat();
 
@@ -128,9 +128,9 @@ void EnemyBase::HitEffect() {
 	//}
 }
 
-void EnemyBase::NormalDeathEffect(float max_death, bool confetti_effect, bool death_effect,int effect_count) {
+void EnemyBase::NormalDeathEffect(float max_death, bool confetti_effect, bool death_effect, int effect_count) {
 	if (die_flag) {
-		if(dead_frame < max_death){
+		if (dead_frame < max_death) {
 			if (!DX12Effect.CheckAlive(confetti_handle) && confetti_effect && effect_count == CONFINETTI)
 				confetti_handle = DX12Effect.Play(confetti, position);
 
@@ -158,11 +158,11 @@ void EnemyBase::Retreat() {
 
 void EnemyBase::DieFlag() {
 	if (enemy_hp <= 0)
-	die_flag = true;
+		die_flag = true;
 }
 
 void EnemyBase::IsRetreat() {
-	if(enemy_hp <= 0)
+	if (enemy_hp <= 0)
 		return;
 
 	if (retreat_flag && retreat_count < max_retreat) {
@@ -231,14 +231,14 @@ bool EnemyBase::FrontFlag() {
 bool EnemyBase::Stun() {
 	if (enemy_hp == 1 && stun_frame < max_stun) {
 
-	if (!DX12Effect.CheckAlive(star_handle))
-		star_handle = DX12Effect.Play(star, position + SimpleMath::Vector3(0, 10, 0));
+		if (!DX12Effect.CheckAlive(star_handle))
+			star_handle = DX12Effect.Play(star, position + SimpleMath::Vector3(0, 10, 0));
 
 		stun_frame += delta;
 		return true;
 	}
 
-	if(enemy_hp <= 0)
+	if (enemy_hp <= 0)
 		DX12Effect.Stop(star_handle);
 
 	return false;
