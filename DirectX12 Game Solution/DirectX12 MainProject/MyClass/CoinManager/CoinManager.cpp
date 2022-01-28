@@ -5,7 +5,7 @@
 #include "MyClass/EnumManager/EnumManager.h"
 
 void CoinManager::LoadAssets() {
-	for (auto coin : coin_base) {
+	for (auto coin : coin) {
 		coin->LoadAssets();
 	}
 }
@@ -13,10 +13,15 @@ void CoinManager::LoadAssets() {
 int CoinManager::Update() {
 	Iterator();
 	Generator();
-	for (auto coin : coin_base) {
+	for (auto coin : coin) {
 		coin->Update();
 	}
 	return 0;
+}
+
+
+void CoinManager::Generator() {
+
 }
 
 void CoinManager::Iterator() {

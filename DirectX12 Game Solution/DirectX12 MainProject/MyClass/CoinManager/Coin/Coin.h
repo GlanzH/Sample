@@ -6,9 +6,12 @@ public:
 	void LoadAssets();
 	int Update();
 
-	void GetCoin() {}
+	int  LifeDeathDecision();
+	void GetCoin() { get_coin_flag = true; }
 
 private:
 	EFFECTHANDLE many_coin_handle, coin_handle;
 	EFFECT       many_coin, coin;
+
+	bool get_coin_flag = false;
 };
