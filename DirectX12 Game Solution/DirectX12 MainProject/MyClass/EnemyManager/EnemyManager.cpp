@@ -42,6 +42,7 @@ bool EnemyManager::Initialize(PlayerBase* player_base)
 
 	player_data = player_base;
 	appear_frame = 0.0f;
+	attack_num = 0;
 	LoadEnemyArrangement();
 	return true;
 }
