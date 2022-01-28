@@ -26,6 +26,17 @@ int C_Camera::Update(PlayerBase* base,int camera_pos_num,const float deltaTime) 
 
 
 	camera->SetPosition(base->GetModel()->GetPosition().x, fixed_pos, -camera_z);
+	SimpleMath::Vector3 camera_pos = camera.GetPosition();
+	if (camera_pos.x >= 40.0f) {
+		camera_pos.x = 40.0f;
+		camera->SetPosition(camera_pos);
+	}
+	if (camera_pos.x <= -40.0f) {
+		camera_pos.x = -40.0f;
+		camera->SetPosition(camera_pos);
+	}
+
+
 	return 0;
 }
 
