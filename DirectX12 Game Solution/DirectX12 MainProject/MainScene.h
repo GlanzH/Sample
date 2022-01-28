@@ -114,7 +114,7 @@ private:
 	float backenvironmentalcolor_x, backenvironmentalcolor_y, backenvironmentalcolor_z;
 
 	float playercone, backcone;
-
+	float playerback;
 
 	float range = 0.8f;
 	float end_frame = 0.0f;

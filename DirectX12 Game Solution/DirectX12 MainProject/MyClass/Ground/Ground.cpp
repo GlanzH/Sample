@@ -2,10 +2,10 @@
 
 void Ground::LoadAsset() {
 
-	model = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\Forest\\bg_forest.X");	
+	model = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\Forest\\bg_remains.X");	
 	model->SetPosition(0.0f, pos_y, 10.0f);
-	model = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\BackGround\\bg_forest.X");
-	a = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\Forest\\bg_forest.X");
+	model = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\BackGround\\bg_remains.X");
+	a = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\Forest\\bg_remains.X");
 	model->SetPosition(0.0f, -23.0, 0.0f);
 	//a->SetPosition(0, -25, 0);
 	//a->SetScale(0.4f);

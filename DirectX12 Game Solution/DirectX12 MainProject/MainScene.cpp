@@ -78,6 +78,7 @@ void MainScene::Initialize()
 	backlight_y = 0;
 	playercone = 30.0f;
 	backcone = 0.0f;
+	playerback = 0.0f;
 	std::ifstream infile("hiscore.dxt");
 
 	infile >> lightColor_x >> lightColor_y >> lightColor_z >> backlight_x >> backlight_y >> backlight_z;
@@ -416,6 +417,15 @@ void MainScene::Writing()
 		backcone -= 0.001f;
 		}
 	backcone = std::clamp(backcone,0.0f, 100.0f);
+	if (DXTK->KeyState->D4)
+	{
+		playerback += 1.0f;
+	}
+	if (DXTK->KeyState->D5)
+	{
+		playerback -= 1.0f;
+	}
+	playerback = std::clamp(playerback, 0.0f, 100.0f);
 }
 
 
@@ -455,7 +465,7 @@ void MainScene::Render()
 	point.SetPower(1.5f,0);
 	point.SetPower(2.5f, 1);
 	point.SetPosition(Vector3(0, backlight_y, backlight_z), 0);
-	point.SetPosition(player->GetModel()->GetPosition() + Vector3(0, 50, 0), 1);
+	point.SetPosition(player->GetModel()->GetPosition() + Vector3(0, 50, playerback), 1);
 	point.SetCone(backcone,0);
 	point.SetCone(playercone, 1);
 	point.PointRender(*camera.GetCamera(), ground.GetModel());
@@ -483,7 +493,8 @@ void MainScene::Render()
 	if (enemy->IsTimeStop())
 		dialogue.Render(enemy->GetTimeStopCount());
 //#ifdef DEBUG
-	
+	DX9::SpriteBatch->DrawString(font.Get(), SimpleMath::Vector2(950.0f, 140.0f), DX9::Colors::BlueViolet, L"キャラのZ 座標           + 4 - 5");
+	DX9::SpriteBatch->DrawString(font.Get(), SimpleMath::Vector2(950.0f, 190.0f), DX9::Colors::BlueViolet, L"%.2f", playerback);
 	DX9::SpriteBatch->DrawString(font.Get(), SimpleMath::Vector2(950.0f, 240.0f), DX9::Colors::BlueViolet, L"キャラライトの範囲 +U -I");
 	DX9::SpriteBatch->DrawString(font.Get(), SimpleMath::Vector2(950.0f, 290.0f), DX9::Colors::BlueViolet, L"%.2f", playercone);
 	DX9::SpriteBatch->DrawString(font.Get(), SimpleMath::Vector2(950.0f, 340.0f), DX9::Colors::BlueViolet, L"背景ライトの範囲 + O -P");
