@@ -46,7 +46,6 @@ private:
 	enum EnemyType { 
 		SWORD_MAN,
 		SHIELDER,
-		RAND_SWORD,
 		ARROW,
 		MODEL_MAX
 	};
