@@ -22,12 +22,12 @@ public:
 	~EnemyBase() {};
 
 	virtual bool Initialize(std::string tag, double init_wait, double stop_pos,
-							double speed, std::string direct, std::string posture, int hp);
+		double speed, std::string direct, std::string posture, int hp);
 
 	virtual void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 	void LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 
-	virtual int  Update(SimpleMath::Vector3 player,bool destroy_flag, const float deltaTime);
+	virtual int  Update(SimpleMath::Vector3 player, bool destroy_flag, const float deltaTime);
 	virtual void Render() {};
 	void Retreat();
 	void DieFlag();
@@ -56,8 +56,8 @@ public:
 private:
 	void IsDamage();
 
-	EFFECTHANDLE hit_handle, star_handle, confetti_handle, die_handle, special_die_handle, love_handle,del_handle;
-	EFFECT hit, star, confetti, normal_die, special_die, love,del;
+	EFFECTHANDLE hit_handle, star_handle, confetti_handle, die_handle, special_die_handle, love_handle, del_handle;
+	EFFECT hit, star, confetti, normal_die, special_die, love, del;
 
 	ExplodeMan explode;
 
@@ -97,7 +97,7 @@ protected:
 	virtual void IsRetreat();
 
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack, int max_motion);
-	void NormalDeathEffect(float max_death,bool confetti_effect,bool death_effect,int effect_count);
+	void NormalDeathEffect(float max_death, bool confetti_effect, bool death_effect, int effect_count);
 	void AdjustAnimCollision();
 	bool Stun();
 
@@ -135,14 +135,14 @@ protected:
 	float  delta;
 
 	bool retreat_flag;
-	bool die_flag    = false;
+	bool die_flag = false;
 	bool attack_flag = false;
 	bool temporary_death_flag = false;
 
 	bool confetti_effect_flag = false;
-	bool death_effect_flag    = false;
+	bool death_effect_flag = false;
 	int effect_count = 0;
-	
+
 	float is_damage = 0.0f;
 
 	Collision col;
@@ -151,6 +151,6 @@ protected:
 
 	enum {
 		CONFINETTI = 1,
-		DEATH      = 2
+		DEATH = 2
 	};
 };
