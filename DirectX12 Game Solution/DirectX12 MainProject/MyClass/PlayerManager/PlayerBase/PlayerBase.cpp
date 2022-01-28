@@ -221,7 +221,7 @@ bool PlayerBase::Initialize()
 
 void PlayerBase::LoadAssets()
 {
-	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v0125_.X");
+	model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Player\\chara_motion_v0128b_.X");
 	model->SetScale(model_scale);
 	model->SetPosition(player_pos);
 	model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
@@ -641,6 +641,8 @@ void PlayerBase::Player_move(const float deltaTime)
 			}
 		}
 	}
+
+	
 }
 
 
@@ -660,8 +662,7 @@ void PlayerBase::Player_jump(const float deltaTime) {
 	//ƒWƒƒƒ“ƒv
 	if (!s_del_flag && !avoidance_flag && lower_state_mode == Lower_State::NOT_LOWER && upper_state_mode == Upper_State::NOT_UPPER) {
 		if (!jump_flag_) {
-			if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
-				jump_start_flag = true;
+			if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {				
 				jump_flag_ = true;
 				jump_time_ = 0;
 				jump_start_v_ = model->Position.y;
@@ -670,22 +671,16 @@ void PlayerBase::Player_jump(const float deltaTime) {
 
 	}
 
-	if (jump_start_flag) {
-		SetAnimation(model, JUMP);
-		jump_start_time += deltaTime;
-	}
-
-	if (jump_flag_ && jump_start_time >= jump_start_time_max) {
+	if (jump_flag_) {
 
 		jump_time_ += deltaTime;
 		auto pos = model->GetPosition();
+		SetAnimation(model, JUMP);
 		pos.y = jump_start_v_ + V0 * jump_time_ - 0.5f * gravity_ * jump_time_ * jump_time_;
 		model->SetPosition(pos);
 
 		if (model->GetPosition().y <= 0.65f) {
 			jump_flag_ = false;
-			jump_start_flag = false;
-			jump_start_time = 0.0f;
 			model->SetTrackPosition(JUMP, 0.0);
 		}
 	}

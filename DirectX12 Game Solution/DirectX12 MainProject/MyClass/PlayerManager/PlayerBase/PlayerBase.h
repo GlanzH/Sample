@@ -146,7 +146,7 @@ private:
 	//プレイヤー
 	DX9::SKINNEDMODEL model;
 	SimpleMath::Vector3 player_pos = SimpleMath::Vector3(0.0f, 0.0f, 50.0f);
-	float model_scale = 1.0f;
+	float model_scale = 0.25f;
 	float model_rotetion = -90.0f;
 
 	//プレイヤーの移動制限(幅)
