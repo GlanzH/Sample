@@ -10,7 +10,21 @@ enum EnemyState {
 	AUTO,
 };
 
+/**
+ * @enum Direct
+ * “G‚ÌŒü‚«
+ */
 enum Direct {
 	RIGHT,
 	LEFT
+};
+
+
+/**
+ * @enum Postune
+ * “G‚Ì\‚¦
+ */
+enum Postune {
+	UPPER = 1,
+	LOWER = 2
 };

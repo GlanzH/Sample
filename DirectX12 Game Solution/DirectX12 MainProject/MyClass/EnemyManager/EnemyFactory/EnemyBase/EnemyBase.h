@@ -67,7 +67,7 @@ private:
 	std::string enemy_tag;
 
 	int   retreat_count = 0;
-	const int max_retreat = 30;
+	const int max_retreat = 10;
 
 	float auto_destroy_frame = 0.0f;
 	const float max_auto_destroy = 1.5f;
@@ -75,14 +75,14 @@ private:
 	float damage_frame = 0.0f;
 	const float max_damage = 2.0f;
 
-	const float retreat_dist = 15.0f;
+	const float retreat_dist = 10.0f;
 
 	bool reduce_audience_flag = false;
 
 	//!演出をする敵かのフラグ
 	std::string enemy_stop_flag = "";
 
-	bool damage_flag = false;
+	bool dest_flag = false;
 
 	//!スタン用
 	float stun_frame = 0.0f;
@@ -134,6 +134,7 @@ protected:
 	double enemy_stop;
 	float  delta;
 
+	bool damage_flag = false;
 	bool retreat_flag;
 	bool die_flag = false;
 	bool attack_flag = false;

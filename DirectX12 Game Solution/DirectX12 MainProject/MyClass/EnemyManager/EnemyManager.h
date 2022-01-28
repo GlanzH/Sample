@@ -94,22 +94,8 @@ private:
 		TIME_STOP
 	};
 
-	enum {
-		UPPER = 1,
-		LOWER = 2
-	};
-
 	enum SumEnemy {
-		ONE = 1,
-		TWO,
-		THREE,
-		FOUR,
-		FIVE,
-		SIX,
-		SEVEN,
-		EIGHT,
-		NINE,
-		MAX_WAVE
+		MAX_WAVE = 10
 	};
 
 	int count = 0;                          //!敵の累計出現数カウント 

@@ -94,6 +94,7 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool destroy_flag, const float
 {
 	delta = deltaTime;
 	player_pos = player;
+	dest_flag = destroy_flag;
 
 	IsDamage();
 	IsRetreat();
@@ -211,7 +212,7 @@ void EnemyBase::TemporaryDeath() {
 			star_handle = DX12Effect.Play(star, position + SimpleMath::Vector3(0, 8, 0));
 	}
 
-	if (StatusManager::Instance().GetHitComboTime() == 0.0f) {
+	if (temporary_death_flag && StatusManager::Instance().GetHitComboTime() == 0.0f) {
 		//‰¼€ó‘Ô‰ğœ‚·‚é‚â‚Â
 		DX12Effect.Stop(star_handle);
 		enemy_hp = init_hp;
