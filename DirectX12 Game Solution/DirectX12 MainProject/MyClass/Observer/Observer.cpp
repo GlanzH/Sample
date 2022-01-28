@@ -1,11 +1,18 @@
 #include "MyClass/Observer/Observer.h"
 
-int Observer::Update(PlayerBase* player, EnemyManager* enemy, AudienceManager* audience) {
-	CollisionDetection(player, enemy,audience);
+int Observer::Update(PlayerBase* player, EnemyManager* enemy, CoinManager coin) {
+	CollisionDetection(player, enemy,coin);
 	return 0;
 }
 
-void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, AudienceManager* audience) {
+void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, CoinManager coin) {
+	for (auto coins_roop : coin.GetCoin()) {
+		if (player->GetBox().box.Intersects(coins_roop->GetBox())) {
+			coin.OnCollisionEnter(coins_roop);
+		}
+	}
+	
+	
 	for (auto enemies_roop : enemy->GetEnemy()) {
 		if (player->IsAttack()) {
 			if (player->GetBox().sword_box.Intersects(enemies_roop->GetBox().box)) {

@@ -94,7 +94,6 @@ void MainScene::LoadAssets()
 	player->LoadAssets();
 	audience->LoadAssets();
 	dialogue.LoadAssets();
-	coin.LoadAssets();
 	UIManager::Instance().LoadAsset();
 	SceneManager::Instance().LoadAsset();
 
@@ -150,7 +149,7 @@ NextScene MainScene::Update(const float deltaTime)
 		player->Update(delta_time, enemy->GetTemporaryDeath());
 		enemy->Update(player->GetModel()->GetPosition(), player->GetAttackTag(), player->GetEnemyDeathFlag(), delta_time);
 		camera.Update(player, OUT_ZOOM, delta_time);
-		observer->Update(player, enemy, audience);
+		observer->Update(player, enemy, coin);
 		dialogue.ResetCount();
 		process.Update(enemy,deltaTime);
 		coin.Update();
@@ -245,6 +244,7 @@ void MainScene::Render()
 	player->Render();
 	enemy->Render();
 	audience->Render();
+	coin.Render();
 
 	DX9::SpriteBatch->Begin();
 

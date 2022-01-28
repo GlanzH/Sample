@@ -4,24 +4,35 @@
 #include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/EnumManager/EnumManager.h"
 
-void CoinManager::LoadAssets() {
-	for (auto coin : coin) {
-		coin->LoadAssets();
-	}
-}
-
 int CoinManager::Update() {
 	Iterator();
-	Generator();
-	for (auto coin : coin) {
-		coin->Update();
+
+	if (!test_flag) {
+		Generator();
+		test_flag = true;
+	}
+
+	for (auto coins : coin) {
+		coins->Update();
 	}
 	return 0;
 }
 
+void CoinManager::Render() {
+	for (auto coins : coin) {
+		coins->Render();
+	}
+}
 
 void CoinManager::Generator() {
+	coin.push_back(Create(SimpleMath::Vector3(30,0,70)));
+}
 
+Coin* CoinManager::Create(SimpleMath::Vector3 position) {
+	Coin* create_coin = new Coin;
+	create_coin->LoadAssets(position);
+
+	return create_coin;
 }
 
 void CoinManager::Iterator() {

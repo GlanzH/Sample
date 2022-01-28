@@ -3,13 +3,13 @@
 #include "Base/dxtk.h"
 #include "MyClass/PlayerManager/PlayerBase/PlayerBase.h"
 #include "MyClass/EnemyManager/EnemyManager.h"
-#include "MyClass/AudianceManager/AudianceManager.h"
+#include "MyClass/CoinManager/CoinManager.h"
 
 
 class Observer {
 public:
-	int  Update(PlayerBase* player, EnemyManager* enemy, AudienceManager* audience);
-	void CollisionDetection(PlayerBase* player, EnemyManager* enemy, AudienceManager* audience);
+	int  Update(PlayerBase* player, EnemyManager* enemy, CoinManager coin);
+	void CollisionDetection(PlayerBase* player, EnemyManager* enemy, CoinManager coin);
 
 	void Hit_Stop(const float deltaTime);
 
