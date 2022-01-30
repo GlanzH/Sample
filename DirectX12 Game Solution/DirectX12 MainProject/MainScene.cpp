@@ -35,7 +35,7 @@ void MainScene::Initialize()
 	SceneManager::Instance().Initialize();
 	StatusManager::Instance().Initialize();
 	UIManager::Instance().Initialize();
-	time.Initialize();
+	//time.Initialize();
 	//ƒtƒHƒ“ƒg
 	font = DX9::SpriteFont::CreateDefaultFont(DXTK->Device9);
 	point.Init(2);
@@ -183,7 +183,7 @@ NextScene MainScene::Update(const float deltaTime)
 		camera.Update(player, OUT_ZOOM, deltaTime);
 		observer->Update(player, enemy, audience);
 		dialogue.ResetCount();
-		time.Update(enemy,deltaTime);
+	//	time.Update(enemy,deltaTime);
 
 		//ChangeBGM(MAIN);
 		light_mode = OUT_ZOOM;
@@ -487,7 +487,7 @@ void MainScene::Render()
 
 	//2D•`‰æ
 	UIManager::Instance(). Render();
-	time.Render();
+	//time.Render();
 	player->Debug();
 	SceneManager::Instance().Render();
 	if (enemy->IsTimeStop())
