@@ -17,7 +17,7 @@ public:
 
 	bool Initialize();
 	void LoadAssets();
-	int Update(const float deltaTime);
+	int Update(const float deltaTime, bool temp);
 	void Render();
 
 

@@ -1,17 +1,38 @@
 #pragma once
+#include "Base/pch.h"
+#include "Base/dxtk.h"
 #include "Base/DX12Effekseer.h"
+
+using namespace DirectX;
 
 class Coin {
 public:
-	void LoadAssets();
-	int Update();
+	Coin() {};
+	~Coin() {};
+	void LoadAssets(SimpleMath::Vector3 position);
+	int Update(const float deltaTime);
 
 	int  LifeDeathDecision();
 	void GetCoin() { get_coin_flag = true; }
 
-private:
-	EFFECTHANDLE many_coin_handle, coin_handle;
-	EFFECT       many_coin, coin;
+	BoundingBox GetBox() { return box; }
 
-	bool get_coin_flag = false;
+private:
+	DX9::MODEL  collision;
+	BoundingBox box;
+
+	EFFECTHANDLE  plus_handle,coin_handle;
+	EFFECT        plus, coin;
+
+	SimpleMath::Vector3 pos;
+	SimpleMath::Vector3 col_pos;
+
+	bool stop_flag;
+	bool get_coin_flag;
+
+	float dest_frame;
+	const float max_dest = 10.0f;
+
+	float wait_frame;
+	const float max_wait = 0.5f;
 };
