@@ -18,6 +18,24 @@ bool EnemyBase::Initialize(
 	max_init_wait = init_wait;
 
 	retreat_flag = false;
+	damage_flag  = false;
+	die_flag     = false;
+	attack_flag  = false;
+	dest_flag    = false;
+
+	temporary_death_flag = false;
+	confetti_effect_flag = false;
+	death_effect_flag    = false;
+
+	retreat_count = 0;
+	effect_count  = 0;
+
+	dead_frame         = 0.0f;
+	is_damage          = 0.0f;
+	init_wait_frame    = 0.0f;
+	death_frame        = 0.0f;
+	auto_destroy_frame = 0.0f;
+	damage_frame       = 0.0f;
 
 	return true;
 }
@@ -25,7 +43,7 @@ bool EnemyBase::Initialize(
 void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
 	position = initial_position;
 
-	//!アニメーションモデルの作成
+	//!アニメーションモデルの作成(処理落ちの原因？)(並列処理入れたりするなど)
 	anim_model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
 	anim_model->SetPosition(position);
 
@@ -210,22 +228,6 @@ bool EnemyBase::FrontFlag() {
 	if (position.x > player_pos.x && direct == RIGHT ||
 		position.x < player_pos.x && direct == LEFT)
 		return true;
-
-	return false;
-}
-
-bool EnemyBase::Stun() {
-	if (enemy_hp == 1 && stun_frame < max_stun) {
-
-		if (!DX12Effect.CheckAlive(star_handle))
-			star_handle = DX12Effect.Play(star, position + SimpleMath::Vector3(0, 10, 0));
-
-		stun_frame += delta;
-		return true;
-	}
-
-	if (enemy_hp <= 0)
-		DX12Effect.Stop(star_handle);
 
 	return false;
 }

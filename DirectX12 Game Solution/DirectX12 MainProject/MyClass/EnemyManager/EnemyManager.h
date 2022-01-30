@@ -23,11 +23,11 @@ public:
 	std::vector<EnemyBase*> GetEnemy() { return enemy; }
 
 	int  GetWaveEnemy();
-	int  GetRemainEnemy() { return remain_enemy_count; }
+	int  GetRemainEnemy()     { return remain_enemy_count; }
 	int  GetDeathEnemyCount() { return dead_enemy_count; }
-	int  ResetRemainEnemy() { return remain_enemy_count = 0; }
-	int  ResetDeathEnemy() { return dead_enemy_count = 0; }
-	int  GetTimeStopCount() { return time_stop_count; }
+	int  ResetRemainEnemy()   { return remain_enemy_count = 0; }
+	int  ResetDeathEnemy()    { return dead_enemy_count = 0; }
+	int  GetTimeStopCount()   { return time_stop_count; }
 
 	void StartTimeStop();
 	void EndTimeStop();
@@ -51,35 +51,34 @@ private:
 
 	std::unique_ptr<SoundEffect> hit, die, kill;
 
-	int dead_enemy_count = 0;
-	int remain_enemy_count = 0;
-
-	int time_stop_count = 0;
+	int dead_enemy_count;
+	int remain_enemy_count;
+	int time_stop_count;
 
 	float delta;
 
-	int appear_frame = 0;
+	int appear_frame;
 	const int max_appear_frame = 60;
 
-	float now_time = 0.0f;
+	float now_time;
 
-	float count_frame = 0.0f;
+	float count_frame;
 	const float max_count = 0.1f;
 
 	const float max_frame = 60.0f;
 	const float fix_pos = 10.0f;
 
-	int add_score = 0;
-	int attack_num = 0;
-	int enemy_num = 0;
-	int push_count = 0;
+	int add_score;
+	int attack_num;
+	int enemy_num;
+	int push_count;
 
-	bool enemy_stop_flag = false;
-	bool special_move_flag = false;
-	bool count_dest_flag = false;
-	bool sound_hit_flag = false;
-	bool temporary_flag = false;
-	bool enemy_destroy_flag = false;
+	bool enemy_stop_flag;
+	bool special_move_flag;
+	bool count_dest_flag;
+	bool sound_hit_flag;
+	bool temporary_flag;
+	bool enemy_destroy_flag;
 
 	enum LoadFile {
 		DUMMY_LINE = 8,
@@ -95,7 +94,7 @@ private:
 		MAX_WAVE = 10
 	};
 
-	int count = 0;                          //!敵の累計出現数カウント 
+	int count;                             //!敵の累計出現数カウント 
 	std::string tag[ENEMY_NUM];            //!敵の種類         
 	Vector3		appear_pos[ENEMY_NUM];     //!敵の出現座標
 	double		appear_time[ENEMY_NUM];    //!敵の出現時間
