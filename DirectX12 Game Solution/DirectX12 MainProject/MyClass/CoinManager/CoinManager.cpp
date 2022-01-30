@@ -1,14 +1,24 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 #include "CoinManager.h"
+#include"Coin/Coin.h"
 #include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/EnumManager/EnumManager.h"
+#include <MyClass/ResourceManager/ResourceManager.h>
 
 /**
  * @detail コインを出現させる条件させるになったら、
  * 　　　　コインを出現させる枚数を決める関数をもとに求めた個数分
  * 　　　　Generator関数でコインを作る。
  */
+
+void CoinManager::LoadAssets(SimpleMath::Vector3 position)
+{
+	manycoin = ResourceManager::Instance().LoadEffect(L"Effect/CoinEffect/many_coin/many_coin.efk");
+	pos.x = rand() % 10 + -1;
+	pos.y = 0.0f;
+	pos.z = 50.0f;
+}
 
 int CoinManager::Update(const float deltaTime) {
 	Iterator();
@@ -38,6 +48,11 @@ void CoinManager::Generator() {
 	distribute = std::uniform_int_distribution<int>(-60, 60);
 	 int pos_x = distribute(random);
 
+
+	 for (combo = 0; combo<6; combo++)
+	 {
+		 ComboCoin(combo);
+	 }
 	//coin.push_back(Create(SimpleMath::Vector3(pos_x, 0,80)));
 	//}
 }
@@ -71,27 +86,28 @@ void CoinManager::OnCollisionEnter(Coin* this_coin) {
 	this_coin->GetCoin();
 }
 
-void CoinManager::ComboCoin()
+void CoinManager::ComboCoin(int coincount)
 {
 	switch (combo)
 	{
 	case 1:
-
+		manycoin_handle = DX12Effect.Play(manycoin, pos);
 		break;
 	case 2:
-
+		manycoin_handle = DX12Effect.Play(manycoin, pos);
 		break;
 	case 3:
-
+		manycoin_handle = DX12Effect.Play(manycoin, pos);
 		break;
 	case 4:
-
+		manycoin_handle = DX12Effect.Play(manycoin, pos);
+		break;
+	case 5:
+		manycoin_handle = DX12Effect.Play(manycoin, pos);
 		break;
 	default:
-		if (combo >= 5) {
-			float BonusCoin = (combo * 50.0f) - 100.0f;
-		
-
+		if (combo >= 6) {
+			manycoin_handle = DX12Effect.Play(manycoin, pos);
 		}
 		break;
 	}
