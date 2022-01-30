@@ -1,7 +1,6 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 #include "CoinManager.h"
-#include"Coin/Coin.h"
 #include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/EnumManager/EnumManager.h"
 #include <MyClass/ResourceManager/ResourceManager.h>
@@ -12,18 +11,39 @@
  * 　　　　Generator関数でコインを作る。
  */
 
-void CoinManager::LoadAssets(SimpleMath::Vector3 position)
+void CoinManager::LoadAssets()
 {
 	manycoin = ResourceManager::Instance().LoadEffect(L"Effect/CoinEffect/many_coin/many_coin.efk");
-	pos.x = rand() % 10 + -1;
-	pos.y = 0.0f;
-	pos.z = 50.0f;
+
+	effect_frame = 0.0f;
+
+	create_coins = 0;
+	create_coin_flag = false;
 }
 
-int CoinManager::Update(const float deltaTime) {
+int CoinManager::Update(SimpleMath::Vector3 position,bool death_flag,int death_enemy,const float deltaTime) {
 	Iterator();
 
-	Generator();
+	pos = SimpleMath::Vector3(position.x,0,50);
+	DX12Effect.SetRotation(manycoin_handle,Vector3(0,160,0));
+
+	if (death_flag && death_enemy > 0) {
+	  if (!DX12Effect.CheckAlive(manycoin_handle))
+		   manycoin_handle = DX12Effect.Play(manycoin, pos);
+
+	  create_coin_flag = true;
+	}
+
+	if (create_coin_flag) {
+		if (effect_frame < max_effect) {
+			effect_frame += deltaTime;
+		}
+		else {
+			ComboCoin(death_enemy);
+			create_coin_flag = false;
+		}
+	}
+
 
 	if (coin.size() > 0) {
 		for (auto coins : coin) {
@@ -44,17 +64,11 @@ void CoinManager::Generator() {
 	std::random_device pos_x_seed;
 	random = std::mt19937(pos_x_seed());
 
-	//for(int i = 0; i < 個数; ++i){
+ for(int i = 0; i < create_coins; ++i){
 	distribute = std::uniform_int_distribution<int>(-60, 60);
 	 int pos_x = distribute(random);
-
-
-	 for (combo = 0; combo<6; combo++)
-	 {
-		 ComboCoin(combo);
-	 }
-	//coin.push_back(Create(SimpleMath::Vector3(pos_x, 0,80)));
-	//}
+	coin.push_back(Create(SimpleMath::Vector3(pos_x, 0,80)));
+ }
 }
 
 Coin* CoinManager::Create(SimpleMath::Vector3 position) {
@@ -86,29 +100,35 @@ void CoinManager::OnCollisionEnter(Coin* this_coin) {
 	this_coin->GetCoin();
 }
 
-void CoinManager::ComboCoin(int coincount)
+void CoinManager::ComboCoin(int combocoin)
 {
-	switch (combo)
+	switch (combocoin)
 	{
 	case 1:
-		manycoin_handle = DX12Effect.Play(manycoin, pos);
+		create_coins = 1;
+		Generator();
 		break;
 	case 2:
-		manycoin_handle = DX12Effect.Play(manycoin, pos)*2;
+		create_coins = 2;
+		Generator();
 		break;
 	case 3:
-		manycoin_handle = DX12Effect.Play(manycoin, pos)*4;
+		create_coins = 4;
+		Generator();
 		break;
 	case 4:
-		manycoin_handle = DX12Effect.Play(manycoin, pos)*7;
+		create_coins = 7;
+		Generator();
 		break;
 	case 5:
-		manycoin_handle = DX12Effect.Play(manycoin, pos)*11;
+		create_coins = 11;
+		Generator();
 		break;
 	default:
-		if (combo >= 6) {
-			manycoin_handle = DX12Effect.Play(manycoin, pos)*16;
+		if (combocoin >= 6) {
+			create_coins = 16;
 		}
+		Generator();
 		break;
 	}
 }

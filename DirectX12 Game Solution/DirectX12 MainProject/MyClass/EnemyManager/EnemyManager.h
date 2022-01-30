@@ -33,6 +33,7 @@ public:
 	void EndTimeStop();
 	bool IsTimeStop() { return enemy_stop_flag; }
 	bool GetTemporaryDeath();
+	bool GetDeathFlag() { return death_flag; }
 
 	void OnCollisionEnter(EnemyBase* base);
 private:
@@ -79,6 +80,7 @@ private:
 	bool sound_hit_flag;
 	bool temporary_flag;
 	bool enemy_destroy_flag;
+	bool death_flag;
 
 	enum LoadFile {
 		DUMMY_LINE = 8,
