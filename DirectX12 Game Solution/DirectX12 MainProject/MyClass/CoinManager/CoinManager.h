@@ -15,6 +15,8 @@ public:
 	void Iterator();
 	void Generator();
 	void OnCollisionEnter(Coin* this_coin);
+	void ComboCoin();
 private:
 	std::vector<Coin*> coin;
+	int combo;
 };

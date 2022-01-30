@@ -6,6 +6,7 @@
 
 void Coin::LoadAssets() {
 
+
 }
 
 int Coin::Update() {
