@@ -42,7 +42,32 @@ bool EnemyManager::Initialize(PlayerBase* player_base)
 
 	player_data = player_base;
 	appear_frame = 0.0f;
+	attack_num = 0;
 	LoadEnemyArrangement();
+
+	count = 0;
+
+	dead_enemy_count   = 0;
+	remain_enemy_count = 0;
+	time_stop_count    = 0;
+
+	appear_frame = 0;
+
+	now_time    = 0.0f;
+	count_frame = 0.0f;
+
+	add_score  = 0;
+	attack_num = 0;
+	enemy_num  = 0;
+	push_count = 0;
+
+	enemy_stop_flag    = false;
+	special_move_flag  = false;
+	count_dest_flag    = false;
+	sound_hit_flag     = false;
+	temporary_flag     = false;
+	enemy_destroy_flag = false;
+
 	return true;
 }
 
@@ -57,7 +82,7 @@ int EnemyManager::Update(SimpleMath::Vector3 player, int attack, bool destroy_fl
 	}
 
 	Iterator();
-	AllDeathBonus();
+	//AllDeathBonus();
 
 	if (count < ENEMY_NUM) {
 		if (AppearTime() >= appear_time[count] && wave_num[count] == StatusManager::Instance().GetWave()) {
@@ -144,15 +169,15 @@ void EnemyManager::Generator() {
 	}
 
 }
-
-void EnemyManager::AllDeathBonus() {
-	if (GetWaveEnemy() - dead_enemy_count == 0 && GetWaveEnemy() != 0) {
-		int time = (int)StatusManager::Instance().GetTime();
-
-		StatusManager::Instance().SetAddScore(time);
-		StatusManager::Instance().ResetWaveTime();
-	}
-}
+//
+//void EnemyManager::AllDeathBonus() {
+//	if (GetWaveEnemy() - dead_enemy_count == 0 && GetWaveEnemy() != 0) {
+//		int time = (int)StatusManager::Instance().GetTime();
+//
+//		StatusManager::Instance().SetAddScore(time);
+//		StatusManager::Instance().ResetWaveTime();
+//	}
+//}
 
 float EnemyManager::AppearTime() {
 	if (StatusManager::Instance().GetTime() == 0.0f) {

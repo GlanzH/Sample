@@ -15,10 +15,10 @@ void PlayerManager::LoadAssets() {
 
 }
 
-int PlayerManager::Update(const float deltaTime)
+int PlayerManager::Update(const float deltaTime, bool temp)
 {
 
-//	player_base.Update(deltaTime);
+	player_base.Update(deltaTime, temp);
 
 	return 0;
 }
@@ -26,4 +26,5 @@ int PlayerManager::Update(const float deltaTime)
 void PlayerManager::Render() 
 {
 	player_base.Render();
+	player_base.Debug();
 }

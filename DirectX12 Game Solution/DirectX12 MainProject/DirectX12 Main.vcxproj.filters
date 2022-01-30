@@ -255,9 +255,6 @@
     <ClCompile Include="ResultScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerBase.cpp">
-      <Filter>MyClass\PlayerManager\PlayerBase</Filter>
-    </ClCompile>
     <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.cpp">
       <Filter>MyClass\PlayerManager\PlayerBase\PlayerAttack</Filter>
     </ClCompile>
@@ -316,6 +313,9 @@
       <Filter>MyClass\CoinManager\Coin</Filter>
     </ClCompile>
     <ClCompile Include="EndingScene.cpp" />
+    <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerBase.cpp">
+      <Filter>MyClass\PlayerManager\PlayerBase</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resource\directx.ico">
