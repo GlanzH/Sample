@@ -35,8 +35,9 @@ void StatusManager::Update(const float deltaTime, int remain_enemy) {
 }
 
 void StatusManager::SetAddScore(float score_size) {
+	//スコアを設定する
 	add_score_size = score_size;
-	now_score += add_score_size;	//現在のスコア
+	now_score += add_score_size;
 
 	now_score = std::clamp(now_score, 0.0f, SCORE_MAX_VALUE);
 
@@ -64,6 +65,7 @@ void StatusManager::SetAddScore(float score_size) {
 
 
 void StatusManager::CalcScore(const float deltaTime) {
+	//スコア増減判定
 	if (plus_score_flag) {
 		ScoreUp(deltaTime);
 	}
@@ -75,20 +77,24 @@ void StatusManager::CalcScore(const float deltaTime) {
 }
 
 void StatusManager::ScoreUp(const float deltaTime) {
+	//スコアを増やす
 	score = std::min(score + SCORE_UPDN_SPEED * deltaTime, now_score);
 	return;
 }
 
 void StatusManager::ScoreDown(const float deltaTime) {
+	//スコアを減らす
 	score = std::max(score - SCORE_UPDN_SPEED * deltaTime, now_score);
 	return;
 }
 
 void StatusManager::AddHitCombo() {
+	//コンボを増やす
 	combo++;
 }
 
 void StatusManager::AddHitComboTime() {
+	//コンボ継続時間を増やす
 	combo_time = COMBO_TIME_NUM;
 	combo_flag = true;
 	UIManager::Instance().ResetAnimeFrame();
@@ -99,6 +105,7 @@ void StatusManager::AddHitComboTime() {
 }
 
 void StatusManager::ComboTime(const float deltaTime) {
+	//コンボ継続時間を減らす
 	combo_time = std::max(combo_time - deltaTime, 0.0f);
 	if (combo_time <= 0.0f) {
 		combo_miss_flag = true;
@@ -108,6 +115,7 @@ void StatusManager::ComboTime(const float deltaTime) {
 }
 
 void StatusManager::ResetHitCombo() {
+	//コンボ数をリセットする
 	if (!combo_miss_flag) {
 		ComboScore();
 	}
@@ -118,23 +126,31 @@ void StatusManager::ResetHitCombo() {
 }
 
 void StatusManager::ComboScore() {
+	//コンボ数に応じたスコアの増加
 	switch (combo) {
 	case 1:
 		SetAddScore(10.0f);
+		UIManager::Instance().PlayCracker();
+		UIManager::Instance().SetAudienceState(1);
 		break;
 	case 2:
 		SetAddScore(30.0f);
+		UIManager::Instance().SetAudienceState(1);
 		break;
 	case 3:
 		SetAddScore(60.0f);
+		UIManager::Instance().SetAudienceState(1);
 		break;
 	case 4:
 		SetAddScore(100.0f);
+		UIManager::Instance().SetAudienceState(2);
 		break;
 	default:
 		if (combo >= 5) {
 			float BonusScore = (combo * 50.0f) - 100.0f;
 			SetAddScore(BonusScore);
+			UIManager::Instance().PlayCracker();
+			UIManager::Instance().SetAudienceState(2);
 		}
 		break;
 	}
@@ -143,6 +159,7 @@ void StatusManager::ComboScore() {
 }
 
 void StatusManager::SetWave(int wave_num) {
+	//ウェーブごとの時間設定
 	wave = wave_num;
 
 	switch (wave)
@@ -175,11 +192,13 @@ void StatusManager::SetWave(int wave_num) {
 }
 
 void StatusManager::WaveTimeLimit(const float deltaTime) {
+	//ウェーブの時間を減らす
 	wave_time = std::max(wave_time - deltaTime, 0.0f);
 	return;
 }
 
 void StatusManager::ResetWaveTime() {
+	//ウェーブの時間をリセットしてスコアを増減させる
 	if (!wave_change_flag) {
 		float TimeBonus = wave_time * 5.0f;
 		float LostEnemy = enemy_num * -30.0f;

@@ -103,6 +103,7 @@ void MainScene::LoadAssets()
 	SceneManager::Instance().LoadAsset();
 
 	DX12Effect.SetCamera(camera.GetCamera());
+	UIManager::Instance().SetUICamera(camera.GetCamera());
 }
 
 // Releasing resources required for termination.
@@ -253,7 +254,7 @@ void MainScene::Render()
 
 	player->Render();
 	enemy->Render();
-	audience->Render();
+	//audience->Render();
 
 	DX9::SpriteBatch->Begin();
 
