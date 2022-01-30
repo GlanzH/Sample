@@ -94,20 +94,20 @@ void CoinManager::ComboCoin(int coincount)
 		manycoin_handle = DX12Effect.Play(manycoin, pos);
 		break;
 	case 2:
-		manycoin_handle = DX12Effect.Play(manycoin, pos);
+		manycoin_handle = DX12Effect.Play(manycoin, pos)*2;
 		break;
 	case 3:
-		manycoin_handle = DX12Effect.Play(manycoin, pos);
+		manycoin_handle = DX12Effect.Play(manycoin, pos)*4;
 		break;
 	case 4:
-		manycoin_handle = DX12Effect.Play(manycoin, pos);
+		manycoin_handle = DX12Effect.Play(manycoin, pos)*7;
 		break;
 	case 5:
-		manycoin_handle = DX12Effect.Play(manycoin, pos);
+		manycoin_handle = DX12Effect.Play(manycoin, pos)*11;
 		break;
 	default:
 		if (combo >= 6) {
-			manycoin_handle = DX12Effect.Play(manycoin, pos);
+			manycoin_handle = DX12Effect.Play(manycoin, pos)*16;
 		}
 		break;
 	}
