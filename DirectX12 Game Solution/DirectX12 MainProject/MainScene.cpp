@@ -36,12 +36,16 @@ void MainScene::Initialize()
 	UIManager::Instance().Initialize();
 	process.Initialize();
 
-	point.Init(1);
-	point.SetAmbientColor(Vector4(0, 0, 255, 1.0f),0);
-	point.SetAtt(Vector3(0.65f, 0.001f, 0), 0);
-	point.SetLightColor(SimpleMath::Vector4(255.0f, 189, 76, 1.0f), 0);
-	//point.SetPosition(Vector3(0, -5, 0),0);
-	//point.SetAngle(Vector3(0,0,1), 0);
+	point.Init(2);
+
+	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 0.0f),0);
+	point.SetAtt(Vector3(0.25f, 0.01f, 0), 0);
+	point.SetLightColor(SimpleMath::Vector4(0.0f, 147.0f, 165.0f, 1.0f), 0);
+
+	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f), 1);
+	point.SetAtt(Vector3(0.05f, 0.01f, 0), 1);
+	point.SetLightColor(SimpleMath::Vector4(175.0f, 74.0f, 94.0f, 1.0f), 1);
+	
 	texLight.Init();
 
 	//enemy->StartTimeStop();
@@ -94,6 +98,7 @@ void MainScene::LoadAssets()
 	player->LoadAssets();
 	audience->LoadAssets();
 	dialogue.LoadAssets();
+	coin.LoadAssets();
 	UIManager::Instance().LoadAsset();
 	SceneManager::Instance().LoadAsset();
 
@@ -152,7 +157,7 @@ NextScene MainScene::Update(const float deltaTime)
 		observer->Update(player, enemy, coin);
 		dialogue.ResetCount();
 		process.Update(enemy,deltaTime);
-		coin.Update(deltaTime);
+		coin.Update(player->GetModel()->GetPosition(),enemy->GetDeathFlag(), enemy->GetDeathEnemyCount(), deltaTime);
 		observer->Hit_Stop(deltaTime);
 
 		//ChangeBGM(MAIN);
@@ -236,7 +241,12 @@ void MainScene::Render()
 	ground.Render();
 	DX12Effect.SetCameraPosition(camera.GetCamera());
 	
-	point.SetPower(1.0f,0);
+	point.SetPower(1.5f, 0);
+	point.SetPower(2.5f, 1);
+	point.SetPosition(Vector3(0.0f, 0.0f, 0.0f), 0);
+	point.SetPosition(player->GetModel()->GetPosition() + Vector3(0, 50, 16.0f), 1);
+	point.SetCone(0.0f, 0);
+	point.SetCone(6.0f, 1);
 	point.PointRender(*camera.GetCamera(), ground.GetModel());
 	
 	point.ShadeRender(player->GetModel(),SimpleMath::Vector4(0,0,1,0.3f));

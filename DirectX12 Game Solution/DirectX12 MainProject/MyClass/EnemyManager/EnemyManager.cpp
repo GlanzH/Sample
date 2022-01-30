@@ -81,6 +81,7 @@ int EnemyManager::Update(SimpleMath::Vector3 player, int attack, bool destroy_fl
 		enemies->Update(player, destroy_flag, delta);
 	}
 
+	death_flag = false;
 	Iterator();
 	//AllDeathBonus();
 
@@ -113,6 +114,7 @@ void EnemyManager::Iterator() {
 						if (!kill->IsInUse())
 							kill->Play();
 
+						death_flag = true;
 						dead_enemy_count++;
 					}
 				}

@@ -9,12 +9,12 @@ class CoinManager {
 public:
 	CoinManager() {}
 	~CoinManager() {}
-	void LoadAssets(SimpleMath::Vector3 position);
-	int  Update(const float deltaTime);
+	void LoadAssets();
+	int  Update(SimpleMath::Vector3 position,bool death_flag, int death_enemy,const float deltaTime);
 
 	std::vector<Coin*> GetCoin() { return coin; }
 	void OnCollisionEnter(Coin* this_coin);
-	void ComboCoin();
+	void ComboCoin(int combocoin);
 private:
 	void Iterator();
 	void Generator();
@@ -28,5 +28,10 @@ private:
 	std::uniform_int_distribution<int> distribute;
 
 	std::vector<Coin*> coin;
-	int combo;
+	int create_coins;
+
+	bool create_coin_flag;
+
+	float effect_frame;
+	const float max_effect = 1.8f;
 };
