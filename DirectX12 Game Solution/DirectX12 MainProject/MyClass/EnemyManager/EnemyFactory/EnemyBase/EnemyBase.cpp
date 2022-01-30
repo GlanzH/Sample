@@ -18,6 +18,24 @@ bool EnemyBase::Initialize(
 	max_init_wait = init_wait;
 
 	retreat_flag = false;
+	damage_flag  = false;
+	die_flag     = false;
+	attack_flag  = false;
+	dest_flag    = false;
+
+	temporary_death_flag = false;
+	confetti_effect_flag = false;
+	death_effect_flag    = false;
+
+	retreat_count = 0;
+	effect_count  = 0;
+
+	dead_frame         = 0.0f;
+	is_damage          = 0.0f;
+	init_wait_frame    = 0.0f;
+	death_frame        = 0.0f;
+	auto_destroy_frame = 0.0f;
+	damage_frame       = 0.0f;
 
 	return true;
 }
@@ -25,7 +43,7 @@ bool EnemyBase::Initialize(
 void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
 	position = initial_position;
 
-	//!アニメーションモデルの作成
+	//!アニメーションモデルの作成(処理落ちの原因？)(並列処理入れたりするなど)
 	anim_model = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, model_name);
 	anim_model->SetPosition(position);
 
@@ -48,17 +66,11 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 
 	collision->SetMaterial(material);
 	col.box.Center = position;
-
-	//special_die  = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die2/die2.efk");
-	hit = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
-	star = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
-	love = ResourceManager::Instance().LoadEffect(L"Effect/AudienceEffect/heart/heart.efk");
-	del = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/delete/delete.efk");
-	confetti = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/confetti/confetti.efk");
+	hit        = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
+	star       = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
+	del        = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/delete/delete.efk");
+	confetti   = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/confetti/confetti.efk");
 	normal_die = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die/die.efk");
-
-	explode.LoadAssets(initial_position.x);
-
 }
 
 void EnemyBase::LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
@@ -94,13 +106,10 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool destroy_flag, const float
 {
 	delta = deltaTime;
 	player_pos = player;
+	dest_flag = destroy_flag;
 
 	IsDamage();
 	IsRetreat();
-
-	if (position.z < 15.0f) {
-		explode.Update(position, delta);
-	}
 
 	return 0;
 }
@@ -140,11 +149,6 @@ void EnemyBase::NormalDeathEffect(float max_death, bool confetti_effect, bool de
 			dead_frame += delta;
 		}
 	}
-}
-
-void EnemyBase::SpecialDeathEffect() {
-	//if (enemy_hp <= 0)
-	//	special_die_handle = DX12Effect.Play(special_die, position);
 }
 
 void EnemyBase::AutoDestoryEffect() {
@@ -211,7 +215,7 @@ void EnemyBase::TemporaryDeath() {
 			star_handle = DX12Effect.Play(star, position + SimpleMath::Vector3(0, 8, 0));
 	}
 
-	if (StatusManager::Instance().GetHitComboTime() == 0.0f) {
+	if (temporary_death_flag && StatusManager::Instance().GetHitComboTime() == 0.0f) {
 		//仮死状態解除するやつ
 		DX12Effect.Stop(star_handle);
 		enemy_hp = init_hp;
@@ -224,22 +228,6 @@ bool EnemyBase::FrontFlag() {
 	if (position.x > player_pos.x && direct == RIGHT ||
 		position.x < player_pos.x && direct == LEFT)
 		return true;
-
-	return false;
-}
-
-bool EnemyBase::Stun() {
-	if (enemy_hp == 1 && stun_frame < max_stun) {
-
-		if (!DX12Effect.CheckAlive(star_handle))
-			star_handle = DX12Effect.Play(star, position + SimpleMath::Vector3(0, 10, 0));
-
-		stun_frame += delta;
-		return true;
-	}
-
-	if (enemy_hp <= 0)
-		DX12Effect.Stop(star_handle);
 
 	return false;
 }

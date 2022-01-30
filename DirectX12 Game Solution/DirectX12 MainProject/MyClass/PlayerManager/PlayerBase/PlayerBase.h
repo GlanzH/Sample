@@ -146,7 +146,7 @@ private:
 	//プレイヤー
 	DX9::SKINNEDMODEL model;
 	SimpleMath::Vector3 player_pos = SimpleMath::Vector3(0.0f, 0.0f, 50.0f);
-	float model_scale = 1.0f;
+	float model_scale = 0.25f;
 	float model_rotetion = -90.0f;
 
 	//プレイヤーの移動制限(幅)
@@ -156,9 +156,9 @@ private:
 	const float model_collision_detection_Z = 100.0f;
 
 	//当たり判定モデルの大きさ
-	const int player_box_size_y = 5;
-	const int player_box_size_x = 5;
-	const int player_box_size_z = 3;
+	const int player_box_size_x = 0.1;
+	const int player_box_size_y = 2;
+	const int player_box_size_z = 1;
 
 	const int box_size_x = 3.5;
 	const int box_size_y = 2;
@@ -222,6 +222,9 @@ private:
 	};
 
 	Invincible_Type invincible_type;
+
+	//ダメージ受けた時
+	bool damage_flag;
 
 	//モーションの名前
 	enum

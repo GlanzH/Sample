@@ -36,16 +36,38 @@ EnemyManager::~EnemyManager() {
 
 bool EnemyManager::Initialize(PlayerBase* player_base)
 {
-	//DX12Effect.Create(L"Effect/EnemyEffect/deathblow_hit/deathblow_hit.efk", "special");
-	//DX12Effect.Create(L"Effect/EnemyEffect/boss_death/boss_death.efk", "boss");
-
 	hit = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/Enemy/hit_se.wav");
 	die = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/Enemy/enemy_die_se.wav");
 	kill = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/Audience/kill_se.wav");
 
 	player_data = player_base;
 	appear_frame = 0.0f;
+	attack_num = 0;
 	LoadEnemyArrangement();
+
+	count = 0;
+
+	dead_enemy_count   = 0;
+	remain_enemy_count = 0;
+	time_stop_count    = 0;
+
+	appear_frame = 0;
+
+	now_time    = 0.0f;
+	count_frame = 0.0f;
+
+	add_score  = 0;
+	attack_num = 0;
+	enemy_num  = 0;
+	push_count = 0;
+
+	enemy_stop_flag    = false;
+	special_move_flag  = false;
+	count_dest_flag    = false;
+	sound_hit_flag     = false;
+	temporary_flag     = false;
+	enemy_destroy_flag = false;
+
 	return true;
 }
 
@@ -60,7 +82,7 @@ int EnemyManager::Update(SimpleMath::Vector3 player, int attack, bool destroy_fl
 	}
 
 	Iterator();
-	AllDeathBonus();
+	//AllDeathBonus();
 
 	if (count < ENEMY_NUM) {
 		if (AppearTime() >= appear_time[count] && wave_num[count] == StatusManager::Instance().GetWave()) {
@@ -74,7 +96,6 @@ int EnemyManager::Update(SimpleMath::Vector3 player, int attack, bool destroy_fl
 }
 
 void EnemyManager::Iterator() {
-
 	for (auto itr = enemy.begin(); itr != enemy.end();)
 	{
 		if (enemy_destroy_flag) {
@@ -148,15 +169,15 @@ void EnemyManager::Generator() {
 	}
 
 }
-
-void EnemyManager::AllDeathBonus() {
-	if (GetWaveEnemy() - dead_enemy_count == 0 && GetWaveEnemy() != 0) {
-		int time = (int)StatusManager::Instance().GetTime();
-
-		StatusManager::Instance().SetAddScore(time);
-		StatusManager::Instance().ResetWaveTime();
-	}
-}
+//
+//void EnemyManager::AllDeathBonus() {
+//	if (GetWaveEnemy() - dead_enemy_count == 0 && GetWaveEnemy() != 0) {
+//		int time = (int)StatusManager::Instance().GetTime();
+//
+//		StatusManager::Instance().SetAddScore(time);
+//		StatusManager::Instance().ResetWaveTime();
+//	}
+//}
 
 float EnemyManager::AppearTime() {
 	if (StatusManager::Instance().GetTime() == 0.0f) {
@@ -233,34 +254,6 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 		base->Damage();
 		base->HitEffect();
 	}
-}
-
-void EnemyManager::OnThrustCollisionEnter(EnemyBase* base) {
-	hit->Play();
-
-	base->Damage();
-}
-
-void EnemyManager::OnCollisionSpecialMove(EnemyBase* base) {
-	if (!hit->IsInUse())
-		hit->Play();
-	//base->Damage(20);
-
-	auto pos = player_data->GetModel()->GetPosition();
-	DX12Effect.Play("special", SimpleMath::Vector3(pos.x, 0, pos.z));
-
-	special_move_flag = true;
-}
-
-void EnemyManager::OnCollisionAudience(EnemyBase* base) {
-	if (!hit->IsInUse())
-		hit->Play();
-	//base->Damage(20);
-
-	auto pos = player_data->GetModel()->GetPosition();
-	DX12Effect.Play("special", SimpleMath::Vector3(pos.x, 0, pos.z));
-
-	special_move_flag = true;
 }
 
 void EnemyManager::LoadEnemyArrangement() {

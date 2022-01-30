@@ -1,5 +1,6 @@
 #pragma once
 #include "../EnemyBase.h"
+#include <random>
 
 class RandSwordMan : public EnemyBase {
 public:
@@ -14,6 +15,7 @@ private:
 	void IsRetreat();
 	void Attack();
 	void Freeze();
+	void Damage();
 	void IsDeath();
 	void InitDirect();
 	void Rotate();
@@ -33,6 +35,10 @@ private:
 	const float max_is_damage = 0.05f;
 
 	bool end_move;
+	int postune_num = 0;
+
+	std::mt19937 random;
+	std::uniform_int_distribution<int> distribute;
 
 	enum class Motion {
 		RUN_UP,

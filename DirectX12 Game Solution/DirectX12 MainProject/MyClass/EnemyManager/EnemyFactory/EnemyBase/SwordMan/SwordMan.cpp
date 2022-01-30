@@ -29,7 +29,7 @@ int SwordMan::Update(SimpleMath::Vector3 player, bool destroy_flag, const float 
 	Freeze();
 	IsDeath();
 
-	if (!temporary_death_flag && !die_flag)
+	if (!retreat_flag && !temporary_death_flag && !die_flag)
 		Action();
 
 	if (is_damage < max_is_damage)
@@ -145,7 +145,7 @@ void SwordMan::Run() {
 void SwordMan::IsRetreat() {
 	EnemyBase::IsRetreat();
 
-	if(enemy_hp > 0 && retreat_flag)
+	if(retreat_flag)
 	SetAnimation(anim_model, (int)Motion::BOUNCE, (int)Motion::MAX_MOTION);
 }
 
