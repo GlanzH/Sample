@@ -25,9 +25,7 @@ public:
 	void ResetAnimeFrame();	//アニメーション再生をリセット
 	void SetAddScore(int add_size);
 	void PlayUIEffect();
-	void PlayCracker();
-	void SetUICamera(DX9::CAMERA* camera) { ui_camaera = camera; }
-	void SetAudienceState(int state);
+
 private:
 	void Animation(const float deltaTime);
 
@@ -42,7 +40,7 @@ private:
 	EFFECTHANDLE effect_handle;
 
 	int score_width;
-	bool icon_play_flag;
+	bool effect_play_flag;
 
 	const int SCORE_MAX_HIGHT = 96;
 	const int SCORE_MIN_WIDTH = 81;
@@ -57,7 +55,6 @@ private:
 	DX9::SPRITE combo_gauge;	//コンボのゲージ
 	DX9::SPRITE combo;	//コンボ文字
 	DX9::SPRITE combo_number;	//コンボ数
-	EFFECT cracker_effect;	//クラッカー
 
 	int combo_anime;
 	int combo_gauge_width;
@@ -67,7 +64,6 @@ private:
 	float combo_anime_frame;	//アニメーション使用変数
 
 	bool combo_digit_up_flag;
-	bool cracker_play_flag;
 
 	const int COMBO_BASE_WIDTH = 331;
 	const int COMBO_BASE_HIGHT = 232;
@@ -107,29 +103,6 @@ private:
 	const float ENEMY_MIN_POS_X = 830.0f;
 	const int ENEMY_HIGHT = 42;
 
-	//観客
-	DX9::SPRITE audience_normal;
-	DX9::SPRITE audience_hard;
-	DX9::SPRITE audience_very_hard;
-	DX9::SPRITE rev_audience_normal;
-	DX9::SPRITE rev_audience_hard;
-	DX9::SPRITE rev_audience_very_hard;
-
-	int audience_anim;
-	int audience_state;
-	float state_reset_time;
-
-	SimpleMath::Vector3 audience_pos;
-	SimpleMath::Vector3 rev_audience_pos;
-
-	enum AUDIENCE_STATE {
-		NORMAL,
-		HARD,
-		VERY_HARD
-	};
-
-
 	//2Dカメラ
 	DX12::CAMERA camera;
-	DX9::CAMERA* ui_camaera;
 };
