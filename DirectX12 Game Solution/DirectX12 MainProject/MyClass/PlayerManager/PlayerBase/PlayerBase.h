@@ -226,6 +226,8 @@ private:
 	//ダメージ受けた時
 	bool damage_flag;
 
+	int damage_se_count = 0;
+
 	//モーションの名前
 	enum
 	{
@@ -261,20 +263,16 @@ private:
 
 	//SE 変数
 	//攻撃-SE
-	XAudio::SOUNDEFFECT  first_attack_se;
-	XAudio::SOUNDEFFECT second_attack_se;
-	XAudio::SOUNDEFFECT  third_attack_se;
-	//ジャンプ
-	XAudio::SOUNDEFFECT jump_se;
-	//着地
-	XAudio::SOUNDEFFECT landing_se;
+	XAudio::SOUNDEFFECT  attack_se;
 
-	//ダメージ
-	XAudio::SOUNDEFFECT damege_se;
+	//攻撃が弾かれる　SE
+	XAudio::SOUNDEFFECT frip_se;
 
-	//アピール
-	XAudio::SOUNDEFFECT appeal_se;
+	//ダメージ SE
+	XAudio::SOUNDEFFECT damage_se;
 
+	//止め SE
+	XAudio::SOUNDEFFECT stop_se;
 
 	//************************************//
 
@@ -347,6 +345,8 @@ private:
 	float s_del_start;
 	float s_del_end;
 
+	int s_del_count = 0;
+
 	//敵の消滅
 	bool elimination_flag;
 	float elimination_end;
@@ -365,6 +365,8 @@ private:
 	void Frip_Knock_Back();
 	float frip_start = 0.0f;
 	float frip_end = 0.783f;
+
+	int frip_se_count = 0;
 
 	int effect_count = 0;
 };

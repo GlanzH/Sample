@@ -198,7 +198,7 @@ bool PlayerBase::Initialize()
 
 	//敵の消滅
 	elimination_flag = false;
-	elimination_end  = 1.0f;
+	elimination_end = 1.0f;
 
 	frip_state_mode = Frip_State::NOT_FRIP;
 
@@ -216,9 +216,17 @@ bool PlayerBase::Initialize()
 
 	//プレイヤーのSE ファイル読み込み
 	//攻撃-SE
-	first_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE\\Player\\first_attack_se.wav");
-	second_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE\\Player\\second_attack_se.wav");
-	third_attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE\\Player\\third_attack_se.wav");
+	attack_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"BGM_SE\\Player\\player_attack.wav");
+
+	//攻撃が弾かれる　SE
+	frip_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"BGM_SE\\Player\\player_play.wav");
+
+	//ダメージ SE
+	damage_se= XAudio::CreateSoundEffect(DXTK->AudioEngine, L"BGM_SE\\Player\\player_damage.wav");
+
+	//止め SE
+	stop_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"BGM_SE\\Player\\player_stop.wav");
+
 	return 0;
 }
 
@@ -423,7 +431,7 @@ void PlayerBase::OnWeaponCollisionEnter(std::string tag) {
 
 		//ノックバック
 		knock_back_flag = true;
-
+		invincible_flag = true;
 
 		if (tag == "SW")
 			reduce_num = weapon_reduce_num;
@@ -451,7 +459,11 @@ void PlayerBase::OnLeftCollisionEnter(std::string tag) {//左
 
 		//ダメージ受けた時
 		damage_flag = true;
-
+		invincible_flag = true;
+		if (damage_se_count < 1) {
+			damage_se->Play();
+			damage_se_count++;
+		}
 
 
 		if (tag == "SW")
@@ -479,11 +491,14 @@ void PlayerBase::OnRightCollisionEnter(std::string tag) {//右
 		//ノックバック
 		knock_back_flag = true;
 		direction_knock_back = Direction_Knock_Back::RIGHT_BACK;
-
+		invincible_flag = true;
 
 		//ダメージ受けた時
 		damage_flag = true;
-
+		if (damage_se_count < 1) {
+			damage_se->Play();
+			damage_se_count++;
+		}
 
 		if (tag == "SW")
 			reduce_num = weapon_reduce_num;
@@ -621,7 +636,7 @@ void PlayerBase::Rize() {
 		knock_back_start = 0.0f;
 		knock_back_flag = false;
 		damage_mode_state = Damage_Mode::NOMAL_STATE;
-
+		damage_se_count = 0;
 
 	}
 }
@@ -733,7 +748,7 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 	case Upper_State::UPPER_ATTACK:
 		upper_start += deltaTime;
 		SetAnimation(model, ACT1);
-
+		
 		//当たり判定
 		//エフェクト
 		attack_flag = true;
@@ -747,10 +762,12 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 			if (direction_state_mode == Direction_State::RIGHT) {
 
 				DX12Effect.PlayOneShot("upper", Vector3(player_pos.x + 4.0f, player_pos.y + 5.0f, player_pos.z));
+				attack_se->Play();
 			}
 			else if (direction_state_mode == Direction_State::LEFT) {
 				DX12Effect.Play("upper", Vector3(player_pos.x - 9.0f, player_pos.y + 4.0f, player_pos.z));
 				DX12Effect.SetRotation("upper", Vector3(0.0f, 180.0f, 0.0f));
+				attack_se->Play();
 			}
 
 			effect_count += 1;
@@ -787,7 +804,7 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 	case Lower_State::LOWER_ATTACK:
 		lower_start += deltaTime;
 		SetAnimation(model, ACT2);
-
+		
 		attack_flag = true;
 		attack_type = 2;
 
@@ -801,11 +818,13 @@ void PlayerBase::Reverse_Slash(const float deltaTime) {
 
 				DX12Effect.PlayOneShot("lower", Vector3(player_pos.x + 4.0f, player_pos.y + 5.0f, player_pos.z));
 				DX12Effect.SetRotation("lower", Vector3(0.0f, 0.0f, 0.0f));
+				attack_se->Play();
 
 			}
 			else if (direction_state_mode == Direction_State::LEFT) {
 				DX12Effect.PlayOneShot("lower", Vector3(player_pos.x - 9.0f, player_pos.y + 4.0f, player_pos.z));
 				DX12Effect.SetRotation("lower", Vector3(0.0f, 180.0f, 0.0f));
+				attack_se->Play();
 			}
 			effect_count += 1;
 		}
@@ -842,17 +861,25 @@ void PlayerBase::Sword_Delivery(const float deltaTime, bool temp) {
 		if (direction_state_mode == Direction_State::RIGHT) {
 			SetAnimation(model, FINISH);
 			
+			
 		}
 		else if (direction_state_mode == Direction_State::LEFT) {
 			SetAnimation(model, FINISH);
 			model->SetRotation(0.0f, XMConvertToRadians(-90.0f), 0.0f);
-
+			
 		}
+
 
 		if (!damage_flag) {
 			DX12Effect.PlayOneShot("clincher", Vector3(player_pos.x, player_pos.y + 6.0f, player_pos.z));
 			if (s_del_start >= elimination_end) {
 				elimination_flag = true;
+
+				if (s_del_count < 1) {
+					stop_se->Play();
+					s_del_count++;
+				}
+
 			}
 		}
 
@@ -864,6 +891,8 @@ void PlayerBase::Sword_Delivery(const float deltaTime, bool temp) {
 		s_del_flag = false;
 		s_del_start = 0.0f;
 		model->SetTrackPosition(FINISH, 0.0);
+
+		s_del_count = 0;
 
 		elimination_flag = false;
 
@@ -890,6 +919,10 @@ void PlayerBase::Frip() {
 	case Frip_State::FRIP:
 		SetAnimation(model, REBOUND);
 		DX12Effect.Play("frip", Vector3(player_pos.x, player_pos.y + 4.0f, player_pos.z));
+		if (frip_se_count < 1) {
+			frip_se->Play();
+			frip_se_count++;
+		}
 
 		Frip_Knock_Back();
 
@@ -912,6 +945,7 @@ void PlayerBase::Frip_Knock_Back() {
 
 	if (frip_start >= frip_end) {
 		model->SetTrackPosition(REBOUND, 0.0);
+		frip_se_count = 0;
 		frip_flag = false;
 		frip_start = 0.0f;
 		frip_state_mode = Frip_State::NOT_FRIP;
