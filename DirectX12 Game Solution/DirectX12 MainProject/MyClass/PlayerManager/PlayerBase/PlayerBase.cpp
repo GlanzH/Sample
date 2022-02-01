@@ -184,7 +184,7 @@ bool PlayerBase::Initialize()
 	//上段(変数宣言)
 	upper_state_mode = Upper_State::NOT_UPPER;
 	upper_start = 0.0f;
-	upper_end = 0.633f;
+	upper_end = 0.600f;//0.633f;
 
 	//下段(変数宣言)
 	lower_state_mode = Lower_State::NOT_LOWER;
@@ -349,6 +349,7 @@ int PlayerBase::Update(const float deltaTime, bool temp)
 		sword_collision->SetPosition(model->GetPosition() + SimpleMath::Vector3(-6.5, 5, 0));
 		col.sword_box.Center = sword_collision->GetPosition() + SimpleMath::Vector3(0, -5.1, 0);
 	}
+
 
 	//攻撃判定の時間
 	if (attack_flag)
@@ -642,8 +643,8 @@ void PlayerBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack)
 
 void PlayerBase::Player_move(const float deltaTime)
 {
-	if (upper_state_mode == Upper_State::NOT_UPPER && lower_state_mode == Lower_State::NOT_LOWER) {
-		if ( !knock_back_flag && !s_del_flag && !avoidance_flag) {
+	if (upper_state_mode == Upper_State::NOT_UPPER && lower_state_mode == Lower_State::NOT_LOWER && !knock_back_flag) {
+		if (!s_del_flag && !avoidance_flag) {
 			//プレイヤー:移動(キーボード) & ゲームパッド十字キー
 			if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
 				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
@@ -758,7 +759,7 @@ void PlayerBase::Swing_Down(const float deltaTime) {
 		if (upper_start >= upper_end) {
 			upper_state_mode = Upper_State::NOT_UPPER;
 			upper_start = 0.0f;
-			model->SetTrackPosition(ACT1, 0.0);
+			model->SetTrackPosition(ACT1,0.0);
 			effect_count = 0;
 			attack_type = 0;
 			hit_stop_flag = false;
@@ -932,8 +933,8 @@ void PlayerBase::Frip_Knock_Back() {
 //回避
 void PlayerBase::Avoidance(const float deltaTime) {
 
-	if (!jump_flag_ && !s_del_flag && upper_state_mode == Upper_State::NOT_UPPER && lower_state_mode == Lower_State::NOT_LOWER && !knock_back_flag) {
-		if (!avoidance_flag) {
+	if (!jump_flag_ && !s_del_flag && upper_state_mode == Upper_State::NOT_UPPER && lower_state_mode == Lower_State::NOT_LOWER) {
+		if (!avoidance_flag && !knock_back_flag) {
 			if (DXTK->KeyEvent->pressed.Z || DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
 				avoidance_flag = true;
 			}
