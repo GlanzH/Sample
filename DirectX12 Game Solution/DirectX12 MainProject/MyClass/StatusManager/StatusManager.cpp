@@ -151,17 +151,9 @@ void StatusManager::SetWave(int wave_num) {
 	switch (wave)
 	{
 	case 1:
-		wave_time = TUTORIAL_TIME;
-		once_exec_time = wave_time - 0.01f;
-		break;
-
 	case 2:
-		wave_time = TUTORIAL_TIME;
-		once_exec_time = wave_time - 0.01f;
-		break;
-
 	case 3:
-		wave_time = TUTORIAL_TIME;
+		wave_time = STAGE_ONE_TIME;
 		once_exec_time = wave_time - 0.01f;
 		break;
 

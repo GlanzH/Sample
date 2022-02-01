@@ -57,7 +57,8 @@ private:
 	DX9::SPRITE combo_gauge;	//コンボのゲージ
 	DX9::SPRITE combo;	//コンボ文字
 	DX9::SPRITE combo_number;	//コンボ数
-	EFFECT cracker_effect;	//クラッカー
+	EFFECT cracker_effect;	//クラッカーエフェクト
+	XAudio::SOUNDEFFECT cracker_se;	//クラッカーSE
 
 	int combo_anime;
 	int combo_gauge_width;
@@ -80,7 +81,7 @@ private:
 
 	const float COMBO_GAUGE_POS_X = COMBO_BASE_POS_X + 80.0f;
 	const float COMBO_GAUGE_POS_Y = COMBO_BASE_POS_Y + 130.0f;
-	const float COMBO_GAUGE_DIVIDE = 24.4f;	//コンボゲージ7分の1の数(描画時使用)
+	const float COMBO_GAUGE_DIVIDE = 28.5f;	//コンボゲージ6分の1の数(描画時使用)
 
 	//コンボ(文字)
 	const float COMBO_POS_X = COMBO_BASE_POS_X + 140.0f;
@@ -114,6 +115,8 @@ private:
 	DX9::SPRITE rev_audience_normal;
 	DX9::SPRITE rev_audience_hard;
 	DX9::SPRITE rev_audience_very_hard;
+	XAudio::SOUNDEFFECT applause;
+	XAudio::SOUNDEFFECT excitement;
 
 	int audience_anim;
 	int audience_state;
