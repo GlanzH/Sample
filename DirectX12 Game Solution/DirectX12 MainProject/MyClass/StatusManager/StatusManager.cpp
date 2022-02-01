@@ -57,7 +57,6 @@ void StatusManager::SetAddScore(float score_size) {
 	}
 
 	if (add_score_size != 0.0f) {
-
 		UIManager::Instance().PlayUIEffect();
 	}
 	return;
@@ -126,29 +125,16 @@ void StatusManager::ResetHitCombo() {
 }
 
 void StatusManager::ComboScore() {
-	//コンボ数に応じたスコアの増加
+	//コンボ数に応じた観客のリアクション変化
 	switch (combo) {
 	case 1:
-		SetAddScore(10.0f);
-		UIManager::Instance().PlayCracker();
-		UIManager::Instance().SetAudienceState(1);
-		break;
 	case 2:
-		SetAddScore(30.0f);
-		UIManager::Instance().SetAudienceState(1);
-		break;
 	case 3:
-		SetAddScore(60.0f);
 		UIManager::Instance().SetAudienceState(1);
 		break;
-	case 4:
-		SetAddScore(100.0f);
-		UIManager::Instance().SetAudienceState(2);
-		break;
+
 	default:
-		if (combo >= 5) {
-			float BonusScore = (combo * 50.0f) - 100.0f;
-			SetAddScore(BonusScore);
+		if (combo >= 4) {
 			UIManager::Instance().PlayCracker();
 			UIManager::Instance().SetAudienceState(2);
 		}
@@ -166,23 +152,23 @@ void StatusManager::SetWave(int wave_num) {
 	{
 	case 1:
 		wave_time = TUTORIAL_TIME;
-		once_exec_time = wave_time - 0.01;
+		once_exec_time = wave_time - 0.01f;
 		break;
 
 	case 2:
 		wave_time = TUTORIAL_TIME;
-		once_exec_time = wave_time - 0.01;
+		once_exec_time = wave_time - 0.01f;
 		break;
 
 	case 3:
 		wave_time = TUTORIAL_TIME;
-		once_exec_time = wave_time - 0.01;
+		once_exec_time = wave_time - 0.01f;
 		break;
 
 	default:
 		if (wave >= 4) {
 			wave_time = WAVE_TIME_LIMIT_TWO;
-			once_exec_time = wave_time - 0.01;
+			once_exec_time = wave_time - 0.01f;
 		}
 		break;
 	}

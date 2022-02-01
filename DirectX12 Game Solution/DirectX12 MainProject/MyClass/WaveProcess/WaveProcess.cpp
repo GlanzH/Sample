@@ -52,6 +52,9 @@ int WaveProcess::Update(EnemyManager* enemy, const float deltaTime) {
 		}
 	}
 
+	if (enemy->GetWaveEnemy() == enemy->GetDeathEnemyCount())
+		StatusManager::Instance().ResetWaveTime();
+
 	if (now_time < 10) {
 		one_digit_flag = true;
 	}
