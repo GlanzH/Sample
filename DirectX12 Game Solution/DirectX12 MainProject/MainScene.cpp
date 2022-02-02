@@ -165,9 +165,12 @@ NextScene MainScene::Update(const float deltaTime)
 		light_mode = OUT_ZOOM;
 	}
 	else {
-		dialogue.AddCount(enemy->IsTimeStop());
-		camera.Update(player, IN_ZOOM, deltaTime);
-		light_mode = IN_ZOOM;
+		process.WaveAnimation(deltaTime);
+		if (process.GetAnimEndFlag()) {
+			dialogue.AddCount(enemy->IsTimeStop());
+			camera.Update(player, IN_ZOOM, deltaTime);
+			light_mode = IN_ZOOM;
+		}
 	}
 
 
@@ -264,7 +267,7 @@ void MainScene::Render()
 	player->Debug();
 	SceneManager::Instance().Render();
 
-	if (enemy->IsTimeStop())
+	if (enemy->IsTimeStop() && process.GetAnimEndFlag())
 		dialogue.Render(enemy->GetTimeStopCount());
 
 	DX9::SpriteBatch->End();

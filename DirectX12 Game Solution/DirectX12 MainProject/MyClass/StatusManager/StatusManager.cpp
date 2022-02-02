@@ -159,7 +159,7 @@ void StatusManager::SetWave(int wave_num) {
 
 	default:
 		if (wave >= 4) {
-			wave_time = WAVE_TIME_LIMIT_TWO;
+			wave_time = STAGE_TWO_TIME;
 			once_exec_time = wave_time - 0.01f;
 		}
 		break;
