@@ -23,7 +23,7 @@ public:
 	EnemyFactory();
 	~EnemyFactory() {};
 	EnemyBase* Create(string tag,double init_wait,double stop_pos,
-		              SimpleMath::Vector3 position,double speed,string direct, string posture);
+		              SimpleMath::Vector3 position,double speed,string direct, string posture, int enemy_hp);
 
 	EnemyBase* CreateProduct(string tag,SimpleMath::Vector3 position);
 	LPCWSTR SetModel(string tag);
@@ -32,10 +32,10 @@ public:
 
 private:
 	EnemyBase* enemy;
-	int hp;
+	/*int hp;
 	int enemy_hp;
 	int rand_hp;
-	int arrow_hp;
+	int arrow_hp;*/
 
 	std::vector<std::string> enemy_tag;
 
@@ -50,10 +50,10 @@ private:
 		MODEL_MAX
 	};
 
-	enum EnemyHp {
+	/*enum EnemyHp {
 		ENEMY_HP = 1,
 		RAND_HP  = 2
-	};
+	};*/
 
 	LPCWSTR enemy_model[MODEL_MAX];
 	LPCWSTR model_name;

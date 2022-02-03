@@ -21,7 +21,7 @@ public:
 	~EnemyBase() {};
 
 	virtual bool Initialize(std::string tag, double init_wait, double stop_pos,
-		double speed, std::string direct, std::string posture, int hp);
+		double speed, std::string direct, std::string posture, int enemy_hp);
 
 	virtual void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 	void LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_position);

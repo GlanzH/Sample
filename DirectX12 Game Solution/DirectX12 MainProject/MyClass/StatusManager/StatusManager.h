@@ -88,5 +88,5 @@ private:
 	const int MAX_WAVE = 9;	//ウェーブの最大数
 	const float WAVE_TIME_LIMIT_ONE = 30.0f;	//1ウェーブ目の制限時間
 	const float WAVE_TIME_LIMIT_TWO = 40.0f;
-	const float TUTORIAL_TIME = 99.0f;
+	const float TUTORIAL_TIME = 49.0f;
 };

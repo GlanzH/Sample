@@ -5,12 +5,10 @@
 
 bool EnemyBase::Initialize(
 	std::string tag, double init_wait, double stop_pos,
-	double speed, std::string direct, std::string posture, int hp
-)
+	double speed, std::string direct, std::string posture, int enemy_hp)
 {
 	enemy_tag = tag;
-	enemy_hp = hp;
-	init_hp = hp;
+	init_hp = enemy_hp;
 	enemy_stop = stop_pos;
 	enemy_direct = direct;
 	enemy_posture = posture;

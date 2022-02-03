@@ -1,5 +1,6 @@
 #include "WaveProcess.h"
 #include "MyClass/StatusManager/StatusManager.h"
+#include "MyClass/EnemyManager/EnemyFactory/EnemyFactory.h"
 
 WaveProcess::WaveProcess() {
 

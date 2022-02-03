@@ -1,4 +1,5 @@
 #include "Base/pch.h"
+#include "Base/pch.h"
 #include "Base/dxtk.h"
 #include "SwordMan.h"
 
@@ -151,8 +152,9 @@ void SwordMan::IsRetreat() {
 
 void SwordMan::Freeze() {
 	if (enemy_hp <= 0 && !die_flag) {
-		SetAnimation(anim_model, (int)Motion::FREEZE, (int)Motion::MAX_MOTION);
 		is_damage += delta;
+		SetAnimation(anim_model, (int)Motion::DAMAGE, (int)Motion::MAX_MOTION);
+		
 	}
 
 	if (StatusManager::Instance().GetHitComboTime() == 0.0f) {
