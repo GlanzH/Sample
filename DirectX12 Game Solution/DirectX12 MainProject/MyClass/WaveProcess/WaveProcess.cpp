@@ -28,16 +28,29 @@ bool WaveProcess::Initialize() {
 	time_delta = 0.0f;
 	anim_end_flag = false;
 	co_start_flag = false;
-	wave_one   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage1/stage1_wave1_anim.png");
-	wave_two   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage1/stage1_wave2_anim.png");
-	wave_three = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage1/stage1_wave3_anim.png");
+
+
+	return true;
+}
+
+void WaveProcess::LoadAssets() {
+	wave_anim[0] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage1/stage1_wave1_anim.png");
+	wave_anim[1] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage1/stage1_wave2_anim.png");
+	wave_anim[2] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage1/stage1_wave3_anim.png");
+	wave_anim[3] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage2/stage2_wave1_anim.png");
+	wave_anim[4] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage2/stage2_wave2_anim.png");
+	wave_anim[5] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage2/stage2_wave3_anim.png");
+	wave_anim[6] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage3/stage3_wave1_anim.png");
+	wave_anim[7] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage3/stage3_wave2_anim.png");
+	wave_anim[8] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage3/stage3_wave3_anim.png");
+	wave_anim[9] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage4/stage4_wave1_anim.png");
+	wave_anim[10] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage4/stage4_wave2_anim.png");
+	wave_anim[11] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage4/stage4_wave3_anim.png");
+
 	black = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/kuro.png");
 
 	time = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Time/TIME.png");
 	time_number = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Time/numbers_timer.png");
-
-
-	return true;
 }
 
 int WaveProcess::Update(EnemyManager* enemy, const float deltaTime) {
@@ -58,7 +71,7 @@ int WaveProcess::Update(EnemyManager* enemy, const float deltaTime) {
 		}
 		else {
 			StatusManager::Instance().ResetWaveTime();
-			StatusManager::Instance().SetWave(stage_num++);
+			StatusManager::Instance().SetWave(++stage_num);
 			enemy->ResetRemainEnemy();
 			enemy->ResetDeathEnemy();
 			stop_frame = 0.0f;
@@ -145,19 +158,12 @@ void WaveProcess::Render() {
 		DX9::Colors::RGBA(255, 255, 255, black_alpha)
 	);
 
-	switch (wave_num)
-	{
-	case 0:
-		DX9::SpriteBatch->DrawSimple(
-			wave_one.Get(),
-			SimpleMath::Vector3(450.0f, 330.0f, 0.0f),
-			RectWH(WAVE_WIDTH * (int)wave_anim_x, WAVE_HIGHT * (int)wave_anim_y, WAVE_WIDTH, WAVE_HIGHT),
-			DX9::Colors::RGBA(255, 255, 255, (int)anim_alpha)
-		);
-		break;
-	default:
-		break;
-	}
+	DX9::SpriteBatch->DrawSimple(
+		wave_anim[wave_num].Get(),
+		SimpleMath::Vector3(450.0f, 330.0f, 0.0f),
+		RectWH(WAVE_WIDTH * (int)wave_anim_x, WAVE_HIGHT * (int)wave_anim_y, WAVE_WIDTH, WAVE_HIGHT),
+		DX9::Colors::RGBA(255, 255, 255, (int)anim_alpha)
+	);
 }
 
 void WaveProcess::WaveAnimation(const float deltaTime) {
@@ -204,22 +210,36 @@ cppcoro::generator<int> WaveProcess::WaveChangeAinm() {
 	wait_time = 0.0f;
 
 	//アニメーション
-	while (true) {
-		wave_anim_y += 10.0f * time_delta;
-		if (wave_anim_y > 24.0f) {
-			if (wave_anim_x < 1) {
-				wave_anim_x = 1.0f;
-				wave_anim_y = 0.0f;
+	if (wave_num == 0 || wave_num % 3 == 0) {
+		//章が切り替わる
+		while (true) {
+			wave_anim_y += 10.0f * time_delta;
+			if (wave_anim_y > 24.0f) {
+				if (wave_anim_x < 1) {
+					wave_anim_x = 1.0f;
+					wave_anim_y = 0.0f;
+				}
+				else {
+					break;
+				}
 			}
-			else {
+			co_yield 3;
+		}
+		wave_anim_x = 1.0f;
+	}
+	else {
+		//幕が切り替わる
+		while (true) {
+			wave_anim_y += 10.0f * time_delta;
+			if (wave_anim_y > 24.0f) {
 				break;
 			}
+			co_yield 3;
 		}
-		co_yield 2;
 	}
-	wave_anim_x = 1.0f;
 	wave_anim_y = 24.0f;
-
+	
+	
 	//待機
 	while (wait_time < 2.0f) {
 		wait_time += time_delta;

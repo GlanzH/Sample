@@ -98,6 +98,7 @@ void MainScene::LoadAssets()
 	player->LoadAssets();
 	audience->LoadAssets();
 	dialogue.LoadAssets();
+	process.LoadAssets();
 	coin.LoadAssets();
 	UIManager::Instance().LoadAsset();
 	SceneManager::Instance().LoadAsset();

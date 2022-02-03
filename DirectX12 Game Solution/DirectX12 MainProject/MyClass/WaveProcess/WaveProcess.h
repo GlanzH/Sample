@@ -12,6 +12,7 @@ public:
 	WaveProcess();
 	~WaveProcess();
 	bool Initialize();
+	void LoadAssets();
 	int Update(EnemyManager* enemy, const float deltaTime);
 	void Render();
 
@@ -51,19 +52,7 @@ private:
 	const float TIME_NUM_ORIGIN_Y = 35.0f;
 
 	//ウェーブ切り替え
-	DX9::SPRITE wave_one;
-	DX9::SPRITE wave_two;
-	DX9::SPRITE wave_three;
-	DX9::SPRITE wave_four;
-	DX9::SPRITE wave_five;
-	DX9::SPRITE wave_six;
-	DX9::SPRITE wave_seven;
-	DX9::SPRITE wave_eight;
-	DX9::SPRITE wave_nine;
-	DX9::SPRITE wave_ten;
-	//DX9::SPRITE wave_one;
-	//DX9::SPRITE wave_one;
-
+	DX9::SPRITE wave_anim[12];
 	DX9::SPRITE black;
 	float wave_anim_x;
 	float wave_anim_y;
