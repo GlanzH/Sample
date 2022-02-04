@@ -33,6 +33,13 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, CoinM
 					player->GetFripFlag();
 
 				}
+				else if (enemies_roop->GetTag() == "SH" && enemies_roop->GetTag() != "SW" &&
+					enemies_roop->FrontFlag()
+					) {
+					if (player->GetAttackTag() == 1 || player->GetAttackTag() == 2) {
+						player->GetFripFlag();
+					}
+				}
 				else {
 					enemy->OnCollisionEnter(enemies_roop);
 					if (hit_stop_count == 0 && player->GetHitFlag()) {
