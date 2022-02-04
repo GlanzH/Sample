@@ -38,18 +38,17 @@ void WaveProcess::LoadAssets() {
 	wave_anim[0] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage1/stage1_wave1_anim.png");
 	wave_anim[1] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage1/stage1_wave2_anim.png");
 	wave_anim[2] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage1/stage1_wave3_anim.png");
-
 	wave_anim[3] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage2/stage2_wave1_anim.png");
 	wave_anim[4] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage2/stage2_wave2_anim.png");
 	wave_anim[5] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage2/stage2_wave3_anim.png");
-
 	wave_anim[6] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage3/stage3_wave1_anim.png");
 	wave_anim[7] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage3/stage3_wave2_anim.png");
 	wave_anim[8] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage3/stage3_wave3_anim.png");
-
 	wave_anim[9] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage4/stage4_wave1_anim.png");
 	wave_anim[10] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage4/stage4_wave2_anim.png");
 	wave_anim[11] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage4/stage4_wave3_anim.png");
+
+	arrow = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/RightArrow.png");
 
 	black = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/kuro.png");
 
@@ -166,6 +165,10 @@ void WaveProcess::Render() {
 		wave_anim[wave_num].Get(),
 		SimpleMath::Vector3(450.0f, 330.0f, 0.0f),
 		RectWH(WAVE_WIDTH * (int)wave_anim_x, WAVE_HIGHT * (int)wave_anim_y, WAVE_WIDTH, WAVE_HIGHT),
+		DX9::Colors::RGBA(255, 255, 255, (int)anim_alpha)
+	);
+	DX9::SpriteBatch->DrawSimple(arrow.Get(), SimpleMath::Vector3(1100.0f, 360.00f, 0.0f),
+		RectWH(WAVE_WIDTH * (int)100, 90 * (int)300, 400, 90),
 		DX9::Colors::RGBA(255, 255, 255, (int)anim_alpha)
 	);
 }
