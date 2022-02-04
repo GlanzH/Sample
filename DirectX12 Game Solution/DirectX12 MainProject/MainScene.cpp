@@ -7,10 +7,10 @@
 #include "SceneFactory.h"
 
 // Initialize member variables.
-MainScene::MainScene(): dx9GpuDescriptor{}
+MainScene::MainScene() : dx9GpuDescriptor{}
 {
-	player   = new PlayerBase;
-	enemy    = new EnemyManager;
+	player = new PlayerBase;
+	enemy = new EnemyManager;
 	audience = new AudienceManager;
 	observer = new Observer;
 }
@@ -38,14 +38,13 @@ void MainScene::Initialize()
 
 	point.Init(2);
 
-	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 0.0f),0);
+	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 0.0f), 0);
 	point.SetAtt(Vector3(0.25f, 0.01f, 0), 0);
 	point.SetLightColor(SimpleMath::Vector4(0.0f, 147.0f, 165.0f, 1.0f), 0);
 
 	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f), 1);
 	point.SetAtt(Vector3(0.05f, 0.01f, 0), 1);
 	point.SetLightColor(SimpleMath::Vector4(175.0f, 74.0f, 94.0f, 1.0f), 1);
-	
 	texLight.Init();
 
 	//enemy->StartTimeStop();
@@ -103,7 +102,6 @@ void MainScene::LoadAssets()
 	SceneManager::Instance().LoadAsset();
 
 	DX12Effect.SetCamera(camera.GetCamera());
-	UIManager::Instance().SetUICamera(camera.GetCamera());
 }
 
 // Releasing resources required for termination.
@@ -157,8 +155,8 @@ NextScene MainScene::Update(const float deltaTime)
 		camera.Update(player, OUT_ZOOM, delta_time);
 		observer->Update(player, enemy, coin);
 		dialogue.ResetCount();
-		process.Update(enemy,deltaTime);
-		coin.Update(player->GetModel()->GetPosition(),enemy->GetDeathFlag(), enemy->GetDeathEnemyCount(), deltaTime);
+		process.Update(enemy, deltaTime);
+		coin.Update(player->GetModel()->GetPosition(), enemy->GetDeathFlag(), enemy->GetDeathEnemyCount(), deltaTime);
 		observer->Hit_Stop(deltaTime);
 
 		//ChangeBGM(MAIN);
@@ -173,10 +171,10 @@ NextScene MainScene::Update(const float deltaTime)
 
 	if (end_flag) {
 		end_frame += deltaTime;
-	
+
 		//max_end = 2.0f;
 
-		if(end_frame > 2.0f) {
+		if (end_frame > 2.0f) {
 			DX12Effect.AllStop();
 			if (SceneManager::Instance().ReturnSceneFlag())
 				return NextScene::ResultScene;
@@ -193,20 +191,20 @@ NextScene MainScene::Update(const float deltaTime)
 
 	auto pos = player->GetModel()->GetPosition();
 
-	point.SetPosition(Vector3(pos.x, 30, pos.z),0);
+	point.SetPosition(Vector3(pos.x, 30, pos.z), 0);
 
 	return NextScene::Continue;
 }
 
 void MainScene::ChangeLightRenge(const float deltaTime) {
-		if (DXTK->KeyState->W || light_mode == IN_ZOOM)
-			range += 6.f * deltaTime;
-		else
-			range -= 30.f * deltaTime;
+	if (DXTK->KeyState->W || light_mode == IN_ZOOM)
+		range += 6.f * deltaTime;
+	else
+		range -= 30.f * deltaTime;
 
-		range = std::clamp(range,0.8f,50.0f);
+	range = std::clamp(range, 0.8f, 50.0f);
 
-		point.SetCone(range, 0);
+	point.SetCone(range, 0);
 }
 
 void MainScene::ChangeBGM(int music_num) {
@@ -241,7 +239,7 @@ void MainScene::Render()
 	camera.Render();
 	ground.Render();
 	DX12Effect.SetCameraPosition(camera.GetCamera());
-	
+
 	point.SetPower(1.5f, 0);
 	point.SetPower(2.5f, 1);
 	point.SetPosition(Vector3(0.0f, 0.0f, 0.0f), 0);
@@ -249,17 +247,18 @@ void MainScene::Render()
 	point.SetCone(0.0f, 0);
 	point.SetCone(6.0f, 1);
 	point.PointRender(*camera.GetCamera(), ground.GetModel());
-	
-	point.ShadeRender(player->GetModel(),SimpleMath::Vector4(0,0,1,0.3f));
+
+	point.ShadeRender(player->GetModel(), SimpleMath::Vector4(0, 0, 1, 0.3f));
+
 
 	player->Render();
 	enemy->Render();
-	//audience->Render();
+	audience->Render();
 
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ
-	UIManager::Instance(). Render();
+	UIManager::Instance().Render();
 	process.Render();
 	player->Debug();
 	SceneManager::Instance().Render();
