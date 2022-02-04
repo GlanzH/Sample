@@ -14,6 +14,7 @@ private:
 	void IsRetreat();
 	void Attack();
 	void Freeze();
+	void IsDamage();
 	void IsDeath();
 	void InitDirect();
 	void Rotate();
@@ -30,7 +31,7 @@ private:
 	const float max_death = 2.f;
 	const float max_range = 100.0f;
 
-	const float max_is_damage = 0.05f;
+	const float max_is_damage = 0.37f;
 
 	bool end_move;
 

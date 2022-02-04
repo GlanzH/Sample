@@ -12,9 +12,9 @@ private:
 	void Move()   override;
 	void Action() override;
 	void HitEffect();
-	void Damage();
 	void Attack();
 	void InitDirect();
+	void IsDamage();
 	void IsDeath();
 	void Freeze();
 	void Rotate();

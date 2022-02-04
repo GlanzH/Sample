@@ -21,7 +21,7 @@ public:
 	~EnemyBase() {};
 
 	virtual bool Initialize(std::string tag, double init_wait, double stop_pos,
-		double speed, std::string direct, std::string posture, int enemy_hp);
+		double speed, std::string direct, std::string posture, int hp);
 
 	virtual void LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
 	void LoadModel(LPCWSTR model_name, SimpleMath::Vector3 initial_position);
@@ -52,8 +52,6 @@ public:
 	std::string GetTag() { return enemy_tag; }
 
 private:
-	void IsDamage();
-
 	EFFECTHANDLE hit_handle, star_handle, confetti_handle, die_handle, del_handle;
 	EFFECT hit, star, confetti, normal_die, del;
 
@@ -69,7 +67,7 @@ private:
 	const float max_auto_destroy = 1.5f;
 
 	float damage_frame;
-	const float max_damage = 2.0f;
+	const float max_damage = .8f;
 
 	const float retreat_dist = 10.0f;
 
@@ -82,6 +80,7 @@ protected:
 	virtual void Move() {}
 	//virtual void IsDeath();
 	virtual void IsRetreat();
+	virtual void IsDamage();
 
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack, int max_motion);
 	void NormalDeathEffect(float max_death, bool confetti_effect, bool death_effect, int effect_count);
@@ -130,6 +129,7 @@ protected:
 	bool death_effect_flag;
 	int effect_count;
 
+	float is_freeze;
 	float is_damage;
 
 	Collision col;

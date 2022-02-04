@@ -5,10 +5,11 @@
 
 bool EnemyBase::Initialize(
 	std::string tag, double init_wait, double stop_pos,
-	double speed, std::string direct, std::string posture, int enemy_hp)
+	double speed, std::string direct, std::string posture, int hp)
 {
 	enemy_tag = tag;
-	init_hp = enemy_hp;
+	init_hp = hp;
+	enemy_hp = hp;
 	enemy_stop = stop_pos;
 	enemy_direct = direct;
 	enemy_posture = posture;
@@ -30,6 +31,7 @@ bool EnemyBase::Initialize(
 
 	dead_frame         = 0.0f;
 	is_damage          = 0.0f;
+	is_freeze          = 0.0f;
 	init_wait_frame    = 0.0f;
 	death_frame        = 0.0f;
 	auto_destroy_frame = 0.0f;
@@ -106,7 +108,6 @@ int EnemyBase::Update(SimpleMath::Vector3 player, bool destroy_flag, const float
 	player_pos = player;
 	dest_flag = destroy_flag;
 
-	IsDamage();
 	IsRetreat();
 
 	return 0;
