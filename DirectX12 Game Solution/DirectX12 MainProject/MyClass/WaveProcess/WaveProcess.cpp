@@ -38,12 +38,15 @@ void WaveProcess::LoadAssets() {
 	wave_anim[0] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage1/stage1_wave1_anim.png");
 	wave_anim[1] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage1/stage1_wave2_anim.png");
 	wave_anim[2] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage1/stage1_wave3_anim.png");
+
 	wave_anim[3] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage2/stage2_wave1_anim.png");
 	wave_anim[4] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage2/stage2_wave2_anim.png");
 	wave_anim[5] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage2/stage2_wave3_anim.png");
+
 	wave_anim[6] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage3/stage3_wave1_anim.png");
 	wave_anim[7] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage3/stage3_wave2_anim.png");
 	wave_anim[8] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage3/stage3_wave3_anim.png");
+
 	wave_anim[9] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage4/stage4_wave1_anim.png");
 	wave_anim[10] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage4/stage4_wave2_anim.png");
 	wave_anim[11] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage4/stage4_wave3_anim.png");
