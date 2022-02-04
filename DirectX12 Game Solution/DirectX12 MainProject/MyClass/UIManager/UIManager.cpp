@@ -24,7 +24,7 @@ void UIManager::Initialize() {
 	rev_audience_pos = SimpleMath::Vector3(0.0f, 0.0f, 0.0f);
 	audience_anim = 0;
 	state_reset_time = 0.0f;
-	
+
 	applause = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"BGM_SE/Audience/applause.wav");
 	excitement = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"BGM_SE/Audience/excitement.wav");
 
