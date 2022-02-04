@@ -61,7 +61,7 @@ private:
 	bool  combo_flag;	//true:コンボ継続可能 false:継続不可
 	bool combo_miss_flag;
 
-	const float COMBO_TIME_NUM = 7.0f;	//コンボの時間
+	const float COMBO_TIME_NUM = 6.0f;	//コンボの時間
 	//アニメーション
 	bool anime_flag;	//true:アニメーション再生 false:停止
 
@@ -85,8 +85,7 @@ private:
 	float once_exec_time;
 	bool wave_change_flag;	//true:ウェーブ切り替え可能 false:切り替え不可
 
-	const int MAX_WAVE = 9;	//ウェーブの最大数
-	const float WAVE_TIME_LIMIT_ONE = 30.0f;	//1ウェーブ目の制限時間
-	const float WAVE_TIME_LIMIT_TWO = 40.0f;
-	const float TUTORIAL_TIME = 49.0f;
+	const int MAX_WAVE = 12;	//ウェーブの最大数
+	const float STAGE_ONE_TIME = 99.0f;//1ステージ目の制限時間
+	const float STAGE_TWO_TIME = 40.0f;//2ステージ目移行の制限時間
 };
