@@ -10,7 +10,7 @@ public:
 	CoinManager() {}
 	~CoinManager() {}
 	void LoadAssets();
-	int  Update(SimpleMath::Vector3 position,bool death_flag, int death_enemy,const float deltaTime);
+	int  Update(SimpleMath::Vector3 position, bool death_flag, int death_enemy, const float deltaTime);
 
 	std::vector<Coin*> GetCoin() { return coin; }
 	void OnCollisionEnter(Coin* this_coin);
