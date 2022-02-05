@@ -37,16 +37,62 @@ void MainScene::Initialize()
 	process.Initialize();
 
 	point.Init(2);
-
+	//全体ライト
 	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 0.0f), 0);
 	point.SetAtt(Vector3(0.25f, 0.01f, 0), 0);
 	point.SetLightColor(SimpleMath::Vector4(0.0f, 147.0f, 165.0f, 1.0f), 0);
+	//キャラのライト
 
 	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f), 1);
 	point.SetAtt(Vector3(0.05f, 0.01f, 0), 1);
 	point.SetLightColor(SimpleMath::Vector4(175.0f, 74.0f, 94.0f, 1.0f), 1);
 	texLight.Init();
 
+	/*if(//森１)
+	* {
+	////全体ライト
+	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 0.0f), 0);
+	point.SetAtt(Vector3(0.25f, 0.01f, 0), 0);
+	point.SetLightColor(SimpleMath::Vector4(0.0f, 147.0f, 165.0f, 1.0f), 0);
+	////キャラのライト
+	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f), 1);
+	point.SetAtt(Vector3(0.05f, 0.01f, 0), 1);
+	point.SetLightColor(SimpleMath::Vector4(175.0f, 74.0f, 94.0f, 1.0f), 1);
+	}
+	if(//町)
+	{
+	//全体ライト
+	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 0.0f), 0);
+	point.SetAtt(Vector3(0.25f, 0.01f, 0), 0);
+	point.SetLightColor(SimpleMath::Vector4(97.0f, 67.0f, 167.0f, 1.0f), 0);
+	//キャラのライト
+	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f), 1);
+	point.SetAtt(Vector3(0.05f, 0.01f, 0), 1);
+	point.SetLightColor(SimpleMath::Vector4(110.0f, 71.0f, 47.0f, 1.0f), 1);
+	}
+	if(//森2)
+	{
+	////全体ライト
+	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 0.0f), 0);
+	point.SetAtt(Vector3(0.25f, 0.01f, 0), 0);
+	point.SetLightColor(SimpleMath::Vector4(127.0f, 0.0f, 187.0f, 1.0f), 0);
+	////キャラのライト
+	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f), 1);
+	point.SetAtt(Vector3(0.05f, 0.01f, 0), 1);
+	point.SetLightColor(SimpleMath::Vector4(69.0f, 108.0f, 0.0f, 1.0f), 1);
+	}
+	if(//遺跡)
+	{
+	////全体ライト
+	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 0.0f), 0);
+	point.SetAtt(Vector3(0.25f, 0.01f, 0), 0);
+	point.SetLightColor(SimpleMath::Vector4(198.0f, 91.0f, 39.0f, 1.0f), 0);
+	////キャラのライト
+	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f), 1);
+	point.SetAtt(Vector3(0.05f, 0.01f, 0), 1);
+	point.SetLightColor(SimpleMath::Vector4(63.0f, 65.0f, 0.0f, 1.0f), 1);
+	}
+	*/
 	//enemy->StartTimeStop();
 	end_frame = 0.0f;
 }
@@ -243,7 +289,47 @@ void MainScene::Render()
 	camera.Render();
 	ground.Render();
 	DX12Effect.SetCameraPosition(camera.GetCamera());
+	/*if(森１)
+	point.SetPower(1.5f, 0);
+	point.SetPower(2.5f, 1);
+	point.SetPosition(Vector3(0.0f, 0.0f, 0.0f), 0);
+	point.SetPosition(player->GetModel()->GetPosition() + Vector3(0, 50, 16.0f), 1);
+	point.SetCone(0.0f, 0);
+	point.SetCone(6.0f, 1);
+	point.PointRender(*camera.GetCamera(), ground.GetModel());
 
+	point.ShadeRender(player->GetModel(), SimpleMath::Vector4(0, 0, 1, 0.3f));
+	if(町)
+	point.SetPower(1.5f, 0);
+	point.SetPower(2.5f, 1);
+	point.SetPosition(Vector3(0.0f, 170.0f, 87.0f), 0);
+	point.SetPosition(player->GetModel()->GetPosition() + Vector3(0, 50, 9.0f), 1);
+	point.SetCone(2.39f, 0);
+	point.SetCone(9.0f, 1);
+	point.PointRender(*camera.GetCamera(), ground.GetModel());
+
+	point.ShadeRender(player->GetModel(), SimpleMath::Vector4(0, 0, 1, 0.3f));
+	if(森2)
+	point.SetPower(1.5f, 0);
+	point.SetPower(2.5f, 1);
+	point.SetPosition(Vector3(0.0f, 0.0f, 0.0f), 0);
+	point.SetPosition(player->GetModel()->GetPosition() + Vector3(0, 50, 17.0f), 1);
+	point.SetCone(0.0f, 0);
+	point.SetCone(3.0f, 1);
+	point.PointRender(*camera.GetCamera(), ground.GetModel());
+
+	point.ShadeRender(player->GetModel(), SimpleMath::Vector4(0, 0, 1, 0.3f));
+	if(遺跡)
+	point.SetPower(1.5f, 0);
+	point.SetPower(2.5f, 1);
+	point.SetPosition(Vector3(0.0f, 0.0f, 0.0f), 0);
+	point.SetPosition(player->GetModel()->GetPosition() + Vector3(0, 50, 21.0f), 1);
+	point.SetCone(0.0f, 0);
+	point.SetCone(4.0f, 1);
+	point.PointRender(*camera.GetCamera(), ground.GetModel());
+
+	point.ShadeRender(player->GetModel(), SimpleMath::Vector4(0, 0, 1, 0.3f));
+	*/
 	point.SetPower(1.5f, 0);
 	point.SetPower(2.5f, 1);
 	point.SetPosition(Vector3(0.0f, 0.0f, 0.0f), 0);

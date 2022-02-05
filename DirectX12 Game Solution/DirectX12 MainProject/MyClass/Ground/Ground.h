@@ -14,7 +14,7 @@ public:
 	int Update(const float deltaTime);
 	void Render();
 
-	DX9::MODEL& GetModel() { return a; }
+	DX9::MODEL& GetModel() { return bg_forest; }
 
 private:
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack, int max_motion);
@@ -28,9 +28,9 @@ private:
 	DX9::MODEL bg_forest;
 	DX9::MODEL bg_ruins;
 
-	DX9::SKINNEDMODEL town;
+	/*DX9::SKINNEDMODEL town;
 	DX9::SKINNEDMODEL forest;
-	DX9::SKINNEDMODEL ruins;
+	DX9::SKINNEDMODEL ruins;*/
 
 	enum class Forest {
 		START,
