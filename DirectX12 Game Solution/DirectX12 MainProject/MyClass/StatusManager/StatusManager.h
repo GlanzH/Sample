@@ -30,6 +30,7 @@ public:
 
 	//スコア
 	void SetAddScore(float score_size);	//スコアの値を入力
+	int GetCoinNum() { return coin_num; }//コインの取得数
 	float GetAddScore() { return add_score_size; }
 	float GetScoreGauge() { return score * SCORE_GAUGE_DIVIDE; }	//ゲージ描画時呼び出し
 	float GetScore() { return now_score; }	//現在のスコア
@@ -57,15 +58,16 @@ private:
 
 	//攻撃ヒットコンボ
 	int	  combo;	//コンボ数
+	float combo_time_num;	//コンボの時間
 	float combo_time;	//コンボ継続時間
 	bool  combo_flag;	//true:コンボ継続可能 false:継続不可
 	bool combo_miss_flag;
 
-	const float COMBO_TIME_NUM = 6.0f;	//コンボの時間
 	//アニメーション
 	bool anime_flag;	//true:アニメーション再生 false:停止
 
 	//スコア
+	int coin_num;
 	float score;
 	float now_score;    //現在のスコア
 	float add_score_size;

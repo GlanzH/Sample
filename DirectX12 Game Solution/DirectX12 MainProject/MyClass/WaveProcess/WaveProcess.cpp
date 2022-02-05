@@ -153,14 +153,14 @@ void WaveProcess::Render() {
 
 	DX9::SpriteBatch->DrawSimple(
 		black.Get(),
-		SimpleMath::Vector3::Zero,
+		SimpleMath::Vector3(0.0f, 0.0f, -3.0f),
 		Rect(0, 0, 1280, 720),
 		DX9::Colors::RGBA(255, 255, 255, black_alpha)
 	);
 
 	DX9::SpriteBatch->DrawSimple(
 		wave_anim[wave_num].Get(),
-		SimpleMath::Vector3(450.0f, 330.0f, 0.0f),
+		SimpleMath::Vector3(450.0f, 330.0f, -4.0f),
 		RectWH(WAVE_WIDTH * (int)wave_anim_x, WAVE_HIGHT * (int)wave_anim_y, WAVE_WIDTH, WAVE_HIGHT),
 		DX9::Colors::RGBA(255, 255, 255, (int)anim_alpha)
 	);
