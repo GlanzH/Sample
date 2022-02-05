@@ -167,10 +167,10 @@ void WaveProcess::Render() {
 		RectWH(WAVE_WIDTH * (int)wave_anim_x, WAVE_HIGHT * (int)wave_anim_y, WAVE_WIDTH, WAVE_HIGHT),
 		DX9::Colors::RGBA(255, 255, 255, (int)anim_alpha)
 	);
-	DX9::SpriteBatch->DrawSimple(arrow.Get(), SimpleMath::Vector3(1100.0f, 360.00f, 0.0f),
+	/*DX9::SpriteBatch->DrawSimple(arrow.Get(), SimpleMath::Vector3(1100.0f, 360.00f, 0.0f),
 		RectWH(WAVE_WIDTH * (int)100, 90 * (int)300, 400, 90),
 		DX9::Colors::RGBA(255, 255, 255, (int)anim_alpha)
-	);
+	);*/
 }
 
 void WaveProcess::WaveAnimation(const float deltaTime) {
