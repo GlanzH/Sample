@@ -25,34 +25,18 @@ public:
 	
 private:
 	//ランク
-	DX9::SPRITE rank_s;
-	DX9::SPRITE rank_a;
-	DX9::SPRITE rank_b;
-	DX9::SPRITE rank_c;
-	DX9::SPRITE rank_d;
-	DX9::SPRITE rank_e;
+	DX9::SPRITE rank[6];
 	SimpleMath::Vector3 rank_pos;
 	const float RANK_START_POS_Y = -40.0f;
 
 	float rank_alpha;
 	int now_rank;
-	float now_score;	//ランク付けに使用
+	int now_score;	//ランク付けに使用
 
 	enum RANK {
 		E, D, C, B, A, S
 	};
 
-	//各ランクの範囲
-	const float E_RANK_MAX = 0.0f;
-	const float D_RANK_MIN = 1.0f;
-	const float D_RANK_MAX = 29.0f;
-	const float C_RANK_MIN = 30.0f;
-	const float C_RANK_MAX = 59.0f;
-	const float B_RANK_MIN = 60.0f;
-	const float B_RANK_MAX = 89.0f;
-	const float A_RANK_MIN = 90.0f;
-	const float A_RANK_MAX = 99.0f;
-	const float S_RANK_MIN = 100.0f;
 
 	//フォント
 	DX9::SPRITEFONT font;

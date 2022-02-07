@@ -148,7 +148,9 @@ NextScene MainScene::Update(const float deltaTime)
 	if (StatusManager::Instance().GetWave() > 0 && StatusManager::Instance().GetTime() > StatusManager::Instance().GetOnceExec())
 		enemy->StartTimeStop();
 
-	enemy->EndTimeStop();
+	if (process.GetAnimEndFlag()) {
+		enemy->EndTimeStop();
+	}
 
 	if (!enemy->IsTimeStop()) {
 		player->Update(delta_time, enemy->GetTemporaryDeath());

@@ -4,6 +4,8 @@ void RankJudgeManager::Initialize() {
 	//ÉâÉìÉN
 	rank_pos   = SimpleMath::Vector3(0.0f, RANK_START_POS_Y, 0.0f);
 	rank_alpha = 0.0f;
+	now_score = 0;
+	now_rank = 0;
 
 	//ÉtÉHÉìÉg
 	font_pos = SimpleMath::Vector2(FONT_STSRT_POS_X, FONT_STSRT_POS_Y);
@@ -35,12 +37,12 @@ void RankJudgeManager::Initialize() {
 }
 
 void RankJudgeManager::LoadAseet() {
-	rank_s = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_s.png");
-	rank_a = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_a.png");
-	rank_b = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_b.png");
-	rank_c = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_c.png");
-	rank_d = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_d.png");
-	rank_e = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_e.png");
+	rank[0] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_e.png");
+	rank[1] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_d.png");
+	rank[2] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_c.png");
+	rank[3] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_b.png");
+	rank[4] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_a.png");
+	rank[5] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_s.png");
 
 	font = DX9::SpriteFont::CreateFromFontName(DXTK->Device9, L"ÇlÇr ÉSÉVÉbÉN", font_size);
 
@@ -75,55 +77,28 @@ void RankJudgeManager::Render() {
 
 	DX9::SpriteBatch->DrawSimple(director.Get(), director_pos);
 
-	DX9::SpriteBatch->DrawSimple(text_box.Get(), text_box_pos,
+	DX9::SpriteBatch->DrawSimple(text_box.Get(),
+		text_box_pos,
 		Rect(0, 0, SPRITE_WIDTH, SPRITE_HIGHT),
-		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, text_box_alpha));
+		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, text_box_alpha)
+	);
 
 	DX9::SpriteBatch->DrawSimple(text.Get(), text_pos,
 		Rect(0, 0, SPRITE_WIDTH, SPRITE_HIGHT),
-		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, text_alpha));
+		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, text_alpha)
+	);
 
 	if (exit_flash % 2 != 0) {
 		DX9::SpriteBatch->DrawSimple(exit.Get(), exit_pos);
 	}
 
-	switch (now_rank)
-	{
-	case E:
-		DX9::SpriteBatch->DrawSimple(rank_e.Get(), rank_pos,
-			Rect(0, 0, SPRITE_WIDTH, SPRITE_HIGHT), DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, rank_alpha));
-		break;
+	DX9::SpriteBatch->DrawSimple(rank[now_rank].Get(),
+		rank_pos,
+		Rect(0, 0, SPRITE_WIDTH, SPRITE_HIGHT),
+		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, rank_alpha)
+	);
 
-	case D:
-		DX9::SpriteBatch->DrawSimple(rank_d.Get(), rank_pos,
-			Rect(0, 0, SPRITE_WIDTH, SPRITE_HIGHT), DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, rank_alpha));
-		break;
-
-	case C:
-		DX9::SpriteBatch->DrawSimple(rank_c.Get(), rank_pos,
-			Rect(0, 0, SPRITE_WIDTH, SPRITE_HIGHT), DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, rank_alpha));
-		break;
-
-	case B:
-		DX9::SpriteBatch->DrawSimple(rank_b.Get(), rank_pos,
-			Rect(0, 0, SPRITE_WIDTH, SPRITE_HIGHT), DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, rank_alpha));
-		break;
-
-	case A:
-		DX9::SpriteBatch->DrawSimple(rank_a.Get(), rank_pos,
-			Rect(0, 0, SPRITE_WIDTH, SPRITE_HIGHT), DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, rank_alpha));
-		break;
-
-	case S:
-		DX9::SpriteBatch->DrawSimple(rank_s.Get(), rank_pos,
-			Rect(0, 0, SPRITE_WIDTH, SPRITE_HIGHT), DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, rank_alpha));
-		break;
-
-	default:
-		break;
-	}
-
-	DX9::SpriteBatch->DrawString(font.Get(), font_pos, DX9::Colors::White, L"%d", people); 
+	DX9::SpriteBatch->DrawString(font.Get(), font_pos, DX9::Colors::White, L"%d", people);
 }
 
 void RankJudgeManager::GetAudience() {
@@ -131,25 +106,40 @@ void RankJudgeManager::GetAudience() {
 }
 
 void RankJudgeManager::JudgeRnak() {
-	if (now_score <= E_RANK_MAX) {
+	//ÉXÉRÉAÇ…âûÇ∂ÇΩÉâÉìÉNïtÇØ
+	switch (now_score / 500)
+	{
+	case 0:
+		//ÉXÉRÉA 0Å`499
 		now_rank = E;
-	}
-	else if (now_score >= D_RANK_MIN && now_score <= D_RANK_MAX) {
-		now_rank = D;
-	}
-	else if (now_score >= C_RANK_MIN && now_score <= C_RANK_MAX) {
-		now_rank = C;
-	}
-	else if (now_score >= B_RANK_MIN && now_score <= B_RANK_MAX) {
-		now_rank = B;
-	}
-	else if (now_score >= A_RANK_MIN && now_score <= A_RANK_MAX) {
-		now_rank = A;
-	}
-	else if (now_score >= S_RANK_MIN) {
-		now_rank = S;
-	}
+		break;
 
+	case 1:
+		//500Å`999
+		now_rank = D;
+		break;
+
+	case 2:
+		//1000Å`1499
+		now_rank = C;
+		break;
+
+	case 3:
+		//1500Å`1999
+		now_rank = B;
+		break;
+
+	case 4:
+	case 5:
+		//2000Å`299
+		now_rank = A;
+		break;
+
+	default:
+		//3000à»è„
+		now_rank = S;
+		break;
+	}
 	return;
 }
 
