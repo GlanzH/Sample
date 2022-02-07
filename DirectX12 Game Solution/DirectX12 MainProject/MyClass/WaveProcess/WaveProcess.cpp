@@ -50,7 +50,7 @@ void WaveProcess::LoadAssets() {
 
 	arrow = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/RightArrow.png");
 
-	black = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/kuro.png");
+	//black = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/kuro.png");
 
 	time = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Time/TIME.png");
 	time_number = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Time/numbers_timer.png");
