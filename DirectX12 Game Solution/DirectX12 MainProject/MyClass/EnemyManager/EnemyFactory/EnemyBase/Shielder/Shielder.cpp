@@ -26,14 +26,15 @@ int Shielder::Update(SimpleMath::Vector3 player, bool destroy_flag, const float 
 	EnemyBase::Update(player, destroy_flag, deltaTime);
 	EnemyBase::AdjustAnimCollision();
 	EnemyBase::TemporaryDeath();
-	
+
 	Freeze();
+	IsDamage();
 	IsDeath();
 
-	if (!temporary_death_flag && !die_flag)
+	if (!damage_flag && !temporary_death_flag && !die_flag)
 		Action();
 
-	if (is_damage < max_is_damage)
+	if (is_freeze < max_is_damage && is_damage < max_is_damage)
 		anim_model->AdvanceTime(delta / 1.0f);
 
 	sword_col->SetPosition(sword_pos);
@@ -64,12 +65,12 @@ void Shielder::Action() {
 		break;
 
 	case (int)ActionNum::INIT:
-			Rotate();
-			wait_frame = 0.0f;
-			move_frame = 0.0f;
-			sword_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
-			SetAnimation(anim_model, (int)Motion::RUN, (int)Motion::MAX_MOTION);
-			action = (int)ActionNum::RUN;
+		Rotate();
+		wait_frame = 0.0f;
+		move_frame = 0.0f;
+		sword_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
+		SetAnimation(anim_model, (int)Motion::RUN, (int)Motion::MAX_MOTION);
+		action = (int)ActionNum::RUN;
 		break;
 
 	case (int)ActionNum::RUN:
@@ -107,20 +108,25 @@ void Shielder::Move() {
 
 void Shielder::Freeze() {
 	if (enemy_hp <= 0 && !die_flag) {
-		is_damage += delta;
+		is_freeze += delta;
 		SetAnimation(anim_model, (int)Motion::DAMAGE, (int)Motion::MAX_MOTION);
 	}
 
 	if (StatusManager::Instance().GetHitComboTime() == 0.0f) {
 		SetAnimation(anim_model, (int)Motion::RUN, (int)Motion::MAX_MOTION);
-		is_damage = 0.0f;
+		is_freeze = 0.0f;
 	}
 }
 
-void Shielder::Damage() {
-	if (position.x < player_pos.x && direct == RIGHT ||
-		position.x > player_pos.x && direct == LEFT) {
-		EnemyBase::Damage();
+void Shielder::IsDamage() {
+	EnemyBase::IsDamage();
+
+	if (damage_flag) {
+		is_damage += delta;
+		SetAnimation(anim_model, (int)Motion::DAMAGE, (int)Motion::MAX_MOTION);
+	}
+	else {
+		is_damage = 0.0f;
 	}
 }
 
@@ -134,7 +140,7 @@ void Shielder::HitEffect() {
 void Shielder::IsDeath() {
 	if (die_flag) {
 		SetAnimation(anim_model, (int)Motion::DEATH, (int)Motion::MAX_MOTION);
-		is_damage = 0.0f;
+		is_freeze = 0.0f;
 
 		if (dead_frame >= 0.0f) {
 			confetti_effect_flag = true;

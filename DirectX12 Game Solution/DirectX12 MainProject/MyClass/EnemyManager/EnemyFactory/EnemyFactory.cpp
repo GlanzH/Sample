@@ -7,9 +7,9 @@
 EnemyFactory::EnemyFactory()
 {
 	//敵のステータス設定
-	enemy_hp = ENEMY_HP;
+	/*enemy_hp = ENEMY_HP;
 	rand_hp  = 2;
-	arrow_hp = INT_MAX;
+	arrow_hp = INT_MAX;*/
 
 	//敵の種類のタグ
 	//兵士(剣)
@@ -30,11 +30,11 @@ EnemyFactory::EnemyFactory()
 
 EnemyBase* EnemyFactory::Create(
 	string tag,double init_wait,double stop_pos,
-	 SimpleMath::Vector3 position,double speed,string direct,string posture
+	 SimpleMath::Vector3 position,double speed,string direct,string posture,int enemy_hp
 )
 {
 	EnemyBase* enemy_factory = CreateProduct(tag,position);
-	enemy_factory->Initialize(tag,init_wait,stop_pos,speed,direct, posture, SetHP(tag));
+	enemy_factory->Initialize(tag,init_wait,stop_pos,speed,direct, posture, enemy_hp);
 
 	if(tag != "AR")
 		enemy_factory->LoadAsset(SetModel(tag), position);
@@ -79,20 +79,20 @@ LPCWSTR EnemyFactory::SetModel(string tag)
 	}
 	return model_name;
 }
-
-int EnemyFactory::SetHP(string tag)
-{
-	int hps[] = 
-	{ 
-		enemy_hp,
-		enemy_hp,
-		rand_hp,
-		arrow_hp
-	};
-
-	for (int i = 0; i < enemy_tag.size(); ++i)
-	{
-		if (tag == enemy_tag[i]) { hp = hps[i]; }
-	}
-	return hp;
-}
+//
+//int EnemyFactory::SetHP(string tag)
+//{
+//	int hps[] = 
+//	{ 
+//		enemy_hp,
+//		enemy_hp,
+//		rand_hp,
+//		arrow_hp
+//	};
+//
+//	for (int i = 0; i < enemy_tag.size(); ++i)
+//	{
+//		if (tag == enemy_tag[i]) { hp = hps[i]; }
+//	}
+//	return hp;
+//}

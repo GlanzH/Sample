@@ -1,4 +1,5 @@
 #include "Base/pch.h"
+#include "Base/pch.h"
 #include "Base/dxtk.h"
 #include "SwordMan.h"
 
@@ -23,20 +24,21 @@ void SwordMan::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positio
 
 int SwordMan::Update(SimpleMath::Vector3 player, bool destroy_flag, const float deltaTime) {
 	EnemyBase::Update(player, destroy_flag, deltaTime);
-	EnemyBase::NormalDeathEffect(max_dead,confetti_effect_flag,death_effect_flag,effect_count);
+	EnemyBase::NormalDeathEffect(max_dead, confetti_effect_flag, death_effect_flag, effect_count);
 	EnemyBase::AdjustAnimCollision();
 	EnemyBase::TemporaryDeath();
 	Freeze();
+	IsDamage();
 	IsDeath();
 
-	if (!retreat_flag && !temporary_death_flag && !die_flag)
+	if (!damage_flag && !retreat_flag && !temporary_death_flag && !die_flag)
 		Action();
 
-	if (is_damage < max_is_damage)
+	if (is_freeze < max_is_damage && is_damage < max_is_damage)
 		anim_model->AdvanceTime(delta / 1.0f);
 
 	sword_col->SetPosition(sword_pos);
-	col.weapon.Center = SimpleMath::Vector3(sword_pos.x,0,sword_pos.z);
+	col.weapon.Center = SimpleMath::Vector3(sword_pos.x, 0, sword_pos.z);
 	collision->SetPosition(anim_model->GetPosition() + SimpleMath::Vector3(0, 6, 0));
 	return 0;
 }
@@ -145,25 +147,38 @@ void SwordMan::Run() {
 void SwordMan::IsRetreat() {
 	EnemyBase::IsRetreat();
 
-	if(retreat_flag)
-	SetAnimation(anim_model, (int)Motion::BOUNCE, (int)Motion::MAX_MOTION);
+	if (retreat_flag)
+		SetAnimation(anim_model, (int)Motion::BOUNCE, (int)Motion::MAX_MOTION);
 }
 
 void SwordMan::Freeze() {
 	if (enemy_hp <= 0 && !die_flag) {
-		SetAnimation(anim_model, (int)Motion::FREEZE, (int)Motion::MAX_MOTION);
-		is_damage += delta;
+		is_freeze += delta;
+		SetAnimation(anim_model, (int)Motion::DAMAGE, (int)Motion::MAX_MOTION);
+
 	}
 
 	if (StatusManager::Instance().GetHitComboTime() == 0.0f) {
 		Run();
+		is_freeze = 0.0f;
+	}
+}
+
+void SwordMan::IsDamage() {
+	EnemyBase::IsDamage();
+
+	if (damage_flag) {
+		is_damage += delta;
+		SetAnimation(anim_model, (int)Motion::DAMAGE, (int)Motion::MAX_MOTION);
+	}
+	else {
 		is_damage = 0.0f;
 	}
 }
 
 void SwordMan::IsDeath() {
 	if (die_flag) {
-		is_damage = 0.0f;
+		is_freeze = 0.0f;
 		SetAnimation(anim_model, (int)Motion::DEATH, (int)Motion::MAX_MOTION);
 
 
@@ -189,7 +204,7 @@ void SwordMan::Attack() {
 			sword_pos = SimpleMath::Vector3(position.x - 5.0f, fit_collision_y, position.z);
 	}
 
-	if(attack_frame >= max_attack)
+	if (attack_frame >= max_attack)
 		sword_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 }
 
@@ -199,6 +214,6 @@ bool SwordMan::LifeDeathDecision() {
 
 	if (StatusManager::Instance().GetTime() == 0.0f)
 		return AUTO;
-    
+
 	return LIVE;
 }

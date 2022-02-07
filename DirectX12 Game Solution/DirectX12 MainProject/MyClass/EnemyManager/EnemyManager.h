@@ -107,7 +107,7 @@ private:
 	double      move_speed[ENEMY_NUM];     //!ˆÚ“®‘¬“x
 	std::string posture[ENEMY_NUM];        //!\‚¦
 	std::string move_direct[ENEMY_NUM];    //!ˆÚ“®•ûŒü
-
+	int         enemy_hp[ENEMY_NUM];
 	bool first_process_flag[MAX_WAVE];
 	int  sum_wave_enemy[MAX_WAVE];
 };

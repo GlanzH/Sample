@@ -28,12 +28,13 @@ int RandSwordMan::Update(SimpleMath::Vector3 player, bool destroy_flag, const fl
 	EnemyBase::AdjustAnimCollision();
 	EnemyBase::TemporaryDeath();
 	Freeze();
+	IsDamage();
 	IsDeath();
 
-	if (!retreat_flag && !temporary_death_flag && !die_flag)
+	if (!damage_flag && !retreat_flag && !temporary_death_flag && !die_flag)
 		Action();
 
-	if (is_damage < max_is_damage)
+	if (is_freeze < max_is_damage && is_damage < max_is_damage)
 		anim_model->AdvanceTime(delta / 1.0f);
 
 	sword_col->SetPosition(sword_pos);
@@ -153,12 +154,12 @@ void RandSwordMan::IsRetreat() {
 void RandSwordMan::Freeze() {
 	if (enemy_hp <= 0 && !die_flag) {
 		SetAnimation(anim_model, (int)Motion::FREEZE, (int)Motion::MAX_MOTION);
-		is_damage += delta;
+		is_freeze += delta;
 	}
 
 	if (StatusManager::Instance().GetHitComboTime() == 0.0f) {
 		Run();
-		is_damage = 0.0f;
+		is_freeze = 0.0f;
 	}
 }
 
@@ -170,18 +171,30 @@ void RandSwordMan::Damage() {
 		distribute = std::uniform_int_distribution<int>(UPPER, LOWER);
 		postune_num = distribute(random);
 
-		if(postune_num == UPPER)
+		if (postune_num == UPPER)
 			enemy_posture = "U";
 		else
 			enemy_posture = "D";
 	}
-	
+
 	EnemyBase::Damage();
+}
+
+void RandSwordMan::IsDamage() {
+	EnemyBase::IsDamage();
+
+	if (damage_flag) {
+		is_damage += delta;
+		SetAnimation(anim_model, (int)Motion::DAMAGE, (int)Motion::MAX_MOTION);
+	}
+	else {
+		is_damage = 0.0f;
+	}
 }
 
 void RandSwordMan::IsDeath() {
 	if (die_flag) {
-		is_damage = 0.0f;
+		is_freeze = 0.0f;
 		SetAnimation(anim_model, (int)Motion::DEATH, (int)Motion::MAX_MOTION);
 
 

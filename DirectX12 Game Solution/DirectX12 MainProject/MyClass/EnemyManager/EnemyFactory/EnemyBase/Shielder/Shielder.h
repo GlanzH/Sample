@@ -12,7 +12,7 @@ private:
 	void Move()   override;
 	void Action() override;
 	void HitEffect();
-	void Damage();
+	void IsDamage();
 	void Attack();
 	void InitDirect();
 	void IsDeath();

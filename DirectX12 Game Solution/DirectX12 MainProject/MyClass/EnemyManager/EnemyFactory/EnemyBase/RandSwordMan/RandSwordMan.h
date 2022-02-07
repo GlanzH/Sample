@@ -16,6 +16,7 @@ private:
 	void Attack();
 	void Freeze();
 	void Damage();
+	void IsDamage();
 	void IsDeath();
 	void InitDirect();
 	void Rotate();

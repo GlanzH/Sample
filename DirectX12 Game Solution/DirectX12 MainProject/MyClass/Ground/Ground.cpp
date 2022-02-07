@@ -34,6 +34,14 @@ int Ground::Update(const float deltaTime) {
 
 	if (DXTK->KeyState->O)
 		pos.z += 0.1f;
+	//if (ウェーブ数＞ = 0 && ウェーブ数 ＜ = 3)
+	//	街の背景モーションを再生する関数
+
+	//	if (ウェーブ数＞ = 4 && ウェーブ数 ＜ = 6)
+	//		森の背景モーションを再生する関数
+
+	//		if (ウェーブ数＞ = 7 && ウェーブ数 ＜ = 9)
+	//			遺跡の背景モーションを再生する関数
 
 	//SetAnimation(a, (int)Forest::PLAY, (int)Forest::MAX_MOTION);
 	//a->AdvanceTime(deltaTime / 1.0f);

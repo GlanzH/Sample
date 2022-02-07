@@ -34,7 +34,7 @@ private:
 	};
 
 	SimpleMath::Vector3 pos;
-
+	//const float town ;
 	const float box_size = 2.0f;
 	const float pos_y = 25.0f;
 };

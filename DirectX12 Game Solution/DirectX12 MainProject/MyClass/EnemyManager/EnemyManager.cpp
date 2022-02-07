@@ -25,6 +25,7 @@ EnemyManager::EnemyManager()
 		move_speed[i] = DBL_MAX;
 		posture[i] = "";
 		move_direct[i] = "";
+		enemy_hp[i] = INT_MAX;
 	}
 }
 
@@ -164,7 +165,8 @@ void EnemyManager::Generator() {
 				appear_pos[count],
 				move_speed[count],
 				move_direct[count],
-				posture[count]
+				posture[count],
+				enemy_hp[count]
 			)
 		);
 		appear_flag[count] = true;
@@ -216,11 +218,6 @@ void EnemyManager::EndTimeStop() {
 	if (!enemy_stop_flag) {
 		push_count = 0;
 	}
-
-	//else if (time_stop_count == 4 && push_count >= 1) {
-	//	push_count = 0;
-	//	enemy_stop_flag = false;
-	//}
 }
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
@@ -271,7 +268,7 @@ void EnemyManager::LoadEnemyArrangement() {
 	//!ƒf[ƒ^“Ç‚İ‚İ
 	for (int i = 0; i < ENEMY_NUM; ++i) {
 		pos_time_infile >> tag[i] >> appear_pos[i].x >> appear_pos[i].y >> appear_pos[i].z >> appear_time[i] >> wave_num[i]
-			>> init_wait[i] >> stop_pos[i] >> move_speed[i] >> move_direct[i] >> posture[i];
+			>> init_wait[i] >> stop_pos[i] >> move_speed[i] >> move_direct[i] >> posture[i] >> enemy_hp[i];
 	}
 
 	SumWaveEnemy();
