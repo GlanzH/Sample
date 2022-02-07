@@ -2,7 +2,6 @@
 
 void RankJudgeManager::Initialize() {
 	//ランク
-	rank_pos = SimpleMath::Vector3(637.0f, 253.0f, 0.0f);
 	score = 0;
 	now_rank = 0;
 	rank_alpha = 225.0f;
@@ -28,12 +27,13 @@ void RankJudgeManager::Initialize() {
 	two_digit = 0;
 	three_digit = 0;
 	four_digit = 0;
-
-	yen_alpha = 0.0f;
-	money_pos = SimpleMath::Vector2(1000.0f, 0.0f);
-
+	digit_pos = 0;
+	yen_icon_alpha = 0.0f;
+	money_alpha = 0.0f;
+	money_pos = SimpleMath::Vector2(MONEY_START_POS_X, 280.0f);
+	yen_icon_pos = SimpleMath::Vector2(YEN_ICON_START_POS_X, 280.0f);
 	//リスタート
-	restart_hight = 0.0f;
+	restart_hight = -1.0f;
 
 	//時間
 	time_delta  = 0.0f;
@@ -47,11 +47,11 @@ void RankJudgeManager::Initialize() {
 
 void RankJudgeManager::LoadAseet() {
 	rank[0] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Rank/Rank_E.png");
-	//rank[1] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_d.png");
-	//rank[2] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_c.png");
-	//rank[3] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_b.png");
-	//rank[4] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_a.png");
-	//rank[5] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_s.png");
+	rank[1] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Rank/Rank_D.png");
+	rank[2] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Rank/Rank_C.png");
+	rank[3] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Rank/Rank_B.png");
+	rank[4] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Rank/Rank_A.png");
+	rank[5] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Rank/Rank_S.png");
 
 	score_empty = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_nice_bottom.png");
 	score_max = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_nice_top.png");
@@ -60,12 +60,9 @@ void RankJudgeManager::LoadAseet() {
 
 	result_shadow = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Result_Shadow.png");
 
-	yen_icon = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Yen.png");
-	yen_number = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/CoinNumbers.png");
-
 	restart = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Restart_Text.png");
 
-	font = DX9::SpriteFont::CreateFromFontFile(DXTK->Device9, L"Result/ronde_square/Ronde-B_square.otf", L"ロンド B スクエア", 82);
+	font = DX9::SpriteFont::CreateFromFontFile(DXTK->Device9, L"Result/ronde_square/Ronde-B_square.otf", L"ロンド B スクエア", 55);
 }
 
 void RankJudgeManager::Update(const float deltaTime) {
@@ -84,7 +81,7 @@ void RankJudgeManager::Render() {
 	//リザルトタイトル
 	DX9::SpriteBatch->DrawSimple(
 		result_title.Get(),
-		SimpleMath::Vector3(359.0f, 121.0f, 0.0f),
+		SimpleMath::Vector3(359.0f, 121.0f, -1.0f),
 		RectWH(0, TITLE_MIN_HIGHT * (int)title_anim_frame, TITLE_WIDTH, TITLE_MIN_HIGHT),
 		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, (int)title_alpha)
 	);
@@ -112,53 +109,10 @@ void RankJudgeManager::Render() {
 		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, (int)score_alpha)
 	);
 
-	//お金アイコン
-	DX9::SpriteBatch->DrawSimple(
-		yen_icon.Get(),
-		SimpleMath::Vector3(594.0f, 328.0f, 0.0f),
-		Rect(0, 0, YEN_ICON_WIDTH, YEN_ICON_HIGHT),
-		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, (int)yen_alpha)
-	);
-
-	//数字
-	if(digit_state >= ONE_DIGIT){
-		DX9::SpriteBatch->DrawSimple(
-			yen_number.Get(),
-			SimpleMath::Vector3(400.0f, 310.0f, 0.0f),
-			RectWH(one_digit, 0, YEN_NUM_WIDTH, YEN_NUM_HIGHT),
-			DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, (int)yen_alpha)
-		);
-
-		if (digit_state >= TWO_DIGIT) {
-			DX9::SpriteBatch->DrawSimple(
-				yen_number.Get(),
-				SimpleMath::Vector3(300.0f, 310.0f, 0.0f),
-				RectWH(two_digit, 0, YEN_NUM_WIDTH, YEN_NUM_HIGHT),
-				DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, (int)yen_alpha)
-			);
-		}
-
-		if (digit_state >= THREE_DIGIT) {
-			DX9::SpriteBatch->DrawSimple(
-				yen_number.Get(),
-				SimpleMath::Vector3(200.0f, 310.0f, 0.0f),
-				RectWH(three_digit, 0, YEN_NUM_WIDTH, YEN_NUM_HIGHT),
-				DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, (int)yen_alpha)
-			);
-		}
-		if (digit_state >= FOUR_DIGIT) {
-			DX9::SpriteBatch->DrawSimple(
-				yen_number.Get(),
-				SimpleMath::Vector3(100.0f, 310.0f, 0.0f),
-				RectWH(four_digit, 0, YEN_NUM_WIDTH, YEN_NUM_HIGHT),
-				DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, (int)yen_alpha)
-			);
-		}
-	}
 	//ランク
-	DX9::SpriteBatch->DrawSimple(rank[0].Get(),
-		rank_pos,
-		RectWH(300 * rank_width, 250 * rank_hight, 300, 250),
+	DX9::SpriteBatch->DrawSimple(rank[now_rank].Get(),
+		SimpleMath::Vector3(637.0f, 253.0f, 0.0f),
+		RectWH(300 * rank_width, 250 * (int)rank_hight, 300, 250),
 		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, (int)rank_alpha)
 	);
 
@@ -166,10 +120,15 @@ void RankJudgeManager::Render() {
 	DX9::SpriteBatch->DrawSimple(
 		restart.Get(),
 		SimpleMath::Vector3(455.0f, 590.0f, 0.0f),
-		Rect(0, restart_hight, RESTART_WIDTH, RESTART_MIN_HIGHT)
+		RectWH(0, (int)restart_hight * RESTART_MIN_HIGHT, RESTART_WIDTH, RESTART_MIN_HIGHT)
 	);
 
-	DX9::SpriteBatch->DrawString(font.Get(), money_pos, DX9::Colors::RGBA(255, 255, 255, 255), L"%d", money);
+
+	//お金アイコン
+	DX9::SpriteBatch->DrawString(font.Get(), yen_icon_pos, DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, yen_icon_alpha), L"￥");
+
+	//金額
+	DX9::SpriteBatch->DrawString(font.Get(), money_pos, DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, money_alpha), L"%d", money);
 }
 
 void RankJudgeManager::JudgeRnak() {
@@ -222,69 +181,97 @@ cppcoro::generator<int> RankJudgeManager::ReleaseRank()
 	stop_time = 0.0f;
 
 	//帯の表示、タイトルアニメーション
-	title_alpha = 255;
 	while (shadow_alpha < 200.0f) {
-		shadow_alpha = std::min(shadow_alpha + 300.0f * time_delta, 200.0f);
+		shadow_alpha = std::min(shadow_alpha + 330.0f * time_delta, 200.0f);
+		//title_anim_frame = std::min(title_anim_frame + 15.0f * time_delta, 16.0f);
+		co_yield 1;
+	}
+
+	title_alpha = COLOR_MAX;
+	while (title_anim_frame < 16.0f) {
 		title_anim_frame = std::min(title_anim_frame + 15.0f * time_delta, 16.0f);
 		co_yield 1;
 	}
 	title_anim_frame = 16.0f;
 
-	//スコアゲージ、お金表示
-	while (score_alpha < 255.0f) {
-		yen_alpha = std::min(yen_alpha + 300.0f * time_delta, 255.0f);
-		score_alpha = std::min(score_alpha + 300.0f * time_delta, 255.0f);
+	while (stop_time < 1.0f) {
+		stop_time += time_delta;
+		co_yield 1;
+	}
+	stop_time = 0.0f;
+
+
+	//score_alpha = COLOR_MAX;
+	//スコアゲージ表示
+	while (score_alpha < COLOR_MAX) {
+		score_alpha = std::min(score_alpha + 350.0f * time_delta, COLOR_MAX);
 		co_yield 3;
 	}
 
-	//ゲージ、金額増加
-	StatusManager::Instance().SetAddScore(1000.0f);
+	while (stop_time < 1.0f) {
+		stop_time += time_delta;
+		co_yield 1;
+	}
+	stop_time = 0.0f;
+
+
+	//ゲージ増加
+	StatusManager::Instance().SetAddScore(2000.0f);
 	JudgeRnak();
-	while (/*score_width != score * 0.113f*/true) {
-		score_width += 60.0f * time_delta;
+	while (true) {
+		score_width += 70.0f * time_delta;
 		if (score_width > score * 0.113f) {
 			score_width = score * 0.113f;
-		}
-		money += 600 * time_delta;
-		if (money > score) {
-			money = score;
-		}
-
-		//if (money > 10) {
-		//	digit_state = TWO_DIGIT;
-		//}
-		//if (money > 100) {
-		//	digit_state = THREE_DIGIT;
-		//}
-		//if (money > 1000) {
-		//	digit_state = FOUR_DIGIT;
-		//}
-
-		switch (digit_state)
-		{
-		case ONE_DIGIT:
-			money_pos.x = 1000;
-			break;
-
-		case TWO_DIGIT:
-			money_pos.x = 900;
-			break;
-
-		case THREE_DIGIT:
-			money_pos.x = 800;
-			break;
-
-		case FOUR_DIGIT:
-			money_pos.x = 700;
 			break;
 		}
-
 		co_yield 4;
 	}
 
+	//お金表示
+	yen_icon_alpha = COLOR_MAX;
+	money_alpha = COLOR_MAX;
+	while (stop_time < 2.0f) {
+		stop_time += time_delta;
+		co_yield 1;
+	}
+	stop_time = 0.0f;
+
+
+	//金額増加
+	while (true) {
+		money += 700 * time_delta;
+		if (money > score) {
+			money = score;
+			break;
+		}
+
+		money_pos.x = MONEY_START_POS_X - (40.0f * digit_pos);
+		yen_icon_pos.x = YEN_ICON_START_POS_X - (40.0f * digit_pos);
+
+		//桁数によって座標をずらす
+		if (money >= 10 && money < 100) {	//2桁
+			digit_pos = 1;
+		}
+
+		if (money >= 100 && money < 1000) {	//3桁
+			digit_pos = 2;
+		}
+
+		if (money >= 1000) {	//4桁
+			digit_pos = 3;
+		}
+		co_yield 5;
+	}
+
+	while (stop_time < 1.5f) {
+		stop_time += time_delta;
+		co_yield 1;
+	}
+	stop_time = 0.0f;
+
 	//ランクの表示
 	while (true) {
-		rank_hight += 70.0f * time_delta;
+		rank_hight += 20.0f * time_delta;
 		if (rank_hight >= 13.0f) {
 			rank_hight = 0.0f;
 			rank_width++;
@@ -298,8 +285,16 @@ cppcoro::generator<int> RankJudgeManager::ReleaseRank()
 	rank_hight = 12;
 	rank_width = 1;
 
+
 	scene_flag = true;
-	
-	
+	//リスタート
+	while (true) {
+		restart_hight += 15.0f * time_delta;
+		if (restart_hight > 27.0f) {
+			restart_hight = 0.0f;
+		}
+		co_yield 6;
+	}
+
 	co_return;
 }
