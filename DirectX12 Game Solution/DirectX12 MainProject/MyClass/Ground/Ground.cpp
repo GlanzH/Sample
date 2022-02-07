@@ -12,15 +12,18 @@ void Ground::LoadAsset() {
 	bg_ruins  = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\Forest\\ruins.X");
 	bg_town   = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\Forest\\town.X");
 
-	town   = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_anim\\bg_town.X");
+	/*town   = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_anim\\bg_town.X");
 	forest = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_anim\\bg_forest.X");
-	ruins  = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_anim\\bg_remains.X");
+	ruins  = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_anim\\bg_remains.X");*/
 
 
-	model->SetPosition(0.0f, -23.0, 0.0f);
+	model_forest->SetPosition(0.0f, -23.0, 0.0f);
 	bg_forest->SetPosition(0, -25, 0);
-	//a->SetScale(0.4f);
-	bg_forest->SetPosition(0, -pos_y, 20.0f);
+	model_ruins->SetPosition(0.0f, -23.0, 0.0f);
+	bg_ruins->SetPosition(0, -25, 0);
+	model_town->SetPosition(0.0f, -23.0, 0.0f);
+	bg_town->SetPosition(0, -25, 0);
+	//bg_forest->SetPosition(0, -pos_y, 20.0f);
 	pos = SimpleMath::Vector3::Zero;
 }
 
@@ -68,6 +71,7 @@ int Ground::Update(const float deltaTime) {
 void Ground::Render() {
 	//model->Draw();
 	//a->Draw();
+	/*GetModel()->Draw();*/
 }
 
 /**
@@ -77,41 +81,41 @@ void Ground::Render() {
  */
 
 //SKINNEDMODELŒ^
-DX9::SKINNEDMODEL& Ground::GetSkinnedModel() {
-	
-	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 3)
-	{
-		return forest;
-	}
-	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 6)
-	{
-		return town;
-	}
-	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 9)
-	{
-		return forest;
-	}
-	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 12)
-	{
-		return forest;
-	}
-}
+//DX9::SKINNEDMODEL& Ground::GetModel() {
+//	
+//	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 3)
+//	{
+//		return forest;
+//	}
+//	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 6)
+//	{
+//		return town;
+//	}
+//	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 9)
+//	{
+//		return forest;
+//	}
+//	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 12)
+//	{
+//		return forest;
+//	}
+//}
 //MODELŒ^
 DX9::MODEL& Ground::GetModel() 
 {
-	if (StatusManager::Instance().GetWave() >=0 && StatusManager::Instance().GetWave() <= 3)
-	{
-		return model_forest;
-	}
-	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 6)
-	{
-		return bg_town;
-	}
-	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 9)
+	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 3)
 	{
 		return bg_forest;
 	}
-	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 12)
+	if (StatusManager::Instance().GetWave() >= 4 && StatusManager::Instance().GetWave() <= 6)
+	{
+		return bg_town;
+	}
+	if (StatusManager::Instance().GetWave() >= 7 && StatusManager::Instance().GetWave() <= 9)
+	{
+		bg_forest;
+	}
+	if (StatusManager::Instance().GetWave() >= 10 && StatusManager::Instance().GetWave() <= 12)
 	{
 		return bg_ruins;
 	}
