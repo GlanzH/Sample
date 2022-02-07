@@ -17,25 +17,25 @@ bool EnemyBase::Initialize(
 	max_init_wait = init_wait;
 
 	retreat_flag = false;
-	damage_flag = false;
-	die_flag = false;
-	attack_flag = false;
-	dest_flag = false;
+	damage_flag  = false;
+	die_flag     = false;
+	attack_flag  = false;
+	dest_flag    = false;
 
 	temporary_death_flag = false;
 	confetti_effect_flag = false;
-	death_effect_flag = false;
+	death_effect_flag    = false;
 
 	retreat_count = 0;
-	effect_count = 0;
+	effect_count  = 0;
 
-	dead_frame = 0.0f;
-	is_damage = 0.0f;
-	is_freeze = 0.0f;
-	init_wait_frame = 0.0f;
-	death_frame = 0.0f;
+	dead_frame         = 0.0f;
+	is_damage          = 0.0f;
+	is_freeze          = 0.0f;
+	init_wait_frame    = 0.0f;
+	death_frame        = 0.0f;
 	auto_destroy_frame = 0.0f;
-	damage_frame = 0.0f;
+	damage_frame       = 0.0f;
 
 	return true;
 }
@@ -66,10 +66,10 @@ void EnemyBase::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_positi
 
 	collision->SetMaterial(material);
 	col.box.Center = position;
-	hit = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
-	star = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
-	del = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/delete/delete.efk");
-	confetti = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/confetti/confetti.efk");
+	hit        = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/hit/hit.efk");
+	star       = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/star/star.efk");
+	del        = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/delete/delete.efk");
+	confetti   = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/confetti/confetti.efk");
 	normal_die = ResourceManager::Instance().LoadEffect(L"Effect/EnemyEffect/die/die.efk");
 }
 

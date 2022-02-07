@@ -1,12 +1,29 @@
 #include "Ground.h"
+#include "MyClass/WaveProcess/WaveProcess.h"
 
 void Ground::LoadAsset() {
 	model = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\BackGround\\stage.X");
-	a = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\Forest\\bg_forest.X");
-	model->SetPosition(0.0f, -23.0, 0.0f);
-	a->SetPosition(0, -25, 0);
-	//a->SetScale(0.4f);
-	a->SetPosition(0, -pos_y, 20.0f);
+	//
+	model_forest = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\BackGround\\stage.X");
+	model_ruins  = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\BackGround\\bg_remains.X");
+	model_town   = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\BackGround\\town.X");
+	//
+	bg_forest = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\Forest\\forest.X");
+	bg_ruins  = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\Forest\\ruins.X");
+	bg_town   = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\Forest\\town.X");
+
+	/*town   = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_anim\\bg_town.X");
+	forest = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_anim\\bg_forest.X");
+	ruins  = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_anim\\bg_remains.X");*/
+
+
+	model_forest->SetPosition(0.0f, -23.0, 0.0f);
+	bg_forest->SetPosition(0, -25, 0);
+	model_ruins->SetPosition(0.0f, -23.0, 0.0f);
+	bg_ruins->SetPosition(0, -25, 0);
+	model_town->SetPosition(0.0f, -23.0, 0.0f);
+	bg_town->SetPosition(0, -25, 0);
+	//bg_forest->SetPosition(0, -pos_y, 20.0f);
 	pos = SimpleMath::Vector3::Zero;
 }
 
@@ -17,7 +34,7 @@ void Ground::LoadAsset() {
  *         (例)30フレーム　= 変数の値が0.3
  */
 int Ground::Update(const float deltaTime) {
-	if (DXTK->KeyState->J)
+	/*if (DXTK->KeyState->J)
 		pos.x -= 0.1f;
 
 	if (DXTK->KeyState->U)
@@ -33,8 +50,9 @@ int Ground::Update(const float deltaTime) {
 		pos.z -= 0.1f;
 
 	if (DXTK->KeyState->O)
-		pos.z += 0.1f;
-	//if (ウェーブ数＞ = 0 && ウェーブ数 ＜ = 3)
+		pos.z += 0.1f;*/
+	/*StatusManager::Instance().GetWave();
+	if (StatusManager::Instance().GetWave()= 0 && ウェーブ数 ＜ = 3)*/
 	//	街の背景モーションを再生する関数
 
 	//	if (ウェーブ数＞ = 4 && ウェーブ数 ＜ = 6)
@@ -53,6 +71,7 @@ int Ground::Update(const float deltaTime) {
 void Ground::Render() {
 	//model->Draw();
 	//a->Draw();
+	/*GetModel()->Draw();*/
 }
 
 /**
@@ -61,12 +80,49 @@ void Ground::Render() {
  * @detail シーンによって対応したモデルを返すようにする
  */
 
+//SKINNEDMODEL型
 //DX9::SKINNEDMODEL& Ground::GetModel() {
 //	
-//	return town;
-//	//return forest;
-//	//return ruins;
+//	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 3)
+//	{
+//		return forest;
+//	}
+//	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 6)
+//	{
+//		return town;
+//	}
+//	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 9)
+//	{
+//		return forest;
+//	}
+//	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 12)
+//	{
+//		return forest;
+//	}
 //}
+//MODEL型
+DX9::MODEL& Ground::GetModel() 
+{
+	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 3)
+	{
+		return bg_forest;
+	}
+	if (StatusManager::Instance().GetWave() >= 4 && StatusManager::Instance().GetWave() <= 6)
+	{
+		return bg_town;
+	}
+	if (StatusManager::Instance().GetWave() >= 7 && StatusManager::Instance().GetWave() <= 9)
+	{
+		bg_forest;
+	}
+	if (StatusManager::Instance().GetWave() >= 10 && StatusManager::Instance().GetWave() <= 12)
+	{
+		return bg_ruins;
+	}
+}
+
+
+
 
 void Ground::SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack, int max_motion)
 {
