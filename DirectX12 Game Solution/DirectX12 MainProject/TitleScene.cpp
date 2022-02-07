@@ -61,7 +61,7 @@ void TitleScene::LoadAssets()
     uploadResourcesFinished.wait();
 
     // グラフィックリソースの初期化処理
-    title = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/curtain.png");
+    title = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Curtain.png");
     title_logo = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/TitleLogo2.png");
     vinette = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/vinette_2.png");
     opening_buzzer = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/OpeningBuzzer.png");

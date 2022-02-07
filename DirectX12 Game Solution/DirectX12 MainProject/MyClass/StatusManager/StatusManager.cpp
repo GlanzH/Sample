@@ -22,6 +22,7 @@ void StatusManager::Initialize() {
 	enemy_num = 0.0f;
 	plus_score_flag = false;
 	good_flag = false;
+	coin_get_flag = false;
 
 	//ウェーブ
 	wave = 0;
@@ -45,6 +46,7 @@ void StatusManager::SetAddScore(float score_size) {
 
 	if (30 == score_size) {
 		coin_num++;
+		coin_get_flag = true;
 	}
 
 	if (score < now_score) {
@@ -63,7 +65,7 @@ void StatusManager::SetAddScore(float score_size) {
 	}
 
 	if (add_score_size != 0.0f) {
-		UIManager::Instance().PlayUIEffect();
+		//UIManager::Instance().PlayUIEffect();
 	}
 	return;
 }

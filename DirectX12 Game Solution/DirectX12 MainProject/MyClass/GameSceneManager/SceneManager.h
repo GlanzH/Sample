@@ -30,10 +30,14 @@ private:
 	DX9::SPRITE curtain;
 	SimpleMath::Vector3 curtain_pos;
 	bool curtain_move_flag;
-	const float CURTAIN_START_POS = -720.0f;
+	const float CURTAIN_START_POS = -900.0f;
+
+	//ブラック
+	DX9::SPRITE black;
+	int black_alpha;
 
 	//時間
-	const float CURTAIN_DOWN_SPEED = 200.0f;
+	const float CURTAIN_DOWN_SPEED = 400.0f;
 
 	bool scene_change_flag;	//シーン切り替え可能フラグ
 };
