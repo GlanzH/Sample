@@ -15,7 +15,7 @@ public:
 	void Render();
 
 	DX9::MODEL& GetModel() { return bg_forest; }
-
+	//DX9::SKINNEDMODEL& GetSkinnedModel() { return town; };
 private:
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack, int max_motion);
 	DX9::MODEL model_ruins;
@@ -28,9 +28,12 @@ private:
 	DX9::MODEL bg_forest;
 	DX9::MODEL bg_ruins;
 
-	/*DX9::SKINNEDMODEL town;
+
+	DX9::SKINNEDMODEL change_set;
+
+	DX9::SKINNEDMODEL town;
 	DX9::SKINNEDMODEL forest;
-	DX9::SKINNEDMODEL ruins;*/
+	DX9::SKINNEDMODEL ruins;
 
 	enum class Forest {
 		START,
