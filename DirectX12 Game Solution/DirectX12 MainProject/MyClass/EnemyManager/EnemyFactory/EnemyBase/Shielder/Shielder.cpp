@@ -26,7 +26,7 @@ int Shielder::Update(SimpleMath::Vector3 player, bool destroy_flag, const float 
 	EnemyBase::Update(player, destroy_flag, deltaTime);
 	EnemyBase::AdjustAnimCollision();
 	EnemyBase::TemporaryDeath();
-	
+
 	Freeze();
 	IsDamage();
 	IsDeath();
@@ -65,12 +65,12 @@ void Shielder::Action() {
 		break;
 
 	case (int)ActionNum::INIT:
-			Rotate();
-			wait_frame = 0.0f;
-			move_frame = 0.0f;
-			sword_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
-			SetAnimation(anim_model, (int)Motion::RUN, (int)Motion::MAX_MOTION);
-			action = (int)ActionNum::RUN;
+		Rotate();
+		wait_frame = 0.0f;
+		move_frame = 0.0f;
+		sword_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
+		SetAnimation(anim_model, (int)Motion::RUN, (int)Motion::MAX_MOTION);
+		action = (int)ActionNum::RUN;
 		break;
 
 	case (int)ActionNum::RUN:

@@ -30,11 +30,11 @@ public:
 
 	//スコア
 	void SetAddScore(float score_size);	//スコアの値を入力
+	int GetCoinNum() { return coin_num; }//コインの取得数
 	float GetAddScore() { return add_score_size; }
 	float GetScoreGauge() { return score * SCORE_GAUGE_DIVIDE; }	//ゲージ描画時呼び出し
 	float GetScore() { return now_score; }	//現在のスコア
 	bool GetGoodFlag() { return good_flag; }	//スコアUI描画時使用
-
 
 	//ウェーブ
 	void SetWave(int wave_num);	//ウェーブ数設定
@@ -45,6 +45,10 @@ public:
 	float GetTime() { return wave_time; } //時間の取得
 	float GetOnceExec() { return once_exec_time; }
 	bool GetWaveFlag() { return wave_change_flag; }	//ウェーブ切り替えフラグ
+
+	//コイン
+	bool GetCoinFlag() { return coin_get_flag; }//コイン取得フラグ
+	void ResetCoinFlag() { coin_get_flag = false; }
 
 private:
 	void ComboTime(const float deltaTime);	//コンボ時間計る
@@ -57,26 +61,28 @@ private:
 
 	//攻撃ヒットコンボ
 	int	  combo;	//コンボ数
+	float combo_time_num;	//コンボの時間
 	float combo_time;	//コンボ継続時間
 	bool  combo_flag;	//true:コンボ継続可能 false:継続不可
 	bool combo_miss_flag;
 
-	const float COMBO_TIME_NUM = 7.0f;	//コンボの時間
 	//アニメーション
 	bool anime_flag;	//true:アニメーション再生 false:停止
 
 	//スコア
+	int coin_num;
 	float score;
 	float now_score;    //現在のスコア
 	float add_score_size;
 	float enemy_num;
 	bool plus_score_flag;	//true:スコアアップ false:スコアダウン
 	bool good_flag;
+	bool coin_get_flag;	//コイン獲得フラグ
 
 	const float SCORE_START_VALUE = 300.0f;	//初期値設定
 	const float SCORE_MAX_VALUE = 3000.0f;	//スコアの最大値
 	const float SCORE_UPDN_SPEED = 300.0f;	//スコア増減スピード
-	const float SCORE_GAUGE_DIVIDE = 0.113f;	//スコアゲージ1000分の1の数(描画時使用)
+	const float SCORE_GAUGE_DIVIDE = 0.113f;	//スコアゲージ3000分の1の数(描画時使用)
 
 
 	//ウェーブ
@@ -85,8 +91,7 @@ private:
 	float once_exec_time;
 	bool wave_change_flag;	//true:ウェーブ切り替え可能 false:切り替え不可
 
-	const int MAX_WAVE = 9;	//ウェーブの最大数
-	const float WAVE_TIME_LIMIT_ONE = 30.0f;	//1ウェーブ目の制限時間
-	const float WAVE_TIME_LIMIT_TWO = 40.0f;
-	const float TUTORIAL_TIME = 49.0f;
+	const int MAX_WAVE = 12;	//ウェーブの最大数
+	const float STAGE_ONE_TIME = 99.0f;//1ステージ目の制限時間
+	const float STAGE_TWO_TIME = 40.0f;//2ステージ目移行の制限時間
 };

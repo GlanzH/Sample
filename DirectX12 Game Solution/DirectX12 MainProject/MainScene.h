@@ -64,7 +64,7 @@ private:
 	D3DLIGHT9 light{};
 
 	DX9::SHADER shader;
-	DX9::SPRITEFONT font;
+	//DX9::SPRITEFONT font;
 	std::unique_ptr<SoundEffect> se;
 
 	unique_ptr<SoundEffect> introduct,main,boss;

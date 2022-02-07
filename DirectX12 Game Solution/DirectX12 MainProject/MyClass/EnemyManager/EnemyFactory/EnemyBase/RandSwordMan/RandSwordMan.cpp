@@ -171,12 +171,12 @@ void RandSwordMan::Damage() {
 		distribute = std::uniform_int_distribution<int>(UPPER, LOWER);
 		postune_num = distribute(random);
 
-		if(postune_num == UPPER)
+		if (postune_num == UPPER)
 			enemy_posture = "U";
 		else
 			enemy_posture = "D";
 	}
-	
+
 	EnemyBase::Damage();
 }
 

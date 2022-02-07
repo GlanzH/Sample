@@ -17,82 +17,90 @@ public:
 	void Render();
 
 
-	void GetAudience();
 
 	void JudgeRnak();
 
 	bool SceneChange() { return scene_flag; }
 	
 private:
-	//ランク
-	DX9::SPRITE rank_s;
-	DX9::SPRITE rank_a;
-	DX9::SPRITE rank_b;
-	DX9::SPRITE rank_c;
-	DX9::SPRITE rank_d;
-	DX9::SPRITE rank_e;
-	SimpleMath::Vector3 rank_pos;
-	const float RANK_START_POS_Y = -40.0f;
 
+	DX9::SPRITEFONT font;
+	//ランク
+	DX9::SPRITE rank[6];
+	SimpleMath::Vector3 rank_pos;
+	float rank_hight;
+	int rank_width;
 	float rank_alpha;
 	int now_rank;
-	float now_score;	//ランク付けに使用
+	int score;	//ランク付けに使用
 
 	enum RANK {
 		E, D, C, B, A, S
 	};
 
-	//各ランクの範囲
-	const float E_RANK_MAX = 0.0f;
-	const float D_RANK_MIN = 1.0f;
-	const float D_RANK_MAX = 29.0f;
-	const float C_RANK_MIN = 30.0f;
-	const float C_RANK_MAX = 59.0f;
-	const float B_RANK_MIN = 60.0f;
-	const float B_RANK_MAX = 89.0f;
-	const float A_RANK_MIN = 90.0f;
-	const float A_RANK_MAX = 99.0f;
-	const float S_RANK_MIN = 100.0f;
+	//スコア
+	DX9::SPRITE score_empty;
+	DX9::SPRITE score_max;
+	float score_width;
+	float score_alpha;
 
-	//フォント
-	DX9::SPRITEFONT font;
-	SimpleMath::Vector2 font_pos;
-	const int font_size = 100;//フォントサイズ
-	const float FONT_STSRT_POS_X = 680.0f;
-	const float FONT_STSRT_POS_Y = 130.0f;
-	const float TWO_DIGIT_POS	= 590.0f;//観客人数2桁の座標
-	const float THREE_DIGIT_POS = 500.0f;//観客人数3桁の座標
+	const int SCORE_MAX_HIGHT = 96;
+	const int SCORE_MIN_WIDTH = 81;
+	const float SCORE_EMPTY_POS_Z = 0.0f;
+	const float SCORE_MAX_POS_Z = -1.0f;
 
+	//リザルトタイトル
+	DX9::SPRITE result_title;
+	float title_alpha;
+	float title_anim_frame;
+	float title_hight;
 
-	//人数
-	DX9::SPRITE	people_ui;
-	SimpleMath::Vector3 people_pos;
-	int people;
-	const int multiple = 3;//観客人数の倍数
+	const int TITLE_WIDTH = 550;
+	const int TITLE_MIN_HIGHT = 100;
 
-	//監督
-	DX9::SPRITE director;
-	SimpleMath::Vector3 director_pos;
+	//リザルト帯
+	DX9::SPRITE result_shadow;
+	float shadow_alpha;
 
-	//吹き出し
-	DX9::SPRITE text_box;
-	SimpleMath::Vector3 text_box_pos;
-	float text_box_alpha;
-	const float TEXTBOX_START_POS_X = -50.0f;
+	//お金
+	DX9::SPRITE yen_icon;
+	DX9::SPRITE yen_number;
 
-	//テキスト
-	DX9::SPRITE text;
-	SimpleMath::Vector3 text_pos;
-	float text_alpha;
+	int money;
+	int digit_state;
+	int one_digit;
+	int two_digit;
+	int three_digit;
+	int four_digit;
 
-	const float TEXT_START_POS_Y = 40.0f;
+	float yen_alpha;
 
-	//EXIT
-	DX9::SPRITE exit;
-	SimpleMath::Vector3 exit_pos;
-	int exit_flash;
-	const int FLASH_MAX = 100;
-	const int FLASH_SPEED = 100;
+	SimpleMath::Vector2 money_pos;
+
+	enum DIGIT_STATE
+	{
+		ONE_DIGIT,
+		TWO_DIGIT,
+		THREE_DIGIT,
+		FOUR_DIGIT
+	};
+
+	const int YEN_ICON_WIDTH = 30;
+	const int YEN_ICON_HIGHT = 51;
+	const int YEN_NUM_WIDTH = 40;
+	const int YEN_NUM_HIGHT = 70;
+	const float ONE_DIGIT_POS_X	  = 0.0f;
+	const float TWO_DIGIT_POS_X	  = ONE_DIGIT_POS_X - 40.0f;
+	const float THREE_DIGIT_POS_X = ONE_DIGIT_POS_X - 80.0f;
+	const float FOUR_DIGIT_POS_X  = ONE_DIGIT_POS_X - 120.0f;
+	const float YEN_NUM_POS_Y = 0.0f;
+
+	//リスタート
+	DX9::SPRITE restart;
+	float restart_hight;
+
+	const int RESTART_WIDTH = 400;
+	const int RESTART_MIN_HIGHT = 40;
 
 	const int SPRITE_HIGHT = 720;	//画像の最大表示高さ
 	const int SPRITE_WIDTH = 1280;	//画像の最大表示幅
@@ -107,6 +115,7 @@ private:
 	const float SPRITE_MOVE_SPEED = 100.0f;//画像の移動スピード
 
 	// コルーチンのプロトタイプ宣言
+	//リザルト演出
 	cppcoro::generator<int> ReleaseRank();
 	cppcoro::generator<int>                  co_result;
 	cppcoro::detail::generator_iterator<int> co_result_it;

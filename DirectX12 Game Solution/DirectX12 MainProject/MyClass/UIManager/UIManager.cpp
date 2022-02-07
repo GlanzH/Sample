@@ -10,6 +10,7 @@ void UIManager::Initialize() {
 	combo_one_digit = 0;
 	combo_two_digit = 0;
 	combo_digit_up_flag = false;
+	cracker_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"BGM_SE/Directing/cracker.wav");
 
 	icon_play_flag = false;
 	effect_handle = 0;
@@ -23,6 +24,9 @@ void UIManager::Initialize() {
 	rev_audience_pos = SimpleMath::Vector3(0.0f, 0.0f, 0.0f);
 	audience_anim = 0;
 	state_reset_time = 0.0f;
+
+	applause = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"BGM_SE/Audience/applause.wav");
+	excitement = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"BGM_SE/Audience/excitement.wav");
 
 	DX12Effect2D.Initialize();
 
@@ -70,6 +74,7 @@ void UIManager::Update(const float deltaTime, int enemy_num, int enemy_death) {
 	enemy_max_num = enemy_num;
 	enemy_dead_num = enemy_death;
 
+	//コンボ数2桁表示確認
 	if (combo_num <= 9.0f) {
 		combo_digit_up_flag = false;
 	}
@@ -77,6 +82,7 @@ void UIManager::Update(const float deltaTime, int enemy_num, int enemy_death) {
 		combo_digit_up_flag = true;
 	}
 
+	//コンボ数2桁表示時処理
 	if (!combo_digit_up_flag) {
 		combo_one_digit = COMBO_NUM_WIDTH * combo_num;
 	}
@@ -85,23 +91,6 @@ void UIManager::Update(const float deltaTime, int enemy_num, int enemy_death) {
 		combo_two_digit = COMBO_NUM_WIDTH * (combo_num / 10);
 	}
 
-	//if (icon_play_flag) {
-	//	if (StatusManager::Instance().GetGoodFlag()) {
-	//		effect_handle = DX12Effect2D.Play(good_effect, Vector3(0.0f, 0.0f, 0.0f));
-	//	}
-	//	else {
-	//		effect_handle = DX12Effect2D.Play(bad_effect, Vector3(0.0f, 0.0f, 0.0f));
-	//	}
-	//	DX12Effect2D.SetPosition(effect_handle, Vector3(-35.0f, 30.0f, 40.0f));
-	//	icon_play_flag = false;
-	//}
-	//DX12Effect2D.SetPosition(effect_handle, Vector3(-35.0f, 30.0f, 40.0f));
-
-	//if (DXTK->KeyState->Right)
-	//	kaka_pos.x -= 800.0f * deltaTime;
-
-	//if (DXTK->KeyState->Left)
-	//	kaka_pos.x += 800.0f * deltaTime;
 
 	//観客のアニメーション
 	audience_anim += 60 * deltaTime;
@@ -302,7 +291,7 @@ void UIManager::PlayCracker() {
 	//クラッカーエフェクトの再生
 	effect_handle = DX12Effect2D.Play(cracker_effect, Vector3(0.0f, 0.0f, 0.0f));
 	DX12Effect2D.SetPosition(effect_handle, Vector3(0.0f, 12.0f, 7.0f));
-
+	cracker_se->Play();
 }
 
 void UIManager::EfkRender()
@@ -312,7 +301,20 @@ void UIManager::EfkRender()
 }
 
 void UIManager::SetAudienceState(int state) {
-	//観客の状態設定
-	audience_state = state;
+	//観客の状態設定、SEの再生
+	switch (state) {
+	case HARD:
+		audience_state = HARD;
+		applause->Play();
+		break;
+
+	case VERY_HARD:
+		audience_state = VERY_HARD;
+		excitement->Play();
+		break;
+
+	default:
+		break;
+	}
 	state_reset_time = 0.0f;
 }

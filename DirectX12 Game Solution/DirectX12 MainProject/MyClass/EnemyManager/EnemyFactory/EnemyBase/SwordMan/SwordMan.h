@@ -55,5 +55,5 @@ private:
 	};
 
 	int action = (int)ActionNum::FIRST_WAIT;
-	
+
 };

@@ -21,17 +21,17 @@ void CoinManager::LoadAssets()
 	create_coin_flag = false;
 }
 
-int CoinManager::Update(SimpleMath::Vector3 position,bool death_flag,int death_enemy,const float deltaTime) {
+int CoinManager::Update(SimpleMath::Vector3 position, bool death_flag, int death_enemy, const float deltaTime) {
 	Iterator();
 
-	pos = SimpleMath::Vector3(position.x,0,50);
-	DX12Effect.SetRotation(manycoin_handle,Vector3(0,160,0));
+	pos = SimpleMath::Vector3(position.x, 0, 50);
+	DX12Effect.SetRotation(manycoin_handle, Vector3(0, 160, 0));
 
 	if (death_flag && death_enemy > 0) {
-	  if (!DX12Effect.CheckAlive(manycoin_handle))
-		   manycoin_handle = DX12Effect.Play(manycoin, pos);
+		if (!DX12Effect.CheckAlive(manycoin_handle))
+			manycoin_handle = DX12Effect.Play(manycoin, pos);
 
-	  create_coin_flag = true;
+		create_coin_flag = true;
 	}
 
 	if (create_coin_flag) {
@@ -64,11 +64,11 @@ void CoinManager::Generator() {
 	std::random_device pos_x_seed;
 	random = std::mt19937(pos_x_seed());
 
- for(int i = 0; i < create_coins; ++i){
-	distribute = std::uniform_int_distribution<int>(-60, 60);
-	 int pos_x = distribute(random);
-	coin.push_back(Create(SimpleMath::Vector3(pos_x, 0,80)));
- }
+	for (int i = 0; i < create_coins; ++i) {
+		distribute = std::uniform_int_distribution<int>(-60, 60);
+		int pos_x = distribute(random);
+		coin.push_back(Create(SimpleMath::Vector3(pos_x, 0, 80)));
+	}
 }
 
 Coin* CoinManager::Create(SimpleMath::Vector3 position) {
