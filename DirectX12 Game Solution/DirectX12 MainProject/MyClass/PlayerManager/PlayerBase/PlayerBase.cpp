@@ -10,6 +10,10 @@ PlayerBase::PlayerBase() {
 	material.Ambient = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 	material.Specular = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
 
+	//プレイヤーのスピード
+	player_speed_ = 0.0f;
+
+
 	//攻撃の時間
 	attack_flag = false;
 	attack_time = 0.0f;
@@ -119,6 +123,10 @@ void PlayerBase::OnDeviceLost() {
 
 bool PlayerBase::Initialize()
 {
+
+	//プレイヤーのスピード
+	player_speed_ = 20.0f;//40.0f;
+
 	//ジャンプしてるかのフラグ
 	jump_flag_ = false;
 	jump_time_ = 0.0f;
@@ -210,7 +218,6 @@ bool PlayerBase::Initialize()
 
 
 	direction_state_mode = Direction_State::RIGHT;
-
 
 
 
@@ -314,23 +321,18 @@ void PlayerBase::LoadAssets()
 
 int PlayerBase::Update(const float deltaTime, bool temp)
 {
-
 	//モデル　アニメーション
 	SetAnimation(model, STAND);
-
 	//プレイヤー:移動
 	Player_move(deltaTime);
-
+	//プレイヤーの移動スピード
+	Speed_Step(deltaTime);
 	//プレイヤー:ジャンプ
 	Player_jump(deltaTime);
-
 	//ランバージャック(移動制限)
 	Player_limit();
-
 	//攻撃関係
 	Attack_Relation(deltaTime);
-
-
 	//止め
 	Sword_Delivery(deltaTime, temp);
 
@@ -378,7 +380,6 @@ int PlayerBase::Update(const float deltaTime, bool temp)
 
 	left_collision->SetPosition(player_pos.x - 1.1f, player_pos.y + 5.0f, player_pos.z);
 	left_col.left_box.Center  = left_collision->GetPosition() + SimpleMath::Vector3(0, -5.1, 0);
-
 
 	model->AdvanceTime(deltaTime);
 	return 0;
@@ -641,12 +642,6 @@ void PlayerBase::Rize() {
 	}
 }
 
-void PlayerBase::OnParryArea() {
-	//パリィ成功時の処理
-	//パリィカウントを増やす
-
-}
-
 //指定されたモーションはTRUE,それ以外はFALSE
 void PlayerBase::SetAnimation(DX9::SKINNEDMODEL& model, const int enableTrack)
 {
@@ -677,6 +672,24 @@ void PlayerBase::Player_move(const float deltaTime)
 			}
 		}
 	}
+}
+
+//プレイヤーの移動スピードの変化
+void PlayerBase::Speed_Step(const float deltaTime) {
+	if (DXTK->KeyEvent->pressed.Q) {
+		point += 1;
+		step_up_flag = true;
+	}
+
+	if (step_up_flag == true) {
+		if (point != 0 && point % 7 == 0) {
+			player_speed_ += 1.0f;
+			step_up_flag = false;
+		}
+	}
+	
+	if (player_speed_ >= 40.0f)
+		player_speed_ = 40.0f;
 }
 
 
@@ -1003,5 +1016,17 @@ bool PlayerBase::IsAttack() {
 }
 
 void PlayerBase::Debug() {
+	DX9::SpriteBatch->DrawString(font.Get(),
+		SimpleMath::Vector2(1100.0f, 40.0f),
+		DX9::Colors::White,
+		L"%f", player_speed_
+	);
+
+	DX9::SpriteBatch->DrawString(font.Get(),
+		SimpleMath::Vector2(1100.0f, 60.0f),
+		DX9::Colors::White,
+		L"%d", point
+	);
+
 
 }

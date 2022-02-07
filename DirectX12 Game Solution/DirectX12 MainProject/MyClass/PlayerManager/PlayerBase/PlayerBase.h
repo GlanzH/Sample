@@ -36,7 +36,6 @@ public:
 	void OnLeftCollisionEnter(std::string tag); //左
 	void OnRightCollisionEnter(std::string tag);//右
 
-	void OnParryArea();
 
 	bool IsAttack();
 
@@ -90,6 +89,8 @@ private:
 
 	//移動
 	void Player_move(const float deltaTime);
+
+
 	//移動制限
 	void Player_limit();
 	//ジャンプ
@@ -170,7 +171,8 @@ private:
 
 
 	//プレイヤーのスピード
-	const float player_speed_ = 40.0f;
+	float player_speed_;
+
 
 	//ジャンプしてるかのフラグ
 	bool jump_flag_;
@@ -369,4 +371,19 @@ private:
 	int frip_se_count = 0;
 
 	int effect_count = 0;
+
+	//プレイヤーの移動スピード変動
+	void Speed_Step(const float deltaTime);
+
+	int point = 0;
+
+	bool step_up_flag = false;
+	
+	float stepup_start = 0.0f;
+
+	enum SetUpState
+	{
+
+	};
+
 };
