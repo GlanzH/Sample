@@ -15,7 +15,7 @@ public:
 	void Render();
 
 	DX9::MODEL& GetModel();
-	//DX9::SKINNEDMODEL& GetSkinnedModel() { return town; };
+	DX9::SKINNEDMODEL& GetSkinnedModel();
 private:
 	void SetAnimation(DX9::SKINNEDMODEL& model, const int enabletack, int max_motion);
 	DX9::MODEL model_ruins;
