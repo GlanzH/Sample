@@ -12,14 +12,14 @@ MainScene::MainScene() : dx9GpuDescriptor{}
 {
 	player = new PlayerBase;
 	enemy = new EnemyManager;
-	audience = new AudienceManager;
+//	audience = new AudienceManager;
 	observer = new Observer;
 }
 
 MainScene::~MainScene() {
 	delete player;
 	delete enemy;
-	delete audience;
+	//delete audience;
 	delete observer;
 
 	Terminate();
@@ -38,7 +38,55 @@ void MainScene::Initialize()
 	process.Initialize();
 
 	point.Init(2);
-	TestChangeColor();
+	//TestChangeColor();
+	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 3)
+	{
+		////全体ライト
+		point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 0.0f), 0);
+		point.SetAtt(Vector3(0.25f, 0.01f, 0), 0);
+		point.SetLightColor(SimpleMath::Vector4(0.0f, 147.0f, 165.0f, 1.0f), 0);
+		////キャラのライト
+		point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f), 1);
+		point.SetAtt(Vector3(0.05f, 0.01f, 0), 1);
+		point.SetLightColor(SimpleMath::Vector4(175.0f, 74.0f, 94.0f, 1.0f), 1);
+	}
+
+	if (StatusManager::Instance().GetWave() >= 4 && StatusManager::Instance().GetWave() <= 6)
+	{
+		//全体ライト
+		point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 0.0f), 0);
+		point.SetAtt(Vector3(0.25f, 0.01f, 0), 0);
+		point.SetLightColor(SimpleMath::Vector4(97.0f, 67.0f, 167.0f, 1.0f), 0);
+		//キャラのライト
+		point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f), 1);
+		point.SetAtt(Vector3(0.05f, 0.01f, 0), 1);
+		point.SetLightColor(SimpleMath::Vector4(110.0f, 71.0f, 47.0f, 1.0f), 1);
+	}
+
+	if (StatusManager::Instance().GetWave() >= 7 && StatusManager::Instance().GetWave() <= 9)
+	{
+		////全体ライト
+		point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 0.0f), 0);
+		point.SetAtt(Vector3(0.25f, 0.01f, 0), 0);
+		point.SetLightColor(SimpleMath::Vector4(127.0f, 0.0f, 187.0f, 1.0f), 0);
+		////キャラのライト
+		point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f), 1);
+		point.SetAtt(Vector3(0.05f, 0.01f, 0), 1);
+		point.SetLightColor(SimpleMath::Vector4(69.0f, 108.0f, 0.0f, 1.0f), 1);
+	}
+
+	if (StatusManager::Instance().GetWave() >= 10 && StatusManager::Instance().GetWave() <= 12)
+	{
+		////全体ライト
+		point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 0.0f), 0);
+		point.SetAtt(Vector3(0.25f, 0.01f, 0), 0);
+		point.SetLightColor(SimpleMath::Vector4(198.0f, 91.0f, 39.0f, 1.0f), 0);
+		////キャラのライト
+		point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f), 1);
+		point.SetAtt(Vector3(0.05f, 0.01f, 0), 1);
+		point.SetLightColor(SimpleMath::Vector4(63.0f, 65.0f, 0.0f, 1.0f), 1);
+	}
+
 	////全体ライト
 	//point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 0.0f), 0);
 	//point.SetAtt(Vector3(0.25f, 0.01f, 0), 0);
@@ -67,17 +115,19 @@ void MainScene::TestChangeColor()
 	point.SetAtt(Vector3(0.05f, 0.01f, 0), 1);
 	point.SetLightColor(SimpleMath::Vector4(175.0f, 74.0f, 94.0f, 1.0f), 1);
 	}
-	if(StatusManager::Instance().GetWave() >= 4 && StatusManager::Instance().GetWave() <= 6)
+
+	if (StatusManager::Instance().GetWave() >= 4 && StatusManager::Instance().GetWave() <= 6)
 	{
-	//全体ライト
-	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 0.0f), 0);
-	point.SetAtt(Vector3(0.25f, 0.01f, 0), 0);
-	point.SetLightColor(SimpleMath::Vector4(97.0f, 67.0f, 167.0f, 1.0f), 0);
-	//キャラのライト
-	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f), 1);
-	point.SetAtt(Vector3(0.05f, 0.01f, 0), 1);
-	point.SetLightColor(SimpleMath::Vector4(110.0f, 71.0f, 47.0f, 1.0f), 1);
+		//全体ライト
+		point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 0.0f), 0);
+		point.SetAtt(Vector3(0.25f, 0.01f, 0), 0);
+		point.SetLightColor(SimpleMath::Vector4(97.0f, 67.0f, 167.0f, 1.0f), 0);
+		//キャラのライト
+		point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f), 1);
+		point.SetAtt(Vector3(0.05f, 0.01f, 0), 1);
+		point.SetLightColor(SimpleMath::Vector4(110.0f, 71.0f, 47.0f, 1.0f), 1);
 	}
+
 	if(StatusManager::Instance().GetWave() >= 7 && StatusManager::Instance().GetWave() <= 9)
 	{
 	////全体ライト
@@ -89,6 +139,7 @@ void MainScene::TestChangeColor()
 	point.SetAtt(Vector3(0.05f, 0.01f, 0), 1);
 	point.SetLightColor(SimpleMath::Vector4(69.0f, 108.0f, 0.0f, 1.0f), 1);
 	}
+
 	if(StatusManager::Instance().GetWave() >= 10 && StatusManager::Instance().GetWave() <= 12)
 	{
 	////全体ライト
@@ -146,7 +197,7 @@ void MainScene::LoadAssets()
 
 	ground.LoadAsset();
 	player->LoadAssets();
-	audience->LoadAssets();
+	//audience->LoadAssets();
 	dialogue.LoadAssets();
 	process.LoadAssets();
 	coin.LoadAssets();
@@ -282,7 +333,7 @@ void MainScene::ChangeLightColor()
 	}
 
 	if (StatusManager::Instance().GetWave() >= 4 && StatusManager::Instance().GetWave() <= 6)
-		point.SetPower(1.5f, 0);
+	point.SetPower(1.5f, 0);
 	point.SetPower(2.5f, 1);
 	point.SetPosition(Vector3(0.0f, 170.0f, 87.0f), 0);
 	point.SetPosition(player->GetModel()->GetPosition() + Vector3(0, 50, 9.0f), 1);
@@ -360,7 +411,7 @@ void MainScene::Render()
 
 	player->Render();
 	enemy->Render();
-	audience->Render();
+	//audience->Render();
 
 	DX9::SpriteBatch->Begin();
 

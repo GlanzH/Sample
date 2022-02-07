@@ -16,13 +16,12 @@ void Ground::LoadAsset() {
 	forest = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_anim\\bg_forest.X");
 	ruins  = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_anim\\bg_remains.X");*/
 
-
-	model_forest->SetPosition(0.0f, -23.0, 0.0f);
-	bg_forest->SetPosition(0, -25, 0);
-	model_ruins->SetPosition(0.0f, -23.0, 0.0f);
-	bg_ruins->SetPosition(0, -25, 0);
-	model_town->SetPosition(0.0f, -23.0, 0.0f);
-	bg_town->SetPosition(0, -25, 0);
+	model_forest->SetPosition(0.0f, -23.0, 20.0f);
+	bg_forest->SetPosition(0, -25, 7.0f);
+	model_ruins->SetPosition(0.0f, -23.0, 20.0f);
+	bg_ruins->SetPosition(0, -25, 7.0f);
+	model_town->SetPosition(0.0f, -23.0, 20.0f);
+	bg_town->SetPosition(0, -25, 7.0f);
 	//bg_forest->SetPosition(0, -pos_y, 20.0f);
 	pos = SimpleMath::Vector3::Zero;
 }
@@ -34,23 +33,8 @@ void Ground::LoadAsset() {
  *         (例)30フレーム　= 変数の値が0.3
  */
 int Ground::Update(const float deltaTime) {
-	/*if (DXTK->KeyState->J)
-		pos.x -= 0.1f;
+	
 
-	if (DXTK->KeyState->U)
-		pos.x += 0.1f;
-
-	if (DXTK->KeyState->K)
-		pos.y -= 0.1f;
-
-	if (DXTK->KeyState->I)
-		pos.y += 0.1f;
-
-	if (DXTK->KeyState->L)
-		pos.z -= 0.1f;
-
-	if (DXTK->KeyState->O)
-		pos.z += 0.1f;*/
 	/*StatusManager::Instance().GetWave();
 	if (StatusManager::Instance().GetWave()= 0 && ウェーブ数 ＜ = 3)*/
 	//	街の背景モーションを再生する関数
@@ -113,7 +97,7 @@ DX9::MODEL& Ground::GetModel()
 	}
 	if (StatusManager::Instance().GetWave() >= 7 && StatusManager::Instance().GetWave() <= 9)
 	{
-		bg_forest;
+		return bg_forest;
 	}
 	if (StatusManager::Instance().GetWave() >= 10 && StatusManager::Instance().GetWave() <= 12)
 	{
