@@ -216,7 +216,6 @@ cppcoro::generator<int> RankJudgeManager::ReleaseRank()
 
 
 	//ƒQ[ƒW‘‰Á
-	StatusManager::Instance().SetAddScore(2000.0f);
 	JudgeRnak();
 	while (true) {
 		score_width += 70.0f * time_delta;

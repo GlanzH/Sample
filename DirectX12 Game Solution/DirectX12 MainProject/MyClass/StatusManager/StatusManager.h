@@ -23,6 +23,8 @@ public:
 	int GetHitCombo() { return combo; }
 	float GetHitComboTime() { return combo_time; }	//撃破コンボ継続時間
 	bool GetComboFlag() { return combo_flag; }	//コンボフラグ
+	void StopComboTime() { combo_time_flag = false; }	//コンボ継続時間ストップ
+	void StartComboTime() { combo_time_flag = true; }	//コンボ継続時間スタート
 
 	//アニメーション
 	void ResetaAnimeFlag() { anime_flag = false; }	//アニメフラグのリセット
@@ -65,6 +67,7 @@ private:
 	float combo_time;	//コンボ継続時間
 	bool  combo_flag;	//true:コンボ継続可能 false:継続不可
 	bool combo_miss_flag;
+	bool combo_time_flag;	//true:コンボ時間減少 false:時間ストップ
 
 	//アニメーション
 	bool anime_flag;	//true:アニメーション再生 false:停止

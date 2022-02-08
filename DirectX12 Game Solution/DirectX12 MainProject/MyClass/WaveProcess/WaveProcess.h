@@ -18,6 +18,7 @@ public:
 
 	void WaveAnimation(const float deltaTime);
 	bool GetAnimEndFlag() { return anim_end_flag; }
+	bool GetClearFlag() { return game_clear_flag; }
 private:
 	DX9::SPRITEFONT font;
 
@@ -70,6 +71,8 @@ private:
 	cppcoro::generator<int>                  co_anim;
 	cppcoro::detail::generator_iterator<int> co_anim_it;
 
+	//ÉQÅ[ÉÄÉNÉäÉA
+	bool game_clear_flag;
 
 	float stop_frame = 0.0f;
 	float max_stop   = 4.0f;

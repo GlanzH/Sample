@@ -284,13 +284,15 @@ NextScene MainScene::Update(const float deltaTime)
 
 		if (end_frame > 2.0f) {
 			DX12Effect.AllStop();
-			if (SceneManager::Instance().ReturnSceneFlag())
-				return NextScene::ResultScene;
+			//if (SceneManager::Instance().ReturnSceneFlag())
+			//	return NextScene::ResultScene;
 		}
 	}
 
+	if (SceneManager::Instance().ReturnSceneFlag())
+		return NextScene::ResultScene;
 
-	SceneManager::Instance().Update(deltaTime);
+	SceneManager::Instance().Update(deltaTime, process.GetClearFlag());
 
 	if (end_frame < max_end)
 		DX12Effect.Update(deltaTime);

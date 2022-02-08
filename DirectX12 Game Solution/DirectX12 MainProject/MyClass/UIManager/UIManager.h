@@ -23,7 +23,6 @@ public:
 	}
 
 	void ResetAnimeFrame();	//アニメーション再生をリセット
-	void SetAddScore(int add_size);
 	void PlayUIEffect();
 	void PlayCracker();
 	void SetUICamera(DX9::CAMERA* camera) { ui_camaera = camera; }

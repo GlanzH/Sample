@@ -15,7 +15,7 @@ public:
 
 	void Initialize();
 	void LoadAsset();
-	void Update(const float deltaTime);
+	void Update(const float deltaTime, bool clear_flag);
 	void Render();
 
 	bool ReturnSceneFlag() { return scene_change_flag; }	//ƒV[ƒ“Ø‚è‘Ö‚¦

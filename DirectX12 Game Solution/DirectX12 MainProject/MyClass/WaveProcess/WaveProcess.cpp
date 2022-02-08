@@ -30,6 +30,7 @@ bool WaveProcess::Initialize() {
 	anim_end_flag = false;
 	co_start_flag = false;
 
+	game_clear_flag = false;
 
 	return true;
 }
@@ -59,10 +60,10 @@ void WaveProcess::LoadAssets() {
 int WaveProcess::Update(EnemyManager* enemy, const float deltaTime) {
 	StatusManager::Instance().WaveTimeLimit(deltaTime);
 
+	wave_num = StatusManager::Instance().GetWave();
 	now_time = StatusManager::Instance().GetTime();
 	time_one_digit = (now_time % 10) * TIME_NUM_WIDTH;
 	time_two_digit = (now_time / 10) * TIME_NUM_WIDTH;
-	wave_num = StatusManager::Instance().GetWave();
 	//if (StatusManager::Instance().GetWave() == 0) {
 	//	max_stop = 0.01f;
 	//}
@@ -82,6 +83,10 @@ int WaveProcess::Update(EnemyManager* enemy, const float deltaTime) {
 			co_start_flag = false;
 			anim_end_flag = false;
 		}
+	}
+
+	if (wave_num >= StatusManager::Instance().GetMaxWave() && now_time == 0) {
+		game_clear_flag = true;
 	}
 
 	if (enemy->GetWaveEnemy() == enemy->GetDeathEnemyCount())

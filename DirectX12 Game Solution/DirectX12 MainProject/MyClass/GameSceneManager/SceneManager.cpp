@@ -14,9 +14,9 @@ void SceneManager::LoadAsset() {
 	black = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/kuro.png");
 }
 
-void SceneManager::Update(const float deltaTime) {
+void SceneManager::Update(const float deltaTime, bool game_clear) {
 
-	if (StatusManager::Instance().GetScoreGauge() <= 0.0f) {
+	if (StatusManager::Instance().GetScoreGauge() <= 0.0f || game_clear) {
 		curtain_move_flag = true;
 	}
 
