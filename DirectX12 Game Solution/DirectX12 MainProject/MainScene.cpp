@@ -12,14 +12,13 @@ MainScene::MainScene() : dx9GpuDescriptor{}
 {
 	player = new PlayerBase;
 	enemy = new EnemyManager;
-	audience = new AudienceManager;
+	
 	observer = new Observer;
 }
 
 MainScene::~MainScene() {
 	delete player;
 	delete enemy;
-	delete audience;
 	delete observer;
 
 	Terminate();
@@ -146,7 +145,6 @@ void MainScene::LoadAssets()
 
 	ground.LoadAsset();
 	player->LoadAssets();
-	audience->LoadAssets();
 	dialogue.LoadAssets();
 	process.LoadAssets();
 	coin.LoadAssets();
@@ -358,8 +356,6 @@ void MainScene::Render()
 
 	player->Render();
 	enemy->Render();
-	audience->Render();
-
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ

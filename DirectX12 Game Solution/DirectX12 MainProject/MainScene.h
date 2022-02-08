@@ -8,7 +8,6 @@
 #include "MyClass/Ground/Ground.h"
 #include "MyClass/Camera/C_Camera.h"
 #include "MyClass/PlayerManager/PlayerManager.h"
-#include "MyClass/AudianceManager/AudianceManager.h"
 #include "MyClass/EnemyManager/EnemyManager.h"
 #include "MyClass/CoinManager/CoinManager.h"
 #include "MyClass/Observer/Observer.h"
@@ -74,7 +73,6 @@ private:
 	C_Camera         camera;
 	PlayerBase*      player;
 	EnemyManager*    enemy;
-	AudienceManager* audience;
 	DialogueManager  dialogue;
 	CoinManager      coin;
 	Observer*        observer;
