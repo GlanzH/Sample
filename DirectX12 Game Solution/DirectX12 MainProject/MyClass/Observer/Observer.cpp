@@ -8,7 +8,7 @@ int Observer::Update(PlayerBase* player, EnemyManager* enemy, CoinManager coin) 
 void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, CoinManager coin) {
 	for (auto coins_roop : coin.GetCoin()) {
 		if (player->GetBox().box.Intersects(coins_roop->GetBox())) {
-			coin.OnCollisionEnter(coins_roop);
+			coins_roop->OnCollisionEnter();
 		}
 	}
 	

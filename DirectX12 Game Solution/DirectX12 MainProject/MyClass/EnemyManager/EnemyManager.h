@@ -93,7 +93,7 @@ private:
 	};
 
 	enum SumEnemy {
-		MAX_WAVE = 10
+		MAX_WAVE = 13
 	};
 
 	int count;                             //!敵の累計出現数カウント 

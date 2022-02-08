@@ -1,7 +1,6 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 #include "CoinManager.h"
-#include "MyClass/StatusManager/StatusManager.h"
 #include "MyClass/EnumManager/EnumManager.h"
 #include <MyClass/ResourceManager/ResourceManager.h>
 
@@ -19,10 +18,15 @@ void CoinManager::LoadAssets()
 
 	create_coins = 0;
 	create_coin_flag = false;
+	for (int i = 0; i < COIN_MAX; i++)
+	{
+		coin.push_back(new Coin());
+		coin[i]->LoadAssets();
+	}
+
 }
 
 int CoinManager::Update(SimpleMath::Vector3 position, bool death_flag, int death_enemy, const float deltaTime) {
-	Iterator();
 
 	pos = SimpleMath::Vector3(position.x, 0, 50);
 	DX12Effect.SetRotation(manycoin_handle, Vector3(0, 160, 0));
@@ -44,11 +48,16 @@ int CoinManager::Update(SimpleMath::Vector3 position, bool death_flag, int death
 		}
 	}
 
-
-	if (coin.size() > 0) {
-		for (auto coins : coin) {
-			coins->Update(deltaTime);
-		}
+	for (int i = 0; i < create_coins; i++) {
+		coin[i]->Update(deltaTime);
+	}
+	
+	for (int i = 0; i < create_coins; i++)
+	{
+		if (coin[i]->CheckDeath())
+			continue;
+		if (!coin[create_coins - 1]->CheckDeath())
+			create_coins = 0;
 	}
 
 	return 0;
@@ -56,7 +65,6 @@ int CoinManager::Update(SimpleMath::Vector3 position, bool death_flag, int death
 
 /**
  * @fn 条件によってモーションを切り替える
- * @return なし
  * @detail 敵を倒した数(コンボ数)によってコインを出現させる枚数を決める関数を作り、
  * 　　　　for文でその数コインを作成させる
  */
@@ -67,37 +75,9 @@ void CoinManager::Generator() {
 	for (int i = 0; i < create_coins; ++i) {
 		distribute = std::uniform_int_distribution<int>(-60, 60);
 		int pos_x = distribute(random);
-		coin.push_back(Create(SimpleMath::Vector3(pos_x, 0, 80)));
+		coin[i]->SetPos(Vector3(pos_x, 0, 80));
+		coin[i]->RenderCoin();
 	}
-}
-
-Coin* CoinManager::Create(SimpleMath::Vector3 position) {
-	Coin* create_coin = new Coin;
-	create_coin->LoadAssets(position);
-
-	return create_coin;
-}
-
-void CoinManager::Iterator() {
-	for (auto itr = coin.begin(); itr != coin.end();)
-	{
-		if ((*itr)->LifeDeathDecision() == LIVE) {
-			itr++;
-		}
-		else {
-			if ((*itr)->LifeDeathDecision() == DEAD) {
-				StatusManager::Instance().SetAddScore(30);
-				itr = coin.erase(itr);
-			}
-			else {
-				itr = coin.erase(itr);
-			}
-		}
-	}
-}
-
-void CoinManager::OnCollisionEnter(Coin* this_coin) {
-	this_coin->GetCoin();
 }
 
 void CoinManager::ComboCoin(int combocoin)
