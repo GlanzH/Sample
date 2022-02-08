@@ -656,14 +656,14 @@ void PlayerBase::Player_move(const float deltaTime)
 	if (upper_state_mode == Upper_State::NOT_UPPER && lower_state_mode == Lower_State::NOT_LOWER && !knock_back_flag) {
 		if (!s_del_flag && !avoidance_flag) {
 			//プレイヤー:移動(キーボード) & ゲームパッド十字キー
-			if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
+			if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right || DXTK->GamePadState[0].thumbSticks.rightX) {
 				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
 				model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
 				col.sword_box.Center = model->GetRotation();
 				direction_state_mode = Direction_State::RIGHT;
 				SetAnimation(model, RUN);
 			}
-			if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left) {
+			if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left || DXTK->GamePadState[0].thumbSticks.leftX) {
 				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
 				model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
 				col.sword_box.Center = model->GetRotation();
@@ -681,10 +681,10 @@ void PlayerBase::Speed_Step(const float deltaTime) {
 		step_up_flag = true;
 	}
 
-	if (step_up_flag == true) {
+	if (StatusManager::Instance().GetCoinFlag()) {
 		if (point != 0 && point % 7 == 0) {
 			player_speed_ += 1.0f;
-			step_up_flag = false;
+			StatusManager::Instance().ResetCoinFlag();
 		}
 	}
 	
@@ -861,7 +861,12 @@ void PlayerBase::Sword_Delivery(const float deltaTime, bool temp) {
 	//仮死状態の敵が1体以上で可能
 	if (!jump_flag_) {
 		if (temp) {
-			if (DXTK->KeyEvent->pressed.D || DXTK->GamePadEvent[0].rightShoulder == GamePad::ButtonStateTracker::PRESSED) {
+			if (DXTK->KeyEvent->pressed.D ||
+				DXTK->GamePadEvent[0].rightShoulder == GamePad::ButtonStateTracker::PRESSED ||
+				DXTK->GamePadEvent[0].leftShoulder  == GamePad::ButtonStateTracker::PRESSED ||
+				DXTK->GamePadEvent[0].rightTrigger  == GamePad::ButtonStateTracker::PRESSED ||
+				DXTK->GamePadEvent[0].leftTrigger   == GamePad::ButtonStateTracker::PRESSED
+				) {
 				s_del_flag = true;
 			}
 		}
