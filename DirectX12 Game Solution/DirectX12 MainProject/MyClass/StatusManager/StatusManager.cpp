@@ -140,6 +140,7 @@ void StatusManager::ResetHitCombo() {
 	combo = 0;
 	combo_miss_flag = false;
 	combo_flag = false;
+	combo_time = 0.0f;
 	combo_time_flag = true;
 	return;
 }
