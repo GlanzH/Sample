@@ -24,7 +24,7 @@ private:
 	//タイム
 	DX9::SPRITE time;
 	DX9::SPRITE time_number;
-
+	DX9::SPRITE arrow;
 	int time_one_digit;	//1桁目表示変数
 	int time_two_digit;	//2桁目表示変数
 	int now_time;	//現在の時間
