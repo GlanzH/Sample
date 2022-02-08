@@ -6,17 +6,7 @@
 void SwordMan::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
 	EnemyBase::LoadAsset(model_name, initial_position);
 
-	col.weapon = col.box;
-
-	//コリジョンモデルの作成
-	sword_col = DX9::Model::CreateBox(
-		DXTK->Device9,
-		col.weapon.Extents.x * 3,
-		col.weapon.Extents.y * 20,
-		col.weapon.Extents.z * 5
-	);
-
-	sword_col->SetMaterial(material);
+	//sword_col->SetMaterial(material);
 	sword_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 
 	col.weapon.Center = sword_pos;
@@ -37,7 +27,7 @@ int SwordMan::Update(SimpleMath::Vector3 player, bool destroy_flag, const float 
 	if (is_freeze < max_is_damage && is_damage < max_is_damage)
 		anim_model->AdvanceTime(delta / 1.0f);
 
-	sword_col->SetPosition(sword_pos);
+	//sword_col->SetPosition(sword_pos);
 	col.weapon.Center = SimpleMath::Vector3(sword_pos.x, 0, sword_pos.z);
 	collision->SetPosition(anim_model->GetPosition() + SimpleMath::Vector3(0, 6, 0));
 	return 0;
@@ -217,3 +207,12 @@ bool SwordMan::LifeDeathDecision() {
 
 	return LIVE;
 }
+//col.weapon = col.box;
+
+	////コリジョンモデルの作成
+	//sword_col = DX9::Model::CreateBox(
+	//	DXTK->Device9,
+	//	col.weapon.Extents.x * 3,
+	//	col.weapon.Extents.y * 20,
+	//	col.weapon.Extents.z * 5
+	//);

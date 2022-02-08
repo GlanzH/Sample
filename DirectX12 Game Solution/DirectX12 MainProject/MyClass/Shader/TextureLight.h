@@ -17,8 +17,10 @@ public:
 	};
 
 	void Init();
+	void Update();
 	void Render();
-	void SetPos(SCorner corner);
+	void SetPos(SCorner Corner);
+	void SetColor(Vector4 Color) { color = Color; }
 
 private:
 	void LoadTexture();
