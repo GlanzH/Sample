@@ -12,25 +12,16 @@ void Ground::LoadAsset() {
 	bg_ruins  = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\Forest\\ruins.X");
 	bg_town   = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\Forest\\town.X");
 
-	town = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_notanim\\bg_town_notanim.X");
-	forest = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_notanim\\bg_forest_notanim.X");
-	ruins = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_notanim\\bg_remains_notanim.X");
-	model = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\BackGround\\stage.X");
 	/*town   = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_anim\\bg_town.X");
 	forest = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_anim\\bg_forest.X");
 	ruins  = DX9::SkinnedModel::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_anim\\bg_remains.X");*/
-	model->SetPosition(0.0f, -23.5f, -5.0f);
-	town->SetPosition(0.0f,-25.0f,20.0f);
-	forest->SetPosition(0.0f, -25.0f, 20.0f);
-	ruins->SetPosition(0.0f, -25.0f, 20.0f);
-	/*model_forest->SetPosition(0.0f, -23.0, 0.0f);
-	bg_forest->SetPosition(0, -25, 0);
 
-	model_ruins->SetPosition(0.0f, -23.0, 0.0f);
-	bg_ruins->SetPosition(0, -25, 0);
-
-	model_town->SetPosition(0.0f, -23.0, 0.0f);
-	bg_town->SetPosition(0, -25, 0);*/
+	model_forest->SetPosition(0.0f, -23.0, 20.0f);
+	bg_forest->SetPosition(0, -25, 7.0f);
+	model_ruins->SetPosition(0.0f, -23.0, 20.0f);
+	bg_ruins->SetPosition(0, -25, 7.0f);
+	model_town->SetPosition(0.0f, -23.0, 20.0f);
+	bg_town->SetPosition(0, -25, 7.0f);
 	//bg_forest->SetPosition(0, -pos_y, 20.0f);
 	pos = SimpleMath::Vector3::Zero;
 }
@@ -43,12 +34,26 @@ void Ground::LoadAsset() {
  */
 int Ground::Update(const float deltaTime) {
 	
+
+	/*StatusManager::Instance().GetWave();
+	if (StatusManager::Instance().GetWave()= 0 && ウェーブ数 ＜ = 3)*/
+	//	街の背景モーションを再生する関数
+
+	//	if (ウェーブ数＞ = 4 && ウェーブ数 ＜ = 6)
+	//		森の背景モーションを再生する関数
+
+	//		if (ウェーブ数＞ = 7 && ウェーブ数 ＜ = 9)
+	//			遺跡の背景モーションを再生する関数
+
+	//SetAnimation(a, (int)Forest::PLAY, (int)Forest::MAX_MOTION);
+	//a->AdvanceTime(deltaTime / 1.0f);
+	//a->SetPosition(pos);
 	auto a = model->GetPosition();
 	return 0;
 }
 
 void Ground::Render() {
-	model->Draw();
+	//model->Draw();
 	//a->Draw();
 	/*GetModel()->Draw();*/
 }
@@ -59,25 +64,44 @@ void Ground::Render() {
  * @detail シーンによって対応したモデルを返すようにする
  */
 
-
+//SKINNEDMODEL型
+//DX9::SKINNEDMODEL& Ground::GetModel() {
+//	
+//	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 3)
+//	{
+//		return forest;
+//	}
+//	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 6)
+//	{
+//		return town;
+//	}
+//	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 9)
+//	{
+//		return forest;
+//	}
+//	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 12)
+//	{
+//		return forest;
+//	}
+//}
 //MODEL型
 DX9::MODEL& Ground::GetModel() 
 {
 	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 3)
 	{
-		return forest;
+		return bg_forest;
 	}
 	if (StatusManager::Instance().GetWave() >= 4 && StatusManager::Instance().GetWave() <= 6)
 	{
-		return town;
+		return bg_town;
 	}
 	if (StatusManager::Instance().GetWave() >= 7 && StatusManager::Instance().GetWave() <= 9)
 	{
-		 return forest;
+		return bg_forest;
 	}
 	if (StatusManager::Instance().GetWave() >= 10 && StatusManager::Instance().GetWave() <= 12)
 	{
-		return ruins;
+		return bg_ruins;
 	}
 }
 

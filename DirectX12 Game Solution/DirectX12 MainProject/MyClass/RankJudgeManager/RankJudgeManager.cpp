@@ -2,27 +2,38 @@
 
 void RankJudgeManager::Initialize() {
 	//ランク
-	rank_pos   = SimpleMath::Vector3(0.0f, RANK_START_POS_Y, 0.0f);
-	rank_alpha = 0.0f;
+	rank_pos = SimpleMath::Vector3(637.0f, 253.0f, 0.0f);
+	score = 0;
+	now_rank = 0;
+	rank_alpha = 225.0f;
+	rank_hight = 0;
+	rank_width = 0;
 
-	//フォント
-	font_pos = SimpleMath::Vector2(FONT_STSRT_POS_X, FONT_STSRT_POS_Y);
+	//スコア
+	score_width = 0.0f;
+	score_alpha = 0.0f;
 
-	//人数
-	people_pos = SimpleMath::Vector3(0.0f, 0.0f, 0.0f);
-	people	   = 0;
+	//リザルトタイトル
+	title_alpha = 0.0f;
+	title_anim_frame = 0.0f;
+	title_hight = 0.0f;
 
-	//吹き出し
-	text_box_pos   = SimpleMath::Vector3(TEXTBOX_START_POS_X, 0.0f, 0.0f);
-	text_box_alpha = 0.0f;
+	//リザルト帯
+	shadow_alpha = 0.0f;
 
-	//コメント
-	text_pos   = SimpleMath::Vector3(0.0f, TEXT_START_POS_Y, 0.0f);
-	text_alpha = 0.0f;
+	//お金
+	money = 0;
+	digit_state = ONE_DIGIT;
+	one_digit = 0;
+	two_digit = 0;
+	three_digit = 0;
+	four_digit = 0;
 
-	//EXIT
-	exit_pos = SimpleMath::Vector3(0.0f, 0.0f, 0.0f);
-	exit_flash = 0;
+	yen_alpha = 0.0f;
+	money_pos = SimpleMath::Vector2(1000.0f, 0.0f);
+
+	//リスタート
+	restart_hight = 0.0f;
 
 	//時間
 	time_delta  = 0.0f;
@@ -35,31 +46,30 @@ void RankJudgeManager::Initialize() {
 }
 
 void RankJudgeManager::LoadAseet() {
-	rank_s = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_s.png");
-	rank_a = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_a.png");
-	rank_b = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_b.png");
-	rank_c = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_c.png");
-	rank_d = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_d.png");
-	rank_e = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_e.png");
+	rank[0] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Rank/Rank_E.png");
+	//rank[1] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_d.png");
+	//rank[2] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_c.png");
+	//rank[3] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_b.png");
+	//rank[4] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_a.png");
+	//rank[5] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/rank_s.png");
 
-	font = DX9::SpriteFont::CreateFromFontName(DXTK->Device9, L"ＭＳ ゴシック", font_size);
+	score_empty = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_nice_bottom.png");
+	score_max = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_nice_top.png");
 
-	people_ui = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/people_ui.png");
+	result_title = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Result_Title.png");
 
-	director = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/directed_ui.png");
+	result_shadow = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Result_Shadow.png");
 
-	text_box = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/speech_bubble_ui.png");
+	yen_icon = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Yen.png");
+	yen_number = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/CoinNumbers.png");
 
-	text = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/letter_ui.png");
+	restart = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Restart_Text.png");
 
-	exit = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/exit.png");
+	font = DX9::SpriteFont::CreateFromFontFile(DXTK->Device9, L"Result/ronde_square/Ronde-B_square.otf", L"ロンド B スクエア", 82);
 }
 
 void RankJudgeManager::Update(const float deltaTime) {
-	GetAudience();
-	JudgeRnak();
 	time_delta = deltaTime;
-
 
 	if (co_result_it != co_result.end()) {
 		co_result_it++;
@@ -71,85 +81,133 @@ void RankJudgeManager::Update(const float deltaTime) {
 }
 
 void RankJudgeManager::Render() {
-	DX9::SpriteBatch->DrawSimple(people_ui.Get(), people_pos);
+	//リザルトタイトル
+	DX9::SpriteBatch->DrawSimple(
+		result_title.Get(),
+		SimpleMath::Vector3(359.0f, 121.0f, 0.0f),
+		RectWH(0, TITLE_MIN_HIGHT * (int)title_anim_frame, TITLE_WIDTH, TITLE_MIN_HIGHT),
+		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, (int)title_alpha)
+	);
 
-	DX9::SpriteBatch->DrawSimple(director.Get(), director_pos);
-
-	DX9::SpriteBatch->DrawSimple(text_box.Get(), text_box_pos,
+	//リザルト帯
+	DX9::SpriteBatch->DrawSimple(
+		result_shadow.Get(),
+		SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
 		Rect(0, 0, SPRITE_WIDTH, SPRITE_HIGHT),
-		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, text_box_alpha));
+		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, (int)shadow_alpha)
+	);
 
-	DX9::SpriteBatch->DrawSimple(text.Get(), text_pos,
-		Rect(0, 0, SPRITE_WIDTH, SPRITE_HIGHT),
-		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, text_alpha));
+	//スコアゲージ
+	DX9::SpriteBatch->DrawSimple(
+		score_empty.Get(),
+		SimpleMath::Vector3(205.0f, 343.0f, SCORE_EMPTY_POS_Z),
+		Rect(0, 0, 422, 96),
+		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, (int)score_alpha)
+	);
 
-	if (exit_flash % 2 != 0) {
-		DX9::SpriteBatch->DrawSimple(exit.Get(), exit_pos);
+	DX9::SpriteBatch->DrawSimple(
+		score_max.Get(),
+		SimpleMath::Vector3(205.0f, 343.0f, SCORE_MAX_POS_Z),
+		Rect(0, 0, SCORE_MIN_WIDTH + (int)score_width, SCORE_MAX_HIGHT),
+		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, (int)score_alpha)
+	);
+
+	//お金アイコン
+	DX9::SpriteBatch->DrawSimple(
+		yen_icon.Get(),
+		SimpleMath::Vector3(594.0f, 328.0f, 0.0f),
+		Rect(0, 0, YEN_ICON_WIDTH, YEN_ICON_HIGHT),
+		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, (int)yen_alpha)
+	);
+
+	//数字
+	if(digit_state >= ONE_DIGIT){
+		DX9::SpriteBatch->DrawSimple(
+			yen_number.Get(),
+			SimpleMath::Vector3(400.0f, 310.0f, 0.0f),
+			RectWH(one_digit, 0, YEN_NUM_WIDTH, YEN_NUM_HIGHT),
+			DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, (int)yen_alpha)
+		);
+
+		if (digit_state >= TWO_DIGIT) {
+			DX9::SpriteBatch->DrawSimple(
+				yen_number.Get(),
+				SimpleMath::Vector3(300.0f, 310.0f, 0.0f),
+				RectWH(two_digit, 0, YEN_NUM_WIDTH, YEN_NUM_HIGHT),
+				DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, (int)yen_alpha)
+			);
+		}
+
+		if (digit_state >= THREE_DIGIT) {
+			DX9::SpriteBatch->DrawSimple(
+				yen_number.Get(),
+				SimpleMath::Vector3(200.0f, 310.0f, 0.0f),
+				RectWH(three_digit, 0, YEN_NUM_WIDTH, YEN_NUM_HIGHT),
+				DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, (int)yen_alpha)
+			);
+		}
+		if (digit_state >= FOUR_DIGIT) {
+			DX9::SpriteBatch->DrawSimple(
+				yen_number.Get(),
+				SimpleMath::Vector3(100.0f, 310.0f, 0.0f),
+				RectWH(four_digit, 0, YEN_NUM_WIDTH, YEN_NUM_HIGHT),
+				DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, (int)yen_alpha)
+			);
+		}
 	}
+	//ランク
+	DX9::SpriteBatch->DrawSimple(rank[0].Get(),
+		rank_pos,
+		RectWH(300 * rank_width, 250 * rank_hight, 300, 250),
+		DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, (int)rank_alpha)
+	);
 
-	switch (now_rank)
-	{
-	case E:
-		DX9::SpriteBatch->DrawSimple(rank_e.Get(), rank_pos,
-			Rect(0, 0, SPRITE_WIDTH, SPRITE_HIGHT), DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, rank_alpha));
-		break;
+	//リスタート
+	DX9::SpriteBatch->DrawSimple(
+		restart.Get(),
+		SimpleMath::Vector3(455.0f, 590.0f, 0.0f),
+		Rect(0, restart_hight, RESTART_WIDTH, RESTART_MIN_HIGHT)
+	);
 
-	case D:
-		DX9::SpriteBatch->DrawSimple(rank_d.Get(), rank_pos,
-			Rect(0, 0, SPRITE_WIDTH, SPRITE_HIGHT), DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, rank_alpha));
-		break;
-
-	case C:
-		DX9::SpriteBatch->DrawSimple(rank_c.Get(), rank_pos,
-			Rect(0, 0, SPRITE_WIDTH, SPRITE_HIGHT), DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, rank_alpha));
-		break;
-
-	case B:
-		DX9::SpriteBatch->DrawSimple(rank_b.Get(), rank_pos,
-			Rect(0, 0, SPRITE_WIDTH, SPRITE_HIGHT), DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, rank_alpha));
-		break;
-
-	case A:
-		DX9::SpriteBatch->DrawSimple(rank_a.Get(), rank_pos,
-			Rect(0, 0, SPRITE_WIDTH, SPRITE_HIGHT), DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, rank_alpha));
-		break;
-
-	case S:
-		DX9::SpriteBatch->DrawSimple(rank_s.Get(), rank_pos,
-			Rect(0, 0, SPRITE_WIDTH, SPRITE_HIGHT), DX9::Colors::RGBA(COLOR_MAX, COLOR_MAX, COLOR_MAX, rank_alpha));
-		break;
-
-	default:
-		break;
-	}
-
-	DX9::SpriteBatch->DrawString(font.Get(), font_pos, DX9::Colors::White, L"%d", people); 
-}
-
-void RankJudgeManager::GetAudience() {
-	now_score = StatusManager::Instance().GetScore();
+	DX9::SpriteBatch->DrawString(font.Get(), money_pos, DX9::Colors::RGBA(255, 255, 255, 255), L"%d", money);
 }
 
 void RankJudgeManager::JudgeRnak() {
-	if (now_score <= E_RANK_MAX) {
+	score = StatusManager::Instance().GetScore();
+	//スコアに応じたランク付け
+	switch (score / 500)
+	{
+	case 0:
+		//スコア 0～499
 		now_rank = E;
-	}
-	else if (now_score >= D_RANK_MIN && now_score <= D_RANK_MAX) {
-		now_rank = D;
-	}
-	else if (now_score >= C_RANK_MIN && now_score <= C_RANK_MAX) {
-		now_rank = C;
-	}
-	else if (now_score >= B_RANK_MIN && now_score <= B_RANK_MAX) {
-		now_rank = B;
-	}
-	else if (now_score >= A_RANK_MIN && now_score <= A_RANK_MAX) {
-		now_rank = A;
-	}
-	else if (now_score >= S_RANK_MIN) {
-		now_rank = S;
-	}
+		break;
 
+	case 1:
+		//500～999
+		now_rank = D;
+		break;
+
+	case 2:
+		//1000～1499
+		now_rank = C;
+		break;
+
+	case 3:
+		//1500～1999
+		now_rank = B;
+		break;
+
+	case 4:
+	case 5:
+		//2000～299
+		now_rank = A;
+		break;
+
+	default:
+		//3000以上
+		now_rank = S;
+		break;
+	}
 	return;
 }
 
@@ -157,77 +215,91 @@ cppcoro::generator<int> RankJudgeManager::ReleaseRank()
 {
 	co_yield 0;
 
-	//間
-	while (stop_time < 1.0f) {
-		stop_time += time_delta;
-		co_yield 1;
-	}
-	stop_time = 0.0f;
-
-	//観客人数の表示
-	while (people < now_score * multiple) {
-		people += 100 * time_delta;
-		if (people >= 10 && people < 100) {//桁が増えると座標移動
-			font_pos.x = TWO_DIGIT_POS;
-		}
-		else if (people >= 100) {
-			font_pos.x = THREE_DIGIT_POS;
-		}
-		co_yield 1;
-	}
-	people = now_score * multiple;
-
-	//間
-	while (stop_time < 1.0f) {
-		stop_time += time_delta;
-		co_yield 2;
-	}
-	stop_time = 0.0f;
-
-	//ランク表示
 	while (stop_time < 2.0f) {
-		rank_alpha = std::min(rank_alpha + ALPHA_SPEED * time_delta, COLOR_MAX);
-		rank_pos.y += SPRITE_MOVE_SPEED * time_delta;
-		if (rank_pos.y > 0.0f) {
-			rank_pos.y = 0.0f;
-		}
 		stop_time += time_delta;
+		co_yield 1;
+	}
+	stop_time = 0.0f;
+
+	//帯の表示、タイトルアニメーション
+	title_alpha = 255;
+	while (shadow_alpha < 200.0f) {
+		shadow_alpha = std::min(shadow_alpha + 300.0f * time_delta, 200.0f);
+		title_anim_frame = std::min(title_anim_frame + 15.0f * time_delta, 16.0f);
+		co_yield 1;
+	}
+	title_anim_frame = 16.0f;
+
+	//スコアゲージ、お金表示
+	while (score_alpha < 255.0f) {
+		yen_alpha = std::min(yen_alpha + 300.0f * time_delta, 255.0f);
+		score_alpha = std::min(score_alpha + 300.0f * time_delta, 255.0f);
 		co_yield 3;
 	}
-	stop_time = 0.0f;
 
-	//監督の吹き出し表示
-	while (stop_time < 2.0f) {
-		text_box_alpha = std::min(text_box_alpha + ALPHA_SPEED * time_delta, COLOR_MAX);
-		text_box_pos.x += SPRITE_MOVE_SPEED * time_delta;
-		if (text_box_pos.x > 0.0f) {
-			text_box_pos.x = 0.0f;
+	//ゲージ、金額増加
+	StatusManager::Instance().SetAddScore(1000.0f);
+	JudgeRnak();
+	while (/*score_width != score * 0.113f*/true) {
+		score_width += 60.0f * time_delta;
+		if (score_width > score * 0.113f) {
+			score_width = score * 0.113f;
 		}
-		stop_time += time_delta;
+		money += 600 * time_delta;
+		if (money > score) {
+			money = score;
+		}
+
+		//if (money > 10) {
+		//	digit_state = TWO_DIGIT;
+		//}
+		//if (money > 100) {
+		//	digit_state = THREE_DIGIT;
+		//}
+		//if (money > 1000) {
+		//	digit_state = FOUR_DIGIT;
+		//}
+
+		switch (digit_state)
+		{
+		case ONE_DIGIT:
+			money_pos.x = 1000;
+			break;
+
+		case TWO_DIGIT:
+			money_pos.x = 900;
+			break;
+
+		case THREE_DIGIT:
+			money_pos.x = 800;
+			break;
+
+		case FOUR_DIGIT:
+			money_pos.x = 700;
+			break;
+		}
+
 		co_yield 4;
 	}
-	stop_time = 0.0f;
 
-	//コメントの表示
-	while (stop_time < 2.0f) {
-		text_alpha = std::min(text_alpha + ALPHA_SPEED * time_delta, COLOR_MAX);
-		text_pos.y -= SPRITE_MOVE_SPEED * time_delta;
-		if (text_pos.y < 0.0f) {
-			text_pos.y = 0.0f;
+	//ランクの表示
+	while (true) {
+		rank_hight += 70.0f * time_delta;
+		if (rank_hight >= 13.0f) {
+			rank_hight = 0.0f;
+			rank_width++;
 		}
-		stop_time += time_delta;
+
+		if (rank_width >= 2) {
+			break;
+		}
 		co_yield 5;
 	}
-	stop_time = 0.0f;
+	rank_hight = 12;
+	rank_width = 1;
+
 	scene_flag = true;
-
-	while (true) {
-		exit_flash += FLASH_SPEED * time_delta;
-		if (exit_flash > FLASH_MAX) {
-			exit_flash = 0;
-		}
-		co_yield 6;
-	}
-
+	
+	
 	co_return;
 }

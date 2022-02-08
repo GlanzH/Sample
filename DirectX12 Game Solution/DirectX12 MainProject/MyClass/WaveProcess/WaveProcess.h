@@ -72,7 +72,7 @@ private:
 
 
 	float stop_frame = 0.0f;
-	float max_stop   = 2.0f;
+	float max_stop   = 4.0f;
 
 	int stage_num = 0;
 	int wave_num;

@@ -7,6 +7,7 @@ void StatusManager::Initialize() {
 	//敵撃破コンボ
 	combo = 0;
 	combo_time = 0.0f;
+	combo_time_num = 0.0f;
 	combo_flag	= false;
 	combo_miss_flag = false;
 
@@ -14,12 +15,14 @@ void StatusManager::Initialize() {
 	anime_flag = false;
 
 	//スコア
+	coin_num = 0;
 	score = SCORE_START_VALUE;
 	now_score = score;
 	add_score_size = 0.0f;
 	enemy_num = 0.0f;
 	plus_score_flag = false;
 	good_flag = false;
+	coin_get_flag = false;
 
 	//ウェーブ
 	wave = 0;
@@ -41,6 +44,11 @@ void StatusManager::SetAddScore(float score_size) {
 
 	now_score = std::clamp(now_score, 0.0f, SCORE_MAX_VALUE);
 
+	if (30 == score_size) {
+		coin_num++;
+		coin_get_flag = true;
+	}
+
 	if (score < now_score) {
 		plus_score_flag = true;
 	}
@@ -57,11 +65,10 @@ void StatusManager::SetAddScore(float score_size) {
 	}
 
 	if (add_score_size != 0.0f) {
-		UIManager::Instance().PlayUIEffect();
+		//UIManager::Instance().PlayUIEffect();
 	}
 	return;
 }
-
 
 void StatusManager::CalcScore(const float deltaTime) {
 	//スコア増減判定
@@ -94,7 +101,15 @@ void StatusManager::AddHitCombo() {
 
 void StatusManager::AddHitComboTime() {
 	//コンボ継続時間を増やす
-	combo_time = COMBO_TIME_NUM;
+	//コンボ数によって継続時間を変動する
+	float minus_combo_time = -0.6f * (combo - 1);
+	if (combo < 6) {
+		combo_time_num = 6.0f + minus_combo_time;
+	}
+	else {
+		combo_time_num = 3.0f;
+	}
+	combo_time = combo_time_num;
 	combo_flag = true;
 	UIManager::Instance().ResetAnimeFrame();
 	ResetaAnimeFlag();
@@ -178,9 +193,9 @@ void StatusManager::WaveTimeLimit(const float deltaTime) {
 void StatusManager::ResetWaveTime() {
 	//ウェーブの時間をリセットしてスコアを増減させる
 	if (!wave_change_flag) {
-		float TimeBonus = wave_time * 5.0f;
+		//float TimeBonus = wave_time * 5.0f;
 		float LostEnemy = enemy_num * -30.0f;
-		SetAddScore(TimeBonus + LostEnemy);
+		SetAddScore(/*TimeBonus +*/ LostEnemy);
 		wave_time = 0.0f;
 		wave_change_flag = true;
 	}

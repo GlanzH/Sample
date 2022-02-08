@@ -221,13 +221,13 @@ void EnemyManager::EndTimeStop() {
 }
 
 void EnemyManager::OnCollisionEnter(EnemyBase* base) {
-	std::string tag = base->GetTag();
+	bool front = base->FrontFlag();
 
 	if (!hit->IsInUse())
 		hit->Play();
 
 	//ã’iUŒ‚
-	if (base->FrontFlag() && base->GetTag() != "SH") {
+	if (front && base->GetTag() != "SH") {
 		if (base->GetPostune() == "U") {
 			if (attack_num == LOWER) {
 				base->Damage();
@@ -250,8 +250,10 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 		}
 	}
 	else {
-		base->Damage();
-		base->HitEffect();
+		if (!front) {
+			base->Damage();
+			base->HitEffect();
+		}
 	}
 }
 
