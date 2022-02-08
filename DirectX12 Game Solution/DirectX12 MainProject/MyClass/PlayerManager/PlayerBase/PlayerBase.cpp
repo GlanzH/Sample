@@ -656,20 +656,22 @@ void PlayerBase::Player_move(const float deltaTime)
 	if (upper_state_mode == Upper_State::NOT_UPPER && lower_state_mode == Lower_State::NOT_LOWER && !knock_back_flag) {
 		if (!s_del_flag && !avoidance_flag) {
 			//プレイヤー:移動(キーボード) & ゲームパッド十字キー
-			if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right || DXTK->GamePadState[0].thumbSticks.rightX) {
+			if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
 				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
 				model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
 				col.sword_box.Center = model->GetRotation();
 				direction_state_mode = Direction_State::RIGHT;
 				SetAnimation(model, RUN);
 			}
-			if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left || DXTK->GamePadState[0].thumbSticks.leftX) {
+			if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left) {
 				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
 				model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
 				col.sword_box.Center = model->GetRotation();
 				direction_state_mode = Direction_State::LEFT;
 				SetAnimation(model, RUN);
 			}
+
+
 		}
 	}
 }
@@ -887,6 +889,7 @@ void PlayerBase::Sword_Delivery(const float deltaTime, bool temp) {
 			
 		}
 
+		
 
 		if (!damage_flag) {
 			DX12Effect.PlayOneShot("clincher", Vector3(player_pos.x, player_pos.y + 6.0f, player_pos.z));
