@@ -37,7 +37,7 @@ void MainScene::Initialize()
 	process.Initialize();
 
 	point.Init(2);
-	TestChangeColor();
+	
 	////‘S‘Ìƒ‰ƒCƒg
 	//point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 0.0f), 0);
 	//point.SetAtt(Vector3(0.25f, 0.01f, 0), 0);
@@ -347,6 +347,7 @@ void MainScene::Render()
 
 	DXTK->Direct3D9->BeginScene();
 	ChangeLightColor();
+	TestChangeColor();
 	//3D•`‰æ
 	camera.Render();
 	ground.Render();
