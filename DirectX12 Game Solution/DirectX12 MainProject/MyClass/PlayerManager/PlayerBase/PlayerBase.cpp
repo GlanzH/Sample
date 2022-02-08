@@ -142,7 +142,7 @@ bool PlayerBase::Initialize()
 	//攻撃の時間
 	attack_flag = false;
 	attack_time = 0.0f;
-	attack_zeit_max = 0.05f;
+	attack_zeit_max = 0.1f;
 
 	//無敵時間
 	invincible_flag = false;
@@ -679,12 +679,12 @@ void PlayerBase::Player_move(const float deltaTime)
 //プレイヤーの移動スピードの変化
 void PlayerBase::Speed_Step(const float deltaTime) {
 	if (DXTK->KeyEvent->pressed.Q) {
-		point += 1;
+		//StatusManager::Instance().GetCoin() = 1;
 		step_up_flag = true;
 	}
 
 	if (StatusManager::Instance().GetCoinFlag()) {
-		if (point != 0 && point % 7 == 0) {
+		if (StatusManager::Instance().GetCoin() != 0 && StatusManager::Instance().GetCoin() % 7 == 0) {
 			player_speed_ += 1.0f;
 			StatusManager::Instance().ResetCoinFlag();
 		}
@@ -1033,7 +1033,7 @@ void PlayerBase::Debug() {
 	DX9::SpriteBatch->DrawString(font.Get(),
 		SimpleMath::Vector2(1100.0f, 60.0f),
 		DX9::Colors::White,
-		L"%d", point
+		L"%d", StatusManager::Instance().GetCoin()
 	);
 
 

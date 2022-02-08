@@ -49,6 +49,7 @@ public:
 	//コイン
 	bool GetCoinFlag() { return coin_get_flag; }//コイン取得フラグ
 	void ResetCoinFlag() { coin_get_flag = false; }
+	int GetCoin() { return coin_num; }
 
 private:
 	void ComboTime(const float deltaTime);	//コンボ時間計る
