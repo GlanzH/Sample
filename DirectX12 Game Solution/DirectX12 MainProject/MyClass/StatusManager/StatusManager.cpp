@@ -19,10 +19,8 @@ void StatusManager::Initialize() {
 	coin_num = 0;
 	score = SCORE_START_VALUE;
 	now_score = score;
-	add_score_size = 0.0f;
 	enemy_num = 0.0f;
 	plus_score_flag = false;
-	good_flag = false;
 	coin_get_flag = false;
 
 	//ウェーブ
@@ -40,8 +38,7 @@ void StatusManager::Update(const float deltaTime, int remain_enemy) {
 
 void StatusManager::SetAddScore(float score_size) {
 	//スコアを設定する
-	add_score_size = score_size;
-	now_score += add_score_size;
+	now_score += score_size;
 
 	now_score = std::clamp(now_score, 0.0f, SCORE_MAX_VALUE);
 
@@ -58,16 +55,6 @@ void StatusManager::SetAddScore(float score_size) {
 		plus_score_flag = false;
 	}
 
-	if (add_score_size < 0) {
-		good_flag = false;
-	}
-	else {
-		good_flag = true;
-	}
-
-	if (add_score_size != 0.0f) {
-		UIManager::Instance().PlayUIEffect();
-	}
 	return;
 }
 

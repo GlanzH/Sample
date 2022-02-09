@@ -10,7 +10,7 @@ void SceneManager::Initialize() {
 }
 
 void SceneManager::LoadAsset() {
-	curtain = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Curtain_Fixed.png");
+	curtain = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Curtain.png");
 	black = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/kuro.png");
 }
 

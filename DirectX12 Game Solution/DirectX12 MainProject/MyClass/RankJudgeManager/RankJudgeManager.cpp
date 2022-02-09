@@ -46,23 +46,23 @@ void RankJudgeManager::Initialize() {
 }
 
 void RankJudgeManager::LoadAseet() {
-	rank[0] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Rank/Rank_E.png");
-	rank[1] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Rank/Rank_D.png");
-	rank[2] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Rank/Rank_C.png");
-	rank[3] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Rank/Rank_B.png");
-	rank[4] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Rank/Rank_A.png");
-	rank[5] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Rank/Rank_S.png");
+	rank[0] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Result/Rank/Rank_E.png");
+	rank[1] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Result/Rank/Rank_D.png");
+	rank[2] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Result/Rank/Rank_C.png");
+	rank[3] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Result/Rank/Rank_B.png");
+	rank[4] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Result/Rank/Rank_A.png");
+	rank[5] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Result/Rank/Rank_S.png");
 
-	score_empty = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_nice_bottom.png");
-	score_max = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_nice_top.png");
+	score_empty = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_coin_bottom.png");
+	score_max = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_coin_top.png");
 
-	result_title = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Result_Title.png");
+	result_title = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Result/Result_Title.png");
 
-	result_shadow = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Result_Shadow.png");
+	result_shadow = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Result/Result_Shadow.png");
 
-	restart = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Result/Restart_Text.png");
+	restart = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Result/Restart_Text.png");
 
-	font = DX9::SpriteFont::CreateFromFontFile(DXTK->Device9, L"Result/ronde_square/Ronde-B_square.otf", L"ロンド B スクエア", 55);
+	font = DX9::SpriteFont::CreateFromFontFile(DXTK->Device9, L"Scene/Result/ronde_square/Ronde-B_square.otf", L"ロンド B スクエア", 55);
 }
 
 void RankJudgeManager::Update(const float deltaTime) {
