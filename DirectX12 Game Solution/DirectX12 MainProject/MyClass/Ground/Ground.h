@@ -28,7 +28,6 @@ private:
 	DX9::MODEL bg_forest;
 	DX9::MODEL bg_ruins;
 
-
 	DX9::SKINNEDMODEL change_set;
 
 	DX9::MODEL town;

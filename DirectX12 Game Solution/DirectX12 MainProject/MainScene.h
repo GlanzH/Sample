@@ -50,7 +50,7 @@ public:
 
 
 private:
-	void ChangeBGM(int music_num);
+	void ChangeBGM();
 	void ChangeLightRenge(const float deltaTime);
 	void TestChangeColor();
 	void ChangeLightColor();
@@ -83,6 +83,10 @@ private:
 	SpotLight point;
 	TextureLight texLight;
 
+	DX9::MEDIARENDERER stage1;
+	DX9::MEDIARENDERER stage2;
+	DX9::MEDIARENDERER stage3;
+	DX9::MEDIARENDERER stage4;
 	enum LightMode {
 		IN_ZOOM,
 		OUT_ZOOM
