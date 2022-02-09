@@ -23,8 +23,6 @@ public:
 	int GetHitCombo() { return combo; }
 	float GetHitComboTime() { return combo_time; }	//撃破コンボ継続時間
 	bool GetComboFlag() { return combo_flag; }	//コンボフラグ
-	void StopComboTime() { combo_time_flag = false; }	//コンボ継続時間ストップ
-	void StartComboTime() { combo_time_flag = true; }	//コンボ継続時間スタート
 
 	//アニメーション
 	void ResetaAnimeFlag() { anime_flag = false; }	//アニメフラグのリセット
@@ -32,8 +30,11 @@ public:
 
 	//スコア
 	void SetAddScore(float score_size);	//スコアの値を入力
+	int GetCoinNum() { return coin_num; }//コインの取得数
+	float GetAddScore() { return add_score_size; }
 	float GetScoreGauge() { return score * SCORE_GAUGE_DIVIDE; }	//ゲージ描画時呼び出し
 	float GetScore() { return now_score; }	//現在のスコア
+	bool GetGoodFlag() { return good_flag; }	//スコアUI描画時使用
 
 	//ウェーブ
 	void SetWave(int wave_num);	//ウェーブ数設定
@@ -46,9 +47,9 @@ public:
 	bool GetWaveFlag() { return wave_change_flag; }	//ウェーブ切り替えフラグ
 
 	//コイン
-	void ResetCoinFlag() { coin_get_flag = false; }	//コイン取得フラグリセット
-	int GetCoinNum() { return coin_num; }//コインの取得数
 	bool GetCoinFlag() { return coin_get_flag; }//コイン取得フラグ
+	void ResetCoinFlag() { coin_get_flag = false; }
+	int GetCoin() { return coin_num; }
 
 private:
 	void ComboTime(const float deltaTime);	//コンボ時間計る
@@ -65,17 +66,18 @@ private:
 	float combo_time;	//コンボ継続時間
 	bool  combo_flag;	//true:コンボ継続可能 false:継続不可
 	bool combo_miss_flag;
-	bool combo_time_flag;	//true:コンボ時間減少 false:時間ストップ
 
 	//アニメーション
 	bool anime_flag;	//true:アニメーション再生 false:停止
 
 	//スコア
-	int coin_num;	//コインの枚数
+	int coin_num;
 	float score;
 	float now_score;    //現在のスコア
-	float enemy_num;	//敵の数
+	float add_score_size;
+	float enemy_num;
 	bool plus_score_flag;	//true:スコアアップ false:スコアダウン
+	bool good_flag;
 	bool coin_get_flag;	//コイン獲得フラグ
 
 	const float SCORE_START_VALUE = 300.0f;	//初期値設定
