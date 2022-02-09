@@ -82,7 +82,7 @@ void PlayerBase::OnDeviceLost() {
 bool PlayerBase::Initialize()
 {
 	//プレイヤーのスピード
-	player_speed_ = 55.0f;
+	player_speed_ = 35.0f;
 
 	//ジャンプしてるかのフラグ
 	jump_flag_ = false;
