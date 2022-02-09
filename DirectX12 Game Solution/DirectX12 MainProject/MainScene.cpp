@@ -342,15 +342,18 @@ void MainScene::ChangeBGM() {
 	}
 
 	if (StatusManager::Instance().GetWave() >= 4 && StatusManager::Instance().GetWave() <= 6){
+		stage1->Stop();
 		stage2->Play();
 	}
 
 	if (StatusManager::Instance().GetWave() >= 7 && StatusManager::Instance().GetWave() <= 9){
+		stage2->Stop();
 		stage3->Play();
 	}
 
 	if (StatusManager::Instance().GetWave() >= 10 && StatusManager::Instance().GetWave() <= 12){
-	stage4->Play();
+		stage3->Stop();
+		stage4->Play();
 	}
 }
 
