@@ -66,7 +66,7 @@ private:
 	float combo_time;	//コンボ継続時間
 	bool  combo_flag;	//true:コンボ継続可能 false:継続不可
 	bool combo_miss_flag;
-
+	bool combo_time_flag;
 	//アニメーション
 	bool anime_flag;	//true:アニメーション再生 false:停止
 
