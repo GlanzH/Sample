@@ -246,7 +246,6 @@ NextScene MainScene::Update(const float deltaTime)
 	ChangeLightRenge(deltaTime);
 	StatusManager::Instance().Update(deltaTime, enemy->GetRemainEnemy());
 	UIManager::Instance().Update(deltaTime, enemy->GetWaveEnemy(), enemy->GetDeathEnemyCount());
-	UIManager::Instance().SetUICamera(camera.GetCamera());
 	if (StatusManager::Instance().GetWave() > 0 && StatusManager::Instance().GetTime() > StatusManager::Instance().GetOnceExec())
 		enemy->StartTimeStop();
 
@@ -284,13 +283,15 @@ NextScene MainScene::Update(const float deltaTime)
 
 		if (end_frame > 2.0f) {
 			DX12Effect.AllStop();
-			if (SceneManager::Instance().ReturnSceneFlag())
-				return NextScene::ResultScene;
+			//if (SceneManager::Instance().ReturnSceneFlag())
+			//	return NextScene::ResultScene;
 		}
 	}
 
+	if (SceneManager::Instance().ReturnSceneFlag())
+		return NextScene::ResultScene;
 
-	SceneManager::Instance().Update(deltaTime);
+	SceneManager::Instance().Update(deltaTime, process.GetClearFlag());
 
 	if (end_frame < max_end)
 		DX12Effect.Update(deltaTime);
@@ -425,6 +426,7 @@ void MainScene::Render()
 	DX9::SpriteBatch->Begin();
 
 	//2D•`‰æ
+	UIManager::Instance().SetUICamera(camera.GetCamera());
 	UIManager::Instance().Render();
 	process.Render();
 	player->Debug();

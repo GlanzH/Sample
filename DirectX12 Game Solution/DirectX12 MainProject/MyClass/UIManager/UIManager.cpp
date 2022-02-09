@@ -12,7 +12,6 @@ void UIManager::Initialize() {
 	combo_digit_up_flag = false;
 	cracker_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"BGM_SE/Directing/cracker.wav");
 
-	icon_play_flag = false;
 	effect_handle = 0;
 
 	enemy_max_num = 0;
@@ -37,18 +36,14 @@ void UIManager::Initialize() {
 }
 
 void UIManager::LoadAsset() {
-	score_good_empty = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_nice_bottom.png");
-	score_good_max = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_nice_top.png");
-	score_bad_empty = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_bad_bottom.png");
-	score_bad_max = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_bad_top.png");
+	score_gauge_empty = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_coin_bottom.png");
+	score_gauge_max = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Score/scoreui_coin_top.png");
 
 	combo_base = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Combo/Combo_Anim.png");
 	combo_gauge = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Combo/combo_gauge.png");
 	combo = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Combo/COMBO.png");
 	combo_number = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Combo/numbers_combo_h.png");
 
-	good_effect = DX12Effect2D.Create(L"Effect\\UIEffect\\nice\\nice.efk", "nice");
-	bad_effect = DX12Effect2D.Create(L"Effect\\UIEffect\\bad\\bad.efk", "bad");
 	cracker_effect = DX12Effect2D.Create(L"Effect\\UIEffect\\cracker\\cracker.efk", "cracker");
 
 	enemy = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Enemy/Enemy.png");
@@ -93,9 +88,10 @@ void UIManager::Update(const float deltaTime, int enemy_num, int enemy_death) {
 
 
 	//観客のアニメーション
-	audience_anim += 60 * deltaTime;
-	if (audience_anim > 11)
+	audience_anim += 57 * deltaTime;
+	if (audience_anim > 11) {
 		audience_anim = 0;
+	}
 
 	if (audience_state != NORMAL) {
 		state_reset_time += deltaTime;
@@ -108,29 +104,16 @@ void UIManager::Update(const float deltaTime, int enemy_num, int enemy_death) {
 }
 
 void UIManager::Render() {
-	//スコアゲージ
-	if (StatusManager::Instance().GetGoodFlag()) {
-		DX9::SpriteBatch->DrawSimple(
-			score_good_empty.Get(),
-			SimpleMath::Vector3(SCORE_POS_X, SCORE_POS_Y, SCORE_EMPTY_POS_Z)
-		);
-		DX9::SpriteBatch->DrawSimple(
-			score_good_max.Get(),
-			SimpleMath::Vector3(SCORE_POS_X, SCORE_POS_Y, SCORE_MAX_POS_Z),
-			RectWH(0, 0, score_width, SCORE_MAX_HIGHT)
-		);
-	}
-	else {
-		DX9::SpriteBatch->DrawSimple(
-			score_bad_empty.Get(),
-			SimpleMath::Vector3(SCORE_POS_X, SCORE_POS_Y, SCORE_EMPTY_POS_Z)
-		);
-		DX9::SpriteBatch->DrawSimple(
-			score_bad_max.Get(),
-			SimpleMath::Vector3(SCORE_POS_X, SCORE_POS_Y, SCORE_MAX_POS_Z),
-			RectWH(0, 0, score_width, SCORE_MAX_HIGHT)
-		);
-	}
+	//コインゲージ
+	DX9::SpriteBatch->DrawSimple(
+		score_gauge_empty.Get(),
+		SimpleMath::Vector3(SCORE_POS_X, SCORE_POS_Y, SCORE_EMPTY_POS_Z)
+	);
+	DX9::SpriteBatch->DrawSimple(
+		score_gauge_max.Get(),
+		SimpleMath::Vector3(SCORE_POS_X, SCORE_POS_Y, SCORE_MAX_POS_Z),
+		RectWH(0, 0, score_width, SCORE_MAX_HIGHT)
+	);
 
 	if (StatusManager::Instance().GetComboFlag()) {
 		//コンボ吹き出し
@@ -206,7 +189,7 @@ void UIManager::Render() {
 	rev_audience_pos.z = 10.0f;
 	float add_pos = 0.0f;
 	for (int i = 0; i < 2; ++i) {
-		//観客を座標をずらし複数描画
+		//観客の座標をずらして複数描画
 		add_pos = 1388 * i;
 		switch (audience_state)
 		{
@@ -274,17 +257,6 @@ void UIManager::Animation(const float deltaTime) {
 void UIManager::ResetAnimeFrame() {
 	combo_anime_frame = 0.0f;
 	return;
-}
-
-void UIManager::PlayUIEffect() {
-	//アイコンエフェクト再生
-	if (StatusManager::Instance().GetGoodFlag()) {
-		effect_handle = DX12Effect2D.Play(good_effect, Vector3(0.0f, 0.0f, 0.0f));
-	}
-	else {
-		effect_handle = DX12Effect2D.Play(bad_effect, Vector3(0.0f, 0.0f, 0.0f));
-	}
-	DX12Effect2D.SetPosition(effect_handle, Vector3(-35.0f, 30.0f, 40.0f));
 }
 
 void UIManager::PlayCracker() {
