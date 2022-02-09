@@ -206,7 +206,6 @@ cppcoro::generator<int> WaveProcess::WaveChangeAinm() {
 	//フェードイン
 	while (true)
 	{
-		wait_time += time_delta;
 		black_alpha = std::min(black_alpha + 300.0f * time_delta, 200.0f);
 		if (black_alpha >= 200.0f) {
 			break;

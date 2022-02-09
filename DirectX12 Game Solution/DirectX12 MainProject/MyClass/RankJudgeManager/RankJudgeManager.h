@@ -16,11 +16,9 @@ public:
 	void Update(const float deltaTime);
 	void Render();
 
-
-
 	void JudgeRnak();
 
-	bool SceneChange() { return scene_flag; }
+	bool GetSceneChangeFlag() { return scene_change_flag; }
 	
 private:
 
@@ -64,35 +62,15 @@ private:
 
 	//お金
 	int money;
-	int digit_state;
-	int one_digit;
-	int two_digit;
-	int three_digit;
-	int four_digit;
-
 	float money_alpha;
 	float yen_icon_alpha;
 
 	SimpleMath::Vector2 money_pos;
 	SimpleMath::Vector2 yen_icon_pos;
 
-	enum DIGIT_STATE
-	{
-		ONE_DIGIT,
-		TWO_DIGIT,
-		THREE_DIGIT,
-		FOUR_DIGIT
-	};
 	int digit_pos;
-	const int YEN_ICON_WIDTH = 30;
-	const int YEN_ICON_HIGHT = 51;
-	const int YEN_NUM_WIDTH = 40;
-	const int YEN_NUM_HIGHT = 70;
 	const float MONEY_START_POS_X = 580.0f;
 	const float YEN_ICON_START_POS_X = MONEY_START_POS_X - 70.0f;
-	//const float THREE_DIGIT_POS_X = MONEY_START_POS_X - 80.0f;
-	//const float FOUR_DIGIT_POS_X  = MONEY_START_POS_X - 120.0f;
-	const float YEN_NUM_POS_Y = 0.0f;
 
 	//リスタート
 	DX9::SPRITE restart;
@@ -105,13 +83,17 @@ private:
 	const int SPRITE_WIDTH = 1280;	//画像の最大表示幅
 
 	const float COLOR_MAX = 255.0f;	//RGBA最大値
-	bool scene_flag;	//シーン切り替え可能フラグ
+	bool scene_change_flag;	//シーン切り替え可能フラグ
 
 	//時間
 	float time_delta;
 	float stop_time;
 	const float ALPHA_SPEED		  = 700.0f;//アルファ値増加スピード
 	const float SPRITE_MOVE_SPEED = 100.0f;//画像の移動スピード
+
+	//SE
+	XAudio::SOUNDEFFECT announce;	//結果発表時再生
+	XAudio::SOUNDEFFECT rank_se;	//ランク付け時再生(ジャジャン)
 
 	// コルーチンのプロトタイプ宣言
 	//リザルト演出

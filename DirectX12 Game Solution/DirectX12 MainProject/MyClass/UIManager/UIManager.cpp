@@ -88,9 +88,10 @@ void UIManager::Update(const float deltaTime, int enemy_num, int enemy_death) {
 
 
 	//ŠÏ‹q‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
-	audience_anim += 60 * deltaTime;
-	if (audience_anim > 11)
+	audience_anim += 57 * deltaTime;
+	if (audience_anim > 11) {
 		audience_anim = 0;
+	}
 
 	if (audience_state != NORMAL) {
 		state_reset_time += deltaTime;
@@ -188,7 +189,7 @@ void UIManager::Render() {
 	rev_audience_pos.z = 10.0f;
 	float add_pos = 0.0f;
 	for (int i = 0; i < 2; ++i) {
-		//ŠÏ‹q‚ðÀ•W‚ð‚¸‚ç‚µ•¡”•`‰æ
+		//ŠÏ‹q‚ÌÀ•W‚ð‚¸‚ç‚µ‚Ä•¡”•`‰æ
 		add_pos = 1388 * i;
 		switch (audience_state)
 		{

@@ -75,14 +75,14 @@ NextScene ResultScene::Update(const float deltaTime)
 
 	// TODO: Add your game logic here.
 
-    if (rankjudge.SceneChange()) {
+    rankjudge.Update(deltaTime);
+
+    if (rankjudge.GetSceneChangeFlag()) {
         if (DXTK->KeyEvent->pressed.Space ||
             DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
             return NextScene::TitleScene;
         }
     }
-
-    rankjudge.Update(deltaTime);
 
 	return NextScene::Continue;
 }

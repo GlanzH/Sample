@@ -22,16 +22,12 @@ void RankJudgeManager::Initialize() {
 
 	//お金
 	money = 0;
-	digit_state = ONE_DIGIT;
-	one_digit = 0;
-	two_digit = 0;
-	three_digit = 0;
-	four_digit = 0;
 	digit_pos = 0;
 	yen_icon_alpha = 0.0f;
 	money_alpha = 0.0f;
 	money_pos = SimpleMath::Vector2(MONEY_START_POS_X, 280.0f);
 	yen_icon_pos = SimpleMath::Vector2(YEN_ICON_START_POS_X, 280.0f);
+
 	//リスタート
 	restart_hight = -1.0f;
 
@@ -39,7 +35,7 @@ void RankJudgeManager::Initialize() {
 	time_delta  = 0.0f;
 	stop_time	= 0.0f;
 
-	scene_flag = false;
+	scene_change_flag = false;
 
 	co_result = ReleaseRank();        // コルーチンの生成
 	co_result_it = co_result.begin(); // コルーチンの実行開始
@@ -63,6 +59,9 @@ void RankJudgeManager::LoadAseet() {
 	restart = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Result/Restart_Text.png");
 
 	font = DX9::SpriteFont::CreateFromFontFile(DXTK->Device9, L"Scene/Result/ronde_square/Ronde-B_square.otf", L"ロンド B スクエア", 55);
+
+	announce = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"BGM_SE/Result/display.wav");
+	rank_se	 = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"BGM_SE/Result/rank.wav");
 }
 
 void RankJudgeManager::Update(const float deltaTime) {
@@ -174,41 +173,53 @@ cppcoro::generator<int> RankJudgeManager::ReleaseRank()
 {
 	co_yield 0;
 
+	//間
 	while (stop_time < 2.0f) {
 		stop_time += time_delta;
 		co_yield 1;
 	}
 	stop_time = 0.0f;
 
-	//帯の表示、タイトルアニメーション
+	//帯の表示
 	while (shadow_alpha < 200.0f) {
 		shadow_alpha = std::min(shadow_alpha + 330.0f * time_delta, 200.0f);
-		//title_anim_frame = std::min(title_anim_frame + 15.0f * time_delta, 16.0f);
-		co_yield 1;
+		co_yield 2;
 	}
 
+	//タイトルアニメーション
 	title_alpha = COLOR_MAX;
+	bool se_play_flag = false;	//SE再生フラグ
 	while (title_anim_frame < 16.0f) {
 		title_anim_frame = std::min(title_anim_frame + 15.0f * time_delta, 16.0f);
-		co_yield 1;
+		stop_time += time_delta;
+		if (stop_time > 0.6f && !se_play_flag) {
+			announce->Play();
+			se_play_flag = true;
+		}
+
+		co_yield 3;
 	}
 	title_anim_frame = 16.0f;
+	stop_time = 0.0f;
+	se_play_flag = false;
 
+	//間
 	while (stop_time < 1.0f) {
 		stop_time += time_delta;
-		co_yield 1;
+		co_yield 4;
 	}
 	stop_time = 0.0f;
 
 	//スコアゲージ表示
 	while (score_alpha < COLOR_MAX) {
 		score_alpha = std::min(score_alpha + 350.0f * time_delta, COLOR_MAX);
-		co_yield 3;
+		co_yield 5;
 	}
 
+	//間
 	while (stop_time < 1.0f) {
 		stop_time += time_delta;
-		co_yield 1;
+		co_yield 6;
 	}
 	stop_time = 0.0f;
 
@@ -221,7 +232,7 @@ cppcoro::generator<int> RankJudgeManager::ReleaseRank()
 			score_width = score * 0.113f;
 			break;
 		}
-		co_yield 4;
+		co_yield 7;
 	}
 
 	//お金表示
@@ -229,7 +240,7 @@ cppcoro::generator<int> RankJudgeManager::ReleaseRank()
 	money_alpha = COLOR_MAX;
 	while (stop_time < 2.0f) {
 		stop_time += time_delta;
-		co_yield 1;
+		co_yield 8;
 	}
 	stop_time = 0.0f;
 
@@ -257,40 +268,56 @@ cppcoro::generator<int> RankJudgeManager::ReleaseRank()
 		if (money >= 1000) {	//4桁
 			digit_pos = 3;
 		}
-		co_yield 5;
+		co_yield 9;
 	}
 
+	//間
 	while (stop_time < 1.5f) {
 		stop_time += time_delta;
-		co_yield 1;
+		co_yield 10;
 	}
 	stop_time = 0.0f;
 
 	//ランクの表示
 	while (true) {
 		rank_hight += 20.0f * time_delta;
+		stop_time += time_delta;
 		if (rank_hight >= 13.0f) {
 			rank_hight = 0.0f;
 			rank_width++;
 		}
 
+		if (stop_time > 1.0f && !se_play_flag) {
+			rank_se->Play();
+			se_play_flag = true;
+		}
+
 		if (rank_width >= 2) {
 			break;
 		}
-		co_yield 5;
+
+		co_yield 11;
 	}
 	rank_hight = 12;
 	rank_width = 1;
+	stop_time = 0.0f;
+	se_play_flag = false;
 
+	//間
+	while (stop_time < 2.0f) {
+		stop_time += time_delta;
+		co_yield 12;
+	}
+	stop_time = 0.0f;
 
-	scene_flag = true;
+	scene_change_flag = true;
 	//リスタート
 	while (true) {
 		restart_hight += 15.0f * time_delta;
 		if (restart_hight > 27.0f) {
 			restart_hight = 0.0f;
 		}
-		co_yield 6;
+		co_yield 13;
 	}
 
 	co_return;
