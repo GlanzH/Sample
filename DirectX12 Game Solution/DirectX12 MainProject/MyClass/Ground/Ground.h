@@ -31,9 +31,9 @@ private:
 
 	DX9::SKINNEDMODEL change_set;
 
-	DX9::SKINNEDMODEL town;
-	DX9::SKINNEDMODEL forest;
-	DX9::SKINNEDMODEL ruins;
+	DX9::MODEL town;
+	DX9::MODEL forest;
+	DX9::MODEL ruins;
 
 	enum class Forest {
 		START,

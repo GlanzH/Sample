@@ -303,6 +303,14 @@ NextScene MainScene::Update(const float deltaTime)
 
 	point.SetPosition(Vector3(pos.x, 30, pos.z), 0);
 
+	TextureLight::SCorner corner;
+	corner.BL = Vector3(-20 + player->GetModel()->GetPosition().x, 0, 60);
+	corner.UL = Vector3(-10, 60, 60);
+	corner.UR = Vector3(10, 60, 60);
+	corner.BR = Vector3(20 + player->GetModel()->GetPosition().x, 0, 60);
+	texLight.SetPos(corner);
+	texLight.Update();
+
 	return NextScene::Continue;
 }
 
@@ -404,6 +412,7 @@ void MainScene::Render()
 
 	DXTK->Direct3D9->BeginScene();
 	ChangeLightColor();
+	texLight.Render();
 	//3D•`‰æ
 	camera.Render();
 	ground.Render();
@@ -434,7 +443,6 @@ void MainScene::Render()
 
 	DXTK->ResetCommand();
 	DXTK->ClearRenderTarget(DirectX::Colors::CornflowerBlue);
-	texLight.Render();
 
 	const auto heapes = descriptorHeap->Heap();
 	DXTK->CommandList->SetDescriptorHeaps(1, &heapes);

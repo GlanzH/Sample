@@ -49,7 +49,7 @@ void WaveProcess::LoadAssets() {
 	wave_anim[10] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage4/stage4_wave2_anim.png");
 	wave_anim[11] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage4/stage4_wave3_anim.png");
 
-	arrow = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/RightArrow.png");
+	//arrow = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/RightArrow.png");
 
 	black = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/kuro.png");
 
@@ -172,10 +172,10 @@ void WaveProcess::Render() {
 		RectWH(WAVE_WIDTH * (int)wave_anim_x, WAVE_HIGHT * (int)wave_anim_y, WAVE_WIDTH, WAVE_HIGHT),
 		DX9::Colors::RGBA(255, 255, 255, (int)anim_alpha)
 	);
-	DX9::SpriteBatch->DrawSimple(arrow.Get(), SimpleMath::Vector3(1100.0f, 360.00f, 0.0f),
-		RectWH(WAVE_WIDTH * (int)wave_anim_x, WAVE_HIGHT * (int)wave_anim_y, WAVE_WIDTH, WAVE_HIGHT),
-		DX9::Colors::RGBA(255, 255, 255, (int)anim_alpha)
-	);
+	//DX9::SpriteBatch->DrawSimple(arrow.Get(), SimpleMath::Vector3(1100.0f, 360.00f, 0.0f),
+	//	RectWH(WAVE_WIDTH * (int)wave_anim_x, WAVE_HIGHT * (int)wave_anim_y, WAVE_WIDTH, WAVE_HIGHT),
+	//	DX9::Colors::RGBA(255, 255, 255, (int)anim_alpha)
+	//);
 }
 
 void WaveProcess::WaveAnimation(const float deltaTime) {
