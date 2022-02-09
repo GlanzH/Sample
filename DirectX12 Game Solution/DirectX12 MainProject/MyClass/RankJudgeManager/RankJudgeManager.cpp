@@ -200,8 +200,6 @@ cppcoro::generator<int> RankJudgeManager::ReleaseRank()
 	}
 	stop_time = 0.0f;
 
-
-	//score_alpha = COLOR_MAX;
 	//スコアゲージ表示
 	while (score_alpha < COLOR_MAX) {
 		score_alpha = std::min(score_alpha + 350.0f * time_delta, COLOR_MAX);

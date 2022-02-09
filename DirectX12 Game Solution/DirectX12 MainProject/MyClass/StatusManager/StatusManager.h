@@ -32,7 +32,6 @@ public:
 
 	//スコア
 	void SetAddScore(float score_size);	//スコアの値を入力
-	int GetCoinNum() { return coin_num; }//コインの取得数
 	float GetScoreGauge() { return score * SCORE_GAUGE_DIVIDE; }	//ゲージ描画時呼び出し
 	float GetScore() { return now_score; }	//現在のスコア
 
@@ -47,8 +46,9 @@ public:
 	bool GetWaveFlag() { return wave_change_flag; }	//ウェーブ切り替えフラグ
 
 	//コイン
+	void ResetCoinFlag() { coin_get_flag = false; }	//コイン取得フラグリセット
+	int GetCoinNum() { return coin_num; }//コインの取得数
 	bool GetCoinFlag() { return coin_get_flag; }//コイン取得フラグ
-	void ResetCoinFlag() { coin_get_flag = false; }
 
 private:
 	void ComboTime(const float deltaTime);	//コンボ時間計る
