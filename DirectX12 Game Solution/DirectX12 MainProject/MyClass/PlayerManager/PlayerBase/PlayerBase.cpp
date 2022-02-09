@@ -82,7 +82,7 @@ void PlayerBase::OnDeviceLost() {
 bool PlayerBase::Initialize()
 {
 	//プレイヤーのスピード
-	player_speed_ = 30.0f;//40.0f;
+	player_speed_ = 55.0f;
 
 	//ジャンプしてるかのフラグ
 	jump_flag_ = false;
@@ -330,67 +330,6 @@ void PlayerBase::Render()
 {
 	//プレイヤーの描画
 	model->Draw();
-	//collision->Draw();
-	//if (attack_flag) {
-	//sword_collision->Draw();
-	//}
-	//right_collision->Draw();
-	//left_collision->Draw();
-}
-
-void PlayerBase::OnCollisionEnter(std::string tag) {
-	//敵に当たったときの処理
-	if (!invincible_flag) {
-		//無敵
-		invincible_flag = true;
-		
-		//ノックバック
-		knock_back_flag = true;
-
-
-
-		if (tag == "SW")
-			reduce_num = body_reduce_num;
-
-		if (tag == "SH")
-			reduce_num = body_reduce_num;
-
-		if (tag == "MB")
-			reduce_num = mb_reduce_num;
-
-		if (tag == "AR")
-			reduce_num = body_reduce_num;
-
-
-		Knock_Back();
-
-		StatusManager::Instance().SetAddScore(reduce_num);
-	}
-}
-
-void PlayerBase::OnWeaponCollisionEnter(std::string tag) {
-
-	//敵に当たったときの処理
-	if (!invincible_flag) {
-
-		//ノックバック
-		knock_back_flag = true;
-		invincible_flag = true;
-
-		if (tag == "SW")
-			reduce_num = weapon_reduce_num;
-
-		if (tag == "SH")
-			reduce_num = weapon_reduce_num;
-
-		if (tag == "MB")
-			reduce_num = mb_weapon_reduce_num;
-
-		Knock_Back();
-
-
-		StatusManager::Instance().SetAddScore(reduce_num);
-	}
 }
 
 void PlayerBase::OnLeftCollisionEnter(std::string tag) {//左
@@ -537,6 +476,7 @@ void PlayerBase::Knock_Back() {
 		break;
 	case Damage_Mode::KNOCK_BACK:
 		knock_back_start += time_other;
+		
 		SetAnimation(model, DAMAGE1);
 		
 
@@ -631,14 +571,14 @@ void PlayerBase::Speed_Step(const float deltaTime) {
 
 	if (StatusManager::Instance().GetCoinFlag()) {
 		if (StatusManager::Instance().GetCoin() != 0 && StatusManager::Instance().GetCoin() % 7 == 0) {
-			DX12Effect.PlayOneShot("speed_up", player_pos);
+			DX12Effect.PlayOneShot("speed_up", SimpleMath::Vector3(player_pos.x, player_pos.y + 5.0f, player_pos.z));
 			player_speed_ += 2.0f;
 			StatusManager::Instance().ResetCoinFlag();
 		}
 	}
 	
-	if (player_speed_ >= 50.0f)
-		player_speed_ = 50.0f;
+	if (player_speed_ >= 55.0f)
+		player_speed_ = 55.0f;
 }
 
 
@@ -938,13 +878,6 @@ void PlayerBase::Avoidance(const float deltaTime) {
 		
 		model->Move(0.0f, 0.0, avoidance_move * deltaTime);
 		SetAnimation(model, ROLL);
-
-		//減速(何かに使うかも)
-		//avoidance_move += 70 * deltaTime;
-		//if (avoidance_move >= 0.0f) {
-		//	avoidance_move = 0;
-		//}
-
 	}
 
 	if (avoidance_start >= avoidance_max) {
@@ -961,15 +894,4 @@ bool PlayerBase::IsAttack() {
 }
 
 void PlayerBase::Debug() {
-	DX9::SpriteBatch->DrawString(font.Get(),
-		SimpleMath::Vector2(1100.0f, 40.0f),
-		DX9::Colors::White,
-		L"%f", player_speed_
-	);
-
-	DX9::SpriteBatch->DrawString(font.Get(),
-		SimpleMath::Vector2(1100.0f, 60.0f),
-		DX9::Colors::White,
-		L"%d", StatusManager::Instance().GetCoin()
-	);
 }
