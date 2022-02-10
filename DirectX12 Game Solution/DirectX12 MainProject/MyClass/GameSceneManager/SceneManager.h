@@ -26,6 +26,10 @@ public:
 	}
 
 private:
+	//エピローグテキスト
+	DX9::SPRITE epilogue_text;	//エピローグテキスト
+	float epi_text_alpha;	//エピローグテキストアルファ値
+
 	//カーテン
 	DX9::SPRITE curtain;
 	SimpleMath::Vector3 curtain_pos;
