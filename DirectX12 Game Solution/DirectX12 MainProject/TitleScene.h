@@ -66,6 +66,11 @@ private:
 	XAudio::SOUNDEFFECT buzzer;	//ブザー音
 	XAudio::SOUNDEFFECT start_se;	//ゲームスタート音
 
+	//PV
+	DX9::MEDIARENDERER pv;
+	bool pv_play_flag;
+	float pv_play_waittime;
+
 	// コルーチンのプロトタイプ宣言
 	cppcoro::generator<int> Opening();	//オープニング演出
 	cppcoro::generator<int>                  co_opening;
