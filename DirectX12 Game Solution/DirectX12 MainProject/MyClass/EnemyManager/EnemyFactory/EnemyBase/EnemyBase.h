@@ -45,6 +45,11 @@ public:
 	virtual void Damage();
 	virtual bool LifeDeathDecision() { return LIVE; }
 
+	void IsCollision();
+	void OffCollision();
+	bool hit_test();
+	bool Onhit_test();
+
 	DX9::SKINNEDMODEL& GetAnimModel() { return anim_model; }
 	DX9::MODEL& GetModel() { return model; }
 	Collision GetBox() { return col; }

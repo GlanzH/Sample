@@ -79,20 +79,3 @@ LPCWSTR EnemyFactory::SetModel(string tag)
 	}
 	return model_name;
 }
-//
-//int EnemyFactory::SetHP(string tag)
-//{
-//	int hps[] = 
-//	{ 
-//		enemy_hp,
-//		enemy_hp,
-//		rand_hp,
-//		arrow_hp
-//	};
-//
-//	for (int i = 0; i < enemy_tag.size(); ++i)
-//	{
-//		if (tag == enemy_tag[i]) { hp = hps[i]; }
-//	}
-//	return hp;
-//}

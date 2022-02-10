@@ -189,9 +189,30 @@ void EnemyBase::Damage() {
 	}
 }
 
+void EnemyBase::IsCollision()
+{
+	hit_test();
+}
+
+void EnemyBase::OffCollision()
+{
+	Onhit_test();
+}
+
+bool EnemyBase::hit_test()
+{
+	return false;
+}
+
+bool EnemyBase::Onhit_test()
+{
+	return true;
+}
+
 void EnemyBase::IsDamage() {
 	if (damage_flag) {
 		if (damage_frame < max_damage) {
+
 			damage_frame += delta;
 		}
 		else {

@@ -8,7 +8,7 @@ void StatusManager::Initialize() {
 	combo = 0;
 	combo_time = 0.0f;
 	combo_time_num = 0.0f;
-	combo_flag	= false;
+	combo_flag = false;
 	combo_miss_flag = false;
 	combo_time_flag = true;
 
@@ -148,7 +148,7 @@ void StatusManager::ComboScore() {
 		}
 		break;
 	}
-	
+
 	return;
 }
 
@@ -186,9 +186,9 @@ void StatusManager::WaveTimeLimit(const float deltaTime) {
 void StatusManager::ResetWaveTime() {
 	//ウェーブの時間をリセットしてスコアを増減させる
 	//if (!wave_change_flag) {
-		float LostEnemy = enemy_num * -30.0f;
-		SetAddScore(LostEnemy);
-		wave_time = 0.0f;
-		//wave_change_flag = true;
-	//}
+	float LostEnemy = enemy_num * -30.0f;
+	SetAddScore(LostEnemy);
+	wave_time = 0.0f;
+	//wave_change_flag = true;
+//}
 }

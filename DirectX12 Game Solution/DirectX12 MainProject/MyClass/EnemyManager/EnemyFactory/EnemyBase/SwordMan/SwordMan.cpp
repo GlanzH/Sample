@@ -209,12 +209,3 @@ bool SwordMan::LifeDeathDecision() {
 
 	return LIVE;
 }
-//col.weapon = col.box;
-
-	////ƒRƒŠƒWƒ‡ƒ“ƒ‚ƒfƒ‹‚Ìì¬
-	//sword_col = DX9::Model::CreateBox(
-	//	DXTK->Device9,
-	//	col.weapon.Extents.x * 3,
-	//	col.weapon.Extents.y * 20,
-	//	col.weapon.Extents.z * 5
-	//);

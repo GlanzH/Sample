@@ -3,26 +3,23 @@
 
 void Ground::LoadAsset() {
 
-	model = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_notanim\\stage.X");
-	
-	ruins =  DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_notanim\\bg_remains_notanim.X");
-	forest = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_notanim\\bg_forest_notanim.X");
-	town = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_notanim\\bg_town_notanim.X");
+	ruins =  DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_notanim\\bg_remains.X");
+	forest = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_notanim\\bg_forest.X");
+	town = DX9::Model::CreateFromFile(DXTK->Device9, L"Model\\Theater\\bg_notanim\\bg_town.X");
 	
 	forest->SetPosition(0.0f, -25.0f, 20.0f);
 	ruins->SetPosition(0, -25, 7.0f);
 	town->SetPosition(0, -25, 7.0f);
-	model->SetPosition(0.0f, -25.0f, 0.0f);
 	pos = SimpleMath::Vector3::Zero;
 }
 int Ground::Update(const float deltaTime) {
 	
-	auto a = model->GetPosition();
+
 	return 0;
 }
 
 void Ground::Render() {
-	model->Draw();
+	
 }
 //MODELŒ^
 DX9::MODEL& Ground::GetModel() 
