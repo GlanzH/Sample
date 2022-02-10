@@ -114,10 +114,10 @@ void EnemyManager::Iterator() {
 					if ((*itr)->GetTemporaryDeathFlag()) {
 						if (!kill->IsInUse())
 							kill->Play();
-
-						death_flag = true;
-						dead_enemy_count++;
 					}
+
+					death_flag = true;
+					dead_enemy_count++;
 				}
 
 				if (StatusManager::Instance().GetTime() == 0.0f) {
