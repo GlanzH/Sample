@@ -106,6 +106,8 @@ private:
 
 	bool Change_flag;
 
+	bool mugic_loop_flag;
+
 	//キャラライト
 	float  lightColor_x, lightColor_y, lightColor_z;
 	//背景ライト座標

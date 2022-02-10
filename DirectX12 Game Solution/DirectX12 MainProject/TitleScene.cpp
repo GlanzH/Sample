@@ -65,7 +65,7 @@ void TitleScene::LoadAssets()
 
     prologue_text = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Dialogue/dialogue_01_01.png");
 
-    pv = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"Scene/Title/enja.wmv");
+    pv = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"Scene/Title/play_demo_1.wmv");
 }
 
 // Releasing resources required for termination.
