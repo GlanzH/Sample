@@ -111,35 +111,39 @@ NextScene TitleScene::Update(const float deltaTime)
         DXTK->GamePadEvent[0].a == GamePad::ButtonStateTracker::PRESSED
         )
     {
-        if (!opening_start_flag)
+        if (!opening_start_flag && !pv_play_flag)
         {
             co_opening = Opening();        // コルーチンの生成
             co_opening_it = co_opening.begin(); // コルーチンの実行開始
-            pv_play_flag = false;
             opening_start_flag = true;
+            start_se->Play();
         }
-        pv->Stop();
-        start_se->Play();
-
-    }
-
-    if (pv->isComplete() && pv_play_flag) {
         pv_play_flag = false;
         pv_play_waittime = 0.0f;
+        pv->Stop();
+
     }
 
+    if (!opening_start_flag) {
+        pv_play_waittime += deltaTime;
 
-    pv_play_waittime += deltaTime;
-    if (pv_play_waittime > 3.0f && !pv_play_flag) {
-        pv_play_flag = true;
-        if (!pv->isComplete()) {
-            pv->Play();
+        //PV再生が終わったらフラグを降ろす
+        if (pv->isComplete() && pv_play_flag) {
+            pv_play_flag = false;
+            pv_play_waittime = 0.0f;
         }
-        else {
-            pv->Replay();
+
+        //一定時間放置したらPV再生
+        if (pv_play_waittime > 3.0f && !pv_play_flag) {
+            pv_play_flag = true;
+            if (!pv->isComplete()) {
+                pv->Play();
+            }
+            else {
+                pv->Replay();
+            }
         }
     }
-
 
     if (co_opening_it != co_opening.end()) {
         co_opening_it++;
