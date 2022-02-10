@@ -27,7 +27,6 @@ public:
 
 	EnemyBase* CreateProduct(string tag,SimpleMath::Vector3 position);
 	LPCWSTR SetModel(string tag);
-	int SetHP(string tag);
 
 
 private:
