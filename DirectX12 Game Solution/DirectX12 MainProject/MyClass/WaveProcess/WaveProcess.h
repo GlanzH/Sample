@@ -72,7 +72,7 @@ private:
 	cppcoro::detail::generator_iterator<int> co_anim_it;
 
 	//ゲームクリア
-	bool game_clear_flag;
+	bool game_clear_flag;	//リザルト移行演出起動フラグ
 
 	float stop_frame = 0.0f;
 	float max_stop   = 4.0f;
