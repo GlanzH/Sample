@@ -98,7 +98,7 @@ bool PlayerBase::Initialize()
 	//UŒ‚‚ÌŠÔ
 	attack_flag = false;
 	attack_time = 0.0f;
-	attack_zeit_max = 0.1f;
+	attack_zeit_max = 0.0165f;
 
 	//–³“GŠÔ
 	invincible_flag = false;
