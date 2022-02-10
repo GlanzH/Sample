@@ -99,13 +99,12 @@ private:
 	};
 	int nusic_mode = INTRO;
 	int light_mode = IN_ZOOM;
-
+	int music_count;
 	bool music_flag = false;
 	bool se_flag = false;
 	bool end_a_play_flag = false;
 
 	bool Change_flag;
-
 
 	//ƒLƒƒƒ‰ƒ‰ƒCƒg
 	float  lightColor_x, lightColor_y, lightColor_z;

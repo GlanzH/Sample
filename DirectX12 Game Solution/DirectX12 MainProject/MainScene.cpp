@@ -138,7 +138,7 @@ void MainScene::LoadAssets()
 	stage2 = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM_SE/BGM/2stage.mp3");
 	stage3 = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM_SE/BGM/3stage.mp3");
 	stage4 = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM_SE/BGM/4stage.mp3");
-
+	music_count = 0;
 	//music_flag = false;
 	//ChangeBGM(INTRO);
 
@@ -336,6 +336,37 @@ void MainScene::ChangeLightColor()
 }
 
 void MainScene::ChangeBGM() {
+	/*if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 3) {
+		if (music_count == 0) {
+			loop = stage1->CreateInstance();
+			music_count++;
+		}
+		loop->Play(true);
+	}
+
+	if (StatusManager::Instance().GetWave() >= 4 && StatusManager::Instance().GetWave() <= 6) {
+		if (music_count == 1) {
+			loop = stage2->CreateInstance();
+			music_count++;
+		}
+		loop->Play(true);
+	}
+
+	if (StatusManager::Instance().GetWave() >= 7 && StatusManager::Instance().GetWave() <= 9) {
+		if (music_count == 2) {
+			loop = stage3->CreateInstance();
+			music_count++;
+		}
+		loop->Play(true);
+	}
+
+	if (StatusManager::Instance().GetWave() >= 10 && StatusManager::Instance().GetWave() <= 12) {
+		if (music_count == 3) {
+			loop = stage4->CreateInstance();
+			music_count++;
+		}
+		loop->Play(true);
+	}*/
 	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 3){
 		stage1->Play();
 	}
