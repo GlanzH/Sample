@@ -134,7 +134,7 @@ void GameBase::Initialize(HWND window, int width, int height)
     DXTK = m_dxtk;
 
     // TODO: Set the first scene.
-    m_scene = SceneFactory::CreateScene(NextScene::TitleScene);
+    m_scene = SceneFactory::CreateScene(NextScene::MainScene);
     m_scene->Start();
 }
 

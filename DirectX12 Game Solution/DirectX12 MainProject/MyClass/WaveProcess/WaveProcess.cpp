@@ -30,7 +30,6 @@ bool WaveProcess::Initialize() {
 	anim_end_flag = false;
 	co_start_flag = false;
 
-	game_clear_flag = false;
 
 	return true;
 }
@@ -49,8 +48,6 @@ void WaveProcess::LoadAssets() {
 	wave_anim[10] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage4/stage4_wave2_anim.png");
 	wave_anim[11] = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Wave/Stage4/stage4_wave3_anim.png");
 
-	//arrow = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/RightArrow.png");
-
 	black = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/kuro.png");
 
 	time = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/Time/TIME.png");
@@ -60,10 +57,10 @@ void WaveProcess::LoadAssets() {
 int WaveProcess::Update(EnemyManager* enemy, const float deltaTime) {
 	StatusManager::Instance().WaveTimeLimit(deltaTime);
 
-	wave_num = StatusManager::Instance().GetWave();
 	now_time = StatusManager::Instance().GetTime();
 	time_one_digit = (now_time % 10) * TIME_NUM_WIDTH;
 	time_two_digit = (now_time / 10) * TIME_NUM_WIDTH;
+	wave_num = StatusManager::Instance().GetWave();
 	//if (StatusManager::Instance().GetWave() == 0) {
 	//	max_stop = 0.01f;
 	//}
@@ -83,10 +80,6 @@ int WaveProcess::Update(EnemyManager* enemy, const float deltaTime) {
 			co_start_flag = false;
 			anim_end_flag = false;
 		}
-	}
-
-	if (wave_num >= StatusManager::Instance().GetMaxWave() && now_time == 0) {
-		game_clear_flag = true;
 	}
 
 	if (enemy->GetWaveEnemy() == enemy->GetDeathEnemyCount())
@@ -161,21 +154,17 @@ void WaveProcess::Render() {
 
 	DX9::SpriteBatch->DrawSimple(
 		black.Get(),
-		SimpleMath::Vector3(0.0f, 0.0f, -5.0f),
+		SimpleMath::Vector3::Zero,
 		Rect(0, 0, 1280, 720),
 		DX9::Colors::RGBA(255, 255, 255, black_alpha)
 	);
 
 	DX9::SpriteBatch->DrawSimple(
 		wave_anim[wave_num].Get(),
-		SimpleMath::Vector3(450.0f, 330.0f, -10.0f),
+		SimpleMath::Vector3(450.0f, 330.0f, 0.0f),
 		RectWH(WAVE_WIDTH * (int)wave_anim_x, WAVE_HIGHT * (int)wave_anim_y, WAVE_WIDTH, WAVE_HIGHT),
 		DX9::Colors::RGBA(255, 255, 255, (int)anim_alpha)
 	);
-	//DX9::SpriteBatch->DrawSimple(arrow.Get(), SimpleMath::Vector3(1100.0f, 360.00f, 0.0f),
-	//	RectWH(WAVE_WIDTH * (int)wave_anim_x, WAVE_HIGHT * (int)wave_anim_y, WAVE_WIDTH, WAVE_HIGHT),
-	//	DX9::Colors::RGBA(255, 255, 255, (int)anim_alpha)
-	//);
 }
 
 void WaveProcess::WaveAnimation(const float deltaTime) {
@@ -206,6 +195,7 @@ cppcoro::generator<int> WaveProcess::WaveChangeAinm() {
 	//フェードイン
 	while (true)
 	{
+		wait_time += time_delta;
 		black_alpha = std::min(black_alpha + 300.0f * time_delta, 200.0f);
 		if (black_alpha >= 200.0f) {
 			break;
