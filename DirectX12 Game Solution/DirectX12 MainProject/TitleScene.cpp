@@ -26,6 +26,9 @@ void TitleScene::Initialize()
 
     zawa_volume = 0;
 
+    pv_play_flag = false;
+    pv_play_waittime = 0.0f;
+
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -52,7 +55,7 @@ void TitleScene::LoadAssets()
 
     // グラフィックリソースの初期化処理
     curtain    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Curtain.png");
-    title_logo = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/TitleLogo.png");
+    title_logo = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Title/TitleLogo.png");
 
     zawa = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM_SE/Title/before_the_performance.mp3");
     zawa->Play();
@@ -62,6 +65,7 @@ void TitleScene::LoadAssets()
 
     prologue_text = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Dialogue/dialogue_01_01.png");
 
+    pv = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"Scene/Title/enja.wmv");
 }
 
 // Releasing resources required for termination.
@@ -102,21 +106,41 @@ NextScene TitleScene::Update(const float deltaTime)
     if (zawa->isComplete())
         zawa->Replay();
 
-    if (!opening_start_flag)
+    if (DXTK->KeyEvent->pressed.B ||
+        DXTK->GamePadEvent[0].b == GamePad::ButtonStateTracker::PRESSED ||
+        DXTK->GamePadEvent[0].a == GamePad::ButtonStateTracker::PRESSED
+        )
     {
-        if (DXTK->KeyEvent->pressed.B ||
-            DXTK->GamePadEvent[0].b == GamePad::ButtonStateTracker::PRESSED ||
-            DXTK->GamePadEvent[0].a == GamePad::ButtonStateTracker::PRESSED
-            )
+        if (!opening_start_flag)
         {
             co_opening = Opening();        // コルーチンの生成
             co_opening_it = co_opening.begin(); // コルーチンの実行開始
+            pv_play_flag = false;
             opening_start_flag = true;
-            start_se->Play();
+        }
+        pv->Stop();
+        start_se->Play();
+
+    }
+
+    if (pv->isComplete() && pv_play_flag) {
+        pv_play_flag = false;
+        pv_play_waittime = 0.0f;
+    }
+
+
+    pv_play_waittime += deltaTime;
+    if (pv_play_waittime > 3.0f && !pv_play_flag) {
+        pv_play_flag = true;
+        if (!pv->isComplete()) {
+            pv->Play();
+        }
+        else {
+            pv->Replay();
         }
     }
-   
-        
+
+
     if (co_opening_it != co_opening.end()) {
         co_opening_it++;
     }
@@ -160,6 +184,12 @@ void TitleScene::Render()
         DX9::Colors::RGBA(255, 255, 255, pro_text_alpha)
     );
 
+    if (pv_play_flag) {
+        DX9::SpriteBatch->DrawSimple(
+            pv->Get(),
+            SimpleMath::Vector3(0.0f, 0.0f, -20.0f)
+        );
+    }
 
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();
