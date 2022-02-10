@@ -44,6 +44,7 @@ private:
 Å@Å@*/
 	enum EnemyType { 
 		SWORD_MAN,
+		SWORD_MANEX,
 		SHIELDER,
 		ARROW,
 		MODEL_MAX

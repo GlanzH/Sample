@@ -78,7 +78,7 @@ void SwordMan::Action() {
 
 	case (int)ActionNum::ATTACK:
 		Attack();
-
+		
 		if (attack_frame < max_attack) {
 			if (enemy_posture == "U")
 				SetAnimation(anim_model, (int)Motion::ATTACK_UP, (int)Motion::MAX_MOTION);
