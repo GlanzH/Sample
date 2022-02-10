@@ -277,13 +277,6 @@ cppcoro::generator<int> WaveProcess::WaveChangeAinm() {
 		co_yield 4;
 	}
 
-	//‘Ò‹@
-	while (wait_time < 2.0f) {
-		wait_time += time_delta;
-		co_yield 3;
-	}
-	wait_time = 0.0f;
-
 	anim_end_flag = true;
 	co_return;
 }
