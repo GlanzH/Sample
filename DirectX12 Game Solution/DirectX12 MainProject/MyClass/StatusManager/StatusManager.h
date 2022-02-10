@@ -24,6 +24,8 @@ public:
 	float GetHitComboTime() { return combo_time; }	//撃破コンボ継続時間
 	bool GetComboFlag() { return combo_flag; }	//コンボフラグ
 
+	void StopComboTime() { combo_time_flag = false; }    //コンボ継続時間ストップ
+	void StartComboTime() { combo_time_flag = true; }    //コンボ継続時間スタート
 	//アニメーション
 	void ResetaAnimeFlag() { anime_flag = false; }	//アニメフラグのリセット
 	bool GetAnimeFlag() { return anime_flag; }	//アニメーション再生フラグ
@@ -44,9 +46,7 @@ public:
 	int GetMaxWave() { return MAX_WAVE; }	//ウェーブの最大数
 	float GetTime() { return wave_time; } //時間の取得
 	float GetOnceExec() { return once_exec_time; }
-	bool GetWaveFlag() { return wave_change_flag; }	//ウェーブ切り替えフラグ
-
-	//コイン
+	bool GetWaveFlag() { return wave_change_flag; }	//ウェーブ切り替えフラグ	//コイン
 	bool GetCoinFlag() { return coin_get_flag; }//コイン取得フラグ
 	void ResetCoinFlag() { coin_get_flag = false; }
 	int GetCoin() { return coin_num; }

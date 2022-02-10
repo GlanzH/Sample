@@ -339,10 +339,11 @@ void PlayerBase::OnLeftCollisionEnter(std::string tag) {//左
 		//ノックバック
 		knock_back_flag = true;
 		direction_knock_back = Direction_Knock_Back::LEFT_BACK;
-		//DX12Effect.PlayOneShot("miss_coin", player_pos);
 
 		//ダメージ受けた時
 		damage_flag = true;
+		StatusManager::Instance().StartComboTime();
+
 		invincible_flag = true;
 		if (damage_se_count < 1) {
 			damage_se->Play();
@@ -376,11 +377,12 @@ void PlayerBase::OnRightCollisionEnter(std::string tag) {//右
 		knock_back_flag = true;
 		direction_knock_back = Direction_Knock_Back::RIGHT_BACK;
 		invincible_flag = true;
-
-		//DX12Effect.PlayOneShot("miss_coin", player_pos);
-
 		//ダメージ受けた時
 		damage_flag = true;
+
+
+		StatusManager::Instance().StartComboTime();
+
 		if (damage_se_count < 1) {
 			damage_se->Play();
 			damage_se_count++;
@@ -764,6 +766,11 @@ void PlayerBase::Sword_Delivery(const float deltaTime, bool temp) {
 
 	if (s_del_flag) {
 		s_del_start += deltaTime;
+		
+		StatusManager::Instance().StopComboTime();
+		if (damage_flag)
+			StatusManager::Instance().StartComboTime();
+
 
 		if (direction_state_mode == Direction_State::RIGHT) {
 			SetAnimation(model, FINISH);			
@@ -774,13 +781,14 @@ void PlayerBase::Sword_Delivery(const float deltaTime, bool temp) {
 		}
 
 		
+		
 
 		if (!damage_flag) {
 			DX12Effect.PlayOneShot("clincher", Vector3(player_pos.x, player_pos.y + 6.0f, player_pos.z));
 			if (s_del_start >= elimination_end) {
 				elimination_flag = true;
 
-				if (s_del_count < 1) {
+				if (s_del_count < 1 && !damage_flag) {
 					stop_se->Play();
 					s_del_count++;
 				}
