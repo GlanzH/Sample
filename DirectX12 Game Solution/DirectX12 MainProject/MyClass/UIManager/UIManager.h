@@ -23,8 +23,6 @@ public:
 	}
 
 	void ResetAnimeFrame();	//アニメーション再生をリセット
-	void SetAddScore(int add_size);
-	void PlayUIEffect();
 	void PlayCracker();
 	void SetUICamera(DX9::CAMERA* camera) { ui_camaera = camera; }
 	void SetAudienceState(int state);
@@ -32,17 +30,14 @@ private:
 	void Animation(const float deltaTime);
 
 
-	//スコア
-	DX9::SPRITE score_good_empty;
-	DX9::SPRITE score_good_max;
-	DX9::SPRITE score_bad_empty;
-	DX9::SPRITE score_bad_max;
-	EFFECT good_effect;
-	EFFECT bad_effect;
+	//エフェクトハンドル
 	EFFECTHANDLE effect_handle;
 
+	//スコア
+	DX9::SPRITE score_gauge_empty;
+	DX9::SPRITE score_gauge_max;
+
 	int score_width;
-	bool icon_play_flag;
 
 	const int SCORE_MAX_HIGHT = 96;
 	const int SCORE_MIN_WIDTH = 81;
@@ -72,7 +67,7 @@ private:
 
 	const int COMBO_BASE_WIDTH = 331;
 	const int COMBO_BASE_HIGHT = 232;
-	const int COMBO_GAUGE_HIGHT = 5;
+	const int COMBO_GAUGE_HIGHT = 10;
 	const int COMBO_NUM_HIGHT = 60;
 	const int COMBO_NUM_WIDTH = 48;
 

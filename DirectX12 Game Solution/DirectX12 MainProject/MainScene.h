@@ -74,7 +74,6 @@ private:
 	C_Camera         camera;
 	PlayerBase*      player;
 	EnemyManager*    enemy;
-	//AudienceManager* audience;
 	DialogueManager  dialogue;
 	CoinManager      coin;
 	Observer*        observer;
