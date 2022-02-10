@@ -22,9 +22,9 @@ EnemyFactory::EnemyFactory()
 	enemy_tag.push_back("AR");
 
 	///@“G‚Ìƒ‚ƒfƒ‹@///
-     enemy_model[SWORD_MAN]  = L"Model\\Enemy\\SwordMan\\armor_red_0208.X";
+     enemy_model[SWORD_MAN]  = L"Model\\Enemy\\SwordMan\\armor_red2_0210b.X";
 	 enemy_model[SHIELDER]   = L"Model\\Enemy\\Shielder\\armor_blue_0125.X";
-	 enemy_model[SWORD_MANEX] = L"Model\\Enemy\\SwordMan\\armor_red2_0210.X";
+	 enemy_model[SWORD_MANEX] = L"Model\\Enemy\\SwordManEX\\armor_red2_0210b.X";
 	 enemy_model[ARROW]      = L"Model\\Enemy\\Arrow\\arrow_big.X";
 
 }
