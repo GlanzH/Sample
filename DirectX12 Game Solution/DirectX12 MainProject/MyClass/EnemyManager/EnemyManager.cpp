@@ -230,7 +230,7 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	if (front && base->GetTag() != "SH") {
 		if (base->GetPostune() == "U") {
 			if (attack_num == LOWER) {
-				base->IsCollision();
+				base->Damage();
 				base->HitEffect();
 			}
 
@@ -244,19 +244,19 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 			}
 
 			if (attack_num == UPPER) {
-				base->IsCollision();
+				base->Damage();
 				base->HitEffect();
 			}
 		}
 	}
 	else {
 		if (!front) {
-			base->IsCollision();
+			base->Damage();
 			base->HitEffect();
 		}
 		else
 		{
-			base->OffCollision();
+			base->Damage();
 		}
 	}
 }
