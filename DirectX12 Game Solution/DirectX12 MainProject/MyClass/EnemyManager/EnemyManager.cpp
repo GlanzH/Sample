@@ -48,25 +48,25 @@ bool EnemyManager::Initialize(PlayerBase* player_base)
 
 	count = 0;
 
-	dead_enemy_count   = 0;
+	dead_enemy_count = 0;
 	remain_enemy_count = 0;
-	time_stop_count    = 0;
+	time_stop_count = 0;
 
 	appear_frame = 0;
 
-	now_time    = 0.0f;
+	now_time = 0.0f;
 	count_frame = 0.0f;
 
-	add_score  = 0;
+	add_score = 0;
 	attack_num = 0;
-	enemy_num  = 0;
+	enemy_num = 0;
 	push_count = 0;
 
-	enemy_stop_flag    = false;
-	special_move_flag  = false;
-	count_dest_flag    = false;
-	sound_hit_flag     = false;
-	temporary_flag     = false;
+	enemy_stop_flag = false;
+	special_move_flag = false;
+	count_dest_flag = false;
+	sound_hit_flag = false;
+	temporary_flag = false;
 	enemy_destroy_flag = false;
 
 	return true;
@@ -114,10 +114,10 @@ void EnemyManager::Iterator() {
 					if ((*itr)->GetTemporaryDeathFlag()) {
 						if (!kill->IsInUse())
 							kill->Play();
-
-						death_flag = true;
-						dead_enemy_count++;
 					}
+
+					death_flag = true;
+					dead_enemy_count++;
 				}
 
 				if (StatusManager::Instance().GetTime() == 0.0f) {
@@ -209,13 +209,10 @@ void EnemyManager::StartTimeStop() {
 }
 
 void EnemyManager::EndTimeStop() {
-	if (DXTK->KeyEvent->pressed.B ||
-		DXTK->GamePadEvent[0].b == GamePad::ButtonStateTracker::PRESSED ||
-		DXTK->GamePadEvent[0].a == GamePad::ButtonStateTracker::PRESSED
-		)
+	if (DXTK->KeyEvent->pressed.B || DXTK->GamePadEvent[0].b == GamePad::ButtonStateTracker::PRESSED)
 		push_count++;
 
-	if (push_count >= 2 && enemy_stop_flag) {
+	if (push_count > 2 && enemy_stop_flag) {
 		enemy_stop_flag = false;
 	}
 	if (!enemy_stop_flag) {
@@ -233,7 +230,7 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	if (front && base->GetTag() != "SH") {
 		if (base->GetPostune() == "U") {
 			if (attack_num == LOWER) {
-				base->Damage();
+				base->IsCollision();
 				base->HitEffect();
 			}
 
@@ -247,19 +244,19 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 			}
 
 			if (attack_num == UPPER) {
-				base->Damage();
+				base->IsCollision();
 				base->HitEffect();
 			}
 		}
 	}
 	else {
 		if (!front) {
-			base->Damage();
+			base->IsCollision();
 			base->HitEffect();
 		}
 		else
 		{
-			base->Damage();
+			base->OffCollision();
 		}
 	}
 }
