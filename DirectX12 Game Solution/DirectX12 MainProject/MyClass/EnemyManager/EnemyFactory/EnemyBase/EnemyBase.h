@@ -49,6 +49,8 @@ public:
 	void OffCollision();
 	bool hit_test();
 	bool Offhit_test();
+	bool GetDieFlag() { return die_flag; }
+
 
 	DX9::SKINNEDMODEL& GetAnimModel() { return anim_model; }
 	DX9::MODEL& GetModel() { return model; }
