@@ -42,24 +42,21 @@ private:
 private:
 	DX9::SPRITE curtain;	//カーテン
 	DX9::SPRITE title_logo;	//タイトルロゴ
-	DX9::SPRITE shadow;	//影
+	DX9::SPRITE prologue_text;	//プロローグテキスト
 
 
 	SimpleMath::Vector3 curtain_pos;
-	SimpleMath::Vector3 shadow_pos;
-
 
 	float title_logo_alpha;	//タイトルロゴのアルファ値
-	float shadow_alpha;	//影のアルファ値
+	float pro_text_alpha;	//テキストのアルファ値
 	float time_delta;
 	float wait_time;	//間を作るのに使用
-
 	bool opening_start_flag;	//コルーチン生成フラグ
-	bool game_start_flag;	//シーン切り替えフラグ
-	
+	bool game_start_flag;	//シーン切り替えフラグ	
 	
 	const float ALPHA_SPEED = 200.0f;	//アルファ値増減スピード
-	const float CURTAIN_UP_SPEED = 130.0f;	//カーテンの上がるスピード
+	const float CURTAIN_UP_SPEED = 200.0f;	//カーテンの上がるスピード
+
 
 	//BGM
 	DX9::MEDIARENDERER zawa;	//ざわつき音

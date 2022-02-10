@@ -16,16 +16,16 @@ TitleScene::TitleScene()
 void TitleScene::Initialize()
 {
     curtain_pos = SimpleMath::Vector3(0.0f, 0.0f, 1.0f);
-    shadow_pos  = SimpleMath::Vector3(0.0f, 0.0f, 0.0f);
 
     title_logo_alpha = 255.0f;
-    shadow_alpha     = 255.0f;
+    pro_text_alpha = 0.0f;
     wait_time = 0.0f;
 
     opening_start_flag = false;
     game_start_flag    = false;
 
     zawa_volume = 0;
+
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -52,14 +52,16 @@ void TitleScene::LoadAssets()
 
     // グラフィックリソースの初期化処理
     curtain    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Curtain.png");
-    title_logo = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/TitleLogo2.png");
-    shadow     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/vinette_2.png");
+    title_logo = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/TitleLogo.png");
 
     zawa = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM_SE/Title/before_the_performance.mp3");
     zawa->Play();
 
     buzzer   = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"BGM_SE/Title/opening_buzzer.wav");
     start_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"BGM_SE/Title/decision.wav");
+
+    prologue_text = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Dialogue/dialogue_01_01.png");
+
 }
 
 // Releasing resources required for termination.
@@ -102,11 +104,12 @@ NextScene TitleScene::Update(const float deltaTime)
 
     if (!opening_start_flag)
     {
-        if (DXTK->KeyEvent->pressed.Space ||
-            DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED ||
-            DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED)
+        if (DXTK->KeyEvent->pressed.B ||
+            DXTK->GamePadEvent[0].b == GamePad::ButtonStateTracker::PRESSED ||
+            DXTK->GamePadEvent[0].a == GamePad::ButtonStateTracker::PRESSED
+            )
         {
-            co_opening    = Opening();        // コルーチンの生成
+            co_opening = Opening();        // コルーチンの生成
             co_opening_it = co_opening.begin(); // コルーチンの実行開始
             opening_start_flag = true;
             start_se->Play();
@@ -149,13 +152,14 @@ void TitleScene::Render()
         DX9::Colors::RGBA(255, 255, 255, title_logo_alpha)
     );
 
-    DX9::SpriteBatch->DrawSimple(
-        shadow.Get(),
-        shadow_pos,
-        nullptr,
-        DX9::Colors::RGBA(255, 255, 255, shadow_alpha)
-    );
    
+    DX9::SpriteBatch->DrawSimple(
+        prologue_text.Get(),
+        SimpleMath::Vector3(0.0f, 0.0f, 4.0f),
+        nullptr,
+        DX9::Colors::RGBA(255, 255, 255, pro_text_alpha)
+    );
+
 
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();
@@ -184,9 +188,8 @@ cppcoro::generator<int> TitleScene::Opening() {
     co_yield 0;
 
     //タイトルロゴ、影をフェードアウト
-    while (shadow_alpha > 0.0f) {
+    while (title_logo_alpha > 0.0f) {
         title_logo_alpha = std::max(title_logo_alpha - ALPHA_SPEED * time_delta, 0.0f);
-        shadow_alpha = std::max(shadow_alpha - ALPHA_SPEED * time_delta, 0.0f);
         co_yield 1;
     }
 
@@ -199,7 +202,7 @@ cppcoro::generator<int> TitleScene::Opening() {
     
     buzzer->Play();
     //間
-    while (wait_time < 9.0f) {
+    while (wait_time < 5.0f) {
         zawa_volume -= 1000 * time_delta;
         wait_time += time_delta;
         co_yield 3;
@@ -209,14 +212,34 @@ cppcoro::generator<int> TitleScene::Opening() {
 
 
     //カーテンを上げる
-    while (shadow_pos.y > -770.0f) {
+    while (curtain_pos.y > -770.0f) {
         curtain_pos.y -= CURTAIN_UP_SPEED * time_delta;
-        shadow_pos.y -= CURTAIN_UP_SPEED * time_delta;
         co_yield 4;
     }
-    
-    game_start_flag = true;
 
+    //間
+    while (wait_time < 1.0f) {
+        wait_time += time_delta;
+        co_yield 5;
+    }
+    wait_time = 0.0f;
+
+
+    //テキスト表示
+    while (true) {
+
+        if(!game_start_flag)
+            pro_text_alpha = std::min(pro_text_alpha + 100.0f * time_delta, 255.0f);
+
+        if (DXTK->KeyEvent->pressed.B ||
+            DXTK->GamePadEvent[0].b == GamePad::ButtonStateTracker::PRESSED ||
+            DXTK->GamePadEvent[0].a == GamePad::ButtonStateTracker::PRESSED
+            ) {
+            game_start_flag = true;
+        }
+
+        co_yield 6;
+    }
     co_return;
 }
 
