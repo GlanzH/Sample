@@ -209,10 +209,13 @@ void EnemyManager::StartTimeStop() {
 }
 
 void EnemyManager::EndTimeStop() {
-	if (DXTK->KeyEvent->pressed.B || DXTK->GamePadEvent[0].b == GamePad::ButtonStateTracker::PRESSED)
+	if (DXTK->KeyEvent->pressed.B ||
+		DXTK->GamePadEvent[0].b == GamePad::ButtonStateTracker::PRESSED ||
+		DXTK->GamePadEvent[0].a == GamePad::ButtonStateTracker::PRESSED
+		)
 		push_count++;
 
-	if (push_count > 2 && enemy_stop_flag) {
+	if (push_count >= 2 && enemy_stop_flag) {
 		enemy_stop_flag = false;
 	}
 	if (!enemy_stop_flag) {
@@ -230,7 +233,7 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 	if (front && base->GetTag() != "SH") {
 		if (base->GetPostune() == "U") {
 			if (attack_num == LOWER) {
-				base->IsCollision();
+				base->Damage();
 				base->HitEffect();
 			}
 
@@ -244,19 +247,19 @@ void EnemyManager::OnCollisionEnter(EnemyBase* base) {
 			}
 
 			if (attack_num == UPPER) {
-				base->IsCollision();
+				base->Damage();
 				base->HitEffect();
 			}
 		}
 	}
 	else {
 		if (!front) {
-			base->IsCollision();
+			base->Damage();
 			base->HitEffect();
 		}
 		else
 		{
-			base->OffCollision();
+			base->Damage();
 		}
 	}
 }

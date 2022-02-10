@@ -16,14 +16,18 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, CoinM
 	for (auto enemies_roop : enemy->GetEnemy()) {
 		if (player->IsAttack()) {
 			if (player->GetBox().sword_box.Intersects(enemies_roop->GetBox().box)) {
-				if (enemies_roop->GetPostune() == "U" && player->GetAttackTag() == 1 && enemies_roop->FrontFlag()) {
+				if (enemies_roop->GetAttackFlag() && enemies_roop->GetPostune() == "U" &&
+					player->GetAttackTag() == 1 && enemies_roop->FrontFlag()
+					) {
 					//はじかれるフラグをtrueにする関数を呼び出す
 					//trueなら弾かれた時の処理を行う関数は別に作る
 
 					player->GetFripFlag();
 
 				}
-				else if (enemies_roop->GetPostune() == "D" && player->GetAttackTag() == 2 && enemies_roop->FrontFlag()) {
+				else if (enemies_roop->GetAttackFlag() && enemies_roop->GetPostune() == "D" &&
+					player->GetAttackTag() == 2 && enemies_roop->FrontFlag()
+					) {
 					//はじかれるフラグをtrueにする関数を呼び出す
 					//trueなら弾かれた時の処理を行う関数は別に作る
 					player->GetFripFlag();
@@ -48,7 +52,7 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, CoinM
 		}
 
 		//!仮死状態の判定がないとき
-		if (!enemies_roop->GetTemporaryDeathFlag()) {
+		if (!enemies_roop->GetTemporaryDeathFlag() && !enemies_roop->GetDieFlag()) {
 			//if (player->GetBox().box.Intersects(enemies_roop->GetBox().box) && !player->IsInvincibleFlag()) {
 			//	player->OnCollisionEnter(enemies_roop->GetTag());
 			//}

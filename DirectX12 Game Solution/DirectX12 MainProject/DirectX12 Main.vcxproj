@@ -192,9 +192,7 @@
     <ClInclude Include="Base\pch.h" />
     <ClInclude Include="Base\StepTimer.h" />
     <ClInclude Include="DontDestroyOnLoad.h" />
-    <ClInclude Include="EndingScene.h" />
     <ClInclude Include="MainScene.h" />
-    <ClInclude Include="MyClass\AudianceManager\AudianceManager.h" />
     <ClInclude Include="MyClass\Camera\C_Camera.h" />
     <ClInclude Include="MyClass\CoinManager\CoinManager.h" />
     <ClInclude Include="MyClass\CoinManager\Coin\Coin.h" />
@@ -246,14 +244,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="EndingScene.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="MainScene.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="MyClass\AudianceManager\AudianceManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="MyClass\Camera\C_Camera.cpp">

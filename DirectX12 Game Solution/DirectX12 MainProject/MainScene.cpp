@@ -243,7 +243,6 @@ NextScene MainScene::Update(const float deltaTime)
 	if (end_frame < max_end)
 		DX12Effect.Update(deltaTime);
 
-	enemy->EndTimeStop();
 
 	auto pos = player->GetModel()->GetPosition();
 
