@@ -18,8 +18,6 @@ private:
 	void IsDeath();
 	void Freeze();
 	void Rotate();
-
-	DX9::MODEL sword_col;
 	SimpleMath::Vector3 sword_pos;
 
 	const float limit_x = 65.0f;

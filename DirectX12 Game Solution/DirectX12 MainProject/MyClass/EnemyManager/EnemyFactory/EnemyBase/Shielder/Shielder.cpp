@@ -35,8 +35,6 @@ int Shielder::Update(SimpleMath::Vector3 player, bool destroy_flag, const float 
 
 void Shielder::Render() {
 	anim_model->Draw();
-	//collision->Draw();
-	//sword_col->Draw();
 }
 
 void Shielder::Action() {

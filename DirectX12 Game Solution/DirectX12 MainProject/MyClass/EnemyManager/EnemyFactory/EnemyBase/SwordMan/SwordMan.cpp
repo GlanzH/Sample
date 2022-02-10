@@ -135,6 +135,7 @@ void SwordMan::Run() {
 }
 
 void SwordMan::IsRetreat() {
+
 	EnemyBase::IsRetreat();
 
 	if (retreat_flag)
@@ -142,6 +143,7 @@ void SwordMan::IsRetreat() {
 }
 
 void SwordMan::Freeze() {
+
 	if (enemy_hp <= 0 && !die_flag) {
 		is_freeze += delta;
 		SetAnimation(anim_model, (int)Motion::DAMAGE, (int)Motion::MAX_MOTION);

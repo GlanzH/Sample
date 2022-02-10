@@ -23,7 +23,8 @@ public:
 	int GetHitCombo() { return combo; }
 	float GetHitComboTime() { return combo_time; }	//撃破コンボ継続時間
 	bool GetComboFlag() { return combo_flag; }	//コンボフラグ
-
+	int StopComboTime(){};
+	int StartComboTime(){};
 	//アニメーション
 	void ResetaAnimeFlag() { anime_flag = false; }	//アニメフラグのリセット
 	bool GetAnimeFlag() { return anime_flag; }	//アニメーション再生フラグ
