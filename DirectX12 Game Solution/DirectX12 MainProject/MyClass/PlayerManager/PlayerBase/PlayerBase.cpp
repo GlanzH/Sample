@@ -772,6 +772,9 @@ void PlayerBase::Sword_Delivery(const float deltaTime, bool temp) {
 			SetAnimation(model, FINISH);
 			model->SetRotation(0.0f, XMConvertToRadians(-90.0f), 0.0f);			
 		}
+
+		
+
 		if (!damage_flag) {
 			DX12Effect.PlayOneShot("clincher", Vector3(player_pos.x, player_pos.y + 6.0f, player_pos.z));
 			if (s_del_start >= elimination_end) {
