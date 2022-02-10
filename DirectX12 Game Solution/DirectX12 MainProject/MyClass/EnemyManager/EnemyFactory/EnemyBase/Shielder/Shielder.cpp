@@ -5,7 +5,6 @@
 void Shielder::LoadAsset(LPCWSTR model_name, SimpleMath::Vector3 initial_position) {
 	EnemyBase::LoadAsset(model_name, initial_position);
 
-	//sword_col->SetMaterial(material);
 	sword_pos = SimpleMath::Vector3(INT_MAX, INT_MAX, INT_MAX);
 
 	col.weapon.Center = sword_pos;
@@ -171,12 +170,3 @@ bool Shielder::LifeDeathDecision() {
 
 	return LIVE;
 }
-//col.weapon = col.box;
-
-	////ƒRƒŠƒWƒ‡ƒ“ƒ‚ƒfƒ‹‚Ìì¬
-	//sword_col = DX9::Model::CreateBox(
-	//	DXTK->Device9,
-	//	col.weapon.Extents.x * 1.5,
-	//	col.weapon.Extents.y * 10,
-	//	col.weapon.Extents.z * 5
-	//);
