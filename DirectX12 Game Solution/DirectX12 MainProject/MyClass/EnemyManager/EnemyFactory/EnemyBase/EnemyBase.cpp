@@ -196,16 +196,24 @@ void EnemyBase::IsCollision()
 
 void EnemyBase::OffCollision()
 {
-	Onhit_test();
+	Offhit_test();
 }
 
 bool EnemyBase::hit_test()
 {
+	if (!damage_flag) {
+		enemy_hp--;
+		damage_flag = true;
+	}
 	return false;
 }
 
-bool EnemyBase::Onhit_test()
+bool EnemyBase::Offhit_test()
 {
+	if (!damage_flag) {
+		enemy_hp--;
+		damage_flag = false;
+	}
 	return true;
 }
 
