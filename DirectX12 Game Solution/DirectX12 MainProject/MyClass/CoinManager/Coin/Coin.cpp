@@ -6,7 +6,7 @@ void Coin::LoadAssets() {
 	pos  = Vector3::Zero;
 	coin = ResourceManager::Instance().LoadEffect(L"Effect/CoinEffect/coin/coin.efk");
 	plus = ResourceManager::Instance().LoadEffect(L"Effect/CoinEffect/plus/plus.efk");
-
+	getcoin = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM_SE/BGM/money_box2.mp3");
 	D3DMATERIAL9 material;
 	material.Diffuse = DX9::Colors::Value(1.0f, 0.0f, 0.0f, 0.0f);
 	material.Ambient = DX9::Colors::Value(0.0f, 0.0f, 0.0f, 0.0f);
@@ -56,6 +56,7 @@ void Coin::OnCollisionEnter()
 		plus_handle = DX12Effect.Play(plus, pos);
 
 	StatusManager::Instance().SetAddScore(30);
+	getcoin->Play();
 	DX12Effect.Stop(coin_handle);
 
 	dest_frame = 0;

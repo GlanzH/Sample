@@ -52,7 +52,7 @@ void Observer::CollisionDetection(PlayerBase* player, EnemyManager* enemy, CoinM
 		}
 
 		//!‰¼€ó‘Ô‚Ì”»’è‚ª‚È‚¢‚Æ‚«
-		if (!enemies_roop->GetTemporaryDeathFlag()) {
+		if (!enemies_roop->GetTemporaryDeathFlag() && !enemies_roop->GetDieFlag()) {
 			//if (player->GetBox().box.Intersects(enemies_roop->GetBox().box) && !player->IsInvincibleFlag()) {
 			//	player->OnCollisionEnter(enemies_roop->GetTag());
 			//}

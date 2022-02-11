@@ -29,7 +29,9 @@ bool WaveProcess::Initialize() {
 	time_delta = 0.0f;
 	anim_end_flag = false;
 	co_start_flag = false;
+	first_time_flag = false;
 
+	game_clear_flag = false;
 
 	return true;
 }
@@ -57,20 +59,17 @@ void WaveProcess::LoadAssets() {
 int WaveProcess::Update(EnemyManager* enemy, const float deltaTime) {
 	StatusManager::Instance().WaveTimeLimit(deltaTime);
 
+	wave_num = StatusManager::Instance().GetWave();
 	now_time = StatusManager::Instance().GetTime();
 	time_one_digit = (now_time % 10) * TIME_NUM_WIDTH;
 	time_two_digit = (now_time / 10) * TIME_NUM_WIDTH;
-	wave_num = StatusManager::Instance().GetWave();
 	//if (StatusManager::Instance().GetWave() == 0) {
 	//	max_stop = 0.01f;
 	//}
 
-	if (wave_num < StatusManager::Instance().GetMaxWave() && now_time == 0) {
-		if (stop_frame < max_stop) {
-			one_digit_flag = false;
-			stop_frame += deltaTime;
-		}
-		else {
+	if (!first_time_flag)
+	{
+		if (wave_num < StatusManager::Instance().GetMaxWave() && now_time == 0) {
 			StatusManager::Instance().ResetWaveTime();
 			StatusManager::Instance().SetWave(++stage_num);
 			enemy->ResetRemainEnemy();
@@ -79,7 +78,31 @@ int WaveProcess::Update(EnemyManager* enemy, const float deltaTime) {
 			time_num_scale = 1.0f;
 			co_start_flag = false;
 			anim_end_flag = false;
+			first_time_flag = true;
 		}
+	}
+	else
+	{
+		if (wave_num < StatusManager::Instance().GetMaxWave() && now_time == 0) {
+			if (stop_frame < max_stop) {
+				one_digit_flag = false;
+				stop_frame += deltaTime;
+			}
+			else {
+				StatusManager::Instance().ResetWaveTime();
+				StatusManager::Instance().SetWave(++stage_num);
+				enemy->ResetRemainEnemy();
+				enemy->ResetDeathEnemy();
+				stop_frame = 0.0f;
+				time_num_scale = 1.0f;
+				co_start_flag = false;
+				anim_end_flag = false;
+			}
+		}
+	}
+
+	if (wave_num >= StatusManager::Instance().GetMaxWave() && now_time == 0) {
+		game_clear_flag = true;
 	}
 
 	if (enemy->GetWaveEnemy() == enemy->GetDeathEnemyCount())
@@ -154,14 +177,14 @@ void WaveProcess::Render() {
 
 	DX9::SpriteBatch->DrawSimple(
 		black.Get(),
-		SimpleMath::Vector3::Zero,
+		SimpleMath::Vector3(0.0f, 0.0f, -5.0f),
 		Rect(0, 0, 1280, 720),
 		DX9::Colors::RGBA(255, 255, 255, black_alpha)
 	);
 
 	DX9::SpriteBatch->DrawSimple(
 		wave_anim[wave_num].Get(),
-		SimpleMath::Vector3(450.0f, 330.0f, 0.0f),
+		SimpleMath::Vector3(450.0f, 330.0f, -10.0f),
 		RectWH(WAVE_WIDTH * (int)wave_anim_x, WAVE_HIGHT * (int)wave_anim_y, WAVE_WIDTH, WAVE_HIGHT),
 		DX9::Colors::RGBA(255, 255, 255, (int)anim_alpha)
 	);
@@ -195,7 +218,6 @@ cppcoro::generator<int> WaveProcess::WaveChangeAinm() {
 	//フェードイン
 	while (true)
 	{
-		wait_time += time_delta;
 		black_alpha = std::min(black_alpha + 300.0f * time_delta, 200.0f);
 		if (black_alpha >= 200.0f) {
 			break;
@@ -254,13 +276,6 @@ cppcoro::generator<int> WaveProcess::WaveChangeAinm() {
 		anim_alpha  = std::max(anim_alpha  - 300.0f * time_delta, 0.0f);
 		co_yield 4;
 	}
-
-	//待機
-	while (wait_time < 2.0f) {
-		wait_time += time_delta;
-		co_yield 3;
-	}
-	wait_time = 0.0f;
 
 	anim_end_flag = true;
 	co_return;

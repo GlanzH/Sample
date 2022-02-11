@@ -39,8 +39,8 @@ void MainScene::Initialize()
 
 	point.Init(2);
 	texLight.Init();
-
-	
+	mugic_loop_flag = false;
+	black_time = 0.0f;
 	//enemy->StartTimeStop();
 	end_frame = 0.0f;
 }
@@ -60,14 +60,14 @@ void MainScene::TestChangeColor()
 
 	if (StatusManager::Instance().GetWave() >= 4 && StatusManager::Instance().GetWave() <= 6)
 	{
-		//全体ライト
-		point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 0.0f), 0);
-		point.SetAtt(Vector3(0.25f, 0.01f, 0), 0);
-		point.SetLightColor(SimpleMath::Vector4(97.0f, 67.0f, 167.0f, 1.0f), 0);
-		//キャラのライト
-		point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f), 1);
-		point.SetAtt(Vector3(0.05f, 0.01f, 0), 1);
-		point.SetLightColor(SimpleMath::Vector4(110.0f, 71.0f, 47.0f, 1.0f), 1);
+	    	//全体ライト
+	    	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 0.0f), 0);
+	    	point.SetAtt(Vector3(0.25f, 0.01f, 0), 0);
+	    	point.SetLightColor(SimpleMath::Vector4(97.0f, 67.0f, 167.0f, 1.0f), 0);
+	    	//キャラのライト
+	    	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f), 1);
+	    	point.SetAtt(Vector3(0.05f, 0.01f, 0), 1);
+	    	point.SetLightColor(SimpleMath::Vector4(110.0f, 71.0f, 47.0f, 1.0f), 1);
 	}
 
 	if(StatusManager::Instance().GetWave() >= 7 && StatusManager::Instance().GetWave() <= 9)
@@ -138,7 +138,7 @@ void MainScene::LoadAssets()
 	stage2 = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM_SE/BGM/2stage.mp3");
 	stage3 = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM_SE/BGM/3stage.mp3");
 	stage4 = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM_SE/BGM/4stage.mp3");
-
+	music_count = 0;
 	//music_flag = false;
 	//ChangeBGM(INTRO);
 
@@ -243,7 +243,6 @@ NextScene MainScene::Update(const float deltaTime)
 	if (end_frame < max_end)
 		DX12Effect.Update(deltaTime);
 
-	enemy->EndTimeStop();
 
 	auto pos = player->GetModel()->GetPosition();
 
@@ -290,14 +289,30 @@ void MainScene::ChangeLightColor()
 
 	if (StatusManager::Instance().GetWave() >= 4 && StatusManager::Instance().GetWave() <= 6)
 	{
-		point.SetPower(1.5f, 0);
-		point.SetPower(2.5f, 1);
-		point.SetPosition(Vector3(0.0f, 170.0f, 87.0f), 0);
-		point.SetPosition(player->GetModel()->GetPosition() + Vector3(0, 50, 9.0f), 1);
-		point.SetCone(2.39f, 0);
-		point.SetCone(9.0f, 1);
-		point.PointRender(*camera.GetCamera(), ground.GetModel());
-		point.ShadeRender(player->GetModel(), SimpleMath::Vector4(0, 0, 1, 0.3f));
+		if (black_time>=max_black_time)
+		{
+			black_time++;
+			point.SetPower(1.5f, 0);
+			point.SetPower(2.5f, 1);
+			point.SetPosition(Vector3(0.0f, 170.0f, 87.0f), 0);
+			point.SetPosition(player->GetModel()->GetPosition() + Vector3(0, 50, 9.0f), 1);
+			point.SetCone(2.39f, 0);
+			point.SetCone(9.0f, 1);
+			point.PointRender(*camera.GetCamera(), ground.GetModel());
+			point.ShadeRender(player->GetModel(), SimpleMath::Vector4(0, 0, 1, 0.3f));
+		}
+		else
+		{
+			point.SetPower(1.5f, 0);
+			point.SetPower(2.5f, 1);
+			point.SetPosition(Vector3(0.0f, 170.0f, 87.0f), 0);
+			point.SetPosition(player->GetModel()->GetPosition() + Vector3(0, 50, 9.0f), 1);
+			point.SetCone(2.39f, 0);
+			point.SetCone(9.0f, 1);
+			point.PointRender(*camera.GetCamera(), ground.GetModel());
+			point.ShadeRender(player->GetModel(), SimpleMath::Vector4(0, 0, 1, 0.3f));
+		}
+		
 	}
 	
 	if (StatusManager::Instance().GetWave() >= 7 && StatusManager::Instance().GetWave() <= 9)
@@ -337,8 +352,13 @@ void MainScene::ChangeLightColor()
 }
 
 void MainScene::ChangeBGM() {
+	
 	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 3){
 		stage1->Play();
+		if (stage1->isComplete())
+		{
+			stage1->Replay();
+		}
 	}
 
 	if (StatusManager::Instance().GetWave() >= 4 && StatusManager::Instance().GetWave() <= 6){

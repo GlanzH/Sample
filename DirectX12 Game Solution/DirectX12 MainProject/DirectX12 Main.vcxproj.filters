@@ -52,9 +52,6 @@
     <Filter Include="MyClass\Shader">
       <UniqueIdentifier>{c77963d0-7184-491d-86ec-712fe37dec65}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\AudianceManager">
-      <UniqueIdentifier>{c73b9d16-015d-4ff2-8e17-fe45e1349e79}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MyClass\Camera">
       <UniqueIdentifier>{b5c7ebcc-3e32-4ac7-be02-6d789d7dfd13}</UniqueIdentifier>
     </Filter>
@@ -159,9 +156,6 @@
     <ClInclude Include="Base\DX12Effekseer.h">
       <Filter>MyClass\Effekseer</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\AudianceManager\AudianceManager.h">
-      <Filter>MyClass\AudianceManager</Filter>
-    </ClInclude>
     <ClInclude Include="MyClass\GameSceneManager\SceneManager.h">
       <Filter>MyClass\GameSceneManager</Filter>
     </ClInclude>
@@ -207,7 +201,6 @@
     <ClInclude Include="MyClass\CoinManager\Coin\Coin.h">
       <Filter>MyClass\CoinManager\Coin</Filter>
     </ClInclude>
-    <ClInclude Include="EndingScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base\Main.cpp">
@@ -255,9 +248,6 @@
     <ClCompile Include="Base\DX12Effekseer.cpp">
       <Filter>MyClass\Effekseer</Filter>
     </ClCompile>
-    <ClCompile Include="MyClass\AudianceManager\AudianceManager.cpp">
-      <Filter>MyClass\AudianceManager</Filter>
-    </ClCompile>
     <ClCompile Include="MyClass\GameSceneManager\SceneManager.cpp">
       <Filter>MyClass\GameSceneManager</Filter>
     </ClCompile>
@@ -303,7 +293,6 @@
     <ClCompile Include="MyClass\CoinManager\Coin\Coin.cpp">
       <Filter>MyClass\CoinManager\Coin</Filter>
     </ClCompile>
-    <ClCompile Include="EndingScene.cpp" />
     <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerBase.cpp">
       <Filter>MyClass\PlayerManager\PlayerBase</Filter>
     </ClCompile>

@@ -6,10 +6,6 @@
 #include "cppcoro/generator.h"
 
 #include "Scene.h"
-#include "MyClass/Ground/Ground.h"
-#include "MyClass/Camera/C_Camera.h"
-#include "MyClass/PlayerManager/PlayerManager.h"
-#include "MyClass/AudianceManager/AudianceManager.h"
 
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
@@ -38,49 +34,45 @@ public:
 
 	NextScene Update(const float deltaTime) override;
 	void Render() override;
-	void Sound();
 private:
-	DX12::DESCRIPTORHEAP descriptorHeap;
-	DX12::SPRITEBATCH    spriteBatch;
-	DX12::HGPUDESCRIPTOR dx9GpuDescriptor;
+    DX12::DESCRIPTORHEAP descriptorHeap;
+    DX12::SPRITEBATCH    spriteBatch;
+    DX12::HGPUDESCRIPTOR dx9GpuDescriptor;
 
 private:
-	DX9::SPRITE title;
-	DX9::SPRITE title_logo;
-	DX9::SPRITE opening_buzzer;
-	SimpleMath::Vector3 title_pos;
+	DX9::SPRITE curtain;	//カーテン
+	DX9::SPRITE title_logo;	//タイトルロゴ
+	DX9::SPRITE prologue_text;	//プロローグテキスト
 
-	DX9::SPRITE vinette;
-	SimpleMath::Vector3 vinette_pos;
 
-	float vinette_alpha;
-	float flashing_alpha;
-	float ui_alpha;
+	SimpleMath::Vector3 curtain_pos;
+
+	float title_logo_alpha;	//タイトルロゴのアルファ値
+	float pro_text_alpha;	//テキストのアルファ値
 	float time_delta;
-	float time_stop;
-	float flashing;
+	float wait_time;	//間を作るのに使用
+	bool opening_start_flag;	//コルーチン生成フラグ
+	bool game_start_flag;	//シーン切り替えフラグ	
+	
+	const float ALPHA_SPEED = 200.0f;	//アルファ値増減スピード
+	const float CURTAIN_UP_SPEED = 200.0f;	//カーテンの上がるスピード
 
-	float buzzer_frame;
-	const float buzzer_max = 5.00f;
-	float annouce_frame;
-	const float annouce_max = 5.00f;
 
-	std::unique_ptr<SoundEffect>buzzer, announce;
-	std::unique_ptr<SoundEffectInstance> buzzer_end;
-	std::unique_ptr<SoundEffectInstance> announce_end;
-	bool flashing_alpha_flag;
-	bool announce_flag;
-	bool buzzer_flag;
-	bool opening_flag;
-	bool start_flag;
-	bool opencurtain_flag;
-	const float ALPHA_SPEED = 200.0f;
+	//BGM
+	DX9::MEDIARENDERER zawa;	//ざわつき音
+	int zawa_volume;	//ざわつきの大きさ
 
-	const float CURTAIN_UP_SPEED = 130.0f;
+	//SE
+	XAudio::SOUNDEFFECT buzzer;	//ブザー音
+	XAudio::SOUNDEFFECT start_se;	//ゲームスタート音
 
-	float audience;
+	//PV
+	DX9::MEDIARENDERER pv;
+	bool pv_play_flag;
+	float pv_play_waittime;
+
 	// コルーチンのプロトタイプ宣言
-	cppcoro::generator<int> Opening();
+	cppcoro::generator<int> Opening();	//オープニング演出
 	cppcoro::generator<int>                  co_opening;
 	cppcoro::detail::generator_iterator<int> co_opening_it;
 };

@@ -15,27 +15,20 @@ TitleScene::TitleScene()
 // Initialize a variable and audio resources.
 void TitleScene::Initialize()
 {
-    title_pos.x = 0.0f;
-    title_pos.y = 0.0f;
-    title_pos.z = 1.0f;
+    curtain_pos = SimpleMath::Vector3(0.0f, 0.0f, 1.0f);
 
-    annouce_frame = 0;
-    buzzer_frame = 0;
-    flashing_alpha = 0.0f;
-    flashing = 0;
-    opening_flag = false;
-    start_flag = false;
-    flashing_alpha_flag = true;
-    announce_flag = false;
+    title_logo_alpha = 255.0f;
+    pro_text_alpha = 0.0f;
+    wait_time = 0.0f;
 
-    buzzer_flag = false;
+    opening_start_flag = false;
+    game_start_flag    = false;
 
-    opencurtain_flag = false;
+    zawa_volume = 0;
 
-    ui_alpha = 255.0f;
-    vinette_pos = SimpleMath::Vector3(0.0f, 0.0f, 0.0f);
-    vinette_alpha = 255.0f;
-    time_stop = 0.0f;
+    pv_play_flag = false;
+    pv_play_waittime = 0.0f;
+
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -61,14 +54,18 @@ void TitleScene::LoadAssets()
     uploadResourcesFinished.wait();
 
     // グラフィックリソースの初期化処理
-    title = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Curtain.png");
-    title_logo = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/TitleLogo2.png");
-    vinette = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/vinette_2.png");
-    opening_buzzer = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/OpeningBuzzer.png");
-    buzzer = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/opening_buzzer.wav");
-    announce = std::make_unique<SoundEffect>(DXTK->AudioEngine, L"BGM_SE/kaien.wav");
-     buzzer_end = buzzer->CreateInstance();
-     announce_end = announce->CreateInstance();
+    curtain    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Curtain.png");
+    title_logo = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/Title/TitleLogo.png");
+
+    zawa = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM_SE/Title/before_the_performance.mp3");
+    zawa->Play();
+
+    buzzer   = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"BGM_SE/Title/opening_buzzer.wav");
+    start_se = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"BGM_SE/Title/decision.wav");
+
+    prologue_text = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Dialogue/dialogue_01_01.png");
+
+    pv = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"Scene/Title/play_demo_1.wmv");
 }
 
 // Releasing resources required for termination.
@@ -98,56 +95,56 @@ NextScene TitleScene::Update(const float deltaTime)
 {
 	// If you use 'deltaTime', remove it.
 	UNREFERENCED_PARAMETER(deltaTime);
-    if (flashing_alpha_flag)
-    {
-        flashing_alpha += 5;
-    }
     
 	// TODO: Add your game logic here.
     
     time_delta = deltaTime;
             
-    if (opening_flag == false)
-    {
-        if (DXTK->KeyEvent->pressed.Space ||DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) 
-        {
-            announce_flag = true;
-            flashing_alpha_flag = false;
-            if (opencurtain_flag)
-            {
-                co_opening = Opening();        // コルーチンの生成
-                co_opening_it = co_opening.begin(); // コルーチンの実行開始
-            }
-        } 
-        if (announce_flag && annouce_frame < annouce_max)
-        {
-            if (annouce_frame == 0.0)
-            {
-                announce->Play();
-            }
-            annouce_frame += deltaTime;
-        }
-        else if( annouce_frame >= annouce_max)
-        {
-            buzzer_flag = true;
-        }
+    zawa->SetVolume(zawa_volume);
 
-        if (buzzer_flag && buzzer_frame < buzzer_max)
+
+    if (zawa->isComplete())
+        zawa->Replay();
+
+    if (DXTK->KeyEvent->pressed.B ||
+        DXTK->GamePadEvent[0].b == GamePad::ButtonStateTracker::PRESSED ||
+        DXTK->GamePadEvent[0].a == GamePad::ButtonStateTracker::PRESSED
+        )
+    {
+        if (!opening_start_flag && !pv_play_flag)
         {
-            if (buzzer_frame == 0.0)
-            {
-                buzzer->Play();
-            }
-            buzzer_frame += deltaTime;
+            co_opening = Opening();        // コルーチンの生成
+            co_opening_it = co_opening.begin(); // コルーチンの実行開始
+            opening_start_flag = true;
+            start_se->Play();
         }
-        else if( buzzer_frame >= buzzer_max)
-        {
-            opencurtain_flag = true;
-        }
+        pv_play_flag = false;
+        pv_play_waittime = 0.0f;
+        pv->Stop();
 
     }
-   
-        
+
+    if (!opening_start_flag) {
+        pv_play_waittime += deltaTime;
+
+        //PV再生が終わったらフラグを降ろす
+        if (pv->isComplete() && pv_play_flag) {
+            pv_play_flag = false;
+            pv_play_waittime = 0.0f;
+        }
+
+        //一定時間放置したらPV再生
+        if (pv_play_waittime > 3.0f && !pv_play_flag) {
+            pv_play_flag = true;
+            if (!pv->isComplete()) {
+                pv->Play();
+            }
+            else {
+                pv->Replay();
+            }
+        }
+    }
+
     if (co_opening_it != co_opening.end()) {
         co_opening_it++;
     }
@@ -157,7 +154,7 @@ NextScene TitleScene::Update(const float deltaTime)
     }
 
     
-    if (start_flag == true) 
+    if (game_start_flag) 
     {
         return NextScene::MainScene;
     }
@@ -174,23 +171,29 @@ void TitleScene::Render()
     DXTK->Direct3D9->BeginScene();
     DX9::SpriteBatch->Begin();
 
-    DX9::SpriteBatch->DrawSimple(title.Get(), title_pos);
+    DX9::SpriteBatch->DrawSimple(curtain.Get(), curtain_pos);
     
     DX9::SpriteBatch->DrawSimple(
         title_logo.Get(),
         SimpleMath::Vector3(0.0f, -100.0f, 0.0f),
-        RectWH(0, 0, 1280, 720),
-        DX9::Colors::RGBA(255, 255, 255, ui_alpha)
+        nullptr,
+        DX9::Colors::RGBA(255, 255, 255, title_logo_alpha)
     );
 
-    DX9::SpriteBatch->DrawSimple(vinette.Get(), vinette_pos,
-        Rect(0, 0, 1280, 720), DX9::Colors::RGBA(255, 255, 255, vinette_alpha));
-    if (flashing_alpha_flag)
-    {
-        DX9::SpriteBatch->DrawSimple(opening_buzzer.Get(), SimpleMath::Vector3(550.0f, 500.0f, 0.0f), RectWH(0, 0, 1280, 720)
-            , DX9::Colors::RGBA(255, 255, 255, flashing_alpha));
-    }
    
+    DX9::SpriteBatch->DrawSimple(
+        prologue_text.Get(),
+        SimpleMath::Vector3(0.0f, 0.0f, 4.0f),
+        nullptr,
+        DX9::Colors::RGBA(255, 255, 255, pro_text_alpha)
+    );
+
+    if (pv_play_flag) {
+        DX9::SpriteBatch->DrawSimple(
+            pv->Get(),
+            SimpleMath::Vector3(0.0f, 0.0f, -20.0f)
+        );
+    }
 
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();
@@ -215,54 +218,62 @@ void TitleScene::Render()
     DXTK->ExecuteCommandList();
 }
 
-void TitleScene::Sound()
-{
-    if (announce_flag)
-    {
-        auto state = announce_end->GetState();
-        // announce->Play();
-        if (state == SoundState::STOPPED)
-        {
-            announce_flag = false;
-            buzzer_flag = true;
-        }
-    }
-    if (buzzer_flag)
-    {
-        auto a = buzzer_end->GetState();
-        //  buzzer->Play();
-        if (a == SoundState::STOPPED)
-        {
-            buzzer_flag = false;
-            opencurtain_flag = true;
-        }
-    }
-}
-
 cppcoro::generator<int> TitleScene::Opening() {
     co_yield 0;
 
-    while (ui_alpha > 0.0f) {
-        ui_alpha = std::max(ui_alpha - ALPHA_SPEED * time_delta, 0.0f);
-        vinette_alpha = std::max(vinette_alpha - ALPHA_SPEED * time_delta, 0.0f);
+    //タイトルロゴ、影をフェードアウト
+    while (title_logo_alpha > 0.0f) {
+        title_logo_alpha = std::max(title_logo_alpha - ALPHA_SPEED * time_delta, 0.0f);
         co_yield 1;
     }
-    
 
-    while (time_stop < 1.0f) {
-        time_stop += time_delta;
+    //間
+    while (wait_time < 1.0f) {
+        wait_time += time_delta;
         co_yield 2;
     }
-    time_stop = 0.0f;
-
-    while (vinette_pos.y > -770.0f) {
-        title_pos.y -= CURTAIN_UP_SPEED * time_delta;
-        vinette_pos.y -= CURTAIN_UP_SPEED * time_delta;
+    wait_time = 0.0f;
+    
+    buzzer->Play();
+    //間
+    while (wait_time < 5.0f) {
+        zawa_volume -= 1000 * time_delta;
+        wait_time += time_delta;
         co_yield 3;
     }
-    
-    start_flag = true;
+    wait_time = 0.0f;
+    zawa_volume = -1500;
 
+
+    //カーテンを上げる
+    while (curtain_pos.y > -770.0f) {
+        curtain_pos.y -= CURTAIN_UP_SPEED * time_delta;
+        co_yield 4;
+    }
+
+    //間
+    while (wait_time < 1.0f) {
+        wait_time += time_delta;
+        co_yield 5;
+    }
+    wait_time = 0.0f;
+
+
+    //テキスト表示
+    while (true) {
+
+        if(!game_start_flag)
+            pro_text_alpha = std::min(pro_text_alpha + 100.0f * time_delta, 255.0f);
+
+        if (DXTK->KeyEvent->pressed.B ||
+            DXTK->GamePadEvent[0].b == GamePad::ButtonStateTracker::PRESSED ||
+            DXTK->GamePadEvent[0].a == GamePad::ButtonStateTracker::PRESSED
+            ) {
+            game_start_flag = true;
+        }
+
+        co_yield 6;
+    }
     co_return;
 }
 

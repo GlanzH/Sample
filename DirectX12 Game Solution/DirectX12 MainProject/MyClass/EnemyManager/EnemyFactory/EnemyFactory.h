@@ -27,7 +27,6 @@ public:
 
 	EnemyBase* CreateProduct(string tag,SimpleMath::Vector3 position);
 	LPCWSTR SetModel(string tag);
-	int SetHP(string tag);
 
 
 private:
@@ -45,6 +44,7 @@ private:
 Å@Å@*/
 	enum EnemyType { 
 		SWORD_MAN,
+		SWORD_MANEX,
 		SHIELDER,
 		ARROW,
 		MODEL_MAX

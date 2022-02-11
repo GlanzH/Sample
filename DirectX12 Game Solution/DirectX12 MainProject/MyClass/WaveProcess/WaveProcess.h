@@ -72,11 +72,13 @@ private:
 	cppcoro::detail::generator_iterator<int> co_anim_it;
 
 	//ゲームクリア
-	bool game_clear_flag;
+	bool game_clear_flag;	//リザルト移行演出起動フラグ
+
+	bool first_time_flag;
 
 	float stop_frame = 0.0f;
 	float max_stop   = 4.0f;
 
-	int stage_num = 0;
+	int stage_num;
 	int wave_num;
 };
