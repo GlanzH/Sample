@@ -44,87 +44,87 @@ void DialogueManager::Render(int dialogue_count) {
 	{
 	case FIRST:
 		if (dialogue_state == 0)
-			DX9::SpriteBatch->DrawSimple(dialogue_1.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_1.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 		else
-			DX9::SpriteBatch->DrawSimple(dialogue_2.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_2.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 
 		break;
 
 	case SECOND:
 		if (dialogue_state == 0)
-			DX9::SpriteBatch->DrawSimple(dialogue_3.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_3.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 		else
-			DX9::SpriteBatch->DrawSimple(dialogue_4.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_4.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 		break;
 
 	case THIRD:
 		if (dialogue_state == 0)
-			DX9::SpriteBatch->DrawSimple(dialogue_5.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_5.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 		else
-			DX9::SpriteBatch->DrawSimple(dialogue_6.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_6.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 
 		break;
 	case FOUR:
 		if (dialogue_state == 0)
-			DX9::SpriteBatch->DrawSimple(dialogue_7.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_7.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 		else
-			DX9::SpriteBatch->DrawSimple(dialogue_8.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_8.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 
 		break;
 	case FIVE:
 		if (dialogue_state == 0)
-			DX9::SpriteBatch->DrawSimple(dialogue_9.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_9.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 		else
-			DX9::SpriteBatch->DrawSimple(dialogue_10.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_10.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 
 		break;
 	case SIX:
 		if (dialogue_state == 0)
-			DX9::SpriteBatch->DrawSimple(dialogue_11.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_11.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 		else
-			DX9::SpriteBatch->DrawSimple(dialogue_12.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_12.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 
 		break;
 	case SEVEN:
 		if (dialogue_state == 0)
-			DX9::SpriteBatch->DrawSimple(dialogue_13.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_13.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 		else
-			DX9::SpriteBatch->DrawSimple(dialogue_14.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_14.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 
 		break;
 	case EIGHT:
 		if (dialogue_state == 0)
-			DX9::SpriteBatch->DrawSimple(dialogue_15.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_15.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 		else
-			DX9::SpriteBatch->DrawSimple(dialogue_16.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_16.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 
 		break;
 	case NINE:
 		if (dialogue_state == 0)
-			DX9::SpriteBatch->DrawSimple(dialogue_17.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_17.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 		else
-			DX9::SpriteBatch->DrawSimple(dialogue_18.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_18.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 
 		break;
 	case TEN:
 		if (dialogue_state == 0)
-			DX9::SpriteBatch->DrawSimple(dialogue_19.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_19.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 		else
-			DX9::SpriteBatch->DrawSimple(dialogue_20.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_20.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 
 		break;
 	case ELEVEN:
 		if (dialogue_state == 0)
-			DX9::SpriteBatch->DrawSimple(dialogue_21.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_21.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 		else
-			DX9::SpriteBatch->DrawSimple(dialogue_22.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_22.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 
 		break;
 	case TWELVE:
 		if (dialogue_state == 0)
-			DX9::SpriteBatch->DrawSimple(dialogue_23.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_23.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 		else
-			DX9::SpriteBatch->DrawSimple(dialogue_24.Get(), SimpleMath::Vector3::Zero);
+			DX9::SpriteBatch->DrawSimple(dialogue_24.Get(), SimpleMath::Vector3(0.0f, 0.0f, -3.0f));
 
 		break;
 	}

@@ -70,6 +70,7 @@ int WaveProcess::Update(EnemyManager* enemy, const float deltaTime) {
 	if (!first_time_flag)
 	{
 		if (wave_num < StatusManager::Instance().GetMaxWave() && now_time == 0) {
+			StatusManager::Instance().SetRemainEnemy(enemy->GetRemainEnemy());
 			StatusManager::Instance().ResetWaveTime();
 			StatusManager::Instance().SetWave(++stage_num);
 			enemy->ResetRemainEnemy();
@@ -89,6 +90,7 @@ int WaveProcess::Update(EnemyManager* enemy, const float deltaTime) {
 				stop_frame += deltaTime;
 			}
 			else {
+				StatusManager::Instance().SetRemainEnemy(enemy->GetRemainEnemy());
 				StatusManager::Instance().ResetWaveTime();
 				StatusManager::Instance().SetWave(++stage_num);
 				enemy->ResetRemainEnemy();
@@ -105,8 +107,10 @@ int WaveProcess::Update(EnemyManager* enemy, const float deltaTime) {
 		game_clear_flag = true;
 	}
 
-	if (enemy->GetWaveEnemy() == enemy->GetDeathEnemyCount())
+	if (enemy->GetWaveEnemy() == enemy->GetDeathEnemyCount()) {
+		StatusManager::Instance().SetRemainEnemy(enemy->GetRemainEnemy());
 		StatusManager::Instance().ResetWaveTime();
+	}
 
 	if (now_time < 10) {
 		one_digit_flag = true;
