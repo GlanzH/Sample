@@ -1,7 +1,6 @@
 #include "PlayerBase.h"
 
 
-#include "MyClass/PlayerManager/PlayerBase/PlayerAttack/PlayerAttack.h"
 #include "MyClass/StatusManager/StatusManager.h"
 
 PlayerBase::PlayerBase() {
@@ -567,9 +566,6 @@ void PlayerBase::Player_move(const float deltaTime)
 
 //プレイヤーの移動スピードの変化
 void PlayerBase::Speed_Step(const float deltaTime) {
-	if (DXTK->KeyEvent->pressed.Q) {
-		step_up_flag = true;
-	}
 
 	if (StatusManager::Instance().GetCoinFlag()) {
 		if (StatusManager::Instance().GetCoin() != 0 && StatusManager::Instance().GetCoin() % 7 == 0) {
@@ -598,15 +594,14 @@ void PlayerBase::Player_limit()
 
 void PlayerBase::Player_jump(const float deltaTime) {
 	//ジャンプ
-	if (!s_del_flag && !avoidance_flag && lower_state_mode == Lower_State::NOT_LOWER && upper_state_mode == Upper_State::NOT_UPPER) {
+	if (!s_del_flag && !avoidance_flag && lower_state_mode == Lower_State::NOT_LOWER && upper_state_mode == Upper_State::NOT_UPPER && !knock_back_flag) {
 		if (!jump_flag_) {
-			if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {				
+			if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
 				jump_flag_ = true;
 				jump_time_ = 0;
 				jump_start_v_ = model->Position.y;
 			}
 		}
-
 	}
 
 	if (jump_flag_) {
