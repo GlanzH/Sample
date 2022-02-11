@@ -354,7 +354,11 @@ void MainScene::ChangeLightColor()
 void MainScene::ChangeBGM() {
 	
 	if (StatusManager::Instance().GetWave() >= 0 && StatusManager::Instance().GetWave() <= 3){
-			stage1->Play();
+		stage1->Play();
+		if (stage1->isComplete())
+		{
+			stage1->Replay();
+		}
 	}
 
 	if (StatusManager::Instance().GetWave() >= 4 && StatusManager::Instance().GetWave() <= 6){
