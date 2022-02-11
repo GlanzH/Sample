@@ -32,25 +32,28 @@ int CoinManager::Update(SimpleMath::Vector3 position, bool death_flag, int death
 	pos = SimpleMath::Vector3(position.x, 0, 50);
 	DX12Effect.SetRotation(manycoin_handle, Vector3(0, 160, 0));
 
-	if (death_flag && death_enemy > 0) {
-		if (!DX12Effect.CheckAlive(manycoin_handle))
-		{
-			if (StatusManager::Instance().GetTime()>=0.1f)
+	if (!create_coin_flag) {
+		if (death_flag && death_enemy > 0) {
+			if (!DX12Effect.CheckAlive(manycoin_handle))
 			{
-				manycoin_handle = DX12Effect.Play(manycoin, pos);
+				if (StatusManager::Instance().GetTime() > 0.0f)
+				{
+					manycoin_handle = DX12Effect.Play(manycoin, pos);
+				}
 			}
+
+
+			create_coin_flag = true;
 		}
-			
 
-		create_coin_flag = true;
 	}
-
-	if (create_coin_flag) {
+	else {
+//	if (create_coin_flag) {
 		if (effect_frame < max_effect) {
 			effect_frame += deltaTime;
 		}
 		else {
-			if (StatusManager::Instance().GetTime()>=0.1f)
+			if (StatusManager::Instance().GetTime()>0.0f)
 			{
 				ComboCoin(death_enemy);
 				create_coin_flag = false;
@@ -113,6 +116,10 @@ void CoinManager::ComboCoin(int combocoin)
 		break;
 	case 5:
 		create_coins = 11;
+		Generator();
+		break;
+	case 6:
+		create_coins = 13;
 		Generator();
 		break;
 	default:

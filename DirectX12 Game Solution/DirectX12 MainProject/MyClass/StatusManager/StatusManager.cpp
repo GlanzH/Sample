@@ -1,6 +1,6 @@
 #include"MyClass/StatusManager/StatusManager.h"
 #include "MyClass/UIManager/UIManager.h"
-
+#include"MyClass/EnemyManager/EnemyFactory/EnemyBase/EnemyBase.h"
 
 
 void StatusManager::Initialize() {
