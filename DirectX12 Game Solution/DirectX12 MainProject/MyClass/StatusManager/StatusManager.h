@@ -38,7 +38,6 @@ public:
 	float GetScore() { return now_score; }	//現在のスコア
 	bool GetGoodFlag() { return good_flag; }	//スコアUI描画時使用
 	void SetRemainEnemy(int remain_enemy) { enemy_num = remain_enemy; }
-
 	//ウェーブ
 	void SetWave(int wave_num);	//ウェーブ数設定
 	void WaveTimeLimit(const float deltaTime);	//ウェーブの時間

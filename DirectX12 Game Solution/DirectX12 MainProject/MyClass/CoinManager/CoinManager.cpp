@@ -39,7 +39,9 @@ int CoinManager::Update(SimpleMath::Vector3 position, bool death_flag, int death
 				if (StatusManager::Instance().GetTime() > 0.0f)
 				{
 					manycoin_handle = DX12Effect.Play(manycoin, pos);
+					
 				}
+				
 			}
 
 
@@ -53,7 +55,7 @@ int CoinManager::Update(SimpleMath::Vector3 position, bool death_flag, int death
 			effect_frame += deltaTime;
 		}
 		else {
-			if (StatusManager::Instance().GetTime()>0.0f)
+			if (StatusManager::Instance().GetTime() > 0.1f)
 			{
 				ComboCoin(death_enemy);
 				create_coin_flag = false;

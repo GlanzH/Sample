@@ -68,7 +68,7 @@ bool EnemyManager::Initialize(PlayerBase* player_base)
 	sound_hit_flag = false;
 	temporary_flag = false;
 	enemy_destroy_flag = false;
-
+	death_flag = false;
 	return true;
 }
 
@@ -82,7 +82,7 @@ int EnemyManager::Update(SimpleMath::Vector3 player, int attack, bool destroy_fl
 		enemies->Update(player, destroy_flag, delta);
 	}
 
-	death_flag = false;
+	
 	Iterator();
 	//AllDeathBonus();
 

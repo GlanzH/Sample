@@ -1,6 +1,6 @@
 #include"MyClass/StatusManager/StatusManager.h"
 #include "MyClass/UIManager/UIManager.h"
-#include"MyClass/EnemyManager/EnemyFactory/EnemyBase/EnemyBase.h"
+
 
 
 void StatusManager::Initialize() {
@@ -33,6 +33,7 @@ void StatusManager::Initialize() {
 void StatusManager::Update(const float deltaTime, int remain_enemy) {
 	CalcScore(deltaTime);
 	ComboTime(deltaTime);
+	enemy_num = remain_enemy;
 }
 
 void StatusManager::SetAddScore(float score_size) {
@@ -84,9 +85,6 @@ void StatusManager::ScoreDown(const float deltaTime) {
 void StatusManager::AddHitCombo() {
 	//ƒRƒ“ƒ{‚ð‘‚â‚·
 	combo++;
-	if (combo >= 10) {
-		combo = 10;
-	}
 }
 
 void StatusManager::AddHitComboTime() {
