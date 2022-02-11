@@ -91,13 +91,13 @@ bool PlayerBase::Initialize()
 	//ジャンプタイミング
 	jump_start_flag = false;
 	jump_start_time = 0.0f;
-	jump_start_time_max = 0.133f;
+	jump_start_time_max = 0.000001f;
 	jump_end_flag = false;
 
 	//攻撃の時間
 	attack_flag = false;
 	attack_time = 0.0f;
-	attack_zeit_max = 0.0165f;
+	attack_zeit_max = 0.165f;
 
 	//無敵時間
 	invincible_flag = false;
