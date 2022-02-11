@@ -279,7 +279,7 @@ void MainScene::ChangeLightColor()
 		point.SetPower(1.5f, 0);
 		point.SetPower(2.5f, 1);
 		point.SetPosition(Vector3(0.0f, 0.0f, 0.0f), 0);
-		point.SetPosition(player->GetModel()->GetPosition() + Vector3(0, 50, 16.0f), 1);
+		point.SetPosition(player->GetModel()->GetPosition() + Vector3(0, 50, 0.0f), 1);
 		point.SetCone(0.0f, 0);
 		point.SetCone(6.0f, 1);
 		point.PointRender(*camera.GetCamera(), ground.GetModel());

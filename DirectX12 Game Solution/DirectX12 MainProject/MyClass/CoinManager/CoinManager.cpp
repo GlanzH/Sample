@@ -115,16 +115,8 @@ void CoinManager::ComboCoin(int combocoin)
 		create_coins = 11;
 		Generator();
 		break;
-	case 6:
-		create_coins = 13;
-			Generator();
-		break;
-	case 7:
-		create_coins = 15;
-			Generator();
-		break;
 	default:
-		if (combocoin >= 8) {
+		if (combocoin >= 6) {
 			create_coins = 16;
 		}
 		Generator();
