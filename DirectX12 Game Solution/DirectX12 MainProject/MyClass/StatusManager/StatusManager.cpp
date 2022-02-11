@@ -173,7 +173,7 @@ void StatusManager::SetWave(int wave_num) {
 		break;
 	}
 
-	//wave_change_flag = false;
+	wave_change_flag = false;
 	return;
 }
 
@@ -185,10 +185,10 @@ void StatusManager::WaveTimeLimit(const float deltaTime) {
 
 void StatusManager::ResetWaveTime() {
 	//ウェーブの時間をリセットしてスコアを増減させる
-	//if (!wave_change_flag) {
-	float LostEnemy = enemy_num * -30.0f;
-	SetAddScore(LostEnemy);
-	wave_time = 0.0f;
-	//wave_change_flag = true;
-//}
+	if (!wave_change_flag) {
+		float LostEnemy = enemy_num * -30.0f;
+		SetAddScore(LostEnemy);
+		wave_time = 0.0f;
+		wave_change_flag = true;
+	}
 }
