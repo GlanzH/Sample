@@ -212,7 +212,7 @@ void EnemyManager::EndTimeStop() {
 	if (DXTK->KeyEvent->pressed.B || DXTK->GamePadEvent[0].b == GamePad::ButtonStateTracker::PRESSED)
 		push_count++;
 
-	if (push_count > 2 && enemy_stop_flag) {
+	if (push_count >= 2 && enemy_stop_flag) {
 		enemy_stop_flag = false;
 	}
 	if (!enemy_stop_flag) {
