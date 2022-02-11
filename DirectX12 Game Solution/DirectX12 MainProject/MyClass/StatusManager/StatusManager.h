@@ -93,6 +93,6 @@ private:
 	bool wave_change_flag;	//true:ウェーブ切り替え可能 false:切り替え不可
 
 	const int MAX_WAVE = 12;	//ウェーブの最大数
-	const float STAGE_ONE_TIME = 99.0f;//1ステージ目の制限時間
+	const float STAGE_ONE_TIME = 70.0f;//1ステージ目の制限時間
 	const float STAGE_TWO_TIME = 40.0f;//2ステージ目移行の制限時間
 };

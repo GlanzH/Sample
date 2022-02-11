@@ -2,6 +2,7 @@
 #include "Base/dxtk.h"
 #include "CoinManager.h"
 #include "MyClass/EnumManager/EnumManager.h"
+#include"MyClass/StatusManager/StatusManager.h"
 #include <MyClass/ResourceManager/ResourceManager.h>
 
 /**
@@ -33,7 +34,13 @@ int CoinManager::Update(SimpleMath::Vector3 position, bool death_flag, int death
 
 	if (death_flag && death_enemy > 0) {
 		if (!DX12Effect.CheckAlive(manycoin_handle))
-			manycoin_handle = DX12Effect.Play(manycoin, pos);
+		{
+			if (StatusManager::Instance().GetTime()>=0.1f)
+			{
+				manycoin_handle = DX12Effect.Play(manycoin, pos);
+			}
+		}
+			
 
 		create_coin_flag = true;
 	}
@@ -43,8 +50,12 @@ int CoinManager::Update(SimpleMath::Vector3 position, bool death_flag, int death
 			effect_frame += deltaTime;
 		}
 		else {
-			ComboCoin(death_enemy);
-			create_coin_flag = false;
+			if (StatusManager::Instance().GetTime()>=0.1f)
+			{
+				ComboCoin(death_enemy);
+				create_coin_flag = false;
+			}
+			
 		}
 	}
 
@@ -104,8 +115,16 @@ void CoinManager::ComboCoin(int combocoin)
 		create_coins = 11;
 		Generator();
 		break;
+	case 6:
+		create_coins = 13;
+			Generator();
+		break;
+	case 7:
+		create_coins = 15;
+			Generator();
+		break;
 	default:
-		if (combocoin >= 6) {
+		if (combocoin >= 8) {
 			create_coins = 16;
 		}
 		Generator();
