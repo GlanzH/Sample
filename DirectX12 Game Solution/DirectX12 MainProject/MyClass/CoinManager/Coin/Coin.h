@@ -29,7 +29,7 @@ private:
 
 	SimpleMath::Vector3 pos;
 	SimpleMath::Vector3 col_pos;
-
+	DX9::MEDIARENDERER getcoin;
 	bool death_coin_flag;
 
 	float dest_frame;

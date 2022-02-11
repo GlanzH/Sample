@@ -29,6 +29,7 @@ bool WaveProcess::Initialize() {
 	time_delta = 0.0f;
 	anim_end_flag = false;
 	co_start_flag = false;
+	first_time_flag = false;
 
 	game_clear_flag = false;
 
@@ -66,12 +67,9 @@ int WaveProcess::Update(EnemyManager* enemy, const float deltaTime) {
 	//	max_stop = 0.01f;
 	//}
 
-	if (wave_num < StatusManager::Instance().GetMaxWave() && now_time == 0) {
-		if (stop_frame < max_stop) {
-			one_digit_flag = false;
-			stop_frame += deltaTime;
-		}
-		else {
+	if (!first_time_flag)
+	{
+		if (wave_num < StatusManager::Instance().GetMaxWave() && now_time == 0) {
 			StatusManager::Instance().ResetWaveTime();
 			StatusManager::Instance().SetWave(++stage_num);
 			enemy->ResetRemainEnemy();
@@ -80,6 +78,26 @@ int WaveProcess::Update(EnemyManager* enemy, const float deltaTime) {
 			time_num_scale = 1.0f;
 			co_start_flag = false;
 			anim_end_flag = false;
+			first_time_flag = true;
+		}
+	}
+	else
+	{
+		if (wave_num < StatusManager::Instance().GetMaxWave() && now_time == 0) {
+			if (stop_frame < max_stop) {
+				one_digit_flag = false;
+				stop_frame += deltaTime;
+			}
+			else {
+				StatusManager::Instance().ResetWaveTime();
+				StatusManager::Instance().SetWave(++stage_num);
+				enemy->ResetRemainEnemy();
+				enemy->ResetDeathEnemy();
+				stop_frame = 0.0f;
+				time_num_scale = 1.0f;
+				co_start_flag = false;
+				anim_end_flag = false;
+			}
 		}
 	}
 

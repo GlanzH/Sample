@@ -98,7 +98,7 @@ bool PlayerBase::Initialize()
 	//攻撃の時間
 	attack_flag = false;
 	attack_time = 0.0f;
-	attack_zeit_max = 0.1f;
+	attack_zeit_max = 0.0165f;
 
 	//無敵時間
 	invincible_flag = false;
@@ -545,14 +545,14 @@ void PlayerBase::Player_move(const float deltaTime)
 	if (upper_state_mode == Upper_State::NOT_UPPER && lower_state_mode == Lower_State::NOT_LOWER && !knock_back_flag) {
 		if (!s_del_flag && !avoidance_flag) {
 			//プレイヤー:移動(キーボード) & ゲームパッド十字キー
-			if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right) {
+			if (DXTK->KeyState->Right || DXTK->GamePadState[0].dpad.right || DXTK->GamePadState->thumbSticks.leftX > 0) {
 				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
 				model->SetRotation(0.0f, DirectX::XMConvertToRadians(model_rotetion), 0.0f);
 				col.sword_box.Center = model->GetRotation();
 				direction_state_mode = Direction_State::RIGHT;
 				SetAnimation(model, RUN);
 			}
-			if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left) {
+			if (DXTK->KeyState->Left || DXTK->GamePadState[0].dpad.left || DXTK->GamePadState->thumbSticks.leftX < 0) {
 				model->Move(0.0f, 0.0f, -player_speed_ * deltaTime);
 				model->SetRotation(0.0f, DirectX::XMConvertToRadians(-model_rotetion), 0.0f);
 				col.sword_box.Center = model->GetRotation();
