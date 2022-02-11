@@ -107,6 +107,9 @@ private:
 	bool Change_flag;
 
 	bool mugic_loop_flag;
+	bool light_flag = false;
+    float black_time ;
+	 const float max_black_time =15.0f;
 
 	//ƒLƒƒƒ‰ƒ‰ƒCƒg
 	float  lightColor_x, lightColor_y, lightColor_z;
