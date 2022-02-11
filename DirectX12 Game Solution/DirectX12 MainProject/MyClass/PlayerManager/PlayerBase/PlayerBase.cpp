@@ -566,9 +566,6 @@ void PlayerBase::Player_move(const float deltaTime)
 
 //プレイヤーの移動スピードの変化
 void PlayerBase::Speed_Step(const float deltaTime) {
-	if (DXTK->KeyEvent->pressed.Q) {
-		step_up_flag = true;
-	}
 
 	if (StatusManager::Instance().GetCoinFlag()) {
 		if (StatusManager::Instance().GetCoin() != 0 && StatusManager::Instance().GetCoin() % 7 == 0) {
