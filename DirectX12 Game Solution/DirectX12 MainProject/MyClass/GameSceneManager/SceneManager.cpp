@@ -23,7 +23,10 @@ void SceneManager::Update(const float deltaTime, bool game_clear) {
 	}
 
 	if (game_clear) {
-		epi_text_alpha = 255.0f;
+		epi_text_alpha = std::min(epi_text_alpha + 200.0f * deltaTime, 255.0f);
+	}
+
+	if (epi_text_alpha >= 255.0f) {
 		if (DXTK->KeyEvent->pressed.B ||
 			DXTK->GamePadEvent[0].b == GamePad::ButtonStateTracker::PRESSED ||
 			DXTK->GamePadEvent[0].a == GamePad::ButtonStateTracker::PRESSED
@@ -31,6 +34,7 @@ void SceneManager::Update(const float deltaTime, bool game_clear) {
 			curtain_move_flag = true;
 		}
 	}
+
 
 	if (curtain_move_flag) {
 		curtain_pos.y = std::min(curtain_pos.y + CURTAIN_DOWN_SPEED * deltaTime, 0.0f);
