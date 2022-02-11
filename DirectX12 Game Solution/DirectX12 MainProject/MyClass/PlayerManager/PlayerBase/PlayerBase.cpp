@@ -605,7 +605,6 @@ void PlayerBase::Player_jump(const float deltaTime) {
 				jump_start_v_ = model->Position.y;
 			}
 		}
-
 	}
 
 	if (jump_flag_) {
