@@ -597,9 +597,9 @@ void PlayerBase::Player_limit()
 
 void PlayerBase::Player_jump(const float deltaTime) {
 	//ƒWƒƒƒ“ƒv
-	if (!s_del_flag && !avoidance_flag && lower_state_mode == Lower_State::NOT_LOWER && upper_state_mode == Upper_State::NOT_UPPER) {
+	if (!s_del_flag && !avoidance_flag && lower_state_mode == Lower_State::NOT_LOWER && upper_state_mode == Upper_State::NOT_UPPER && !knock_back_flag) {
 		if (!jump_flag_) {
-			if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {				
+			if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
 				jump_flag_ = true;
 				jump_time_ = 0;
 				jump_start_v_ = model->Position.y;
