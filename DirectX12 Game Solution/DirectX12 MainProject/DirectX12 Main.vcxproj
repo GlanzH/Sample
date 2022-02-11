@@ -210,7 +210,6 @@
     <ClInclude Include="MyClass\GameSceneManager\SceneManager.h" />
     <ClInclude Include="MyClass\Ground\Ground.h" />
     <ClInclude Include="MyClass\Observer\Observer.h" />
-    <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.h" />
     <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerBase.h" />
     <ClInclude Include="MyClass\PlayerManager\PlayerManager.h" />
     <ClInclude Include="MyClass\RankJudgeManager\RankJudgeManager.h" />
@@ -296,9 +295,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="MyClass\Observer\Observer.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerBase.cpp">

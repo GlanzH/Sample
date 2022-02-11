@@ -1,7 +1,6 @@
 #include "PlayerBase.h"
 
 
-#include "MyClass/PlayerManager/PlayerBase/PlayerAttack/PlayerAttack.h"
 #include "MyClass/StatusManager/StatusManager.h"
 
 PlayerBase::PlayerBase() {

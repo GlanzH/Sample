@@ -46,9 +46,6 @@
     <Filter Include="MyClass\PlayerManager\PlayerBase">
       <UniqueIdentifier>{da6da9bd-3875-442d-8c5d-50637ea58f13}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyClass\PlayerManager\PlayerBase\PlayerAttack">
-      <UniqueIdentifier>{80701191-cb24-4bf8-86c7-db30bf6aa28a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MyClass\RankJudgeManager">
       <UniqueIdentifier>{5ea0a6f1-08f2-4884-bf65-79d62a7c7912}</UniqueIdentifier>
     </Filter>
@@ -156,9 +153,6 @@
     <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerBase.h">
       <Filter>MyClass\PlayerManager\PlayerBase</Filter>
     </ClInclude>
-    <ClInclude Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.h">
-      <Filter>MyClass\PlayerManager\PlayerBase\PlayerAttack</Filter>
-    </ClInclude>
     <ClInclude Include="MyClass\RankJudgeManager\RankJudgeManager.h">
       <Filter>MyClass\RankJudgeManager</Filter>
     </ClInclude>
@@ -254,9 +248,6 @@
     </ClCompile>
     <ClCompile Include="ResultScene.cpp">
       <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="MyClass\PlayerManager\PlayerBase\PlayerAttack\PlayerAttack.cpp">
-      <Filter>MyClass\PlayerManager\PlayerBase\PlayerAttack</Filter>
     </ClCompile>
     <ClCompile Include="MyClass\RankJudgeManager\RankJudgeManager.cpp">
       <Filter>MyClass\RankJudgeManager</Filter>
