@@ -41,6 +41,7 @@ private:
 	int black_alpha;
 
 	//時間
+	float wait_time;
 	const float CURTAIN_DOWN_SPEED = 400.0f;
 
 	bool scene_change_flag;	//シーン切り替え可能フラグ

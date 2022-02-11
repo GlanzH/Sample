@@ -8,6 +8,7 @@ void SceneManager::Initialize() {
 
 	black_alpha = 0;
 	epi_text_alpha = 0.0f;
+	wait_time = 0.0f;
 }
 
 void SceneManager::LoadAsset() {
@@ -23,7 +24,10 @@ void SceneManager::Update(const float deltaTime, bool game_clear) {
 	}
 
 	if (game_clear) {
-		epi_text_alpha = std::min(epi_text_alpha + 200.0f * deltaTime, 255.0f);
+		wait_time += deltaTime;
+		if (wait_time >= 1.0f) {
+			epi_text_alpha = std::min(epi_text_alpha + 200.0f * deltaTime, 255.0f);
+		}
 	}
 
 	if (epi_text_alpha >= 255.0f) {
@@ -54,10 +58,10 @@ void SceneManager::Update(const float deltaTime, bool game_clear) {
 }
 
 void SceneManager::Render() {
-
+	//エピローグテキスト
 	DX9::SpriteBatch->DrawSimple(
 		epilogue_text.Get(),
-		SimpleMath::Vector3(0.0f, 0.0f, 0.0f),
+		SimpleMath::Vector3(0.0f, 0.0f, -9.0f),
 		nullptr,
 		DX9::Colors::RGBA(255, 255, 255, epi_text_alpha)
 	);
