@@ -39,9 +39,9 @@ void MainScene::Initialize()
 
 	point.Init(2);
 	texLight.Init();
+
 	mugic_loop_flag = false;
 	black_time = 0.0f;
-	//enemy->StartTimeStop();
 	end_frame = 0.0f;
 }
 void MainScene::TestChangeColor()
@@ -51,11 +51,12 @@ void MainScene::TestChangeColor()
 	////全体ライト
 	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 0.0f), 0);
 	point.SetAtt(Vector3(0.25f, 0.01f, 0), 0);
+	//point.SetLightColor(SimpleMath::Vector4(0.0f, 0.0f, 0.0f, 1.0f), 0);
 	point.SetLightColor(SimpleMath::Vector4(0.0f, 147.0f, 165.0f, 1.0f), 0);
 	////キャラのライト
 	point.SetAmbientColor(Vector4(0.0f, 0.0f, 0.0f, 1.0f), 1);
 	point.SetAtt(Vector3(0.05f, 0.01f, 0), 1);
-	point.SetLightColor(SimpleMath::Vector4(175.0f, 74.0f, 94.0f, 1.0f), 1);
+	point.SetLightColor(SimpleMath::Vector4(0.0f, 14.0f, 24.0f, 1.0f), 1);
 	}
 
 	if (StatusManager::Instance().GetWave() >= 4 && StatusManager::Instance().GetWave() <= 6)
@@ -249,10 +250,10 @@ NextScene MainScene::Update(const float deltaTime)
 	point.SetPosition(Vector3(pos.x, 30, pos.z), 0);
 
 	TextureLight::SCorner corner;
-	corner.BL = Vector3(-20 + player->GetModel()->GetPosition().x, 0, 60);
-	corner.UL = Vector3(-10, 60, 60);
-	corner.UR = Vector3(10, 60, 60);
-	corner.BR = Vector3(20 + player->GetModel()->GetPosition().x, 0, 60);
+	corner.BL = Vector3(-20 + player->GetModel()->GetPosition().x, 0, 53);
+	corner.UL = Vector3(-10, 60, 53);
+	corner.UR = Vector3(10, 60, 53);
+	corner.BR = Vector3(20 + player->GetModel()->GetPosition().x, 0, 53);
 	texLight.SetPos(corner);
 	texLight.Update();
 

@@ -6,10 +6,10 @@
 
 void TextureLight::Init()
 {
-	color = SimpleMath::Vector4(255, 255, 255, 60);
+	color = SimpleMath::Vector4(255, 255, 255, 55);
 
 	pos[0] = Vector3(-20, 0, 50);
-	pos[1] = Vector3(-50, 70, 50);
+	pos[1] = Vector3(-50, 70,50);
 	pos[2] = Vector3(-20, 50, 50);
 	pos[3] = Vector3(20, 0, 50);
 

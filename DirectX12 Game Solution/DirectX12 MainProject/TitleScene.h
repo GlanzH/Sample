@@ -40,8 +40,8 @@ private:
     DX12::HGPUDESCRIPTOR dx9GpuDescriptor;
 
 private:
-	DX9::SPRITE curtain;	//カーテン
-	DX9::SPRITE title_logo;	//タイトルロゴ
+	DX9::SPRITE curtain;	    //カーテン
+	DX9::SPRITE title_logo;	    //タイトルロゴ
 	DX9::SPRITE prologue_text;	//プロローグテキスト
 
 
